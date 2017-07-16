@@ -1,4 +1,4 @@
-package com.linjia.supermarket;
+package com.sljr.automarket;
 
 import org.junit.Test;
 
