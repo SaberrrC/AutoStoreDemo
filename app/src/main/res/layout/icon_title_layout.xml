@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="118px"
+        android:layout_width="99px"
+        android:layout_height="50px"
+        android:text="Lin+"
+        android:textStyle="bold"
+        android:textColor="#FFFCC70D"
+        android:textSize="50px"
+        />
+
+    <TextView
+        android:layout_marginTop="207px"
+        android:layout_width="wrap_content"
+        android:layout_height="45px"
+        android:text="邻家"
+        android:layout_centerHorizontal="true"
+        android:textColor="#FFFCBF0D"
+        android:textSize="32px"
+        />
+
+    <TextView
+        android:layout_width="127px"
+        android:layout_height="25px"
+        android:text="智能的便民服务"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="255px"
+        android:textColor="#CC148FCE"
+        android:textSize="18px"
+        />
+</RelativeLayout>

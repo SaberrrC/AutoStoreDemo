@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:background="#0094ff"
-    android:gravity="center_horizontal"
     android:layout_height="match_parent">
 
-    <FrameLayout
+    <!--<FrameLayout
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="right"
@@ -26,32 +23,36 @@
             android:textSize="18sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-    </FrameLayout>
+    </FrameLayout>-->
 
     <TextView
+        android:layout_marginTop="185px"
+        android:layout_centerHorizontal="true"
+        android:layout_width="99px"
+        android:layout_height="50px"
         android:text="Lin+"
-        android:textColor="#fff"
-        android:textSize="50sp"
         android:textStyle="bold"
-        android:layout_marginTop="130dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:textColor="#FFFCC70D"
+        android:textSize="50px"
+        />
 
     <TextView
+        android:layout_marginTop="282px"
+        android:layout_centerHorizontal="true"
+        android:layout_width="192px"
+        android:layout_height="33px"
         android:text="智能让生活更便捷"
-        android:textSize="25sp"
-        android:textColor="#fff"
-        android:layout_marginTop="30dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:textColor="#FFFCC70D"
+        android:textSize="24px"
         />
 
     <TextView
+        android:layout_marginTop="325px"
+        android:layout_centerHorizontal="true"
+        android:layout_width="160px"
+        android:layout_height="22px"
         android:text="开启智能便利购物体验"
-        android:textSize="16sp"
-        android:textColor="#fff"
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:textColor="#FF43A5D8"
+        android:textSize="16px"
         />
-</LinearLayout>
+</RelativeLayout>

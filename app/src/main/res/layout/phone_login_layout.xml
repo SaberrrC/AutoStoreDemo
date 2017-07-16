@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_marginTop="296px"
+        android:background="@drawable/shape_phone_login_bg"
+        android:layout_centerHorizontal="true"
+        android:layout_width="291.2px"
+        android:layout_height="97.4px">
+        <ImageView
+            android:id="@+id/iv_phone"
+            android:layout_marginTop="14px"
+            android:layout_marginRight="20px"
+            android:layout_marginLeft="20px"
+            android:src="@mipmap/phone_icon"
+            android:layout_width="14px"
+            android:layout_height="20.6px"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:layout_centerVertical="true"
+            android:background="#FED63E"/>
+
+        <EditText
+            android:id="@+id/et_phone_num"
+            android:hint="请输入手机号码"
+            android:textColor="#FFD5D5D5"
+            android:layout_toRightOf="@id/iv_phone"
+            android:layout_width="match_parent"
+            android:layout_height="48.7px"
+            />
+
+        <ImageView
+            android:layout_below="@id/iv_phone"
+            android:id="@+id/iv_psw"
+            android:layout_marginTop="28px"
+            android:layout_marginRight="20px"
+            android:layout_marginLeft="20px"
+            android:src="@mipmap/psw_icon"
+            android:layout_width="14px"
+            android:layout_height="20.6px"/>
+
+        <EditText
+            android:id="@+id/et_psw"
+            android:layout_below="@id/et_phone_num"
+            android:hint="请输入短信验证码"
+            android:textColor="#FFD5D5D5"
+            android:layout_toRightOf="@id/iv_phone"
+            android:layout_width="131px"
+            android:layout_height="48.7px"
+            />
+
+        <TextView
+            android:layout_below="@id/et_phone_num"
+            android:layout_toRightOf="@id/et_psw"
+            android:id="@+id/tv_get_msgcode"
+            android:layout_width="match_parent"
+            android:layout_height="48.7px"
+            android:text="获取验证码"
+            android:gravity="center"
+            android:textColor="#FF67B7E0"
+            android:textSize="14px"
+            />
+    </RelativeLayout>

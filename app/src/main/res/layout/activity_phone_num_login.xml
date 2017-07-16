@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="151px"
+        android:layout_width="192px"
+        android:layout_height="33px"
+        android:text="您还不是邻家会员"
+        android:textColor="#FFFCC70D"
+        android:textSize="24px"
+        />
+
+    <TextView
+        android:layout_below="@id/tv_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13px"
+        android:layout_width="173px"
+        android:layout_height="20px"
+        android:text="成为邻家会员 享受智能购物"
+        android:textColor="#FF43A5D8"
+        android:textSize="14px"
+        />
+
+    <include layout="@layout/phone_login_layout"></include>
+
+    <TextView
+        android:layout_marginTop="490px"
+        android:layout_width="180px"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="5px"
+        android:layout_height="42.6px"
+        android:text="绑定"
+        android:background="@mipmap/login_btn_bg"
+        android:textColor="#FFFFFFFF"
+        android:textSize="18px"
+        />
+</RelativeLayout>
