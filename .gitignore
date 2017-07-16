@@ -26,6 +26,7 @@ proguard/
 # Ignore gradle files
 .gradle/
 build/
+config/config.gradle
 
 # Eclipse project files
 .classpath
