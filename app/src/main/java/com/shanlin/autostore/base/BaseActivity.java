@@ -1,4 +1,4 @@
-package com.sljr.automarket.base;
+package com.shanlin.autostore.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

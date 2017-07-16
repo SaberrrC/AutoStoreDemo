@@ -1,4 +1,4 @@
-package com.sljr.automarket;
+package com.shanlin.autostore;
 
 import org.junit.Test;
 

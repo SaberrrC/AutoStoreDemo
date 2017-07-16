@@ -1,4 +1,4 @@
-package com.sljr.automarket.utils;
+package com.shanlin.autostore.utils;
 
 import android.content.Context;
 import android.content.Intent;

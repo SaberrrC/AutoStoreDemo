@@ -1,10 +1,10 @@
-package com.sljr.automarket;
+package com.shanlin.autostore;
 
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.sljr.automarket.base.BaseActivity;
+import com.shanlin.autostore.base.BaseActivity;
 
 public class MainActivity extends BaseActivity {
 

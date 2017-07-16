@@ -1,4 +1,4 @@
-package com.sljr.automarket.base;
+package com.shanlin.autostore.base;
 
 /**
  * Created by JR on 2017/7/15.
