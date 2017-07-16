@@ -1,4 +1,4 @@
-package com.sljr.android_automarket;
+package com.sljr.automarket;
 
 import org.junit.Test;
 

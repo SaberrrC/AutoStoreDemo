@@ -1,4 +1,4 @@
-package com.sljr.android_automarket;
+package com.sljr.automarket;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
