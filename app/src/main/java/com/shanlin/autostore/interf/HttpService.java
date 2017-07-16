@@ -1,7 +1,7 @@
-package com.sljr.automarket.interf;
+package com.shanlin.autostore.interf;
 
-import com.sljr.automarket.base.ListBaseBean;
-import com.sljr.automarket.base.ObjBaseBean;
+import com.shanlin.autostore.base.ListBaseBean;
+import com.shanlin.autostore.base.ObjBaseBean;
 
 import okhttp3.RequestBody;
 import retrofit2.Call;

@@ -1,4 +1,4 @@
-package com.sljr.automarket.wxapi;
+package com.shanlin.autostore.wxapi;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,8 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.sljr.automarket.R;
-import com.sljr.automarket.constants.Constant;
+import com.shanlin.autostore.R;
+import com.shanlin.autostore.constants.Constant;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
