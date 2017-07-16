@@ -1,20 +1,24 @@
 package com.shanlin.autostore.base;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import com.shanlin.autostore.utils.StatusBarUtils;
+import com.zhy.autolayout.AutoLayoutActivity;
 
 /**
  * Created by DELL on 2017/7/14 0014.
  */
 
-public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener{
+public abstract class BaseActivity extends AutoLayoutActivity implements View.OnClickListener{
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(initLayout());
+        StatusBarUtils.setColor(this, Color.TRANSPARENT);
         initView();
         initData();
     }

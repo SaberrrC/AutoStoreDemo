@@ -3,6 +3,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+    <!--标识+title-->
+    <RelativeLayout
+        android:id="@+id/icon_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <TextView
         android:layout_centerHorizontal="true"
         android:layout_marginTop="118px"
@@ -31,6 +36,38 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="255px"
         android:textColor="#CC148FCE"
-        android:textSize="18px"
-        />
+        android:textSize="18px"/>
+    </RelativeLayout>
+
+    <!--不是会员提醒-->
+
+    <RelativeLayout
+        android:id="@+id/no_vip_tip"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="151px"
+            android:layout_width="192px"
+            android:layout_height="33px"
+            android:text="您还不是邻家会员"
+            android:textColor="#FFFCC70D"
+            android:textSize="24px"
+            />
+
+        <TextView
+            android:layout_below="@id/tv_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="13px"
+            android:layout_width="173px"
+            android:layout_height="20px"
+            android:text="成为邻家会员 享受智能购物"
+            android:textColor="#FF43A5D8"
+            android:textSize="14px"
+            />
+
+    </RelativeLayout>
 </RelativeLayout>

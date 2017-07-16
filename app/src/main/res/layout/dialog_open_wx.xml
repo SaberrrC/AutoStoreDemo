@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lLayout_bg"
+    android:layout_width="280px"
+    android:layout_height="158px"
+    android:background="@drawable/dialog_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_marginTop="44px"
+        android:layout_centerHorizontal="true"
+        android:layout_width="223px"
+        android:layout_height="25px"
+        android:text="“邻家APP”想要打开“微信”"
+        android:textColor="#FF000000"
+        android:textSize="18px"/>
+
+    <View
+        android:layout_below="@id/title"
+        android:id="@+id/hl"
+        android:layout_marginTop="39px"
+        android:layout_width="match_parent"
+        android:layout_height="3px"
+        android:background="#E1E1E1" />
+
+    <LinearLayout
+        android:layout_below="@id/hl"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_concel"
+        android:layout_width="wrap_content"
+        android:clickable="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="58px"
+        android:layout_height="22px"
+        android:text="取消"
+        android:textColor="#FF000000"
+        android:textSize="16px"
+        />
+
+    <View
+        android:id="@+id/vl"
+        android:layout_gravity="center"
+        android:layout_marginLeft="48px"
+        android:layout_width="2px"
+        android:background="#E1E1E1"
+        android:layout_height="match_parent"></View>
+
+    <TextView
+        android:id="@+id/tv_open"
+        android:clickable="true"
+        android:layout_width="wrap_content"
+        android:layout_height="22px"
+        android:text="打开"
+        android:layout_marginTop="13px"
+        android:layout_marginLeft="57px"
+        android:textColor="#FFFCC70D"
+        android:textSize="16px"/>
+    </LinearLayout>
+</RelativeLayout>

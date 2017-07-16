@@ -5,7 +5,8 @@
 
     <include layout="@layout/icon_title_layout"></include>
 
-    <TextView
+    <Button
+        android:id="@+id/btn_login_by_face"
         android:layout_marginTop="360px"
         android:layout_width="271px"
         android:gravity="center"
@@ -18,7 +19,8 @@
         android:textSize="18px"
         />
 
-    <TextView
+    <Button
+        android:id="@+id/btn_login_by_phone"
         android:layout_marginTop="471px"
         android:layout_width="221px"
         android:layout_height="41px"
@@ -58,12 +60,13 @@
         android:layout_height="3px"
         />
 
-    <ImageView
+    <Button
+        android:id="@+id/btn_login_by_wx"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="594px"
         android:layout_width="26px"
         android:layout_height="21.2px"
-        android:src="@mipmap/login_wx_icon"
+        android:background="@mipmap/login_wx_icon"
         />
 
 </RelativeLayout>
