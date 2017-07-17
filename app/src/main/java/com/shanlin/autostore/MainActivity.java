@@ -2,26 +2,34 @@ package com.shanlin.autostore;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextPaint;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.shanlin.autostore.activity.BuyRecordActivity;
 import com.shanlin.autostore.activity.GateActivity;
+import com.shanlin.autostore.activity.VersionInfoActivity;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.constants.Constant;
-import com.shanlin.autostore.fragment.BuyRecordFragment;
-import com.shanlin.autostore.fragment.MainFragment;
-import com.shanlin.autostore.fragment.VersionInfoFragment;
+import com.shanlin.autostore.utils.CommonUtils;
+import com.xys.libzxing.zxing.activity.CaptureActivity;
+import com.zhy.autolayout.utils.AutoUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.shanlin.autostore.fragment.MainFragment.REQUEST_CODE;
 
 public class MainActivity extends BaseActivity {
 
@@ -32,7 +40,8 @@ public class MainActivity extends BaseActivity {
     private Toolbar toolbar;
     private List<Fragment> fragments = new ArrayList<>();
     private TextPaint paint;
-    private Dialog mGateOpenDialog;
+    private Dialog    mGateOpenDialog;
+    private Button mBtnScan;
 
 
     @Override
@@ -44,6 +53,8 @@ public class MainActivity extends BaseActivity {
     public void initView() {
         mDrawerLayout = ((DrawerLayout) findViewById(R.id.activity_main));
         toolbar_title = ((TextView) findViewById(R.id.toolbar_title));
+        mBtnScan = (Button) findViewById(R.id.btn_scan_bg);
+        mBtnScan.setOnClickListener(this);
     }
 
     @Override
@@ -105,6 +116,9 @@ public class MainActivity extends BaseActivity {
                 CommonUtils.toNextActivity(this, VersionInfoActivity.class);
                 break;
             case R.id.location_4:
+                break;
+            case R.id.btn_scan_bg:
+                startActivityForResult(new Intent(this, CaptureActivity.class), REQUEST_CODE);
                 break;
         }
     }
