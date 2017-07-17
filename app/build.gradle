@@ -81,4 +81,5 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.zhy:autolayout:1.4.5'
+    compile 'com.android.support:design:26.0.0-alpha1'
 }
