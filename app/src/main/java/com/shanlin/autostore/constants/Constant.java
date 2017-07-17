@@ -14,5 +14,13 @@ public class Constant {
     /**
      * 接口base url
      */
-    public static final String BASE_URL ="https://www.easy-mock.com/";
+    public static final String BASE_URL = "https://www.easy-mock.com/";
+
+    public static class MainActivityArgument {
+        public static final String MAIN_ACTIVITY = "MAIN_ACTIVITY";
+        public static final String GATE          = "GATE";
+
+    }
+
+
 }

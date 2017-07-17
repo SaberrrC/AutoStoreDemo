@@ -1,17 +1,27 @@
 package com.shanlin.autostore;
 
+import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextPaint;
 import android.util.Log;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.shanlin.autostore.activity.GateActivity;
 import com.shanlin.autostore.activity.BuyRecordActivity;
 import com.shanlin.autostore.activity.VersionInfoActivity;
 import com.shanlin.autostore.base.BaseActivity;
+import com.shanlin.autostore.constants.Constant;
+import com.shanlin.autostore.fragment.BuyRecordFragment;
+import com.shanlin.autostore.fragment.MainFragment;
+import com.shanlin.autostore.fragment.VersionInfoFragment;
 import com.shanlin.autostore.utils.CommonUtils;
 
 import java.util.ArrayList;
@@ -26,6 +36,7 @@ public class MainActivity extends BaseActivity {
     private Toolbar toolbar;
     private List<Fragment> fragments = new ArrayList<>();
     private TextPaint paint;
+    private Dialog mGateOpenDialog;
 
 
     @Override
