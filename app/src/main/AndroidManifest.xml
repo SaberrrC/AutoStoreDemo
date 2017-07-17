@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.shanlin.autostore">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.shanlin.autostore"
+          tools:overrideLibrary="com.xys.libzxing">
 
-    <!--微信登录权限-->
+    <!-- 微信登录权限 -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
@@ -16,8 +18,13 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data android:name="design_width" android:value="375"></meta-data>
-        <meta-data android:name="design_height" android:value="667"></meta-data>
+        <meta-data
+            android:name="design_width"
+            android:value="375"/>
+        <meta-data
+            android:name="design_height"
+            android:value="667"/>
+
         <activity android:name=".MainActivity">
         </activity>
         <activity android:name=".activity.SplashActivity">
@@ -27,10 +34,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.PhoneNumLoginActivity"></activity>
-        <activity android:name=".activity.LoginActivity"></activity>
-        <activity android:name=".wxapi.WXEntryActivity"></activity>
-        <activity android:name=".activity.FaceIdentify"></activity>
+        <activity android:name=".activity.PhoneNumLoginActivity"/>
+        <activity android:name=".activity.LoginActivity"/>
+        <activity android:name=".wxapi.WXEntryActivity"/>
+        <activity android:name=".activity.FaceIdentify"/>
+        <activity android:name=".activity.ScanActivity">
+        </activity>
     </application>
 
 </manifest>
