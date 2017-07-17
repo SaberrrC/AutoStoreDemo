@@ -49,6 +49,7 @@
         />
 
     <TextView
+        android:id="@+id/lv_item_pay_way"
         android:layout_marginLeft="90dp"
         android:layout_toRightOf="@id/lv_item_money"
         android:layout_alignBaseline="@id/lv_item_money"
