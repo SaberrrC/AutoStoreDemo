@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="#F5F5F5"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <include layout="@layout/toolbar_layout"></include>
+
+    <TextView
+        android:layout_marginTop="5px"
+        android:gravity="right|center_vertical"
+        android:layout_marginRight="20px"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="50px"
+        android:text="支付时间：3:00:00"
+        android:textColor="#FF666666"
+        android:textSize="14px"
+        />
+
+    <TextView
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="14px"
+        android:layout_width="56px"
+        android:layout_height="20px"
+        android:text="需付金额"
+        android:textColor="#FF999999"
+        android:textSize="14px"
+        />
+
+    <TextView
+        android:layout_marginTop="10px"
+        android:layout_width="125px"
+        android:layout_height="48px"
+        android:text="¥100.00"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#FFED4848"
+        android:textSize="34px"
+        />
+
+    <TextView
+        android:layout_marginTop="28px"
+        android:layout_width="84px"
+        android:layout_marginLeft="20px"
+        android:layout_height="20px"
+        android:text="选择支付方式"
+        android:textColor="#FF999999"
+        android:textSize="14px"
+        />
+<!--1-->
+    <LinearLayout
+        android:id="@+id/ll_pay_way_1"
+        android:layout_marginTop="10px"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="50px"
+        android:background="#FFFFFFFF"
+        >
+        
+        <ImageView
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="22px"
+            android:src="@mipmap/ic_launcher"
+            android:layout_width="34px"
+            android:layout_height="34px"/>
+
+        <TextView
+            android:layout_marginLeft="14px"
+            android:layout_width="144px"
+            android:layout_height="19px"
+            android:text="邻家乐买宝快捷支付"
+            android:textColor="#FF333333"
+            android:textSize="16px"
+            />
+
+        <TextView
+            android:layout_marginLeft="53px"
+            android:layout_width="68px"
+            android:layout_height="20px"
+            android:text="200元可用"
+            android:textColor="#FF999999"
+            android:textSize="14px"
+            />
+
+        <ImageView
+            android:layout_marginRight="20px"
+            android:layout_marginLeft="11px"
+            android:layout_width="9px"
+            android:layout_height="15.9px"
+            android:src="@mipmap/nav_enter"
+            />
+    </LinearLayout>
+<!--2-->
+    <LinearLayout
+        android:id="@+id/ll_pay_way_2"
+        android:layout_marginTop="10px"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="50px"
+        android:background="#FFFFFFFF"
+        >
+
+        <ImageView
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="22px"
+            android:src="@mipmap/icon_zhifubao_pay"
+            android:layout_width="34px"
+            android:layout_height="34px"/>
+
+        <TextView
+            android:layout_marginLeft="14px"
+            android:layout_width="144px"
+            android:layout_height="19px"
+            android:text="支付宝支付"
+            android:textColor="#FF333333"
+            android:textSize="16px"
+            />
+
+        <TextView
+            android:layout_marginLeft="53px"
+            android:layout_width="68px"
+            android:layout_height="20px"
+            android:textColor="#FF999999"
+            android:textSize="14px"
+            />
+
+        <ImageView
+            android:layout_marginRight="20px"
+            android:layout_marginLeft="11px"
+            android:layout_width="9px"
+            android:layout_height="15.9px"
+            android:src="@mipmap/nav_enter"
+            />
+    </LinearLayout>
+
+    <!--3-->
+    <LinearLayout
+        android:id="@+id/ll_pay_way_3"
+        android:layout_marginTop="3px"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="50px"
+        android:background="#FFFFFFFF"
+        >
+
+        <ImageView
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="22px"
+            android:src="@mipmap/icon_wx_pay"
+            android:layout_width="34px"
+            android:layout_height="34px"/>
+
+        <TextView
+            android:layout_marginLeft="14px"
+            android:layout_width="144px"
+            android:layout_height="19px"
+            android:text="微信支付"
+            android:textColor="#FF333333"
+            android:textSize="16px"
+            />
+
+        <TextView
+            android:layout_marginLeft="53px"
+            android:layout_width="68px"
+            android:layout_height="20px"
+            android:text=""
+            android:textColor="#FF999999"
+            android:textSize="14px"
+            />
+
+        <ImageView
+            android:layout_marginRight="20px"
+            android:layout_marginLeft="11px"
+            android:layout_width="9px"
+            android:layout_height="15.9px"
+            android:src="@mipmap/nav_enter"
+            />
+    </LinearLayout>
+</LinearLayout>

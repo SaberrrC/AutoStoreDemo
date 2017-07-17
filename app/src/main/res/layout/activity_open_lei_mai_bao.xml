@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@color/white"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <include layout="@layout/toolbar_layout"></include>
+    <Space
+        android:background="@color/main_bg"
+        android:layout_width="match_parent"
+        android:layout_height="5px"/>
+    <TextView
+        android:paddingTop="18px"
+        android:paddingBottom="10px"
+        android:background="@color/white"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:text="开启乐买宝,最高"
+        android:textColor="#FF333333"
+        android:textSize="16px"
+        />
+
+    <LinearLayout
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingBottom="19.5px"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="41px"
+            android:layout_height="30px"
+            android:text="领取"
+            android:textColor="#FF151515"
+            android:textSize="20px"
+            />
+
+        <TextView
+            android:layout_width="58px"
+            android:layout_height="30px"
+            android:text="500元"
+            android:layout_marginLeft="5px"
+            android:textColor="#FF0000"
+            android:textSize="20px"
+            />
+
+        <TextView
+            android:layout_width="41px"
+            android:layout_height="30px"
+            android:text="额度"
+            android:layout_marginLeft="5px"
+            android:textColor="#FF151515"
+            android:textSize="20px"
+            />
+    </LinearLayout>
+
+    <Space
+        android:background="@color/main_bg"
+        android:layout_width="match_parent"
+        android:layout_height="5px"/>
+
+    <RelativeLayout
+        android:gravity="center"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/line1_step1"
+            android:layout_centerVertical="true"
+            android:background="@color/yellow"
+            android:layout_marginLeft="30px"
+            android:layout_marginTop="52.5px"
+            android:layout_width="65px"
+            android:layout_height="2px"
+            />
+        
+        <ImageView
+            android:id="@+id/iv_step1"
+            android:layout_marginLeft="10px"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/line1_step1"
+            android:src="@mipmap/step1"
+            android:layout_width="34px"
+            android:layout_height="36.8px"/>
+
+        <View
+            android:layout_toRightOf="@id/iv_step1"
+            android:id="@+id/line2_step1"
+            android:layout_centerVertical="true"
+            android:background="@color/yellow"
+            android:layout_marginLeft="10.5px"
+            android:layout_marginTop="52.5px"
+            android:layout_width="36.1px"
+            android:layout_height="2px"
+            />
+
+        <View
+            android:layout_toRightOf="@id/line2_step1"
+            android:id="@+id/line1_step2"
+            android:layout_centerVertical="true"
+            android:background="#d6d6d6"
+            android:layout_marginTop="52.5px"
+            android:layout_width="36.1px"
+            android:layout_height="2px"
+            />
+        <ImageView
+            android:id="@+id/iv_step2"
+            android:layout_marginLeft="10px"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/line1_step2"
+            android:src="@mipmap/step2"
+            android:layout_width="34px"
+            android:layout_height="36.8px"/>
+
+        <View
+            android:layout_toRightOf="@id/iv_step2"
+            android:id="@+id/line2_step2"
+            android:layout_centerVertical="true"
+            android:background="@color/yellow"
+            android:layout_marginLeft="10px"
+            android:layout_marginTop="52.5px"
+            android:layout_width="65px"
+            android:layout_height="2px"
+            />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:layout_below="@id/iv_step1"
+        android:paddingTop="12.2px"
+        android:layout_width="match_parent"
+        android:layout_height="42px">
+
+        <TextView
+            android:text="实名认证"
+            android:gravity="center"
+            android:textSize="14px"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:text="设置支付密码"
+            android:gravity="center"
+            android:textSize="14px"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:layout_width="291.2px"
+        android:layout_height="97.4px"
+        android:layout_marginTop="33px"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/shape_phone_login_bg"
+        android:layout_centerHorizontal="true">
+        <!--step1-->
+    <RelativeLayout
+        android:visibility="gone"
+            android:id="@+id/rl_step1"
+            android:layout_width="291.2px"
+            android:layout_height="97.4px">
+        <TextView
+            android:id="@+id/tv_name"
+            android:text="姓名:"
+            android:layout_marginTop="14px"
+            android:layout_marginRight="20px"
+            android:layout_marginLeft="20px"
+            android:layout_width="80px"
+            android:textSize="14px"
+            android:layout_height="20.6px"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:layout_centerVertical="true"
+            android:background="#FED63E"/>
+
+        <EditText
+            android:id="@+id/et_name"
+            android:hint="请输入姓名"
+            android:background="@null"
+            android:textSize="14px"
+            android:textColorHint="#FFD5D5D5"
+            android:gravity="center_vertical"
+            android:layout_toRightOf="@id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="48.7px"
+            />
+
+        <TextView
+            android:layout_below="@id/tv_name"
+            android:id="@+id/tv_id"
+            android:text="身份证号码"
+            android:textSize="14px"
+            android:layout_marginTop="28px"
+            android:layout_marginRight="20px"
+            android:layout_marginLeft="20px"
+            android:layout_width="80px"
+            android:layout_height="20.6px"/>
+
+        <EditText
+            android:id="@+id/et_msg_code"
+            android:layout_below="@id/et_name"
+            android:hint="请输入身份证号码"
+            android:textSize="14px"
+            android:textColorHint="#FFD5D5D5"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:layout_toRightOf="@id/tv_id"
+            android:layout_width="131px"
+            android:layout_height="48.7px"
+            />
+    </RelativeLayout>
+        <!--step2-->
+        <RelativeLayout
+            android:visibility="visible"
+            android:id="@+id/rl_step2"
+            android:layout_width="291.2px"
+            android:layout_height="97.4px">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:layout_centerVertical="true"
+                android:background="#FED63E"/>
+
+            <EditText
+                android:id="@+id/et_psw"
+                android:paddingLeft="20px"
+                android:hint="设置支付密码，6位数字"
+                android:background="@null"
+                android:textSize="14px"
+                android:textColorHint="#FFD5D5D5"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="48.7px"
+                />
+
+            <EditText
+                android:paddingLeft="20px"
+                android:id="@+id/et_psw_again"
+                android:layout_below="@id/et_psw"
+                android:hint="请确认支付密码"
+                android:textSize="14px"
+                android:textColorHint="#FFD5D5D5"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="48.7px"
+                />
+        </RelativeLayout>
+    </FrameLayout>
+    
+    <Button
+        android:id="@+id/btn_nextstep_and_confirm"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="34.6px"
+        android:text="下一步"
+        android:textSize="16px"
+        android:textColor="@color/white"
+        android:background="@mipmap/btn_next_step_bg"
+        android:layout_width="220px"
+        android:layout_height="43px"/>
+
+    <RelativeLayout
+        android:gravity="center_horizontal"
+        android:layout_marginTop="8px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_1"
+            android:layout_width="172px"
+            android:layout_height="18px"
+            android:text="点击下一步,表示您阅读并同意"
+            android:textColor="@color/gray_595959"
+            android:textSize="12px"
+            />
+        <TextView
+            android:id="@+id/tv_2"
+            android:layout_toRightOf="@id/tv_1"
+            android:layout_width="74px"
+            android:layout_height="18px"
+            android:text="《乐买宝用户"
+            android:textColor="#FF153F00"
+            android:textSize="12px"
+            />
+        <TextView
+            android:layout_below="@id/tv_1"
+            android:layout_width="246px"
+            android:gravity="center_horizontal"
+            android:layout_height="18px"
+            android:text="服务合同》《善林信用服务及授权》"
+            android:textColor="#FF153F00"
+            android:textSize="12px"
+            />
+    </RelativeLayout>
+</LinearLayout>

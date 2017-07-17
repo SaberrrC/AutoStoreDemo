@@ -7,10 +7,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextPaint;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
 import com.shanlin.autostore.activity.BuyRecordActivity;
+import com.shanlin.autostore.activity.MyLeiMaiBaoActivity;
+import com.shanlin.autostore.activity.OpenLeMaiBao;
 import com.shanlin.autostore.activity.VersionInfoActivity;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.utils.CommonUtils;
@@ -39,6 +42,8 @@ public class MainActivity extends BaseActivity {
     public void initView() {
         mDrawerLayout = ((DrawerLayout) findViewById(R.id.activity_main));
         toolbar_title = ((TextView) findViewById(R.id.toolbar_title));
+        findViewById(R.id.btn_lemaibao).setOnClickListener(this);
+        findViewById(R.id.btn_open_le_mai_bao).setOnClickListener(this);
     }
 
     @Override
@@ -100,7 +105,17 @@ public class MainActivity extends BaseActivity {
                 CommonUtils.toNextActivity(this, VersionInfoActivity.class);
                 break;
             case R.id.location_4:
+                //退出
+                break;
+            case R.id.btn_lemaibao:
+                Log.d(TAG, "onClick: ");
+                CommonUtils.toNextActivity(this, MyLeiMaiBaoActivity.class);
+                break;
+            case R.id.btn_open_le_mai_bao:
+                //开通乐买宝
+                CommonUtils.toNextActivity(this, OpenLeMaiBao.class);
                 break;
         }
+        mDrawerLayout.closeDrawer(Gravity.LEFT);
     }
 }

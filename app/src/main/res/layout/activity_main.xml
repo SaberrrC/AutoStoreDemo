@@ -9,23 +9,6 @@
     tools:context=".MainActivity">
 
     <include layout="@layout/toolbar_layout"></include>
-    <!--<android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:popupTheme="@style/AppTheme">
-
-        <TextView
-            android:id="@+id/toolbar_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:text="Lin+"
-            android:textStyle="bold"
-            android:textColor="@color/yellow"
-            android:textSize="22sp" />
-    </android.support.v7.widget.Toolbar>-->
 
 <android.support.v4.widget.DrawerLayout
     android:id="@+id/activity_main"
@@ -34,6 +17,6 @@
 
     <include layout="@layout/activity_main_layout"></include>
 
-<include layout="@layout/left_menu_layout"></include>
+    <include layout="@layout/left_menu_layout"></include>
 </android.support.v4.widget.DrawerLayout>
 </LinearLayout>

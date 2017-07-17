@@ -40,14 +40,9 @@
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask"
-            >
-        </activity>
-        <activity android:name=".activity.PhoneNumLoginActivity"/>
-        <activity android:name=".activity.LoginActivity"/>
-        <activity android:name=".wxapi.WXEntryActivity"/>
-        <activity android:name=".activity.FaceIdentify"/>
-        <activity android:name=".activity.GateActivity">
-        </activity>
+            ></activity>
+        <activity android:name=".activity.GateActivity"></activity>
+        <activity android:name=".activity.MyLeiMaiBaoActivity"></activity>
     </application>
 
 </manifest>

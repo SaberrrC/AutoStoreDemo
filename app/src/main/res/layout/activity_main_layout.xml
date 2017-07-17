@@ -4,6 +4,7 @@
               android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/identify_tip"
         android:layout_width="152px"
         android:layout_height="30px"
         android:gravity="center"
@@ -44,18 +45,78 @@
         android:layout_width="140px"
         android:layout_height="140px"
         android:text="扫一扫"
-        android:layout_centerInParent="true"
+        android:layout_marginTop="248px"
+        android:layout_centerHorizontal="true"
         android:textColor="#FFFFFFFF"
         android:textSize="26px"
         android:id="@+id/btn_scan_bg"/>
 
-    <TextView
-        android:layout_width="49px"
-        android:layout_height="19px"
-        android:text="乐买宝"
-        android:textColor="#FF333333"
-        android:textSize="16px"
-        />
+    <RelativeLayout
+        android:layout_below="@id/btn_scan_bg"
+        android:layout_width="186.5px"
+        android:layout_marginTop="78px"
+        android:layout_height="wrap_content">
 
+        <Button
+            android:id="@+id/btn_lemaibao"
+            android:layout_width="wrap_content"
+            android:layout_height="19px"
+            android:text="乐买宝"
+            android:layout_centerHorizontal="true"
+            android:background="@null"
+            android:textColor="#FF333333"
+            android:textSize="16px"
+            />
+        <Button
+            android:id="@+id/btn_open_le_mai_bao"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/btn_lemaibao"
+            android:layout_width="wrap_content"
+            android:layout_height="20px"
+            android:text="开通乐买宝"
+            android:background="@null"
+            android:layout_marginTop="7px"
+            android:textColor="#FFB9B9B9"
+            android:textSize="14px"
+            />
+    </RelativeLayout>
+
+        <View
+            android:id="@+id/cvl"
+            android:layout_below="@id/btn_scan_bg"
+            android:background="#E5E5E5"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="78px"
+            android:layout_width="2px"
+            android:layout_height="53.2px"
+            />
+        <RelativeLayout
+            android:layout_below="@id/btn_scan_bg"
+            android:layout_width="186.5px"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/cvl"
+            android:layout_marginTop="78px"
+            android:gravity="center_horizontal">
+            <Button
+                android:id="@+id/btn_yu_e"
+                android:layout_width="66px"
+                android:layout_height="19px"
+                android:text="账户余额"
+                android:background="@null"
+                android:textColor="#FF333333"
+                android:textSize="16px"
+                />
+            <TextView
+                android:layout_below="@id/btn_yu_e"
+                android:layout_width="70px"
+                android:layout_height="20px"
+                android:text="0"
+                android:gravity="center"
+                android:layout_marginTop="7px"
+                android:textColor="#FFB9B9B9"
+                android:textSize="14px"
+                />
+
+        </RelativeLayout>
 
 </RelativeLayout>

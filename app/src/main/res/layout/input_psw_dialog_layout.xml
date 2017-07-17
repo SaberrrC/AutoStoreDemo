@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@drawable/dialog_bg"
+              android:layout_width="280px"
+              android:layout_height="208px">
+
+    <ImageView
+        android:id="@+id/iv_close_dialog"
+        android:clickable="true"
+        android:layout_marginLeft="20px"
+        android:layout_marginTop="23px"
+        android:layout_width="12px"
+        android:layout_height="12px"
+        android:src="@mipmap/close"
+        />
+
+    <TextView
+        android:id="@+id/tv_dialog_title"
+        android:layout_toRightOf="@id/iv_close_dialog"
+        android:layout_marginLeft="44px"
+        android:layout_marginTop="17px"
+        android:layout_width="127px"
+        android:layout_height="25px"
+        android:text="请输入支付密码"
+        android:textColor="#FF000000"
+        android:textSize="18px"
+        />
+
+    <View
+        android:id="@+id/dialog_hl"
+        android:background="#F5F5F5"
+        android:layout_marginTop="13px"
+        android:layout_below="@id/tv_dialog_title"
+        android:layout_width="280px"
+        android:layout_height="3px"
+        />
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="19px"
+        android:layout_below="@id/dialog_hl"
+        android:layout_width="103px"
+        android:layout_height="40px"
+        android:text="¥100.00"
+        android:textColor="#FFED4848"
+        android:textSize="28px"
+        />
+
+    <com.wangj.mypayview.PasswordView
+        android:id="@+id/pwd_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>
