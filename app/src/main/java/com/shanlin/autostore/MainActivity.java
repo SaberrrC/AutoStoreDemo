@@ -1,5 +1,6 @@
 package com.shanlin.autostore;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
@@ -7,11 +8,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.shanlin.autostore.activity.GateActivity;
 import com.shanlin.autostore.base.BaseActivity;
+import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.fragment.BuyRecordFragment;
 import com.shanlin.autostore.fragment.MainFragment;
 import com.shanlin.autostore.fragment.VersionInfoFragment;
@@ -27,6 +31,7 @@ public class MainActivity extends BaseActivity {
     private TextView toolbar_title;
     private Toolbar toolbar;
     private List<Fragment> fragments = new ArrayList<>();
+    private Dialog mGateOpenDialog;
 
 
     @Override
@@ -159,10 +164,52 @@ public class MainActivity extends BaseActivity {
             int height = data.getExtras().getInt("height");
             String result = data.getExtras().getString("result");
             // TODO: 2017-7-17 判断 result 成功进入超市
-
-
+            startActivity(new Intent(this, GateActivity.class));
         }
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        String argument = intent.getStringExtra(Constant.MainActivityArgument.MAIN_ACTIVITY);
+        if (TextUtils.equals(Constant.MainActivityArgument.GATE, argument)) {
+
+
+            return;
+        }
+
+
+    }
+
+
+//    private void showGateOpenDialog() {
+//        mGateOpenDialog = new Dialog(this, R.style.MyDialogCheckVersion);
+//        //点击其他地方消失
+//        mGateOpenDialog.setCanceledOnTouchOutside(false);
+//        //填充对话框的布局
+//        mUpdateDialogView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_gateopen, null, false);
+//        //初始化控件
+//        TextView tvContent = (TextView) mUpdateDialogView.findViewById(R.id.tv_version_content);
+//        TextView tvCancle = (TextView) mUpdateDialogView.findViewById(R.id.tv_version_cancle);
+//        TextView tvUpdate = (TextView) mUpdateDialogView.findViewById(R.id.tv_version_update);
+//
+//        tvCancle.setOnClickListener(this);
+//        tvUpdate.setOnClickListener(this);
+//        //将布局设置给Dialog
+//        mGateOpenDialog.setContentView(mUpdateDialogView);
+//        //获取当前Activity所在的窗体
+//        Window dialogWindow = m.getWindow();
+//        //设置Dialog从窗体底部弹出
+//        dialogWindow.setGravity(Gravity.CENTER);
+//        //获得窗体的属性
+//        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+//        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+//        //        lp.y = 20;//设置Dialog距离底部的距离
+//        //       将属性设置给窗体
+//        dialogWindow.setAttributes(lp);
+//        mGateOpenDialog.show();//显示对话框
+//    }
+
 
 
 }

@@ -18,4 +18,24 @@
     <style name="AppTheme.DrawerArrowToggle" parent="Base.Widget.AppCompat.DrawerArrowToggle">
         <item name="color">@color/yellow</item>
     </style>
+
+    <style name="Widget.SeekBar.Normal2" parent="@android:style/Widget.SeekBar">
+        <item name="android:maxHeight">14px</item>
+        <item name="android:minHeight">14px</item>
+        <item name="android:thumbOffset">20px</item>
+    </style>
+    <!--自定义dialog 闸机打开 -->
+    <style name="MyDialogCheckVersion" parent="android:style/Theme.Dialog">
+        <!--背景颜色及和透明程度-->
+        <item name="android:windowBackground">@color/white</item>
+        <!--是否去除标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!--是否去除边框-->
+        <item name="android:windowFrame">@null</item>
+        <!--是否浮现在activity之上-->
+        <item name="android:windowIsFloating">true</item>
+        <!--是否模糊-->
+        <item name="android:backgroundDimEnabled">true</item>
+        d
+    </style>
 </resources>
