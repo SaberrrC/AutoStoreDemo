@@ -140,7 +140,16 @@ public class LoginActivity extends BaseActivity {
             saveBitmap(bitmap);
             // TODO: 2017-7-17 发送到服务器进行比对
             ToastUtils.showToast("人脸识别成功");
-            startActivity(new Intent(this, MainActivity.class));
+//            Intent intent = new Intent(this, MainActivity.class);
+//            intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
+//            startActivity(intent);
+//            finish();
+            Intent intent = new Intent(this,MainActivity.class);
+            //在Intent对象当中添加一个键值对
+            intent.putExtra("key","value");
+            startActivity(intent);
+
+
         }
     }
 

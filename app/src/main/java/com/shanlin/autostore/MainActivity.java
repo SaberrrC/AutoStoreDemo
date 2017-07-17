@@ -36,12 +36,13 @@ public class MainActivity extends BaseActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private static final String TAG = "wr";
     private DrawerLayout mDrawerLayout;
-    private TextView toolbar_title;
-    private Toolbar toolbar;
+    private TextView     toolbar_title;
+    private Toolbar      toolbar;
     private List<Fragment> fragments = new ArrayList<>();
     private TextPaint paint;
     private Dialog    mGateOpenDialog;
-    private Button mBtnScan;
+    private Dialog    mWelcomeDialog;
+    private Button    mBtnScan;
 
 
     @Override
@@ -55,6 +56,20 @@ public class MainActivity extends BaseActivity {
         toolbar_title = ((TextView) findViewById(R.id.toolbar_title));
         mBtnScan = (Button) findViewById(R.id.btn_scan_bg);
         mBtnScan.setOnClickListener(this);
+        Intent intent = getIntent();
+        String stringExtra = intent.getStringExtra(Constant.MainActivityArgument.MAIN_ACTIVITY);
+        String key = intent.getStringExtra("key");
+//        if (StrUtils.isEmpty(stringExtra)) {
+//            return;
+//        }
+        if (TextUtils.equals(stringExtra, Constant.MainActivityArgument.LOGIN)) {
+            showWelcomeDialog();
+            return;
+        }
+        if (TextUtils.equals(key, "value")) {
+            showWelcomeDialog();
+            return;
+        }
     }
 
     @Override
@@ -68,7 +83,7 @@ public class MainActivity extends BaseActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonUtils.toNextActivity(v.getContext(),MainActivity.class);
+                CommonUtils.toNextActivity(v.getContext(), MainActivity.class);
                 Log.d(TAG, "onClick: ");
             }
         });
@@ -76,8 +91,7 @@ public class MainActivity extends BaseActivity {
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //创建返回键，并实现打开关/闭监听
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.open, R
-                .string.close) {
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.open, R.string.close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -99,9 +113,9 @@ public class MainActivity extends BaseActivity {
      * 抽屉设置
      */
     private void drawerSetting() {
-         mDrawerLayout.findViewById(R.id.location_2).setOnClickListener(this);
-         mDrawerLayout.findViewById(R.id.location_3).setOnClickListener(this);
-         mDrawerLayout.findViewById(R.id.location_4).setOnClickListener(this);
+        mDrawerLayout.findViewById(R.id.location_2).setOnClickListener(this);
+        mDrawerLayout.findViewById(R.id.location_3).setOnClickListener(this);
+        mDrawerLayout.findViewById(R.id.location_4).setOnClickListener(this);
     }
 
     @Override
@@ -143,6 +157,10 @@ public class MainActivity extends BaseActivity {
             showGateOpenDialog();
             return;
         }
+        if (TextUtils.equals(argument, Constant.MainActivityArgument.LOGIN)) {
+            showWelcomeDialog();
+            return;
+        }
     }
 
 
@@ -167,5 +185,28 @@ public class MainActivity extends BaseActivity {
         //       将属性设置给窗体
         dialogWindow.setAttributes(lp);
         mGateOpenDialog.show();//显示对话框
+    }
+
+    private void showWelcomeDialog() {
+        mWelcomeDialog = new Dialog(this, R.style.MyDialogCheckVersion);
+        //点击其他地方消失
+        mWelcomeDialog.setCanceledOnTouchOutside(true);
+        //填充对话框的布局
+        View viewWelcome = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_welcome, null, false);
+        AutoUtils.autoSize(viewWelcome);
+        //初始化控件
+        //将布局设置给
+        mWelcomeDialog.setContentView(viewWelcome);
+        //获取当前Activity所在的窗体
+        Window dialogWindow = mWelcomeDialog.getWindow();
+        //设置Dialog从窗体中间弹出
+        dialogWindow.setGravity(Gravity.CENTER);
+        //获得窗体的属性
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        //        lp.y = 20;//设置Dialog距离底部的距离
+        //       将属性设置给窗体
+        dialogWindow.setAttributes(lp);
+        mWelcomeDialog.show();//显示对话框
     }
 }

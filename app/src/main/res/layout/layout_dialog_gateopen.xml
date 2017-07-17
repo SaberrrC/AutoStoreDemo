@@ -40,6 +40,6 @@
         android:gravity="center"
         android:text="闸机已开，欢迎光临"
         android:textColor="@color/white"
-        android:textSize="25px"/>
+        android:textSize="18px"/>
 
 </com.zhy.autolayout.AutoLinearLayout>

@@ -19,7 +19,7 @@ public class Constant {
     public static class MainActivityArgument {
         public static final String MAIN_ACTIVITY = "MAIN_ACTIVITY";
         public static final String GATE          = "GATE";
-
+        public static final String LOGIN         = "LOGIN";
     }
 
 
