@@ -7,7 +7,8 @@ android {
     buildToolsVersion rootProject.ext.android.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.shanlin.autostore"
+//        applicationId "com.shanlin.autostore"
+        applicationId "com.shanlinjinrong.lifehelper"
         minSdkVersion 15
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
@@ -84,4 +85,11 @@ dependencies {
     compile 'com.android.support:design:26.0.0-alpha1'
     compile project(':libzxing')
     compile 'com.android.support:design:26.0.0-alpha1'
+    //人脸识别
+    repositories {
+        maven {
+            url "http://120.27.220.201:8081/nexus/content/repositories/com.slfinance.loan/"
+        }
+    }
+    compile 'com.slfinance.loan:SLFinance-FaceSDK_android:0.1.6-SNAPSHOT'
 }

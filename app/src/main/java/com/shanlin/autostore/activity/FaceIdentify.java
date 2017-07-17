@@ -11,7 +11,7 @@ import com.shanlin.autostore.utils.CommonUtils;
 /**
  * Created by DELL on 2017/7/16 0016.
  */
-public class FaceIdentify extends BaseActivity{
+public class FaceIdentify extends BaseActivity {
 
     @Override
     public int initLayout() {
@@ -21,7 +21,6 @@ public class FaceIdentify extends BaseActivity{
     @Override
     public void initView() {
         initToolBar();
-
 
 
     }
@@ -42,4 +41,6 @@ public class FaceIdentify extends BaseActivity{
     public void onClick(View v) {
 
     }
+
+
 }

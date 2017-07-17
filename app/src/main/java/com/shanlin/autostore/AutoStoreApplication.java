@@ -2,6 +2,7 @@ package com.shanlin.autostore;
 
 import android.app.Application;
 
+import com.shanlin.autostore.crash.CrashHandler;
 import com.zhy.autolayout.config.AutoLayoutConifg;
 
 /**
@@ -16,6 +17,7 @@ public class AutoStoreApplication extends Application {
         super.onCreate();
         app = this;
         AutoLayoutConifg.getInstance().useDeviceSize();
+        CrashHandler.getInstance().setCustomCrashHanler(app);
     }
 
     public static AutoStoreApplication getApp() {
