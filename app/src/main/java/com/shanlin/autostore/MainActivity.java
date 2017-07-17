@@ -1,5 +1,6 @@
 package com.shanlin.autostore;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -149,5 +150,19 @@ public class MainActivity extends BaseActivity {
         }
         startFragmentTransaction.commitAllowingStateLoss();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            int width = data.getExtras().getInt("width");
+            int height = data.getExtras().getInt("height");
+            String result = data.getExtras().getString("result");
+            // TODO: 2017-7-17 判断 result 成功进入超市
+
+
+        }
+    }
+
 
 }
