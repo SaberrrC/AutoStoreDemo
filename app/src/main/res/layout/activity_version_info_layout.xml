@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#F5F5F5"
-    android:gravity="center_horizontal">
+              android:orientation="vertical"
+              android:gravity="center_horizontal"
+                android:background="#F5F5F5">
+
+    <include layout="@layout/toolbar_layout"></include>
 
     <ImageView
+        android:layout_centerHorizontal="true"
         android:id="@+id/logo"
         android:src="@mipmap/logo"
         android:layout_marginTop="51.25px"
@@ -14,6 +18,7 @@
 
     <TextView
         android:id="@+id/name"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="18px"
         android:layout_below="@id/logo"
         android:layout_width="64px"
@@ -24,10 +29,10 @@
         />
 
     <TextView
+        android:layout_centerHorizontal="true"
         android:id="@+id/version"
         android:layout_marginTop="6px"
         android:layout_below="@id/name"
-        android:layout_marginLeft="15px"
         android:layout_width="wrap_content"
         android:layout_height="20px"
         android:text="v1.1.1"
@@ -35,4 +40,4 @@
         android:textSize="14px"
         />
 
-</RelativeLayout>
+</LinearLayout>

@@ -31,6 +31,8 @@
         <activity android:name=".activity.LoginActivity"></activity>
         <activity android:name=".wxapi.WXEntryActivity"></activity>
         <activity android:name=".activity.FaceIdentify"></activity>
+        <activity android:name=".activity.BuyRecordActivity"></activity>
+        <activity android:name=".activity.VersionInfoActivity"></activity>
     </application>
 
 </manifest>
