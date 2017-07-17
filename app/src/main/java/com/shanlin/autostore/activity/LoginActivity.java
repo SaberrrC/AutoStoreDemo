@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.megvii.livenessdetection.LivenessLicenseManager;
 import com.shanlin.autostore.AutoStoreApplication;
+import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.utils.CommonUtils;
@@ -137,6 +138,9 @@ public class LoginActivity extends BaseActivity {
             LogUtils.d("delta==" + delta + "  mLivenessImgBytes==" + mLivenessImgBytes);
             Bitmap bitmap = BitmapFactory.decodeByteArray(mLivenessImgBytes, 0, mLivenessImgBytes.length);
             saveBitmap(bitmap);
+            // TODO: 2017-7-17 发送到服务器进行比对
+            ToastUtils.showToast("人脸识别成功");
+            startActivity(new Intent(this, MainActivity.class));
         }
     }
 
