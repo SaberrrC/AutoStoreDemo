@@ -81,9 +81,9 @@
             android:name=".MainActivity"
             android:launchMode="singleTask"
             ></activity>
-        <activity android:name=".activity.GateActivity"></activity>
+
         <activity android:name=".activity.MyLeiMaiBaoActivity"></activity>
-            android:launchMode="singleTask"/>
+
         <activity
             android:name=".activity.GateActivity"
             android:screenOrientation="portrait"

@@ -10,7 +10,6 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -19,9 +18,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.shanlin.autostore.activity.BuyRecordActivity;
+import com.shanlin.autostore.activity.GateActivity;
 import com.shanlin.autostore.activity.MyLeiMaiBaoActivity;
 import com.shanlin.autostore.activity.OpenLeMaiBao;
-import com.shanlin.autostore.activity.GateActivity;
 import com.shanlin.autostore.activity.VersionInfoActivity;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.constants.Constant;
@@ -32,7 +31,7 @@ import com.zhy.autolayout.utils.AutoUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.shanlin.autostore.fragment.MainFragment.REQUEST_CODE;
+import static com.shanlin.autostore.activity.LoginActivity.REQUEST_CODE;
 
 public class MainActivity extends BaseActivity {
 
