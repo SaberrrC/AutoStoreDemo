@@ -40,6 +40,8 @@
         <activity android:name=".activity.FaceIdentify"/>
         <activity android:name=".activity.ScanActivity">
         </activity>
+        <activity android:name=".activity.GateActivity">
+        </activity>
     </application>
 
 </manifest>
