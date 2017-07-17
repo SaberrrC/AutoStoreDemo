@@ -20,7 +20,7 @@ public class CommonUtils {
     }
 
     /**
-     * 吐死
+     * toast
      * @param context
      * @param text
      */
