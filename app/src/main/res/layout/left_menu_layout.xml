@@ -66,14 +66,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20.9dp"/>
             
-            <TextView
-                android:text=">"
+            <ImageView
+                android:src="@mipmap/nav_enter"
                 android:gravity="right"
                 android:layout_marginLeft="117dp"
                 android:layout_gravity="center_vertical"
-                android:textColor="@color/gray_999999"
                 android:layout_width="9dp"
-                android:scaleY="2"
                 android:layout_height="15.9dp"/>
         </LinearLayout>
 
@@ -109,14 +107,12 @@
             android:layout_width="wrap_content"
             android:layout_height="20.9dp"/>
 
-        <TextView
-            android:text=">"
+        <ImageView
+            android:src="@mipmap/nav_enter"
             android:gravity="right"
             android:layout_marginLeft="117dp"
             android:layout_gravity="center_vertical"
-            android:textColor="@color/gray_999999"
             android:layout_width="9dp"
-            android:scaleY="2"
             android:layout_height="15.9dp"/>
 
     </LinearLayout>
@@ -158,17 +154,15 @@
             android:layout_marginLeft="14dp"
             android:textSize="16sp"
             android:textColor="@color/white_fff"
-            android:layout_width="wrap_content"
+            android:layout_width="64dp"
             android:layout_height="20.9dp"/>
 
-        <TextView
-            android:text=">"
+        <ImageView
+            android:src="@mipmap/nav_enter"
             android:gravity="right"
             android:layout_marginLeft="117dp"
             android:layout_gravity="center_vertical"
-            android:textColor="@color/gray_999999"
             android:layout_width="9dp"
-            android:scaleY="2"
             android:layout_height="15.9dp"/>
 
     </LinearLayout>

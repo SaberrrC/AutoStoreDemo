@@ -27,7 +27,7 @@ public class MainFragment extends BaseFragment {
 
     @Override
     protected int initLayout() {
-        return R.layout.fragment_main_layout;
+        return R.layout.activity_main_layout;
     }
 
     @Override

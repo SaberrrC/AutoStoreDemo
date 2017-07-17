@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="152px"
+        android:layout_height="30px"
+        android:gravity="center"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="77px"
+        android:layout_marginLeft="249px"
+        android:background="@mipmap/face_cetify_bg"
+        android:text="完善身份，智能购物"
+        android:textColor="#FF999999"
+        android:textSize="12px"
+        />
+
+    <TextView
+        android:id="@+id/tv_today_user_num"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="147px"
+        android:layout_width="111px"
+        android:layout_height="18px"
+        android:text="今日到店用户"
+        android:textColor="#FFB9B9B9"
+        android:textSize="18px"
+        />
+
+    <TextView
+        android:id="@+id/user_num"
+        android:layout_marginTop="10px"
+        android:layout_below="@id/tv_today_user_num"
+        android:layout_centerHorizontal="true"
+        android:layout_width="187px"
+        android:layout_height="32px"
+        android:text="100,000,000"
+        android:textColor="#FFFCC71F"
+        android:textSize="32px"
+        />
+
+    <Button
+        android:background="@mipmap/scan_bg"
+        android:layout_width="140px"
+        android:layout_height="140px"
+        android:text="扫一扫"
+        android:layout_centerInParent="true"
+        android:textColor="#FFFFFFFF"
+        android:textSize="26px"
+        android:id="@+id/btn_scan_bg"/>
+
+    <TextView
+        android:layout_width="49px"
+        android:layout_height="19px"
+        android:text="乐买宝"
+        android:textColor="#FF333333"
+        android:textSize="16px"
+        />
+
+
+</RelativeLayout>
