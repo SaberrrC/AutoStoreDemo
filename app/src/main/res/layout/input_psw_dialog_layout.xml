@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:background="@drawable/dialog_bg"
               android:layout_width="280px"
-              android:layout_height="208px">
+              android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/iv_close_dialog"
@@ -16,8 +17,8 @@
         />
 
     <TextView
+        android:layout_centerHorizontal="true"
         android:id="@+id/tv_dialog_title"
-        android:layout_toRightOf="@id/iv_close_dialog"
         android:layout_marginLeft="44px"
         android:layout_marginTop="17px"
         android:layout_width="127px"
@@ -37,6 +38,7 @@
         />
 
     <TextView
+        android:id="@+id/money_need_to_pay"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="19px"
         android:layout_below="@id/dialog_hl"
@@ -47,10 +49,20 @@
         android:textSize="28px"
         />
 
-    <com.wangj.mypayview.PasswordView
-        android:id="@+id/pwd_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
-
+    <com.jungly.gridpasswordview.GridPasswordView
+        android:id="@+id/pswView"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/money_need_to_pay"
+        android:layout_marginTop="20.7px"
+        android:layout_marginBottom="30px"
+        android:layout_width="240px"
+        android:layout_height="40px"
+        app:gpvTextColor="#000"
+        app:gpvTextSize="25sp"
+        app:gpvLineColor="#9B9B9B"
+        app:gpvLineWidth="1dp"
+        app:gpvGridColor="#ffffff"
+        app:gpvPasswordLength="6"
+        app:gpvPasswordTransformation="·"
+        app:gpvPasswordType="numberPassword"/>
 </RelativeLayout>

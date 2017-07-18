@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.zhy.autolayout.AutoRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -18,7 +19,7 @@
     <TextView
         android:layout_marginTop="282px"
         android:layout_centerHorizontal="true"
-        android:layout_width="192px"
+        android:layout_width="wrap_content"
         android:layout_height="33px"
         android:text="智能让生活更便捷"
         android:textColor="#FFFCC70D"
@@ -28,7 +29,7 @@
     <TextView
         android:layout_marginTop="325px"
         android:layout_centerHorizontal="true"
-        android:layout_width="160px"
+        android:layout_width="wrap_content"
         android:layout_height="22px"
         android:text="开启智能便利购物体验"
         android:textColor="#FF43A5D8"

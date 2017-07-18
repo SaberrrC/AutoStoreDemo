@@ -9,7 +9,7 @@
     <TextView
         android:layout_marginTop="5px"
         android:gravity="right|center_vertical"
-        android:layout_marginRight="20px"
+        android:paddingRight="20px"
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="50px"
@@ -21,7 +21,7 @@
     <TextView
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="14px"
-        android:layout_width="56px"
+        android:layout_width="wrap_content"
         android:layout_height="20px"
         android:text="需付金额"
         android:textColor="#FF999999"
@@ -30,7 +30,7 @@
 
     <TextView
         android:layout_marginTop="10px"
-        android:layout_width="125px"
+        android:layout_width="wrap_content"
         android:layout_height="48px"
         android:text="¥100.00"
         android:layout_gravity="center_horizontal"
@@ -40,7 +40,7 @@
 
     <TextView
         android:layout_marginTop="28px"
-        android:layout_width="84px"
+        android:layout_width="wrap_content"
         android:layout_marginLeft="20px"
         android:layout_height="20px"
         android:text="选择支付方式"
@@ -67,7 +67,7 @@
 
         <TextView
             android:layout_marginLeft="14px"
-            android:layout_width="144px"
+            android:layout_width="wrap_content"
             android:layout_height="19px"
             android:text="邻家乐买宝快捷支付"
             android:textColor="#FF333333"
@@ -76,7 +76,7 @@
 
         <TextView
             android:layout_marginLeft="53px"
-            android:layout_width="68px"
+            android:layout_width="wrap_content"
             android:layout_height="20px"
             android:text="200元可用"
             android:textColor="#FF999999"

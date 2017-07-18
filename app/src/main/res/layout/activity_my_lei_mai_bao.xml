@@ -15,7 +15,7 @@
             android:id="@+id/tv_ke_yong_e_du"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="18px"
-            android:layout_width="84px"
+            android:layout_width="wrap_content"
             android:layout_height="20px"
             android:text="当前可用额度"
             android:textColor="#FF999999"
@@ -25,7 +25,7 @@
             android:id="@+id/tv_money"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/tv_ke_yong_e_du"
-            android:layout_width="132px"
+            android:layout_width="wrap_content"
             android:layout_height="48px"
             android:text="¥200.00"
             android:textColor="#FFED4848"
@@ -47,7 +47,7 @@
             />
         <TextView
             android:layout_marginLeft="5px"
-            android:layout_width="66px"
+            android:layout_width="wrap_content"
             android:layout_height="25px"
             android:text="¥100.00"
             android:textColor="#FF333333"

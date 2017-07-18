@@ -83,6 +83,9 @@
             ></activity>
 
         <activity android:name=".activity.MyLeiMaiBaoActivity"></activity>
+        <activity android:name=".zhifubao.PayActivity"></activity>
+        <activity android:name=".activity.OpenLeMaiBao"></activity>
+        <activity android:name=".activity.ChoosePayWayActivity"></activity>
 
         <activity
             android:name=".activity.GateActivity"

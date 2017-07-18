@@ -30,7 +30,7 @@
         />
 
     <TextView
-        android:layout_width="127px"
+        android:layout_width="wrap_content"
         android:layout_height="25px"
         android:text="智能的便民服务"
         android:layout_centerHorizontal="true"
@@ -51,7 +51,7 @@
             android:id="@+id/tv_title"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="151px"
-            android:layout_width="192px"
+            android:layout_width="wrap_content"
             android:layout_height="33px"
             android:text="您还不是邻家会员"
             android:textColor="#FFFCC70D"
@@ -62,7 +62,7 @@
             android:layout_below="@id/tv_title"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="13px"
-            android:layout_width="173px"
+            android:layout_width="wrap_content"
             android:layout_height="20px"
             android:text="成为邻家会员 享受智能购物"
             android:textColor="#FF43A5D8"

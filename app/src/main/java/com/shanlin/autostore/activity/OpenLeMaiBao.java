@@ -3,6 +3,7 @@ package com.shanlin.autostore.activity;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
@@ -20,6 +21,8 @@ public class OpenLeMaiBao extends BaseActivity {
     private View line2Step2;
     private View rlStep1;
     private View rlStep2;
+    private ImageView ivStep2;
+    private View line1Step2;
 
     @Override
     public int initLayout() {
@@ -30,7 +33,10 @@ public class OpenLeMaiBao extends BaseActivity {
     public void initView() {
         CommonUtils.initToolbar(this,"开启乐买宝", R.color.blcak, MainActivity.class);
         nextOrConfirm = ((Button) findViewById(R.id.btn_nextstep_and_confirm));
+        nextOrConfirm.setOnClickListener(this);
+        ivStep2 = ((ImageView) findViewById(R.id.iv_step2));
         line2Step1 = findViewById(R.id.line2_step1);
+        line1Step2 = findViewById(R.id.line1_step2);
         line2Step2 = findViewById(R.id.line2_step2);
         rlStep1 = findViewById(R.id.rl_step1);
         rlStep2 = findViewById(R.id.rl_step2);
@@ -60,10 +66,11 @@ public class OpenLeMaiBao extends BaseActivity {
         nextOrConfirm.setText(step == 1 ? "下一步" : "确定");
         rlStep1.setVisibility(step == 1 ? View.VISIBLE : View.GONE);
         rlStep2.setVisibility(step == 1 ? View.GONE : View.VISIBLE);
+        ivStep2.setImageResource(step == 1 ? R.mipmap.step2 : R.mipmap.icon_step2);
         line2Step1.setBackgroundColor(step == 1 ? Color.parseColor("#d6d6d6") : Color.parseColor("#FCC70D"));
-        line2Step2.setBackgroundColor(step == 1 ? Color.parseColor("#d6d6d6") : Color.parseColor
+        line1Step2.setBackgroundColor(step == 1 ? Color.parseColor("#d6d6d6") : Color.parseColor
                 ("#FCC70D"));
+        line2Step2.setBackgroundColor(step == 2 ? Color.parseColor("#FCC70D") : Color.parseColor
+                ("#d6d6d6"));
     }
-
-
 }
