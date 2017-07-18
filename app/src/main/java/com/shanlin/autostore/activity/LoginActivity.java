@@ -3,7 +3,6 @@ package com.shanlin.autostore.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
@@ -15,15 +14,13 @@ import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
+import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.LogUtils;
 import com.shanlin.autostore.utils.ToastUtils;
 import com.slfinance.facesdk.service.Manager;
 import com.slfinance.facesdk.util.ConUtil;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -31,7 +28,7 @@ import java.util.Map;
  */
 public class LoginActivity extends BaseActivity {
 
-    public static final int REQUEST_CODE = 100;
+    public static final int REQUEST_CODE_LOGIN = 100;
     private AlertDialog dialog;
     private View        dialogOpenWX;
 
@@ -107,6 +104,9 @@ public class LoginActivity extends BaseActivity {
 //                Intent intent = new Intent(this, LivenessActivity.class);
 //                startActivityForResult(intent, REQUEST_CODE);
 
+                //                CommonUtils.toNextActivity(this,LivenessActivity.class);
+                Intent intent = new Intent(this, LivenessActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_LOGIN);
                 break;
             case R.id.btn_login_by_phone:
                 CommonUtils.toNextActivity(this, PhoneNumLoginActivity.class);
@@ -127,63 +127,39 @@ public class LoginActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         LogUtils.d("resultCode==" + resultCode);
-        if (requestCode == 100) {
-            mLivenessImgBytes = data.getByteArrayExtra("image_best");
-            if (mLivenessImgBytes == null || mLivenessImgBytes.length == 0) {
-                ToastUtils.showToast("人脸识别失败");
-                return;
+        if (requestCode == REQUEST_CODE_LOGIN) {
+            try {
+                if (data == null) {
+                    return;
+                }
+                mLivenessImgBytes = data.getByteArrayExtra("image_best");
+                if (mLivenessImgBytes == null || mLivenessImgBytes.length == 0) {
+                    ToastUtils.showToast("人脸识别失败");
+                    return;
+                }
+                String delta = data.getStringExtra("delta");
+                LogUtils.d("delta==" + delta + "  mLivenessImgBytes==" + mLivenessImgBytes);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(mLivenessImgBytes, 0, mLivenessImgBytes.length);
+                CommonUtils.saveBitmap(bitmap);
+                // TODO: 2017-7-17 发送到服务器进行比对
+                ToastUtils.showToast("人脸识别成功");
+                //            Intent intent = new Intent(this, MainActivity.class);
+                //            intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
+                //            startActivity(intent);
+                //            finish();
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.UNREGEST_USER);
+                startActivity(intent);
+
+//                Intent intent = new Intent(this, MainActivity.class);
+//                //                intent.putExtra("key","value");
+//                intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
+//                startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            String delta = data.getStringExtra("delta");
-            LogUtils.d("delta==" + delta + "  mLivenessImgBytes==" + mLivenessImgBytes);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(mLivenessImgBytes, 0, mLivenessImgBytes.length);
-            saveBitmap(bitmap);
-            // TODO: 2017-7-17 发送到服务器进行比对
-            ToastUtils.showToast("人脸识别成功");
-//            Intent intent = new Intent(this, MainActivity.class);
-//            intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
-//            startActivity(intent);
-//            finish();
-            Intent intent = new Intent(this,MainActivity.class);
-            //在Intent对象当中添加一个键值对
-            intent.putExtra("key","value");
-            startActivity(intent);
-
-
         }
     }
 
-    private String path = Environment.getExternalStorageDirectory() + "/com.shanlinjinrong.lifehelper/" + "/faceImg/" + System.currentTimeMillis() + ".png";
 
-    //将图像保存到SD卡中
-    public void saveBitmap(Bitmap mBitmap) {
-        File dir = new File(Environment.getExternalStorageDirectory() + "/com.shanlinjinrong.lifehelper/faceImg");
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        File f = new File(path);
-        LogUtils.d(f.getAbsolutePath());
-        try {
-            f.createNewFile();
-        } catch (IOException e) {
-
-        }
-        FileOutputStream fOut = null;
-        try {
-            fOut = new FileOutputStream(f);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        // TODO: 2017-7-16
-        mBitmap.compress(Bitmap.CompressFormat.PNG, 20, fOut);
-        try {
-            fOut.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            fOut.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="27px"
-            android:text="恭喜你"
+            android:text="完成人脸识别"
             android:textSize="18px"
             android:textStyle="bold"/>
 
@@ -34,13 +34,23 @@
             android:textColor="#43A5D8"
             android:textSize="14px"/>
 
+        <TextView
+            android:id="@+id/tv_cancle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20px"
+            android:gravity="center"
+            android:paddingBottom="8px"
+            android:paddingTop="8px"
+            android:text="跳过"
+            android:textColor="#BCBCBC"/>
+
         <View
             android:id="@+id/stork"
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_below="@+id/tv_all"
-            android:layout_marginTop="25px"
-            android:background="#BCBCBC"/>
+            android:background="#E1E1E1"/>
 
         <TextView
             android:id="@+id/tv_ok"
