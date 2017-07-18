@@ -15,6 +15,7 @@ import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
+import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.LogUtils;
 import com.shanlin.autostore.utils.ToastUtils;
@@ -129,27 +130,32 @@ public class LoginActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         LogUtils.d("resultCode==" + resultCode);
         if (requestCode == 100) {
-            mLivenessImgBytes = data.getByteArrayExtra("image_best");
-            if (mLivenessImgBytes == null || mLivenessImgBytes.length == 0) {
-                ToastUtils.showToast("人脸识别失败");
-                return;
+            try {
+                if (data == null) {
+                    return;
+                }
+                mLivenessImgBytes = data.getByteArrayExtra("image_best");
+                if (mLivenessImgBytes == null || mLivenessImgBytes.length == 0) {
+                    ToastUtils.showToast("人脸识别失败");
+                    return;
+                }
+                String delta = data.getStringExtra("delta");
+                LogUtils.d("delta==" + delta + "  mLivenessImgBytes==" + mLivenessImgBytes);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(mLivenessImgBytes, 0, mLivenessImgBytes.length);
+                saveBitmap(bitmap);
+                // TODO: 2017-7-17 发送到服务器进行比对
+                ToastUtils.showToast("人脸识别成功");
+                //            Intent intent = new Intent(this, MainActivity.class);
+                //            intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
+                //            startActivity(intent);
+                //            finish();
+                Intent intent = new Intent(this, MainActivity.class);
+                //                intent.putExtra("key","value");
+                intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
+                startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            String delta = data.getStringExtra("delta");
-            LogUtils.d("delta==" + delta + "  mLivenessImgBytes==" + mLivenessImgBytes);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(mLivenessImgBytes, 0, mLivenessImgBytes.length);
-            saveBitmap(bitmap);
-            // TODO: 2017-7-17 发送到服务器进行比对
-            ToastUtils.showToast("人脸识别成功");
-//            Intent intent = new Intent(this, MainActivity.class);
-//            intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
-//            startActivity(intent);
-//            finish();
-            Intent intent = new Intent(this,MainActivity.class);
-            //在Intent对象当中添加一个键值对
-            intent.putExtra("key","value");
-            startActivity(intent);
-
-
         }
     }
 

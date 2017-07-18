@@ -62,15 +62,7 @@ public class MainActivity extends BaseActivity {
         mBtnScan.setOnClickListener(this);
         Intent intent = getIntent();
         String stringExtra = intent.getStringExtra(Constant.MainActivityArgument.MAIN_ACTIVITY);
-        String key = intent.getStringExtra("key");
-//        if (StrUtils.isEmpty(stringExtra)) {
-//            return;
-//        }
-        if (TextUtils.equals(stringExtra, Constant.MainActivityArgument.LOGIN)) {
-            showWelcomeDialog();
-            return;
-        }
-        if (TextUtils.equals(key, "value")) {
+        if (!TextUtils.isEmpty(stringExtra) && TextUtils.equals(stringExtra, Constant.MainActivityArgument.LOGIN)) {
             showWelcomeDialog();
             return;
         }
