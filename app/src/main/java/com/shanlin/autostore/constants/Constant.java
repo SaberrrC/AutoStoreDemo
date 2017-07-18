@@ -20,7 +20,12 @@ public class Constant {
         public static final String MAIN_ACTIVITY = "MAIN_ACTIVITY";
         public static final String GATE          = "GATE";
         public static final String LOGIN         = "LOGIN";
+        public static final String UNREGEST_USER = "UNREGEST_USER";
+        public static final String REGESTED_USER = "REGESTED_USER";
     }
 
 
+    public static final class SaveFaceActivity {
+        public static final String IMAGE_PATH = "IMAGE_PATH";
+    }
 }

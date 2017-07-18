@@ -3,6 +3,7 @@ package com.shanlin.autostore.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
@@ -14,6 +15,8 @@ import com.shanlin.autostore.R;
 import com.shanlin.autostore.AutoStoreApplication;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * Created by DELL on 2017/7/14 0014.
@@ -43,19 +46,19 @@ public class CommonUtils {
 
     /**
      * 初始化toolbar
+     *
      * @param activity
      * @param str
      * @param desActivity
      */
-    public static void initToolbar(final Activity activity, String str, int colorRes,final Class
-            desActivity) {
+    public static void initToolbar(final Activity activity, String str, int colorRes, final Class desActivity) {
         Toolbar tb = (Toolbar) activity.findViewById(R.id.toolbar);
         TextView title = (TextView) activity.findViewById(R.id.toolbar_title);
         tb.setNavigationIcon(R.mipmap.nav_back);
         tb.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonUtils.toNextActivity(activity,desActivity);
+                CommonUtils.toNextActivity(activity, desActivity);
                 activity.finish();
             }
         });
@@ -68,4 +71,38 @@ public class CommonUtils {
         return dir;
     }
 
+    private static final String path = Environment.getExternalStorageDirectory() + "/com.shanlinjinrong.lifehelper/" + "/faceImg/" + System.currentTimeMillis() + ".png";
+
+    //将图像保存到SD卡中
+    public static File saveBitmap(Bitmap mBitmap) {
+        File dir = new File(Environment.getExternalStorageDirectory() + "/com.shanlinjinrong.lifehelper/faceImg");
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        File f = new File(Environment.getExternalStorageDirectory() + "/com.shanlinjinrong.lifehelper/faceImg/" + System.currentTimeMillis() + ".png");
+        try {
+            f.createNewFile();
+        } catch (IOException e) {
+
+        }
+        FileOutputStream fOut = null;
+        try {
+            fOut = new FileOutputStream(f);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // TODO: 2017-7-16
+        mBitmap.compress(Bitmap.CompressFormat.PNG, 20, fOut);
+        try {
+            fOut.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            fOut.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return f;
+    }
 }
