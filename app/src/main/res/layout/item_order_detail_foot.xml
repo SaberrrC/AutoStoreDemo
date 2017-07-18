@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="40dp"
+    android:layout_marginRight="20dp">
+
+    <TextView
+        android:id="@+id/tv_all_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23px"
+        android:gravity="right"
+        android:text="合计：¥20000.00"
+        android:textAllCaps="false"
+        android:textColor="#FF151515"
+        android:textSize="16px"/>
+
+
+    <TextView
+        android:id="@+id/tv_all_get"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tv_all_price"
+        android:layout_marginTop="8px"
+        android:gravity="right"
+        android:text="¥19990.00"
+        android:textAllCaps="false"
+        android:textColor="#ED4848"
+        android:textSize="18px"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tv_all_get"
+        android:layout_toLeftOf="@+id/tv_all_get"
+        android:text="实付："
+        android:textAllCaps="false"
+        android:textColor="#FF151515"
+        android:textSize="18px"/>
+
+</com.zhy.autolayout.AutoRelativeLayout>

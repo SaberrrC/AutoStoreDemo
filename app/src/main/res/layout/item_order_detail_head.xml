@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/tv_all"
+        android:background="#F5F5F5"/>
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20px"
+        android:layout_marginTop="14px"
+        android:text="邻家无人值守便利店"
+        android:textColor="#333333"
+        android:textSize="16px"/>
+
+    <TextView
+        android:id="@+id/tv_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_name"
+        android:layout_marginLeft="20px"
+        android:layout_marginTop="2px"
+        android:text="高科中路"
+        android:textSize="12px"/>
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_address"
+        android:layout_marginLeft="20px"
+        android:layout_marginTop="2px"
+        android:text="2017-5-5 19:00"
+        android:textSize="12px"/>
+
+    <TextView
+        android:id="@+id/sum_of_consumption_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_time"
+        android:layout_marginLeft="20px"
+        android:layout_marginTop="2px"
+        android:text="消费金额: "
+        android:textColor="#999999"
+        android:textSize="14px"/>
+
+    <TextView
+        android:id="@+id/state_of_consumption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/sum_of_consumption_text"
+        android:layout_below="@id/tv_time"
+        android:layout_marginBottom="14px"
+        android:layout_marginRight="20px"
+        android:text="微信支付"
+        android:textSize="14px"/>
+
+    <View
+        android:id="@+id/stork_dev1"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/state_of_consumption"
+        android:background="#F5F5F5"/>
+
+    <TextView
+        android:id="@+id/tv_order_num"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/stork_dev1"
+        android:layout_centerVertical="true"
+        android:background="@color/white"
+        android:paddingBottom="12px"
+        android:paddingLeft="20px"
+        android:paddingTop="10px"
+        android:text="订单号：2017050912448"
+        android:textColor="#666666"
+        android:textSize="14px"/>
+
+    <TextView
+        android:id="@+id/sum_of_consumption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:text="¥500.00"
+        android:textColor="#ED4848"
+        android:textSize="14px"
+        android:layout_alignBaseline="@+id/sum_of_consumption_text"
+        android:layout_alignBottom="@+id/sum_of_consumption_text"
+        android:layout_toRightOf="@+id/sum_of_consumption_text"
+        android:layout_toEndOf="@+id/sum_of_consumption_text"/>
+
+
+</com.zhy.autolayout.AutoRelativeLayout>

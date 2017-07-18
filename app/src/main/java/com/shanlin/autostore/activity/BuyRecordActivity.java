@@ -1,5 +1,6 @@
 package com.shanlin.autostore.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -54,7 +55,7 @@ public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapt
         mPulltoRefreshRecyclerView = (PulltoRefreshRecyclerView) findViewById(R.id.pr_lists);
         mRecyclerView = mPulltoRefreshRecyclerView.getRecyclerView();
         Map<Class, Integer> map = new HashMap<>();
-        map.put(RecordBean.class, R.layout.item_record);
+        map.put(RecordBean.class, R.layout.buy_record_lv_item);
         for (int i = 0; i < 10; i++) {
             mDatas.add(new RecordBean());
         }
@@ -62,7 +63,6 @@ public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapt
         mRecyclerView.setAdapter(mFinalRecycleAdapter);
         mPulltoRefreshRecyclerView.setRefreshLoadMoreListener(MyRefreshLoadMoreListener);
     }
-
 
     /**
      * 下拉和上拉的监听函數
@@ -124,6 +124,21 @@ public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapt
 
     @Override
     public void onBindViewHolder(FinalRecycleAdapter.ViewHolder holder, int position, Object itemData) {
+        if (itemData instanceof RecordBean) {
+            holder.getRootView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(BuyRecordActivity.this, OrderDetailActivity.class);
+//                    intent.putExtra()
+                    startActivity(intent);
+                }
+            });
+            RecordBean recordBean = (RecordBean) itemData;
+            TextView tvItemTitle = (TextView) findViewById(R.id.tv_item_title);//邻家无人值守便利店
+            TextView tvItemDate = (TextView) findViewById(R.id.tv_item_date);//日期
+            TextView tvItemMoney = (TextView) findViewById(R.id.tv_item_money);//500.00
+            TextView tvItemPayWay = (TextView) findViewById(R.id.tv_item_pay_way);//微信支付
+        }
 
     }
 }

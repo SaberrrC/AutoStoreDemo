@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70px"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp">
+
+    <TextView
+        android:layout_centerVertical="true"
+        android:id="@+id/tv_order_name"
+        android:layout_width="128px"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10px"
+        android:ellipsize="end"
+        android:gravity="left"
+        android:maxLines="2"
+        android:paddingRight="5px"
+        android:text="口香糖口香糖口香糖口香糖口香糖口香糖口香糖口香糖口香糖口香糖口香糖口香糖口香糖口香糖"
+        android:textAllCaps="false"
+        android:textColor="#FF333333"
+        android:textSize="14px"/>
+
+    <TextView
+        android:layout_centerVertical="true"
+        android:id="@+id/tv_order_price"
+        android:layout_width="70px"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/tv_order_name"
+        android:gravity="center"
+        android:paddingLeft="5px"
+        android:paddingRight="5px"
+        android:text="¥1000000.00"
+        android:textAllCaps="false"
+        android:textColor="#FF333333"
+        android:textSize="14px"/>
+
+    <TextView
+        android:layout_centerVertical="true"
+        android:id="@+id/tv_order_num"
+        android:layout_width="52px"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/tv_order_price"
+        android:gravity="center"
+        android:paddingLeft="5px"
+        android:paddingRight="5px"
+        android:text="10000000"
+        android:textAllCaps="false"
+        android:textColor="#FF333333"
+        android:textSize="14px"/>
+
+    <TextView
+        android:layout_centerVertical="true"
+        android:id="@+id/tv_order_all"
+        android:layout_width="85px"
+        android:layout_height="wrap_content"
+        android:paddingRight="10px"
+        android:layout_toRightOf="@+id/tv_order_num"
+        android:gravity="center"
+        android:paddingLeft="5px"
+        android:text="¥10000.00"
+        android:textAllCaps="false"
+        android:textColor="#FF333333"
+        android:textSize="14px"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:background="#FFF5F5F5"/>
+
+
+</com.zhy.autolayout.AutoRelativeLayout>
