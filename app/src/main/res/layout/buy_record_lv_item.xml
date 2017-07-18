@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:paddingBottom="19.8dp">
+    android:paddingBottom="20dp">
 
     <View
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_item_title"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="11dp"
+        android:layout_marginTop="10dp"
         android:text="2017-05-08   09:00:12"
         android:textColor="#FF999999"
         android:textSize="12sp"/>
