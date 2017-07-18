@@ -10,6 +10,5 @@
         android:layout_height="match_parent"
         android:padding="10dp"
         android:gravity="center"
-        android:textSize="25sp"
-        android:background="@drawable/selector_gride"/>
+        android:textSize="25sp"/>
 </LinearLayout>

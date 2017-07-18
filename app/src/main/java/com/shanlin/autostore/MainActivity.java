@@ -207,6 +207,12 @@ public class MainActivity extends BaseActivity {
         mWelcomeDialog.setCanceledOnTouchOutside(true);
         //填充对话框的布局
         View viewWelcome = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_welcome, null, false);
+        viewWelcome.findViewById(R.id.tv_ok).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mWelcomeDialog.dismiss();
+            }
+        });
         AutoUtils.autoSize(viewWelcome);
         //初始化控件
         //将布局设置给
