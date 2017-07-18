@@ -4,7 +4,7 @@
           package="com.shanlin.autostore"
           tools:overrideLibrary="com.xys.libzxing">
 
-    <!-- 微信登录权限 -->
+    <!-- 微信登录权限 --><!--支付宝权限-->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
@@ -88,6 +88,22 @@
             android:name=".activity.GateActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
+        </activity>
+
+        <!--支付宝-->
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name="com.alipay.sdk.app.H5AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
     </application>
 
