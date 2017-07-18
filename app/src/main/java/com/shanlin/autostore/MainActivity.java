@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.alipay.sdk.app.PayTask;
 import com.shanlin.autostore.activity.BuyRecordActivity;
 import com.shanlin.autostore.activity.GateActivity;
 import com.shanlin.autostore.activity.MyLeiMaiBaoActivity;
@@ -38,6 +39,7 @@ import com.zhy.autolayout.utils.AutoUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends BaseActivity {
 
@@ -56,6 +58,7 @@ public class MainActivity extends BaseActivity {
     private Dialog    mToFaceDialog;
     private byte[]    mLivenessImgBytes;
     private TextView  mTvIdentify;
+    private Dialog    mLoginoutDialog;
 
 
     @Override
@@ -147,7 +150,6 @@ public class MainActivity extends BaseActivity {
     public void onClick(View v) {
 
         switch (v.getId()) {
-
             case R.id.location_2:
                 CommonUtils.toNextActivity(this, BuyRecordActivity.class);
                 break;
@@ -156,6 +158,7 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.location_4:
                 //退出
+                showLoginoutDialog();
                 break;
             case R.id.btn_lemaibao:
                 Log.d(TAG, "onClick: ");
@@ -169,12 +172,35 @@ public class MainActivity extends BaseActivity {
                 startActivityForResult(new Intent(this, CaptureActivity.class), REQUEST_CODE_SCAN);
                 break;
             case R.id.identify_tip:
+
+                // 必须异步调用
+                Thread   payThread   = new Thread(payRunnable);
+                payThread.start();
+
+
                 Intent intent = new Intent(MainActivity.this, LivenessActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_REGEST);
                 break;
         }
         mDrawerLayout.closeDrawer(Gravity.LEFT);
     }
+
+
+    final String orderInfo = "dsfasdfasdf";   // 订单信息
+
+    Runnable payRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            PayTask alipay = new PayTask(MainActivity.this);
+            Map<String, String> result = alipay.payV2(orderInfo, true);
+//            NotificationCompat.MessagingStyle.Message msg = new Message();
+//            msg.what = SDK_PAY_FLAG;
+//            msg.obj = result;
+//            mHandler.sendMessage(msg);
+        }
+    };
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -330,5 +356,43 @@ public class MainActivity extends BaseActivity {
         //       将属性设置给窗体
         dialogWindow.setAttributes(lp);
         mToFaceDialog.show();//显示对话框
+    }
+
+    private void showLoginoutDialog() {
+        mLoginoutDialog = new Dialog(this, R.style.MyDialogCheckVersion);
+        //点击其他地方消失
+        mLoginoutDialog.setCanceledOnTouchOutside(false);
+        //填充对话框的布局
+        View viewLoginout = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_loginout, null, false);
+        viewLoginout.findViewById(R.id.tv_cancle).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mLoginoutDialog.dismiss();
+            }
+        });
+        viewLoginout.findViewById(R.id.tv_loginout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mLoginoutDialog.dismiss();
+                //// TODO: 2017-7-18 登出的操作
+            }
+        });
+
+
+        AutoUtils.autoSize(viewLoginout);
+        //初始化控件
+        //将布局设置给
+        mLoginoutDialog.setContentView(viewLoginout);
+        //获取当前Activity所在的窗体
+        Window dialogWindow = mLoginoutDialog.getWindow();
+        //设置Dialog从窗体中间弹出
+        dialogWindow.setGravity(Gravity.CENTER);
+        //获得窗体的属性
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        //        lp.y = 20;//设置Dialog距离底部的距离
+        //       将属性设置给窗体
+        dialogWindow.setAttributes(lp);
+        mLoginoutDialog.show();//显示对话框
     }
 }

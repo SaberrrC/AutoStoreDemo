@@ -51,7 +51,12 @@ public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapt
         title.setText("购买记录");
         title.setTextColor(Color.BLACK);
         toolbar.setNavigationIcon(R.mipmap.nav_back);
-        toolbar.setNavigationOnClickListener(this);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         mPulltoRefreshRecyclerView = (PulltoRefreshRecyclerView) findViewById(R.id.pr_lists);
         mRecyclerView = mPulltoRefreshRecyclerView.getRecyclerView();
         Map<Class, Integer> map = new HashMap<>();
@@ -114,12 +119,6 @@ public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapt
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.toolbar:
-                finish();
-                break;
-
-        }
     }
 
     @Override

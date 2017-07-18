@@ -1,9 +1,12 @@
 package com.shanlin.autostore.activity;
 
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
@@ -40,7 +43,18 @@ public class PhoneNumLoginActivity extends BaseActivity {
         mBtnGetMsgCode.setClickable(true);
         mBtnBindOrLogin.setOnClickListener(this);
         mBtnBindOrLogin.setText("登录");
+        mEtMsgCode.setOnEditorActionListener(mOnEditorActionListener);
     }
+    private TextView.OnEditorActionListener mOnEditorActionListener = new TextView.OnEditorActionListener() {
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (actionId == EditorInfo.IME_ACTION_GO) {
+                bindOrLogin();
+                return true;
+            }
+            return false;
+        }
+    };
 
     @Override
     public void initData() {

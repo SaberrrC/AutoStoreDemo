@@ -12,7 +12,6 @@ import com.shanlin.autostore.bean.orderdetail.OrderDetailHeadBean;
 import com.shanlin.autostore.bean.orderdetail.OrderDetailitemBean;
 import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.view.PulltoRefreshRecyclerView;
-import com.zhy.autolayout.utils.AutoUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,7 +57,6 @@ public class OrderDetailActivity extends BaseActivity implements FinalRecycleAda
                         mPulltoRefreshRecyclerView.stopRefresh();
                     }
                 }, 500);
-
             }
 
             @Override
@@ -81,6 +79,5 @@ public class OrderDetailActivity extends BaseActivity implements FinalRecycleAda
 
     @Override
     public void onBindViewHolder(FinalRecycleAdapter.ViewHolder holder, int position, Object itemData) {
-        AutoUtils.autoSize(holder.getRootView());
     }
 }
