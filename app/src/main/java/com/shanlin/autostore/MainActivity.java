@@ -269,6 +269,12 @@ public class MainActivity extends BaseActivity {
         mGateOpenDialog.setCanceledOnTouchOutside(true);
         //填充对话框的布局
         View viewGateOpen = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_gateopen, null, false);
+        viewGateOpen.findViewById(R.id.rl_root).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mGateOpenDialog.dismiss();
+            }
+        });
         AutoUtils.autoSize(viewGateOpen);
         //初始化控件
         //将布局设置给Dialog

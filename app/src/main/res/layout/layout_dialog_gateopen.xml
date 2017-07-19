@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <com.zhy.autolayout.AutoRelativeLayout
+        android:id="@+id/rl_root"
         android:layout_width="280px"
         android:layout_height="180px"
         android:layout_gravity="center_horizontal"
