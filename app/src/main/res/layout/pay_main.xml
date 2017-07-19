@@ -11,4 +11,10 @@
         android:src="@drawable/msp_demo_title"
         tools:ignore="ContentDescription" />
 
+    <Button
+        android:onClick="mypay"
+        android:text="支付"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
 </LinearLayout>
