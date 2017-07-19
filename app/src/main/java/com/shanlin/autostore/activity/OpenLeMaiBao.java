@@ -1,5 +1,6 @@
 package com.shanlin.autostore.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +34,8 @@ public class OpenLeMaiBao extends BaseActivity {
     public void initView() {
         CommonUtils.initToolbar(this,"开启乐买宝", R.color.blcak, MainActivity.class);
         nextOrConfirm = ((Button) findViewById(R.id.btn_nextstep_and_confirm));
+        findViewById(R.id.tv_xie_yi).setOnClickListener(this);//合同
+        findViewById(R.id.service_shou_quan).setOnClickListener(this);//信用授权
         nextOrConfirm.setOnClickListener(this);
         ivStep2 = ((ImageView) findViewById(R.id.iv_step2));
         line2Step1 = findViewById(R.id.line2_step1);
@@ -58,6 +61,14 @@ public class OpenLeMaiBao extends BaseActivity {
                 } else {
                     CommonUtils.toNextActivity(this,ChoosePayWayActivity.class);
                 }
+                break;
+
+            case R.id.tv_xie_yi:
+                startActivityForResult(new Intent(this,XieYiAndHeTongActivity.class),1);
+                break;
+
+            case R.id.service_shou_quan:
+                startActivityForResult(new Intent(this,XieYiAndHeTongActivity.class),2);
                 break;
         }
     }

@@ -105,8 +105,8 @@ public class LoginActivity extends BaseActivity {
 //                startActivityForResult(intent, REQUEST_CODE);
 
                 //                CommonUtils.toNextActivity(this,LivenessActivity.class);
-                Intent intent = new Intent(this, LivenessActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_LOGIN);
+//                Intent intent = new Intent(this, LivenessActivity.class);
+//                startActivityForResult(intent, REQUEST_CODE_LOGIN);
                 break;
             case R.id.btn_login_by_phone:
                 CommonUtils.toNextActivity(this, PhoneNumLoginActivity.class);

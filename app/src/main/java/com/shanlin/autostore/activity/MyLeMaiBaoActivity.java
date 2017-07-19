@@ -11,7 +11,7 @@ import com.shanlin.autostore.utils.CommonUtils;
  * Created by DELL on 2017/7/17 0017.
  */
 
-public class MyLeiMaiBaoActivity extends BaseActivity {
+public class MyLeMaiBaoActivity extends BaseActivity {
 
     @Override
     public int initLayout() {

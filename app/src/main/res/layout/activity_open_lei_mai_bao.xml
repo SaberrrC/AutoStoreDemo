@@ -271,9 +271,10 @@
         android:layout_height="43px"/>
 
     <RelativeLayout
+        android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
         android:layout_marginTop="8px"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <TextView
@@ -285,7 +286,8 @@
             android:textSize="12px"
             />
         <TextView
-            android:id="@+id/tv_2"
+            android:clickable="true"
+            android:id="@+id/tv_xie_yi"
             android:layout_toRightOf="@id/tv_1"
             android:layout_width="74px"
             android:layout_height="18px"
@@ -294,6 +296,8 @@
             android:textSize="12px"
             />
         <TextView
+            android:clickable="true"
+            android:id="@+id/service_shou_quan"
             android:layout_below="@id/tv_1"
             android:layout_width="246px"
             android:gravity="center_horizontal"
