@@ -4,25 +4,46 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Environment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
-import android.os.Environment;
 import android.widget.Toast;
 
-import com.shanlin.autostore.R;
-
 import com.shanlin.autostore.AutoStoreApplication;
+import com.shanlin.autostore.R;
+import com.shanlin.autostore.constants.Constant;
+import com.shanlin.autostore.interf.HttpService;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by DELL on 2017/7/14 0014.
  */
 
 public class CommonUtils {
+
+    /**
+     * 创建dialog对象
+     * @param context
+     * @param view
+     */
+    public static AlertDialog getDialog (Context context, View view) {
+
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setView(view)
+                .create();
+        dialog.setCancelable(false);
+        dialog.show();
+        return dialog;
+    }
 
     /**
      * 跳转页面
@@ -32,6 +53,20 @@ public class CommonUtils {
      */
     public static void toNextActivity(Context context, Class activity) {
         context.startActivity(new Intent(context, activity));
+    }
+
+    /**
+     * 网络连接工具,get,post通用
+     * @return
+     */
+    public static HttpService doNet( ) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(Constant.BASE_URL)
+                .client(new OkHttpClient())
+                .build();
+        HttpService service = retrofit.create(HttpService.class);
+        return  service;
     }
 
     /**

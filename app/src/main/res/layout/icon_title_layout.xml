@@ -6,9 +6,17 @@
     <!--标识+title-->
     <RelativeLayout
         android:id="@+id/icon_title"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <TextView
+        
+        <ImageView
+            android:layout_marginTop="118px"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/first_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    <!--<TextView
         android:layout_centerHorizontal="true"
         android:layout_marginTop="118px"
         android:layout_width="99px"
@@ -36,7 +44,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="255px"
         android:textColor="#CC148FCE"
-        android:textSize="18px"/>
+        android:textSize="18px"/>-->
     </RelativeLayout>
 
     <!--不是会员提醒-->

@@ -119,7 +119,7 @@
             android:layout_toRightOf="@id/iv_step2"
             android:id="@+id/line2_step2"
             android:layout_centerVertical="true"
-            android:background="@color/yellow"
+            android:background="#d6d6d6"
             android:layout_marginLeft="10px"
             android:layout_marginTop="52.5px"
             android:layout_width="65px"

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+              android:layout_height="match_parent">
 
     <include layout="@layout/icon_title_layout"></include>
 
     <Button
         android:id="@+id/btn_login_by_face"
-        android:layout_marginTop="360px"
+        android:layout_marginTop="340px"
         android:layout_width="271px"
         android:gravity="center"
         android:paddingBottom="5px"
@@ -23,7 +22,7 @@
     <Button
         android:layout_below="@id/btn_login_by_face"
         android:id="@+id/btn_login_by_phone"
-        android:layout_marginTop="70px"
+        android:layout_marginTop="60px"
         android:layout_width="221px"
         android:layout_height="41px"
         android:gravity="center"

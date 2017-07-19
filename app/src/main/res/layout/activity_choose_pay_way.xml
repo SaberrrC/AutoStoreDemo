@@ -49,7 +49,7 @@
         />
 <!--1-->
     <LinearLayout
-        android:id="@+id/ll_pay_way_1"
+
         android:layout_marginTop="10px"
         android:orientation="horizontal"
         android:gravity="center_vertical"
@@ -57,24 +57,32 @@
         android:layout_height="50px"
         android:background="#FFFFFFFF"
         >
-        
-        <ImageView
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="22px"
-            android:src="@mipmap/ic_launcher"
-            android:layout_width="34px"
-            android:layout_height="34px"/>
 
-        <TextView
-            android:layout_marginLeft="14px"
+        <LinearLayout
+            android:id="@+id/ll_pay_way_1"
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="19px"
-            android:text="邻家乐买宝快捷支付"
-            android:textColor="#FF333333"
-            android:textSize="16px"
-            />
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/iv_icon_choose"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="22px"
+                android:src="@mipmap/icon_yellow"
+                android:layout_width="34px"
+                android:layout_height="34px"/>
 
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="14px"
+                android:layout_width="wrap_content"
+                android:layout_height="19px"
+                android:text="邻家乐买宝快捷支付"
+                android:textColor="#FF333333"
+                android:textSize="16px"
+                />
+        </LinearLayout>
         <TextView
+            android:id="@+id/get_avaiable_balence"
             android:layout_marginLeft="53px"
             android:layout_width="wrap_content"
             android:layout_height="20px"

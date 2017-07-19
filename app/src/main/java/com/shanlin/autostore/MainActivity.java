@@ -4,11 +4,9 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -19,7 +17,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.alipay.sdk.app.PayTask;
 import com.shanlin.autostore.activity.BuyRecordActivity;
 import com.shanlin.autostore.activity.GateActivity;
 import com.shanlin.autostore.activity.MyLeMaiBaoActivity;
@@ -37,9 +34,6 @@ import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.zhy.autolayout.utils.AutoUtils;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends BaseActivity {
 
@@ -48,10 +42,7 @@ public class MainActivity extends BaseActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private static final String TAG = "wr";
     private DrawerLayout mDrawerLayout;
-    private TextView     toolbar_title;
     private Toolbar      toolbar;
-    private List<Fragment> fragments = new ArrayList<>();
-    private TextPaint paint;
     private Dialog    mGateOpenDialog;
     private Dialog    mWelcomeDialog;
     private Button    mBtnScan;
@@ -69,7 +60,6 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initView() {
         mDrawerLayout = ((DrawerLayout) findViewById(R.id.activity_main));
-        toolbar_title = ((TextView) findViewById(R.id.toolbar_title));
         mTvIdentify = (TextView) findViewById(R.id.identify_tip);
         mTvIdentify.setOnClickListener(this);
         findViewById(R.id.btn_lemaibao).setOnClickListener(this);
@@ -161,7 +151,6 @@ public class MainActivity extends BaseActivity {
                 showLoginoutDialog();
                 break;
             case R.id.btn_lemaibao:
-                Log.d(TAG, "onClick: ");
                 CommonUtils.toNextActivity(this, MyLeMaiBaoActivity.class);
                 break;
             case R.id.btn_open_le_mai_bao:
@@ -172,35 +161,12 @@ public class MainActivity extends BaseActivity {
                 startActivityForResult(new Intent(this, CaptureActivity.class), REQUEST_CODE_SCAN);
                 break;
             case R.id.identify_tip:
-
-                // 必须异步调用
-//                Thread   payThread   = new Thread(payRunnable);
-//                payThread.start();
-
-
                 Intent intent = new Intent(MainActivity.this, LivenessActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_REGEST);
                 break;
         }
         mDrawerLayout.closeDrawer(Gravity.LEFT);
     }
-
-
-    final String orderInfo = "dsfasdfasdf";   // 订单信息
-
-    Runnable payRunnable = new Runnable() {
-
-        @Override
-        public void run() {
-            PayTask alipay = new PayTask(MainActivity.this);
-            Map<String, String> result = alipay.payV2(orderInfo, true);
-//            NotificationCompat.MessagingStyle.Message msg = new Message();
-//            msg.what = SDK_PAY_FLAG;
-//            msg.obj = result;
-//            mHandler.sendMessage(msg);
-        }
-    };
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

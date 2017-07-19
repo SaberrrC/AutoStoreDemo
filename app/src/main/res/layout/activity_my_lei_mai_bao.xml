@@ -15,8 +15,6 @@
 
         <TextView
             android:id="@+id/tv_available_amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="18px"
             android:layout_width="wrap_content"
@@ -31,9 +29,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_available_amount"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/tv_ke_yong_e_du"
-            android:layout_width="wrap_content"
-            android:layout_height="48px"
             android:text="¥200.00"
             android:textColor="#FFED4848"
             android:textSize="34px"/>
@@ -43,26 +38,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_money"
             android:layout_centerHorizontal="true"
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        <TextView
-            android:layout_below="@id/tv_money"
-            android:layout_width="wrap_content"
-            android:layout_height="17px"
-            android:text="已使用："
-            android:textColor="#FF999999"
-            android:textSize="12px"
-            />
-        <TextView
-            android:layout_marginLeft="5px"
-            android:layout_width="wrap_content"
-            android:layout_height="25px"
-            android:text="¥100.00"
-            android:textColor="#FF333333"
-            android:textSize="18px"
-            />
-            android:layout_marginTop="12dp"
             android:orientation="horizontal">
 
             <TextView

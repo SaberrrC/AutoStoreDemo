@@ -21,8 +21,6 @@ public class FaceIdentify extends BaseActivity {
     @Override
     public void initView() {
         initToolBar();
-
-
     }
 
     private void initToolBar() {

@@ -90,7 +90,7 @@ dependencies {
     compile 'com.zhy:autolayout:1.4.5'
     compile 'com.android.support:design:25.3.1'
     compile project(':libzxing')
-    compile 'com.android.support:design:26.0.0-alpha1'
+
     compile 'com.jungly:gridPasswordView:0.3'
     //人脸识别
     repositories {

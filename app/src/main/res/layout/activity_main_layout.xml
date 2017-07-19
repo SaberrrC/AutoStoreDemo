@@ -95,7 +95,7 @@
             android:layout_width="186.5px"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/cvl"
-            android:layout_marginTop="78px"
+            android:layout_marginTop="70px"
             android:gravity="center_horizontal">
             <Button
                 android:id="@+id/btn_yu_e"

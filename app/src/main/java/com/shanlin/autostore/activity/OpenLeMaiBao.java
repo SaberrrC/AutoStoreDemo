@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
+import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.utils.CommonUtils;
 
 /**
@@ -24,6 +25,7 @@ public class OpenLeMaiBao extends BaseActivity {
     private View rlStep2;
     private ImageView ivStep2;
     private View line1Step2;
+    private HttpService service;
 
     @Override
     public int initLayout() {
@@ -47,7 +49,7 @@ public class OpenLeMaiBao extends BaseActivity {
 
     @Override
     public void initData() {
-
+        service = CommonUtils.doNet();
     }
 
     @Override
@@ -64,11 +66,15 @@ public class OpenLeMaiBao extends BaseActivity {
                 break;
 
             case R.id.tv_xie_yi:
-                startActivityForResult(new Intent(this,XieYiAndHeTongActivity.class),1);
+                Intent intent1 = new Intent(this,XieYiAndHeTongActivity.class);
+                intent1.putExtra("state",1);
+                startActivity(intent1);
                 break;
 
             case R.id.service_shou_quan:
-                startActivityForResult(new Intent(this,XieYiAndHeTongActivity.class),2);
+                Intent intent2 = new Intent(this,XieYiAndHeTongActivity.class);
+                intent2.putExtra("state",2);
+                startActivity(intent2);
                 break;
         }
     }

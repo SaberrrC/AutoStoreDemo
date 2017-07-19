@@ -2,6 +2,7 @@ package com.shanlin.autostore.zhifubao;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.shanlin.autostore.R;
+import com.shanlin.autostore.utils.StatusBarUtils;
 
 import java.util.Map;
 
@@ -76,11 +78,11 @@ public class PayActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pay_main);
+        StatusBarUtils.setColor(this, Color.parseColor("#2A2D3B"));
     }
 
     /**
      * 支付宝支付业务
-     *
      */
     public void pay() {
         if (TextUtils.isEmpty(APPID) || (TextUtils.isEmpty(RSA2_PRIVATE) && TextUtils.isEmpty(RSA_PRIVATE))) {

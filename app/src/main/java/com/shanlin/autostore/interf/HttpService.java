@@ -1,11 +1,8 @@
 package com.shanlin.autostore.interf;
 
-import com.shanlin.autostore.base.ListBaseBean;
-import com.shanlin.autostore.base.ObjBaseBean;
-
 import okhttp3.RequestBody;
 import retrofit2.Call;
-import retrofit2.http.Body;
+import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -17,23 +14,17 @@ import retrofit2.http.Path;
 public interface HttpService {
 
     /**
-     * 用于json对象
      * @param url
      * @return
      */
     @GET("mock/596850f4c7f609711fa0575a/example/{url}")
-    Call<ObjBaseBean> ObjGet(@Path("url") String url);
+    Call doGet(@Path("url") String url);
 
     /**
-     * 用于json数组
-     * @param url
+     * 实名认证post
      * @return
      */
-    @GET("mock/596850f4c7f609711fa0575a/example/{url}")
-    Call<ListBaseBean> ListGet(@Path("url") String url);
-
-
-    @POST("mock/596850f4c7f609711fa0575a/example/{path}")
-    Call<RequestBody> sendData(@Path("path") String path, @Body Class bean);
+    @POST("buybao/userverify")
+    Call<RequestBody> sendData(@Field("idCard") String idCard, @Field("name") String name);
 
 }

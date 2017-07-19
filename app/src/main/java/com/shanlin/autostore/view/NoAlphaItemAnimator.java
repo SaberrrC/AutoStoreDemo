@@ -11,6 +11,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * 去除notityItemChange动画
  * 此类复制了DefaultItemAnimator,只修改了animateChangeImpl中的方法
