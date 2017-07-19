@@ -72,6 +72,10 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
+            android:name=".activity.OpenLeMaiBao"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
             android:name=".MainActivity"
             android:launchMode="singleTask"
             ></activity>
@@ -82,6 +86,7 @@
         <activity android:name=".activity.ChoosePayWayActivity"></activity>
         <activity android:name=".activity.XieYiAndHeTongActivity" android:launchMode="singleTask"></activity>
 
+        <activity android:name=".activity.MyLeMaiBaoActivity"/>
         <activity
             android:name=".activity.GateActivity"
             android:screenOrientation="portrait"
@@ -90,20 +95,6 @@
         <activity android:name=".activity.SaveFaceActivity">
         </activity>
         <activity android:name=".activity.OrderDetailActivity">
-        </activity>
-        <activity
-            android:name="com.alipay.sdk.app.H5PayActivity"
-            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
-            android:exported="false"
-            android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
-        <activity
-            android:name="com.alipay.sdk.app.H5AuthActivity"
-            android:configChanges="orientation|keyboardHidden|navigation"
-            android:exported="false"
-            android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
 
         <!--支付宝-->

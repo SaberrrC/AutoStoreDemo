@@ -174,8 +174,8 @@ public class MainActivity extends BaseActivity {
             case R.id.identify_tip:
 
                 // 必须异步调用
-                Thread   payThread   = new Thread(payRunnable);
-                payThread.start();
+//                Thread   payThread   = new Thread(payRunnable);
+//                payThread.start();
 
 
                 Intent intent = new Intent(MainActivity.this, LivenessActivity.class);
@@ -237,10 +237,7 @@ public class MainActivity extends BaseActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
-
-
     }
 
     @Override
