@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
@@ -26,7 +27,7 @@ import java.util.Map;
 public class PayActivity extends AppCompatActivity {
 
     /** 支付宝支付业务：入参app_id */
-    public static final String APPID = "";
+    public static final String APPID = PayKeys.APPID;
 
     /** 支付宝账户登录授权业务：入参pid值 */
     public static final String PID = "";
@@ -39,7 +40,7 @@ public class PayActivity extends AppCompatActivity {
     /** RSA2_PRIVATE 可以保证商户交易在更加安全的环境下进行，建议使用 RSA2_PRIVATE */
     /** 获取 RSA2_PRIVATE，建议使用支付宝提供的公私钥生成工具生成， */
     /** 工具地址：https://doc.open.alipay.com/docs/doc.htm?treeId=291&articleId=106097&docType=1 */
-    public static final String RSA2_PRIVATE = "";
+    public static final String RSA2_PRIVATE = PayKeys.PRIVATE;
     public static final String RSA_PRIVATE = "";
 
     private static final int SDK_PAY_FLAG = 1;
@@ -56,6 +57,8 @@ public class PayActivity extends AppCompatActivity {
                      对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
                      */
                     String resultInfo = payResult.getResult();// 同步返回需要验证的信息
+
+                    Log.d("wr***", "resultInfo="+resultInfo);
                     String resultStatus = payResult.getResultStatus();
                     // 判断resultStatus 为9000则代表支付成功
                     if (TextUtils.equals(resultStatus, "9000")) {
@@ -110,7 +113,7 @@ public class PayActivity extends AppCompatActivity {
         String privateKey = rsa2 ? RSA2_PRIVATE : RSA_PRIVATE;
         String sign = OrderInfoUtil2_0.getSign(params, privateKey, rsa2);
         final String orderInfo = orderParam + "&" + sign;
-
+//        Log.i("wr", "pay: "+orderInfo);
         Runnable payRunnable = new Runnable() {
 
             @Override
@@ -118,7 +121,6 @@ public class PayActivity extends AppCompatActivity {
                 PayTask alipay = new PayTask(PayActivity.this);
                 Map<String, String> result = alipay.payV2(orderInfo, true);
                 Log.i("msp", result.toString());
-
                 Message msg = new Message();
                 msg.what = SDK_PAY_FLAG;
                 msg.obj = result;
@@ -128,5 +130,9 @@ public class PayActivity extends AppCompatActivity {
 
         Thread payThread = new Thread(payRunnable);
         payThread.start();
+    }
+
+    public void mypay(View view) {
+        pay();
     }
 }
