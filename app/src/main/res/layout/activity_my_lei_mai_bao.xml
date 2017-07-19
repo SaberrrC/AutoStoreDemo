@@ -77,7 +77,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="待还账单"
-            android:textColor="#FF999999"
+            android:textColor="#FFFCBF0D"
+
             android:textSize="16px"/>
 
         <View
@@ -93,7 +94,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="已还款账单"
-            android:textColor="#FFFCBF0D"
+            android:textColor="#999999"
             android:textSize="16px"/>
     </LinearLayout>
 
