@@ -142,13 +142,12 @@ public class LoginActivity extends BaseActivity {
                 Bitmap bitmap = BitmapFactory.decodeByteArray(mLivenessImgBytes, 0, mLivenessImgBytes.length);
                 CommonUtils.saveBitmap(bitmap);
                 // TODO: 2017-7-17 发送到服务器进行比对
-                ToastUtils.showToast("人脸识别成功");
                 //            Intent intent = new Intent(this, MainActivity.class);
                 //            intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
                 //            startActivity(intent);
                 //            finish();
                 Intent intent = new Intent(this, MainActivity.class);
-                intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.UNREGEST_USER);
+                intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
                 startActivity(intent);
 
 //                Intent intent = new Intent(this, MainActivity.class);

@@ -93,7 +93,9 @@ public class CommonUtils {
         tb.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonUtils.toNextActivity(activity, desActivity);
+                if (desActivity != null) {
+                    CommonUtils.toNextActivity(activity, desActivity);
+                }
                 activity.finish();
             }
         });

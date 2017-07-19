@@ -21,6 +21,7 @@ import com.shanlin.autostore.activity.BuyRecordActivity;
 import com.shanlin.autostore.activity.GateActivity;
 import com.shanlin.autostore.activity.MyLeMaiBaoActivity;
 import com.shanlin.autostore.activity.OpenLeMaiBao;
+import com.shanlin.autostore.activity.RefundMoneyActivity;
 import com.shanlin.autostore.activity.SaveFaceActivity;
 import com.shanlin.autostore.activity.VersionInfoActivity;
 import com.shanlin.autostore.base.BaseActivity;
@@ -50,6 +51,7 @@ public class MainActivity extends BaseActivity {
     private byte[]    mLivenessImgBytes;
     private TextView  mTvIdentify;
     private Dialog    mLoginoutDialog;
+    private TextView  mBtBanlance;
 
 
     @Override
@@ -61,6 +63,8 @@ public class MainActivity extends BaseActivity {
     public void initView() {
         mDrawerLayout = ((DrawerLayout) findViewById(R.id.activity_main));
         mTvIdentify = (TextView) findViewById(R.id.identify_tip);
+        mBtBanlance = (TextView) findViewById(R.id.btn_yu_e);
+        mBtBanlance.setOnClickListener(this);
         mTvIdentify.setOnClickListener(this);
         findViewById(R.id.btn_lemaibao).setOnClickListener(this);
         findViewById(R.id.btn_open_le_mai_bao).setOnClickListener(this);
@@ -68,19 +72,13 @@ public class MainActivity extends BaseActivity {
         mBtnScan.setOnClickListener(this);
         Intent intent = getIntent();
         String stringExtra = intent.getStringExtra(Constant.MainActivityArgument.MAIN_ACTIVITY);
-        stringExtra = Constant.MainActivityArgument.UNREGEST_USER;
         if (TextUtils.isEmpty(stringExtra)) {
             return;
         }
         //刷脸登陆成功
         if (TextUtils.equals(stringExtra, Constant.MainActivityArgument.LOGIN)) {
             showWelcomeDialog();
-            ThreadUtils.runMainDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mWelcomeDialog.dismiss();
-                }
-            }, 3000);
+
             return;
         }
         //刷脸登陆 完成后是未注册用户
@@ -160,9 +158,15 @@ public class MainActivity extends BaseActivity {
             case R.id.btn_scan_bg://扫一扫
                 startActivityForResult(new Intent(this, CaptureActivity.class), REQUEST_CODE_SCAN);
                 break;
-            case R.id.identify_tip:
-                Intent intent = new Intent(MainActivity.this, LivenessActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_REGEST);
+
+            case R.id.identify_tip://完善身份，智能购物
+                CommonUtils.toNextActivity(this,MainActivity.class);
+//                Intent intent = new Intent(MainActivity.this, LivenessActivity.class);
+//                startActivityForResult(intent, REQUEST_CODE_REGEST);
+                break;
+            case R.id.btn_yu_e://退款金额
+                //                startActivity(new Intent(this, BalanceActivity.class));//订单余额
+                startActivity(new Intent(this, RefundMoneyActivity.class));
                 break;
         }
         mDrawerLayout.closeDrawer(Gravity.LEFT);
@@ -195,7 +199,6 @@ public class MainActivity extends BaseActivity {
                 LogUtils.d("delta==" + delta + "  mLivenessImgBytes==" + mLivenessImgBytes);
                 Bitmap bitmap = BitmapFactory.decodeByteArray(mLivenessImgBytes, 0, mLivenessImgBytes.length);
                 File file = CommonUtils.saveBitmap(bitmap);
-                ToastUtils.showToast("人脸识别成功");
                 Intent intent = new Intent(this, SaveFaceActivity.class);
                 intent.putExtra(Constant.SaveFaceActivity.IMAGE_PATH, file.getAbsolutePath());//图片路径传过去
                 intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.UNREGEST_USER);
@@ -219,6 +222,7 @@ public class MainActivity extends BaseActivity {
             return;
         }
         if (TextUtils.equals(argument, Constant.MainActivityArgument.REGESTED_USER)) {
+            showWelcomeDialog();
             mTvIdentify.setVisibility(View.GONE);
             return;
         }
@@ -226,12 +230,21 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    /**
+     * 扫完二维码后提示
+     */
     private void showGateOpenDialog() {
         mGateOpenDialog = new Dialog(this, R.style.MyDialogCheckVersion);
         //点击其他地方消失
         mGateOpenDialog.setCanceledOnTouchOutside(true);
         //填充对话框的布局
         View viewGateOpen = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_gateopen, null, false);
+        viewGateOpen.findViewById(R.id.rl_root).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mGateOpenDialog.dismiss();
+            }
+        });
         AutoUtils.autoSize(viewGateOpen);
         //初始化控件
         //将布局设置给Dialog
@@ -249,18 +262,15 @@ public class MainActivity extends BaseActivity {
         mGateOpenDialog.show();//显示对话框
     }
 
+    /**
+     * 刷脸登陆成功 录入人脸成功后跳转至主页面
+     */
     private void showWelcomeDialog() {
         mWelcomeDialog = new Dialog(this, R.style.MyDialogCheckVersion);
         //点击其他地方消失
         mWelcomeDialog.setCanceledOnTouchOutside(true);
         //填充对话框的布局
         View viewWelcome = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_welcome, null, false);
-        viewWelcome.findViewById(R.id.tv_ok).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mWelcomeDialog.dismiss();
-            }
-        });
         AutoUtils.autoSize(viewWelcome);
         //初始化控件
         //将布局设置给
@@ -276,10 +286,16 @@ public class MainActivity extends BaseActivity {
         //       将属性设置给窗体
         dialogWindow.setAttributes(lp);
         mWelcomeDialog.show();//显示对话框
+        ThreadUtils.runMainDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mWelcomeDialog.dismiss();
+            }
+        }, 3000);
     }
 
     /**
-     * 完成人脸识别弹窗
+     * 提醒用户完成人脸录入的弹窗
      */
     private void showToFaceDialog() {
         mToFaceDialog = new Dialog(this, R.style.MyDialogCheckVersion);
@@ -340,8 +356,6 @@ public class MainActivity extends BaseActivity {
                 //// TODO: 2017-7-18 登出的操作
             }
         });
-
-
         AutoUtils.autoSize(viewLoginout);
         //初始化控件
         //将布局设置给

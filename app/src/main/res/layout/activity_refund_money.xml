@@ -2,6 +2,7 @@
 <com.zhy.autolayout.AutoLinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_refund_explain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -23,13 +24,11 @@
 
     </RelativeLayout>
 
-
     <com.zhy.autolayout.AutoRelativeLayout
-        android:layout_marginTop="3px"
         android:layout_width="match_parent"
         android:layout_height="190px"
-        android:background="#fff"
-        tools:showIn="@layout/activity_my_lei_mai_bao">
+        android:layout_marginTop="3px"
+        android:background="#fff">
 
         <TextView
             android:id="@+id/tv_available_amount"
@@ -59,7 +58,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="18px"
             android:text="提现功能即将开放"
-            android:textColor="#FF43A5D8"
+            android:textColor="#FFB9B9B9"
             android:textSize="12px"/>
 
     </com.zhy.autolayout.AutoRelativeLayout>
@@ -71,11 +70,8 @@
         android:paddingLeft="20dp"
         android:text="收支明细"/>
 
-
     <com.shanlin.autostore.view.PulltoRefreshRecyclerView
         android:id="@+id/pr_lists"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
-
 </com.zhy.autolayout.AutoLinearLayout>
