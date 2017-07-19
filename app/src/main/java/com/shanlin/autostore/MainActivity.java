@@ -22,7 +22,7 @@ import android.widget.TextView;
 import com.alipay.sdk.app.PayTask;
 import com.shanlin.autostore.activity.BuyRecordActivity;
 import com.shanlin.autostore.activity.GateActivity;
-import com.shanlin.autostore.activity.MyLeiMaiBaoActivity;
+import com.shanlin.autostore.activity.MyLeMaiBaoActivity;
 import com.shanlin.autostore.activity.OpenLeMaiBao;
 import com.shanlin.autostore.activity.SaveFaceActivity;
 import com.shanlin.autostore.activity.VersionInfoActivity;
@@ -162,7 +162,7 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.btn_lemaibao:
                 Log.d(TAG, "onClick: ");
-                CommonUtils.toNextActivity(this, MyLeiMaiBaoActivity.class);
+                CommonUtils.toNextActivity(this, MyLeMaiBaoActivity.class);
                 break;
             case R.id.btn_open_le_mai_bao:
                 //开通乐买宝
@@ -174,8 +174,8 @@ public class MainActivity extends BaseActivity {
             case R.id.identify_tip:
 
                 // 必须异步调用
-                Thread   payThread   = new Thread(payRunnable);
-                payThread.start();
+//                Thread   payThread   = new Thread(payRunnable);
+//                payThread.start();
 
 
                 Intent intent = new Intent(MainActivity.this, LivenessActivity.class);
@@ -237,10 +237,7 @@ public class MainActivity extends BaseActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
-
-
     }
 
     @Override

@@ -1,58 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:background="#F5F5F5"
-              android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    android:orientation="vertical">
+
     <include layout="@layout/toolbar_layout"></include>
-    
+
     <RelativeLayout
-        android:background="#fff"
         android:layout_width="match_parent"
-        android:layout_height="189.2px">
+        android:layout_height="189.2px"
+        android:background="#fff">
 
         <TextView
-            android:id="@+id/tv_ke_yong_e_du"
+            android:id="@+id/tv_available_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="18px"
-            android:layout_width="84px"
-            android:layout_height="20px"
             android:text="当前可用额度"
             android:textColor="#FF999999"
-            android:textSize="14px"
-            />
+            android:textSize="14px"/>
+
         <TextView
             android:id="@+id/tv_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_available_amount"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/tv_ke_yong_e_du"
-            android:layout_width="132px"
-            android:layout_height="48px"
             android:text="¥200.00"
             android:textColor="#FFED4848"
-            android:textSize="34px"
-            />
+            android:textSize="34px"/>
+
         <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@id/tv_money"
             android:layout_centerHorizontal="true"
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        <TextView
-            android:layout_below="@id/tv_money"
-            android:layout_width="wrap_content"
-            android:layout_height="17px"
-            android:text="已使用："
-            android:textColor="#FF999999"
-            android:textSize="12px"
-            />
-        <TextView
-            android:layout_marginLeft="5px"
-            android:layout_width="66px"
-            android:layout_height="25px"
-            android:text="¥100.00"
-            android:textColor="#FF333333"
-            android:textSize="18px"
-            />
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_money"
+                android:text="已使用："
+                android:textColor="#FF999999"
+                android:textSize="12px"/>
+
+            <TextView
+                android:id="@+id/tv_used"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5px"
+                android:text="¥100.00"
+                android:textColor="#FF333333"
+                android:textSize="18px"/>
         </LinearLayout>
     </RelativeLayout>
 
@@ -61,41 +65,41 @@
         android:layout_height="10px"/>
 
     <LinearLayout
-        android:background="#fff"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="50px">
+        android:layout_height="50px"
+        android:background="#fff"
+        android:orientation="horizontal">
 
         <TextView
-            android:gravity="center"
+            android:id="@+id/tv_behalf_repayment"
             android:layout_width="0px"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
             android:text="待还账单"
             android:textColor="#FF999999"
-            android:textSize="16px"
-            />
-        
+            android:textSize="16px"/>
+
         <View
-            android:layout_gravity="center"
-            android:background="#f5f5f5"
             android:layout_width="3px"
-            android:layout_height="33px"></View>
+            android:layout_height="33px"
+            android:layout_gravity="center"
+            android:background="#f5f5f5"></View>
 
         <TextView
-            android:gravity="center"
-            android:layout_weight="1"
+            android:id="@+id/tv_repaid"
             android:layout_width="0px"
             android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
             android:text="已还款账单"
             android:textColor="#FFFCBF0D"
-            android:textSize="16px"
-            />
+            android:textSize="16px"/>
     </LinearLayout>
 
-    <ListView
+    <com.shanlin.autostore.view.PulltoRefreshRecyclerView
+        android:id="@+id/pr_lists"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
