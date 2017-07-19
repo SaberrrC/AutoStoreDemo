@@ -20,11 +20,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.alipay.sdk.app.PayTask;
-import com.shanlin.autostore.activity.BalanceActivity;
 import com.shanlin.autostore.activity.BuyRecordActivity;
 import com.shanlin.autostore.activity.GateActivity;
 import com.shanlin.autostore.activity.MyLeMaiBaoActivity;
 import com.shanlin.autostore.activity.OpenLeMaiBao;
+import com.shanlin.autostore.activity.RefundMoneyActivity;
 import com.shanlin.autostore.activity.SaveFaceActivity;
 import com.shanlin.autostore.activity.VersionInfoActivity;
 import com.shanlin.autostore.base.BaseActivity;
@@ -60,7 +60,7 @@ public class MainActivity extends BaseActivity {
     private byte[]    mLivenessImgBytes;
     private TextView  mTvIdentify;
     private Dialog    mLoginoutDialog;
-    private Button mBtBanlance;
+    private TextView mBtBanlance;
 
 
     @Override
@@ -73,7 +73,7 @@ public class MainActivity extends BaseActivity {
         mDrawerLayout = ((DrawerLayout) findViewById(R.id.activity_main));
         toolbar_title = ((TextView) findViewById(R.id.toolbar_title));
         mTvIdentify = (TextView) findViewById(R.id.identify_tip);
-        mBtBanlance = (Button) findViewById(R.id.btn_yu_e);
+        mBtBanlance = (TextView) findViewById(R.id.btn_yu_e);
         mBtBanlance.setOnClickListener(this);
         mTvIdentify.setOnClickListener(this);
         findViewById(R.id.btn_lemaibao).setOnClickListener(this);
@@ -175,18 +175,17 @@ public class MainActivity extends BaseActivity {
             case R.id.btn_scan_bg://扫一扫
                 startActivityForResult(new Intent(this, CaptureActivity.class), REQUEST_CODE_SCAN);
                 break;
-            case R.id.identify_tip:
+            case R.id.identify_tip://完善身份，智能购物
 
                 // 必须异步调用
 //                Thread   payThread   = new Thread(payRunnable);
 //                payThread.start();
-
-
                 Intent intent = new Intent(MainActivity.this, LivenessActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_REGEST);
                 break;
-            case R.id.btn_yu_e:
-                startActivity(new Intent(this, BalanceActivity.class));
+            case R.id.btn_yu_e://退款金额
+//                startActivity(new Intent(this, BalanceActivity.class));//订单余额
+                startActivity(new Intent(this, RefundMoneyActivity.class));
                 break;
         }
         mDrawerLayout.closeDrawer(Gravity.LEFT);

@@ -17,13 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 账户余额
- * Created by DELL on 2017/7/17 0017.
- */
-
-public class BalanceActivity extends BaseActivity implements FinalRecycleAdapter.OnViewAttachListener {
-
+public class RefundMoneyActivity extends BaseActivity implements FinalRecycleAdapter.OnViewAttachListener {
     private PulltoRefreshRecyclerView mPulltoRefreshRecyclerView;
     private RecyclerView              mRecyclerView;
     private List<Object> mDatas = new ArrayList<>();
@@ -35,18 +29,17 @@ public class BalanceActivity extends BaseActivity implements FinalRecycleAdapter
 
     @Override
     public int initLayout() {
-        return R.layout.activity_yu_e;
+        return R.layout.activity_refund_money;
     }
 
     @Override
     public void initView() {
-        CommonUtils.initToolbar(this, "账户余额", R.color.black, null);
+        CommonUtils.initToolbar(this, "退款金额", R.color.black, null);
+        findViewById(R.id.tv_explain).setOnClickListener(this);
         mPulltoRefreshRecyclerView = (PulltoRefreshRecyclerView) findViewById(R.id.pr_lists);
         mRecyclerView = mPulltoRefreshRecyclerView.getRecyclerView();
-        findViewById(R.id.tv_explain).setOnClickListener(this);
-
         Map<Class, Integer> map = new HashMap<>();
-        map.put(RecordBean.class, R.layout.layout_item_banlance);
+        map.put(RecordBean.class, R.layout.layout_item_refund);
         for (int i = 0; i < 10; i++) {
             mDatas.add(new RecordBean());
         }
@@ -107,7 +100,7 @@ public class BalanceActivity extends BaseActivity implements FinalRecycleAdapter
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_explain:
-                startActivity(new Intent(this, RefundMoneyActivity.class));
+                startActivity(new Intent(this, RefundExplainActivity.class));
                 break;
         }
     }

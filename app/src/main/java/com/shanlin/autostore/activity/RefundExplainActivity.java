@@ -7,7 +7,6 @@ import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.utils.CommonUtils;
 
 public class RefundExplainActivity extends BaseActivity {
-
     @Override
     public int initLayout() {
         return R.layout.activity_refund_explain;
@@ -15,7 +14,7 @@ public class RefundExplainActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        CommonUtils.initToolbar(this,"退款说明",R.color.black,null);
+        CommonUtils.initToolbar(this, "退款说明", R.color.black, null);
     }
 
     @Override

@@ -109,6 +109,8 @@
             android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".activity.RefundActivity">
         </activity>
+        <activity android:name=".activity.RefundMoneyActivity">
+        </activity>
         <activity android:name=".activity.RefundExplainActivity">
         </activity>
     </application>
