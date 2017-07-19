@@ -1,34 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:background="@color/white"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
+
     <include layout="@layout/toolbar_layout"></include>
+
     <Space
-        android:background="@color/main_bg"
         android:layout_width="match_parent"
-        android:layout_height="5px"/>
+        android:layout_height="5px"
+        android:background="@color/main_bg"/>
+
     <TextView
-        android:paddingTop="18px"
-        android:paddingBottom="10px"
-        android:background="@color/white"
-        android:layout_gravity="center_horizontal"
         android:layout_width="match_parent"
-        android:gravity="center_horizontal"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        android:paddingBottom="10px"
+        android:paddingTop="18px"
         android:text="开启乐买宝,最高"
         android:textColor="#FF333333"
         android:textSize="16px"
         />
 
     <LinearLayout
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:paddingBottom="19.5px"
-        android:gravity="center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingBottom="19.5px">
+
         <TextView
             android:layout_width="41px"
             android:layout_height="30px"
@@ -40,8 +44,8 @@
         <TextView
             android:layout_width="58px"
             android:layout_height="30px"
-            android:text="500元"
             android:layout_marginLeft="5px"
+            android:text="500元"
             android:textColor="#FF0000"
             android:textSize="20px"
             />
@@ -49,107 +53,108 @@
         <TextView
             android:layout_width="41px"
             android:layout_height="30px"
-            android:text="额度"
             android:layout_marginLeft="5px"
+            android:text="额度"
             android:textColor="#FF151515"
             android:textSize="20px"
             />
     </LinearLayout>
 
     <Space
-        android:background="@color/main_bg"
         android:layout_width="match_parent"
-        android:layout_height="5px"/>
+        android:layout_height="5px"
+        android:background="@color/main_bg"/>
 
     <RelativeLayout
-        android:gravity="center_horizontal"
-        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_horizontal">
 
         <View
             android:id="@+id/line1_step1"
+            android:layout_width="65px"
+            android:layout_height="2px"
             android:layout_centerVertical="true"
+            android:layout_marginTop="52.5px"
             android:background="@color/yellow"
             android:paddingLeft="30px"
-            android:layout_marginTop="52.5px"
-            android:layout_width="65px"
-            android:layout_height="2px"
             />
-        
+
         <ImageView
             android:id="@+id/iv_step1"
-            android:layout_marginLeft="10px"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/line1_step1"
-            android:src="@mipmap/step1"
             android:layout_width="34px"
-            android:layout_height="36.8px"/>
+            android:layout_height="36.8px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10px"
+            android:layout_toRightOf="@id/line1_step1"
+            android:src="@mipmap/step1"/>
 
         <View
-            android:layout_toRightOf="@id/iv_step1"
             android:id="@+id/line2_step1"
+            android:layout_width="36.1px"
+            android:layout_height="2px"
             android:layout_centerVertical="true"
-            android:background="@color/yellow"
             android:layout_marginLeft="10.5px"
             android:layout_marginTop="52.5px"
-            android:layout_width="36.1px"
-            android:layout_height="2px"
+            android:layout_toRightOf="@id/iv_step1"
+            android:background="@color/yellow"
             />
 
         <View
-            android:layout_toRightOf="@id/line2_step1"
             android:id="@+id/line1_step2"
-            android:layout_centerVertical="true"
-            android:background="#d6d6d6"
-            android:layout_marginTop="52.5px"
             android:layout_width="36.1px"
             android:layout_height="2px"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="52.5px"
+            android:layout_toRightOf="@id/line2_step1"
+            android:background="#d6d6d6"
             />
+
         <ImageView
             android:id="@+id/iv_step2"
-            android:layout_marginLeft="10px"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/line1_step2"
-            android:src="@mipmap/step2"
             android:layout_width="34px"
-            android:layout_height="36.8px"/>
+            android:layout_height="36.8px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10px"
+            android:layout_toRightOf="@id/line1_step2"
+            android:src="@mipmap/step2"/>
 
         <View
-            android:layout_toRightOf="@id/iv_step2"
             android:id="@+id/line2_step2"
-            android:layout_centerVertical="true"
-            android:background="#d6d6d6"
-            android:layout_marginLeft="10px"
-            android:layout_marginTop="52.5px"
             android:layout_width="65px"
             android:layout_height="2px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10px"
+            android:layout_marginTop="52.5px"
+            android:layout_toRightOf="@id/iv_step2"
+            android:background="#d6d6d6"
             />
     </RelativeLayout>
 
     <LinearLayout
-        android:gravity="center_horizontal"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:layout_below="@id/iv_step1"
-        android:paddingTop="12.2px"
         android:layout_width="match_parent"
-        android:layout_height="42px">
+        android:layout_height="42px"
+        android:layout_below="@id/iv_step1"
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingTop="12.2px">
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
             android:text="实名认证"
-            android:gravity="center"
-            android:textSize="14px"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
+            android:textSize="14px"/>
 
         <TextView
-            android:text="设置支付密码"
-            android:gravity="center"
-            android:textSize="14px"
-            android:layout_marginLeft="60px"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_marginLeft="60px"
+            android:gravity="center"
+            android:text="设置支付密码"
+            android:textSize="14px"/>
 
     </LinearLayout>
 
@@ -157,74 +162,77 @@
     <FrameLayout
         android:layout_width="291.2px"
         android:layout_height="97.4px"
-        android:layout_marginTop="33px"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/shape_phone_login_bg"
-        android:layout_centerHorizontal="true">
+        android:layout_marginTop="33px"
+        android:background="@drawable/shape_phone_login_bg">
         <!--step1-->
-    <RelativeLayout
-        android:visibility="visible"
+        <RelativeLayout
             android:id="@+id/rl_step1"
             android:layout_width="291.2px"
-            android:layout_height="97.4px">
-        <TextView
-            android:id="@+id/tv_name"
-            android:text="姓名:"
-            android:layout_marginTop="14px"
-            android:layout_marginRight="20px"
-            android:layout_marginLeft="20px"
-            android:layout_width="80px"
-            android:textSize="14px"
-            android:layout_height="20.6px"/>
+            android:layout_height="97.4px"
+            android:visibility="visible">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2px"
-            android:layout_centerVertical="true"
-            android:background="#FED63E"/>
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="80px"
+                android:layout_height="20.6px"
+                android:layout_marginLeft="20px"
+                android:layout_marginRight="20px"
+                android:layout_marginTop="14px"
+                android:text="姓名:"
+                android:textSize="14px"/>
 
-        <EditText
-            android:id="@+id/et_name"
-            android:hint="请输入姓名"
-            android:background="@null"
-            android:textSize="14px"
-            android:textColorHint="#FFD5D5D5"
-            android:gravity="center_vertical"
-            android:layout_toRightOf="@id/tv_name"
-            android:layout_width="match_parent"
-            android:layout_height="48.7px"
-            />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:layout_centerVertical="true"
+                android:background="#FED63E"/>
 
-        <TextView
-            android:layout_below="@id/tv_name"
-            android:id="@+id/tv_id"
-            android:text="身份证号码"
-            android:textSize="14px"
-            android:layout_marginTop="28px"
-            android:layout_marginRight="20px"
-            android:layout_marginLeft="20px"
-            android:layout_width="80px"
-            android:layout_height="20.6px"/>
+            <EditText
+                android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="48.7px"
+                android:layout_toRightOf="@id/tv_name"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="请输入姓名"
+                android:maxLines="1"
+                android:textColorHint="#FFD5D5D5"
+                android:textSize="14px"
+                />
 
-        <EditText
-            android:id="@+id/et_msg_code"
-            android:layout_below="@id/et_name"
-            android:hint="请输入身份证号码"
-            android:textSize="14px"
-            android:textColorHint="#FFD5D5D5"
-            android:background="@null"
-            android:gravity="center_vertical"
-            android:layout_toRightOf="@id/tv_id"
-            android:layout_width="131px"
-            android:layout_height="48.7px"
-            />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_id"
+                android:layout_width="80px"
+                android:layout_height="20.6px"
+                android:layout_below="@id/tv_name"
+                android:layout_marginLeft="20px"
+                android:layout_marginRight="20px"
+                android:layout_marginTop="28px"
+                android:text="身份证号码"
+                android:textSize="14px"/>
+
+            <EditText
+                android:id="@+id/et_msg_code"
+                android:layout_width="131px"
+                android:layout_height="48.7px"
+                android:layout_below="@id/et_name"
+                android:layout_toRightOf="@id/tv_id"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="请输入身份证号码"
+                android:maxLines="1"
+                android:textColorHint="#FFD5D5D5"
+                android:textSize="14px"
+                />
+        </RelativeLayout>
         <!--step2-->
         <RelativeLayout
-            android:visibility="gone"
             android:id="@+id/rl_step2"
             android:layout_width="291.2px"
-            android:layout_height="97.4px">
+            android:layout_height="97.4px"
+            android:visibility="gone">
 
             <View
                 android:layout_width="match_parent"
@@ -234,48 +242,48 @@
 
             <EditText
                 android:id="@+id/et_psw"
-                android:paddingLeft="20px"
-                android:hint="设置支付密码，6位数字"
-                android:background="@null"
-                android:textSize="14px"
-                android:textColorHint="#FFD5D5D5"
-                android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="48.7px"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="设置支付密码，6位数字"
+                android:paddingLeft="20px"
+                android:textColorHint="#FFD5D5D5"
+                android:textSize="14px"
                 />
 
             <EditText
-                android:paddingLeft="20px"
                 android:id="@+id/et_psw_again"
-                android:layout_below="@id/et_psw"
-                android:hint="请确认支付密码"
-                android:textSize="14px"
-                android:textColorHint="#FFD5D5D5"
-                android:background="@null"
-                android:gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="48.7px"
+                android:layout_below="@id/et_psw"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="请确认支付密码"
+                android:paddingLeft="20px"
+                android:textColorHint="#FFD5D5D5"
+                android:textSize="14px"
                 />
         </RelativeLayout>
     </FrameLayout>
-    
+
     <Button
         android:id="@+id/btn_nextstep_and_confirm"
+        android:layout_width="220px"
+        android:layout_height="43px"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="34.6px"
-        android:text="下一步"
-        android:textSize="16px"
-        android:textColor="@color/white"
         android:background="@mipmap/btn_next_step_bg"
-        android:layout_width="220px"
-        android:layout_height="43px"/>
+        android:text="下一步"
+        android:textColor="@color/white"
+        android:textSize="16px"/>
 
     <RelativeLayout
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="8px"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8px"
+        android:gravity="center_horizontal">
 
         <TextView
             android:id="@+id/tv_1"
@@ -285,23 +293,25 @@
             android:textColor="@color/gray_595959"
             android:textSize="12px"
             />
+
         <TextView
-            android:clickable="true"
             android:id="@+id/tv_xie_yi"
-            android:layout_toRightOf="@id/tv_1"
             android:layout_width="74px"
             android:layout_height="18px"
+            android:layout_toRightOf="@id/tv_1"
+            android:clickable="true"
             android:text="《乐买宝用户"
             android:textColor="#FF153F00"
             android:textSize="12px"
             />
+
         <TextView
-            android:clickable="true"
             android:id="@+id/service_shou_quan"
-            android:layout_below="@id/tv_1"
             android:layout_width="246px"
-            android:gravity="center_horizontal"
             android:layout_height="18px"
+            android:layout_below="@id/tv_1"
+            android:clickable="true"
+            android:gravity="center_horizontal"
             android:text="服务合同》《善林信用服务及授权》"
             android:textColor="#FF153F00"
             android:textSize="12px"

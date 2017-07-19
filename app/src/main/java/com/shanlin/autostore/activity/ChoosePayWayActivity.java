@@ -90,7 +90,6 @@ public class ChoosePayWayActivity extends BaseActivity{
             case R.id.iv_close_dialog:
                 dialog.dismiss();
                 break;
-
             case R.id.btn_diaolog_know:
                 availbleDialog.dismiss();
                 break;
@@ -99,7 +98,7 @@ public class ChoosePayWayActivity extends BaseActivity{
 
     private void showGetAvailableBalenceDialog() {
         if (availbleDialog == null) {
-            availbleDialog = CommonUtils.getDialog(this, availableDialogView);
+            availbleDialog = CommonUtils.getDialog(this, availableDialogView,false);
         } else {
             availbleDialog.show();
         }
@@ -107,7 +106,7 @@ public class ChoosePayWayActivity extends BaseActivity{
 
     private void showInputPswDialog() {
         if (dialog == null) {
-            dialog = CommonUtils.getDialog(this,dialogView);
+            dialog = CommonUtils.getDialog(this,dialogView,false);
         } else {
             dialog.show();
         }

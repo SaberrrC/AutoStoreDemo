@@ -32,15 +32,13 @@ public class CommonUtils {
 
     /**
      * 创建dialog对象
+     *
      * @param context
      * @param view
      */
-    public static AlertDialog getDialog (Context context, View view) {
-
-        AlertDialog dialog = new AlertDialog.Builder(context)
-                .setView(view)
-                .create();
-        dialog.setCancelable(false);
+    public static AlertDialog getDialog(Context context, View view, boolean cancelable) {
+        AlertDialog dialog = new AlertDialog.Builder(context).setView(view).create();
+        dialog.setCancelable(cancelable);
         dialog.show();
         return dialog;
     }
@@ -57,16 +55,13 @@ public class CommonUtils {
 
     /**
      * 网络连接工具,get,post通用
+     *
      * @return
      */
-    public static HttpService doNet( ) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(Constant.BASE_URL)
-                .client(new OkHttpClient())
-                .build();
+    public static HttpService doNet() {
+        Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(Constant.BASE_URL).client(new OkHttpClient()).build();
         HttpService service = retrofit.create(HttpService.class);
-        return  service;
+        return service;
     }
 
     /**
