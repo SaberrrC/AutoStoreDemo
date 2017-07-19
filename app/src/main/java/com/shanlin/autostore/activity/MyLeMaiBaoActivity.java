@@ -28,24 +28,24 @@ import static com.shanlin.autostore.R.id.tv_money;
  */
 
 public class MyLeMaiBaoActivity extends BaseActivity implements FinalRecycleAdapter.OnViewAttachListener {
-    private TextView mTvAvailableAmount;
-    private TextView mTvMoney;
-    private TextView mTvUsed;
-    private TextView mTvBehalfRepayment;
-    private TextView mTvRepaid;
+    private TextView                  mTvAvailableAmount;
+    private TextView                  mTvMoney;
+    private TextView                  mTvUsed;
+    private TextView                  mTvBehalfRepayment;
+    private TextView                  mTvRepaid;
     private PulltoRefreshRecyclerView mPulltoRefreshRecyclerView;
-    private RecyclerView mRecyclerView;
-    private List<Object> mDatas = new ArrayList<>();
-    private FinalRecycleAdapter mFinalRecycleAdapter;
-    private static int REFRESH = 0;
-    private static int LOAD = 1;
-    private int currentAction = 0;//记录当前用户手势是下拉刷新还是上拉更多，默认下拉刷新
-    private int pageno = 1;
-    private static final int CHOOSE_STATE_BEHALF_REPAYMENT = 0;//待还款
-    private static final int CHOOSE_STATE_REPAID = 1;//已还款
-    private int currentChooseState = 0;
+    private RecyclerView              mRecyclerView;
+    private FinalRecycleAdapter       mFinalRecycleAdapter;
+    private              List<Object> mDatas                        = new ArrayList<>();
+    private static final int          REFRESH                       = 0;
+    private static final int          LOAD                          = 1;
+    private              int          currentAction                 = 0;//记录当前用户手势是下拉刷新还是上拉更多，默认下拉刷新
+    private              int          pageno                        = 1;
+    private static final int          CHOOSE_STATE_BEHALF_REPAYMENT = 0;//待还款
+    private static final int          CHOOSE_STATE_REPAID           = 1;//已还款
+    private              int          currentChooseState            = 0;
     private ImageView mIvNolist;
-    private TextView mTvNolist;
+    private TextView  mTvNolist;
 
     @Override
     public int initLayout() {
