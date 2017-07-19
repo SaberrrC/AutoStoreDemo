@@ -107,7 +107,7 @@ public class BalanceActivity extends BaseActivity implements FinalRecycleAdapter
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_explain:
-                startActivity(new Intent(this, RefundMoneyActivity.class));
+                startActivity(new Intent(this, RefundExplainActivity.class));
                 break;
         }
     }
