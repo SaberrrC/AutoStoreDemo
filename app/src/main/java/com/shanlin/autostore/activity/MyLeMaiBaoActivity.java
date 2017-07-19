@@ -3,6 +3,7 @@ package com.shanlin.autostore.activity;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.shanlin.autostore.MainActivity;
@@ -43,6 +44,8 @@ public class MyLeMaiBaoActivity extends BaseActivity implements FinalRecycleAdap
     private static final int CHOOSE_STATE_BEHALF_REPAYMENT = 0;//待还款
     private static final int CHOOSE_STATE_REPAID           = 1;//已还款
     private              int currentChooseState            = 0;
+    private ImageView mIvNolist;
+    private TextView  mTvNolist;
 
     @Override
     public int initLayout() {
@@ -55,6 +58,8 @@ public class MyLeMaiBaoActivity extends BaseActivity implements FinalRecycleAdap
         mTvAvailableAmount = (TextView) findViewById(R.id.tv_available_amount);
         mTvMoney = (TextView) findViewById(tv_money);
         mTvUsed = (TextView) findViewById(R.id.tv_used);
+        mIvNolist = (ImageView) findViewById(R.id.iv_nolist);
+        mTvNolist = (TextView) findViewById(R.id.tv_nolist);
         mTvBehalfRepayment = (TextView) findViewById(R.id.tv_behalf_repayment);
         mTvRepaid = (TextView) findViewById(R.id.tv_repaid);
         mTvBehalfRepayment.setOnClickListener(this);
@@ -69,8 +74,6 @@ public class MyLeMaiBaoActivity extends BaseActivity implements FinalRecycleAdap
         mFinalRecycleAdapter = new FinalRecycleAdapter(mDatas, map, this);
         mRecyclerView.setAdapter(mFinalRecycleAdapter);
         mPulltoRefreshRecyclerView.setRefreshLoadMoreListener(MyRefreshLoadMoreListener);
-
-
     }
 
     /**
@@ -85,11 +88,11 @@ public class MyLeMaiBaoActivity extends BaseActivity implements FinalRecycleAdap
             ThreadUtils.runMainDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    //                    if (SLJRApplication.isLogin) {
-                    //                        getShoppingList();
-                    //                    } else {
-                    //                        toLoginActivity();
-                    //                    }
+                    // if (SLJRApplication.isLogin) {
+                    //     getShoppingList();
+                    // } else {
+                    //     toLoginActivity();
+                    // }
                     mPulltoRefreshRecyclerView.stopRefresh();
                 }
             }, 500);
@@ -132,6 +135,8 @@ public class MyLeMaiBaoActivity extends BaseActivity implements FinalRecycleAdap
                 currentChooseState = CHOOSE_STATE_BEHALF_REPAYMENT;
                 mTvBehalfRepayment.setTextColor(Color.parseColor("#FFFCBF0D"));
                 mTvRepaid.setTextColor(Color.parseColor("#999999"));
+                mIvNolist.setImageResource(R.mipmap.image_yhq);
+                mTvNolist.setText("账单都已还清");
                 break;
             case R.id.tv_repaid:
                 if (currentChooseState == CHOOSE_STATE_REPAID) {
@@ -140,6 +145,8 @@ public class MyLeMaiBaoActivity extends BaseActivity implements FinalRecycleAdap
                 currentChooseState = CHOOSE_STATE_REPAID;
                 mTvBehalfRepayment.setTextColor(Color.parseColor("#999999"));
                 mTvRepaid.setTextColor(Color.parseColor("#FFFCBF0D"));
+                mIvNolist.setImageResource(R.mipmap.image_wzd);
+                mTvNolist.setText("没有已还清账单");
                 break;
         }
     }

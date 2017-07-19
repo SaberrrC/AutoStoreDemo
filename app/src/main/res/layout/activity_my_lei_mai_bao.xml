@@ -8,57 +8,7 @@
 
     <include layout="@layout/toolbar_layout"></include>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="189.2px"
-        android:background="#fff">
-
-        <TextView
-            android:id="@+id/tv_available_amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="18px"
-            android:text="当前可用额度"
-            android:textColor="#FF999999"
-            android:textSize="14px"/>
-
-        <TextView
-            android:id="@+id/tv_money"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_available_amount"
-            android:layout_centerHorizontal="true"
-            android:text="¥200.00"
-            android:textColor="#FFED4848"
-            android:textSize="34px"/>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_money"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="12dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_money"
-                android:text="已使用："
-                android:textColor="#FF999999"
-                android:textSize="12px"/>
-
-            <TextView
-                android:id="@+id/tv_used"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5px"
-                android:text="¥100.00"
-                android:textColor="#FF333333"
-                android:textSize="18px"/>
-        </LinearLayout>
-    </RelativeLayout>
+    <include layout="@layout/layout_lemaibao_head"/>
 
     <Space
         android:layout_width="match_parent"
@@ -85,7 +35,7 @@
             android:layout_width="3px"
             android:layout_height="33px"
             android:layout_gravity="center"
-            android:background="#f5f5f5"></View>
+            android:background="#f5f5f5"/>
 
         <TextView
             android:id="@+id/tv_repaid"
@@ -101,6 +51,33 @@
     <com.shanlin.autostore.view.PulltoRefreshRecyclerView
         android:id="@+id/pr_lists"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:visibility="visible"/>
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:id="@+id/fl_nolist"
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:layout_marginTop="2px"
+        android:background="@color/white"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_nolist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="60px"/>
+
+        <TextView
+            android:id="@+id/tv_nolist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:text=""/>
+    </com.zhy.autolayout.AutoRelativeLayout>
+
 
 </LinearLayout>

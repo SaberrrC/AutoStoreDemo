@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:id="@+id/rl_item"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white"
+        android:paddingLeft="20dp"
+        android:paddingRight="14px">
+
+        <TextView
+            android:id="@+id/tv_mouth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:text="7月(本月)"
+            android:textColor="#999999"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tv_banlance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_mouth"
+            android:layout_marginTop="6dp"
+            android:text="余额：¥100.00"
+            android:textColor="#FF999999"
+            android:textSize="12px"/>
+
+        <TextView
+            android:id="@+id/tv_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="9dp"
+            android:text="¥500000.00"
+            android:textColor="#ED4848"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tv_money"
+            android:layout_marginTop="6dp"
+            android:text="2017-08-08 15:30:24"
+            android:textColor="#999999"
+            android:textSize="12sp"/>
+
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+    <View
+        android:id="@+id/stork_thin"
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/transparent"/>
+</com.zhy.autolayout.AutoLinearLayout>

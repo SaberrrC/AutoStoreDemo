@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.alipay.sdk.app.PayTask;
+import com.shanlin.autostore.activity.BalanceActivity;
 import com.shanlin.autostore.activity.BuyRecordActivity;
 import com.shanlin.autostore.activity.GateActivity;
 import com.shanlin.autostore.activity.MyLeMaiBaoActivity;
@@ -59,6 +60,7 @@ public class MainActivity extends BaseActivity {
     private byte[]    mLivenessImgBytes;
     private TextView  mTvIdentify;
     private Dialog    mLoginoutDialog;
+    private Button mBtBanlance;
 
 
     @Override
@@ -71,6 +73,8 @@ public class MainActivity extends BaseActivity {
         mDrawerLayout = ((DrawerLayout) findViewById(R.id.activity_main));
         toolbar_title = ((TextView) findViewById(R.id.toolbar_title));
         mTvIdentify = (TextView) findViewById(R.id.identify_tip);
+        mBtBanlance = (Button) findViewById(R.id.btn_yu_e);
+        mBtBanlance.setOnClickListener(this);
         mTvIdentify.setOnClickListener(this);
         findViewById(R.id.btn_lemaibao).setOnClickListener(this);
         findViewById(R.id.btn_open_le_mai_bao).setOnClickListener(this);
@@ -180,6 +184,9 @@ public class MainActivity extends BaseActivity {
 
                 Intent intent = new Intent(MainActivity.this, LivenessActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_REGEST);
+                break;
+            case R.id.btn_yu_e:
+                startActivity(new Intent(this, BalanceActivity.class));
                 break;
         }
         mDrawerLayout.closeDrawer(Gravity.LEFT);
