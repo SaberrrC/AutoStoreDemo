@@ -2,9 +2,11 @@ package com.shanlin.autostore.base;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
 import com.zhy.autolayout.AutoLayoutActivity;
 
@@ -12,7 +14,7 @@ import com.zhy.autolayout.AutoLayoutActivity;
  * Created by DELL on 2017/7/14 0014.
  */
 
-public abstract class BaseActivity extends AutoLayoutActivity implements View.OnClickListener{
+public abstract class BaseActivity extends AutoLayoutActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,6 +27,7 @@ public abstract class BaseActivity extends AutoLayoutActivity implements View.On
 
     /**
      * 初始化布局
+     *
      * @return
      */
     public abstract int initLayout();
@@ -39,5 +42,10 @@ public abstract class BaseActivity extends AutoLayoutActivity implements View.On
      */
     public abstract void initData();
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        MPermissionUtils.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 
 }

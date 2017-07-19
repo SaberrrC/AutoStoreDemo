@@ -1,5 +1,6 @@
 package com.shanlin.autostore;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -29,6 +30,7 @@ import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.LogUtils;
+import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.utils.ToastUtils;
 import com.slfinance.facesdk.ui.LivenessActivity;
@@ -156,13 +158,34 @@ public class MainActivity extends BaseActivity {
                 CommonUtils.toNextActivity(this, OpenLeMaiBao.class);
                 break;
             case R.id.btn_scan_bg://扫一扫
-                startActivityForResult(new Intent(this, CaptureActivity.class), REQUEST_CODE_SCAN);
+                MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA}, new MPermissionUtils.OnPermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                        startActivityForResult(new Intent(MainActivity.this, CaptureActivity.class), REQUEST_CODE_SCAN);
+                    }
+
+                    @Override
+                    public void onPermissionDenied() {
+                        MPermissionUtils.showTipsDialog(MainActivity.this);
+                    }
+                });
                 break;
 
             case R.id.identify_tip://完善身份，智能购物
                 //                CommonUtils.toNextActivity(this,MainActivity.class);
-                Intent intent = new Intent(MainActivity.this, LivenessActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_REGEST);
+                MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA}, new MPermissionUtils.OnPermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                        Intent intent = new Intent(MainActivity.this, LivenessActivity.class);
+                        startActivityForResult(intent, REQUEST_CODE_REGEST);
+                    }
+
+                    @Override
+                    public void onPermissionDenied() {
+                        MPermissionUtils.showTipsDialog(MainActivity.this);
+                    }
+                });
+
                 break;
             case R.id.btn_yu_e://退款金额
                 //                startActivity(new Intent(this, BalanceActivity.class));//订单余额

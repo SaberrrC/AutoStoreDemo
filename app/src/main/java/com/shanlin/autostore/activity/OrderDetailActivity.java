@@ -10,6 +10,7 @@ import com.shanlin.autostore.bean.orderdetail.OrderDetailBodyHeadBean;
 import com.shanlin.autostore.bean.orderdetail.OrderDetailFootBean;
 import com.shanlin.autostore.bean.orderdetail.OrderDetailHeadBean;
 import com.shanlin.autostore.bean.orderdetail.OrderDetailitemBean;
+import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.view.PulltoRefreshRecyclerView;
 
@@ -31,6 +32,7 @@ public class OrderDetailActivity extends BaseActivity implements FinalRecycleAda
 
     @Override
     public void initView() {
+        CommonUtils.initToolbar(this, "购物详情", R.color.black, null);
         mPulltoRefreshRecyclerView = (PulltoRefreshRecyclerView) findViewById(R.id.recyclerview_order);
         mRecyclerView = mPulltoRefreshRecyclerView.getRecyclerView();
         mDatas.add(new OrderDetailHeadBean());
