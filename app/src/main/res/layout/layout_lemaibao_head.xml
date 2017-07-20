@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="189.2px"
     android:background="#fff"
+    android:layout_marginTop="3px"
     tools:showIn="@layout/activity_my_lei_mai_bao">
 
     <TextView

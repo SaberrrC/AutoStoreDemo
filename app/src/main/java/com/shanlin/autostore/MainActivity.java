@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -32,6 +33,7 @@ import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.LogUtils;
 import com.shanlin.autostore.utils.MPermissionUtils;
+import com.shanlin.autostore.utils.StatusBarUtils;
 import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.utils.ToastUtils;
 import com.slfinance.facesdk.ui.LivenessActivity;
@@ -67,6 +69,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        StatusBarUtils.setColor(this, Color.WHITE);
         mDrawerLayout = ((DrawerLayout) findViewById(R.id.activity_main));
         mTvIdentify = (TextView) findViewById(R.id.identify_tip);
         mBtBanlance = (TextView) findViewById(R.id.btn_yu_e);
@@ -258,15 +261,6 @@ public class MainActivity extends BaseActivity {
      * 扫完二维码后提示
      */
     private void showGateOpenDialog() {
-        //        View viewGateOpen = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_gateopen, null, false);
-        //        viewGateOpen.findViewById(R.id.rl_root).setOnClickListener(new View.OnClickListener() {
-        //            @Override
-        //            public void onClick(View view) {
-        //                mGateOpenDialog.dismiss();
-        //            }
-        //        });
-        //        AutoUtils.autoSize(viewGateOpen);
-        //        mGateOpenDialog = CommonUtils.getDialog(this, viewGateOpen, true);
         mGateOpenDialog = new Dialog(this, R.style.MyDialogCheckVersion);
         //点击其他地方消失
         mGateOpenDialog.setCanceledOnTouchOutside(true);
@@ -308,30 +302,6 @@ public class MainActivity extends BaseActivity {
                 mWelcomeDialog1.dismiss();
             }
         }, 3000);
-        //        mWelcomeDialog = new Dialog(this, R.style.MyDialogCheckVersion);
-        //        //点击其他地方消失
-        //        mWelcomeDialog.setCanceledOnTouchOutside(true);
-        //        //填充对话框的布局
-        //        //初始化控件
-        //        //将布局设置给
-        //        mWelcomeDialog.setContentView(viewWelcome);
-        //        //获取当前Activity所在的窗体
-        //        Window dialogWindow = mWelcomeDialog.getWindow();
-        //        //设置Dialog从窗体中间弹出
-        //        dialogWindow.setGravity(Gravity.CENTER);
-        //        //获得窗体的属性
-        //        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-        //        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        //        //        lp.y = 20;//设置Dialog距离底部的距离
-        //        //       将属性设置给窗体
-        //        dialogWindow.setAttributes(lp);
-        //        mWelcomeDialog.show();//显示对话框
-        //        ThreadUtils.runMainDelayed(new Runnable() {
-        //            @Override
-        //            public void run() {
-        //                mWelcomeDialog.dismiss();
-        //            }
-        //        }, 3000);
     }
 
     /**
@@ -358,26 +328,6 @@ public class MainActivity extends BaseActivity {
         });
         AutoUtils.autoSize(viewToFace);
         CommonUtils.getDialog(this, viewToFace, false);
-        //        mToFaceDialog = new Dialog(this, R.style.MyDialogCheckVersion);
-        //        //点击其他地方消失
-        //        mToFaceDialog.setCanceledOnTouchOutside(false);
-        //        //填充对话框的布局
-        //        View viewToFace = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_toface, null, false);
-        //        //跳过
-        //        //初始化控件
-        //        //将布局设置给
-        //        mToFaceDialog.setContentView(viewToFace);
-        //        //获取当前Activity所在的窗体
-        //        Window dialogWindow = mToFaceDialog.getWindow();
-        //        //设置Dialog从窗体中间弹出
-        //        dialogWindow.setGravity(Gravity.CENTER);
-        //        //获得窗体的属性
-        //        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-        //        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        //        //        lp.y = 20;//设置Dialog距离底部的距离
-        //        //       将属性设置给窗体
-        //        dialogWindow.setAttributes(lp);
-        //        mToFaceDialog.show();//显示对话框
     }
 
     private void showLoginoutDialog() {
@@ -399,39 +349,6 @@ public class MainActivity extends BaseActivity {
         });
         AutoUtils.autoSize(viewLoginout);
         mLoginoutDialog = CommonUtils.getDialog(this, viewLoginout, false);
-        //        mLoginoutDialog = new Dialog(this, R.style.MyDialogCheckVersion);
-        //        //点击其他地方消失
-        //        mLoginoutDialog.setCanceledOnTouchOutside(false);
-        //        //填充对话框的布局
-        //        View viewLoginout = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_loginout, null, false);
-        //        viewLoginout.findViewById(R.id.tv_cancle).setOnClickListener(new View.OnClickListener() {
-        //            @Override
-        //            public void onClick(View view) {
-        //                mLoginoutDialog.dismiss();
-        //            }
-        //        });
-        //        viewLoginout.findViewById(R.id.tv_loginout).setOnClickListener(new View.OnClickListener() {
-        //            @Override
-        //            public void onClick(View view) {
-        //                mLoginoutDialog.dismiss();
-        //                //// TODO: 2017-7-18 登出的操作
-        //            }
-        //        });
-        //        AutoUtils.autoSize(viewLoginout);
-        //        //初始化控件
-        //        //将布局设置给
-        //        mLoginoutDialog.setContentView(viewLoginout);
-        //        //获取当前Activity所在的窗体
-        //        Window dialogWindow = mLoginoutDialog.getWindow();
-        //        //设置Dialog从窗体中间弹出
-        //        dialogWindow.setGravity(Gravity.CENTER);
-        //        //获得窗体的属性
-        //        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-        //        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        //        //        lp.y = 20;//设置Dialog距离底部的距离
-        //        //       将属性设置给窗体
-        //        dialogWindow.setAttributes(lp);
-        //        mLoginoutDialog.show();//显示对话框
     }
 
     @Override
