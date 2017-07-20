@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.shanlin.autostore.activity.BuyRecordActivity;
 import com.shanlin.autostore.activity.GateActivity;
+import com.shanlin.autostore.activity.LoginActivity;
 import com.shanlin.autostore.activity.MyLeMaiBaoActivity;
 import com.shanlin.autostore.activity.OpenLeMaiBao;
 import com.shanlin.autostore.activity.RefundMoneyActivity;
@@ -56,6 +57,7 @@ public class MainActivity extends BaseActivity {
     private AlertDialog  mLoginoutDialog;
     private TextView     mBtBanlance;
     private AlertDialog  mWelcomeDialog1;
+    private long lastTime = 0;
 
 
     @Override
@@ -147,8 +149,7 @@ public class MainActivity extends BaseActivity {
             case R.id.location_3:
                 CommonUtils.toNextActivity(this, VersionInfoActivity.class);
                 break;
-            case R.id.location_4:
-                //退出
+            case R.id.location_4://退出登陆
                 showLoginoutDialog();
                 break;
             case R.id.btn_lemaibao:
@@ -391,7 +392,9 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 mLoginoutDialog.dismiss();
-                //// TODO: 2017-7-18 登出的操作
+                // TODO: 2017-7-18 登出的操作
+                CommonUtils.toNextActivity(MainActivity.this, LoginActivity.class);
+                finish();
             }
         });
         AutoUtils.autoSize(viewLoginout);
@@ -430,4 +433,18 @@ public class MainActivity extends BaseActivity {
         //        dialogWindow.setAttributes(lp);
         //        mLoginoutDialog.show();//显示对话框
     }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        long currentTimeMillis = System.currentTimeMillis();
+        if (currentTimeMillis - lastTime > 2000) {
+            ToastUtils.showToast("再按一次退出邻家智能GO便利店");
+            lastTime = System.currentTimeMillis();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+
 }

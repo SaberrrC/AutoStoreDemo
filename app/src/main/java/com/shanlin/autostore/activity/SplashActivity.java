@@ -19,6 +19,8 @@ import com.shanlin.autostore.utils.StatusBarUtils;
 
 public class SplashActivity extends Activity {
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

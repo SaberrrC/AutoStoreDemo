@@ -96,15 +96,14 @@ public class PhoneNumLoginActivity extends BaseActivity {
             CommonUtils.showToast(this,"号码或手机验证码为空");
             return;
         }
-
         // TODO: 2017/7/16 0016  调用登录接口,根据状态码判断情况
         int state = 0;
 
         if (state == 0) {
             CommonUtils.toNextActivity(this, MainActivity.class);
+            killActivity(LoginActivity.class);
             finish();
         }
-
         if (state == 1){
             //未注册
             mBtnBindOrLogin.setText("绑定");

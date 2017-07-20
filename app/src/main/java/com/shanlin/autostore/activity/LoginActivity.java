@@ -59,8 +59,15 @@ public class LoginActivity extends BaseActivity {
         return R.layout.activity_login;
     }
 
+    public LoginActivity mLoginActivity;
+
+    public void finishLoginActivity() {
+        finish();
+    }
+
     @Override
     public void initView() {
+        mLoginActivity = this;
         findViewById(R.id.btn_login_by_face).setOnClickListener(this);
         findViewById(R.id.btn_login_by_phone).setOnClickListener(this);
         findViewById(R.id.btn_login_by_wx).setOnClickListener(this);
@@ -155,10 +162,11 @@ public class LoginActivity extends BaseActivity {
                 //            intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
                 //            startActivity(intent);
                 //            finish();
+                //加入比对成功
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
                 startActivity(intent);
-
+                finish();
                 //                Intent intent = new Intent(this, MainActivity.class);
                 //                //                intent.putExtra("key","value");
                 //                intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);

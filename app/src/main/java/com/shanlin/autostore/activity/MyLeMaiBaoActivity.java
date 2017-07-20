@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.adapter.FinalRecycleAdapter;
 import com.shanlin.autostore.base.BaseActivity;
@@ -54,7 +53,7 @@ public class MyLeMaiBaoActivity extends BaseActivity implements FinalRecycleAdap
 
     @Override
     public void initView() {
-        CommonUtils.initToolbar(this, "我的乐买宝", R.color.blcak, MainActivity.class);
+        CommonUtils.initToolbar(this, "我的乐买宝", R.color.blcak, null);
         mTvAvailableAmount = (TextView) findViewById(R.id.tv_available_amount);
         mTvMoney = (TextView) findViewById(tv_money);
         mTvUsed = (TextView) findViewById(R.id.tv_used);
