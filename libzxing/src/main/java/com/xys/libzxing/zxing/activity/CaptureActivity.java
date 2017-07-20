@@ -18,6 +18,7 @@ package com.xys.libzxing.zxing.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
@@ -39,7 +40,9 @@ import com.xys.libzxing.zxing.camera.CameraManager;
 import com.xys.libzxing.zxing.decode.DecodeThread;
 import com.xys.libzxing.zxing.utils.BeepManager;
 import com.xys.libzxing.zxing.utils.CaptureActivityHandler;
+import com.xys.libzxing.zxing.utils.CommonUtils;
 import com.xys.libzxing.zxing.utils.InactivityTimer;
+import com.xys.libzxing.zxing.utils.StatusBarUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -85,7 +88,8 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_capture);
-
+        StatusBarUtils.setColor(this, Color.WHITE);
+        CommonUtils.initToolbar(this, "扫一扫", R.color.black, null);
         scanPreview = (SurfaceView) findViewById(R.id.capture_preview);
         scanContainer = (RelativeLayout) findViewById(R.id.capture_container);
         scanCropView = (RelativeLayout) findViewById(R.id.capture_crop_view);
