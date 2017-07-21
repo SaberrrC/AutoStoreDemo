@@ -21,7 +21,6 @@ import com.shanlin.autostore.utils.LogUtils;
 import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.ToastUtils;
 import com.slfinance.facesdk.service.Manager;
-import com.slfinance.facesdk.ui.LivenessActivity;
 import com.slfinance.facesdk.util.ConUtil;
 
 import java.util.Map;
@@ -114,8 +113,9 @@ public class LoginActivity extends BaseActivity {
                 MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA}, new MPermissionUtils.OnPermissionListener() {
                     @Override
                     public void onPermissionGranted() {
-                        Intent intent = new Intent(LoginActivity.this, LivenessActivity.class);
-                        startActivityForResult(intent, REQUEST_CODE_LOGIN);
+                        CommonUtils.toNextActivity(LoginActivity.this, MainActivity.class);
+                        // Intent intent = new Intent(LoginActivity.this, LivenessActivity.class);
+                        // startActivityForResult(intent, REQUEST_CODE_LOGIN);
                     }
 
                     @Override

@@ -1,6 +1,8 @@
 package com.shanlin.autostore.interf;
 
 import com.shanlin.autostore.bean.CaptureResponse;
+import com.shanlin.autostore.bean.CodeResponse;
+import com.shanlin.autostore.bean.NumberLoginResponse;
 
 import java.util.Map;
 
@@ -40,5 +42,23 @@ public interface HttpService {
     @POST("mockjsdata/35/device/operate")
     @FormUrlEncoded
     Call<CaptureResponse> postCapture(@FieldMap Map<String, String> map);
+
+    /**
+     * 获取验证码
+     */
+    @POST("mockjsdata/35/member/getverifycode")
+    @FormUrlEncoded
+    Call<CodeResponse> postVerificationCode(@Field("mobile") String mobile);
+
+    /**
+     * 登陆
+     */
+    @POST("mockjsdata/35/memberLogin")
+    @FormUrlEncoded
+    Call<NumberLoginResponse> postNumCodeLogin(@Field("userName") String userName, @Field("validCode") String validCode);
+
+
+
+
 
 }

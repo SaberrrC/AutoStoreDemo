@@ -21,7 +21,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.shanlin.autostore.activity.BuyRecordActivity;
-import com.shanlin.autostore.activity.GateActivity;
 import com.shanlin.autostore.activity.LoginActivity;
 import com.shanlin.autostore.activity.MyLeMaiBaoActivity;
 import com.shanlin.autostore.activity.OpenLeMaiBao;
@@ -32,6 +31,7 @@ import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.CaptureResponse;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
+import com.shanlin.autostore.net.NetCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.LogUtils;
 import com.shanlin.autostore.utils.MPermissionUtils;
@@ -47,10 +47,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends BaseActivity {
 
@@ -220,35 +216,15 @@ public class MainActivity extends BaseActivity {
             int height = data.getExtras().getInt("height");
             String result = data.getExtras().getString("result");
             // TODO: 2017-7-17 判断 result 成功进入超市
-            Retrofit retrofit = new Retrofit.Builder().baseUrl(Constant.BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
-            HttpService service = retrofit.create(HttpService.class);
-            // @FieldMap
-            // 实现的效果与上面相同，但要传入Map
+            HttpService service = CommonUtils.doNet();
             Map<String, String> map = new HashMap<>();
             map.put("code", "1");
             map.put("deviceId", "00001");
             map.put("storeId", "00001");
             Call<CaptureResponse> call = service.postCapture(map);
             // 创建 网络请求接口 的实例
-            //发送网络请求(异步)
-            call.enqueue(new Callback<CaptureResponse>() {
-                //请求成功时回调
-                @Override
-                public void onResponse(Call<CaptureResponse> call, Response<CaptureResponse> response) {
-                    //请求处理,输出结果
-                    CaptureResponse body = response.body();
-
-                    ToastUtils.showToast(body.getMessage());
-                    startActivity(new Intent(MainActivity.this, GateActivity.class));
-                }
-
-                //请求失败时候的回调
-                @Override
-                public void onFailure(Call<CaptureResponse> call, Throwable throwable) {
-                    ToastUtils.showToast("连接失败");
-                }
-            });
-
+            // 发送网络请求(异步)
+            call.enqueue(NetCallBack.getInstance().getCaptureResponseCustomCallBack());
 
 
         }
