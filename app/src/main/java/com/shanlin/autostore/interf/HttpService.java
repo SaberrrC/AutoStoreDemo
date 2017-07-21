@@ -40,7 +40,7 @@ public interface HttpService {
     /**
      * 二维码扫描 打开闸机
      */
-    @POST("mockjsdata/35/device/operate")
+    @POST("mockjsdata/35/memberlogin")
     @FormUrlEncoded
     Call<CaptureBean> postCapture(@FieldMap Map<String, String> map);
 
@@ -52,9 +52,9 @@ public interface HttpService {
     Call<CodeBean> postVerificationCode(@Field("mobile") String mobile);
 
     /**
-     * 登陆
+     * 用手机号 验证码登陆
      */
-    @POST("mockjsdata/35/memberLogin")
+    @POST("mockjsdata/35/memberlogin")
     @FormUrlEncoded
     Call<NumberLoginBean> postNumCodeLogin(@Field("userName") String userName, @Field("validCode") String validCode);
 

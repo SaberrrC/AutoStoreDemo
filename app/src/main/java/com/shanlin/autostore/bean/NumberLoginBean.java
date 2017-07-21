@@ -16,7 +16,6 @@ import com.shanlin.autostore.base.BaseBean;
 
 public class NumberLoginBean extends BaseBean {
 
-
     /**
      * data : {"token":"134U1AH8OOHNTKLFP8DDT3F4LD"}
      * version : 0.0.1

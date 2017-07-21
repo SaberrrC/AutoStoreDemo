@@ -137,9 +137,23 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
             @Override
             public void success(String code, NumberLoginBean data, String msg) {
                 ToastUtils.showToast(data.getMessage());
+                int state = 0;
 
-
-
+                if (state == 0) {
+                    CommonUtils.toNextActivity(PhoneNumLoginActivity.this, MainActivity.class);
+                    killActivity(LoginActivity.class);
+                    finish();
+                }
+                if (state == 1) {
+                    //未注册
+                    mBtnBindOrLogin.setText("绑定");
+                    iconAndTitle.setVisibility(View.GONE);
+                    noVipTip.setVisibility(View.VISIBLE);
+                    return;
+                }
+                mBtnBindOrLogin.setText("登录");
+                iconAndTitle.setVisibility(View.VISIBLE);
+                noVipTip.setVisibility(View.GONE);
             }
 
             @Override
@@ -148,23 +162,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
             }
         });
 
-        int state = 0;
 
-        if (state == 0) {
-            CommonUtils.toNextActivity(this, MainActivity.class);
-            killActivity(LoginActivity.class);
-            finish();
-        }
-        if (state == 1) {
-            //未注册
-            mBtnBindOrLogin.setText("绑定");
-            iconAndTitle.setVisibility(View.GONE);
-            noVipTip.setVisibility(View.VISIBLE);
-            return;
-        }
-        mBtnBindOrLogin.setText("登录");
-        iconAndTitle.setVisibility(View.VISIBLE);
-        noVipTip.setVisibility(View.GONE);
     }
 
 

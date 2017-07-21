@@ -66,8 +66,7 @@ public class MainActivity extends BaseActivity {
     private AlertDialog  mWelcomeDialog1;
     private long lastTime = 0;
     private ProgressView pv;
-    private TextView mUserNum;
-
+    private TextView     mUserNum;
 
     @Override
     public int initLayout() {
@@ -110,7 +109,7 @@ public class MainActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         pv.setGirlPercent(60);
-        NumAnim.startAnim(mUserNum,100000000,2000);
+        NumAnim.startAnim(mUserNum, 100000000, 2000);
         pv.flush();
     }
 
@@ -250,8 +249,8 @@ public class MainActivity extends BaseActivity {
                 }
                 String delta = data.getStringExtra("delta");
                 String encode = Base64.encode(mLivenessImgBytes);
-//                Bitmap bitmap = BitmapFactory.decodeByteArray(mLivenessImgBytes, 0, mLivenessImgBytes.length);
-//                File file = CommonUtils.saveBitmap(bitmap);
+                //                Bitmap bitmap = BitmapFactory.decodeByteArray(mLivenessImgBytes, 0, mLivenessImgBytes.length);
+                //                File file = CommonUtils.saveBitmap(bitmap);
                 Intent intent = new Intent(this, SaveFaceActivity.class);
                 intent.putExtra(Constant.SaveFaceActivity.IMAGE_BASE64, encode);//图片base64
                 intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.UNREGEST_USER);
