@@ -20,7 +20,7 @@
         android:ellipsize="end"
         android:lines="1"
         android:maxEms="14"
-        android:text="邻家无人值守便利店"
+        android:text="邻家智能GO便利店"
         android:textColor="#FF333333"
         android:textSize="16sp"/>
 

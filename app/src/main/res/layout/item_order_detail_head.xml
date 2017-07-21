@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20px"
         android:layout_marginTop="14px"
-        android:text="邻家无人值守便利店"
+        android:text="邻家智能GO便利店"
         android:textColor="#333333"
         android:textSize="16px"/>
 

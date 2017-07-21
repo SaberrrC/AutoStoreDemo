@@ -1,9 +1,11 @@
 package com.shanlin.autostore;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -19,16 +21,21 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.shanlin.autostore.activity.BuyRecordActivity;
-import com.shanlin.autostore.activity.GateActivity;
+import com.shanlin.autostore.activity.LoginActivity;
 import com.shanlin.autostore.activity.MyLeMaiBaoActivity;
 import com.shanlin.autostore.activity.OpenLeMaiBao;
 import com.shanlin.autostore.activity.RefundMoneyActivity;
 import com.shanlin.autostore.activity.SaveFaceActivity;
 import com.shanlin.autostore.activity.VersionInfoActivity;
 import com.shanlin.autostore.base.BaseActivity;
+import com.shanlin.autostore.bean.CaptureResponse;
 import com.shanlin.autostore.constants.Constant;
+import com.shanlin.autostore.interf.HttpService;
+import com.shanlin.autostore.net.NetCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.LogUtils;
+import com.shanlin.autostore.utils.MPermissionUtils;
+import com.shanlin.autostore.utils.StatusBarUtils;
 import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.utils.ToastUtils;
 import com.shanlin.autostore.view.ProgressView;
@@ -37,6 +44,10 @@ import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.zhy.autolayout.utils.AutoUtils;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit2.Call;
 
 public class MainActivity extends BaseActivity {
 
@@ -55,6 +66,7 @@ public class MainActivity extends BaseActivity {
     private AlertDialog  mLoginoutDialog;
     private TextView     mBtBanlance;
     private AlertDialog  mWelcomeDialog1;
+    private long lastTime = 0;
     private ProgressView pv;
 
 
@@ -65,6 +77,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        StatusBarUtils.setColor(this, Color.WHITE);
         mDrawerLayout = ((DrawerLayout) findViewById(R.id.activity_main));
         mTvIdentify = (TextView) findViewById(R.id.identify_tip);
         mBtBanlance = (TextView) findViewById(R.id.btn_yu_e);
@@ -155,8 +168,7 @@ public class MainActivity extends BaseActivity {
             case R.id.location_3:
                 CommonUtils.toNextActivity(this, VersionInfoActivity.class);
                 break;
-            case R.id.location_4:
-                //退出
+            case R.id.location_4://退出登陆
                 showLoginoutDialog();
                 break;
             case R.id.btn_lemaibao:
@@ -166,13 +178,34 @@ public class MainActivity extends BaseActivity {
                 CommonUtils.toNextActivity(this, OpenLeMaiBao.class);
                 break;
             case R.id.btn_scan_bg://扫一扫
-                startActivityForResult(new Intent(this, CaptureActivity.class), REQUEST_CODE_SCAN);
+                MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA}, new MPermissionUtils.OnPermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                        startActivityForResult(new Intent(MainActivity.this, CaptureActivity.class), REQUEST_CODE_SCAN);
+                    }
+
+                    @Override
+                    public void onPermissionDenied() {
+                        MPermissionUtils.showTipsDialog(MainActivity.this);
+                    }
+                });
                 break;
 
             case R.id.identify_tip://完善身份，智能购物
                 //                CommonUtils.toNextActivity(this,MainActivity.class);
-                Intent intent = new Intent(MainActivity.this, LivenessActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_REGEST);
+                MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA}, new MPermissionUtils.OnPermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                        Intent intent = new Intent(MainActivity.this, LivenessActivity.class);
+                        startActivityForResult(intent, REQUEST_CODE_REGEST);
+                    }
+
+                    @Override
+                    public void onPermissionDenied() {
+                        MPermissionUtils.showTipsDialog(MainActivity.this);
+                    }
+                });
+
                 break;
             case R.id.btn_yu_e://退款金额
                 //                startActivity(new Intent(this, BalanceActivity.class));//订单余额
@@ -193,7 +226,17 @@ public class MainActivity extends BaseActivity {
             int height = data.getExtras().getInt("height");
             String result = data.getExtras().getString("result");
             // TODO: 2017-7-17 判断 result 成功进入超市
-            startActivity(new Intent(this, GateActivity.class));
+            HttpService service = CommonUtils.doNet();
+            Map<String, String> map = new HashMap<>();
+            map.put("code", "1");
+            map.put("deviceId", "00001");
+            map.put("storeId", "00001");
+            Call<CaptureResponse> call = service.postCapture(map);
+            // 创建 网络请求接口 的实例
+            // 发送网络请求(异步)
+            call.enqueue(NetCallBack.getInstance().getCaptureResponseCustomCallBack());
+
+
         }
         if (requestCode == REQUEST_CODE_REGEST) {//人脸识别成功 拿到图片跳转
             try {
@@ -244,15 +287,6 @@ public class MainActivity extends BaseActivity {
      * 扫完二维码后提示
      */
     private void showGateOpenDialog() {
-        //        View viewGateOpen = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_gateopen, null, false);
-        //        viewGateOpen.findViewById(R.id.rl_root).setOnClickListener(new View.OnClickListener() {
-        //            @Override
-        //            public void onClick(View view) {
-        //                mGateOpenDialog.dismiss();
-        //            }
-        //        });
-        //        AutoUtils.autoSize(viewGateOpen);
-        //        mGateOpenDialog = CommonUtils.getDialog(this, viewGateOpen, true);
         mGateOpenDialog = new Dialog(this, R.style.MyDialogCheckVersion);
         //点击其他地方消失
         mGateOpenDialog.setCanceledOnTouchOutside(true);
@@ -294,30 +328,6 @@ public class MainActivity extends BaseActivity {
                 mWelcomeDialog1.dismiss();
             }
         }, 3000);
-        //        mWelcomeDialog = new Dialog(this, R.style.MyDialogCheckVersion);
-        //        //点击其他地方消失
-        //        mWelcomeDialog.setCanceledOnTouchOutside(true);
-        //        //填充对话框的布局
-        //        //初始化控件
-        //        //将布局设置给
-        //        mWelcomeDialog.setContentView(viewWelcome);
-        //        //获取当前Activity所在的窗体
-        //        Window dialogWindow = mWelcomeDialog.getWindow();
-        //        //设置Dialog从窗体中间弹出
-        //        dialogWindow.setGravity(Gravity.CENTER);
-        //        //获得窗体的属性
-        //        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-        //        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        //        //        lp.y = 20;//设置Dialog距离底部的距离
-        //        //       将属性设置给窗体
-        //        dialogWindow.setAttributes(lp);
-        //        mWelcomeDialog.show();//显示对话框
-        //        ThreadUtils.runMainDelayed(new Runnable() {
-        //            @Override
-        //            public void run() {
-        //                mWelcomeDialog.dismiss();
-        //            }
-        //        }, 3000);
     }
 
     /**
@@ -344,26 +354,6 @@ public class MainActivity extends BaseActivity {
         });
         AutoUtils.autoSize(viewToFace);
         CommonUtils.getDialog(this, viewToFace, false);
-        //        mToFaceDialog = new Dialog(this, R.style.MyDialogCheckVersion);
-        //        //点击其他地方消失
-        //        mToFaceDialog.setCanceledOnTouchOutside(false);
-        //        //填充对话框的布局
-        //        View viewToFace = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_toface, null, false);
-        //        //跳过
-        //        //初始化控件
-        //        //将布局设置给
-        //        mToFaceDialog.setContentView(viewToFace);
-        //        //获取当前Activity所在的窗体
-        //        Window dialogWindow = mToFaceDialog.getWindow();
-        //        //设置Dialog从窗体中间弹出
-        //        dialogWindow.setGravity(Gravity.CENTER);
-        //        //获得窗体的属性
-        //        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-        //        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        //        //        lp.y = 20;//设置Dialog距离底部的距离
-        //        //       将属性设置给窗体
-        //        dialogWindow.setAttributes(lp);
-        //        mToFaceDialog.show();//显示对话框
     }
 
     private void showLoginoutDialog() {
@@ -378,43 +368,26 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 mLoginoutDialog.dismiss();
-                //// TODO: 2017-7-18 登出的操作
+                // TODO: 2017-7-18 登出的操作
+                CommonUtils.toNextActivity(MainActivity.this, LoginActivity.class);
+                finish();
             }
         });
         AutoUtils.autoSize(viewLoginout);
         mLoginoutDialog = CommonUtils.getDialog(this, viewLoginout, false);
-        //        mLoginoutDialog = new Dialog(this, R.style.MyDialogCheckVersion);
-        //        //点击其他地方消失
-        //        mLoginoutDialog.setCanceledOnTouchOutside(false);
-        //        //填充对话框的布局
-        //        View viewLoginout = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_loginout, null, false);
-        //        viewLoginout.findViewById(R.id.tv_cancle).setOnClickListener(new View.OnClickListener() {
-        //            @Override
-        //            public void onClick(View view) {
-        //                mLoginoutDialog.dismiss();
-        //            }
-        //        });
-        //        viewLoginout.findViewById(R.id.tv_loginout).setOnClickListener(new View.OnClickListener() {
-        //            @Override
-        //            public void onClick(View view) {
-        //                mLoginoutDialog.dismiss();
-        //                //// TODO: 2017-7-18 登出的操作
-        //            }
-        //        });
-        //        AutoUtils.autoSize(viewLoginout);
-        //        //初始化控件
-        //        //将布局设置给
-        //        mLoginoutDialog.setContentView(viewLoginout);
-        //        //获取当前Activity所在的窗体
-        //        Window dialogWindow = mLoginoutDialog.getWindow();
-        //        //设置Dialog从窗体中间弹出
-        //        dialogWindow.setGravity(Gravity.CENTER);
-        //        //获得窗体的属性
-        //        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-        //        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        //        //        lp.y = 20;//设置Dialog距离底部的距离
-        //        //       将属性设置给窗体
-        //        dialogWindow.setAttributes(lp);
-        //        mLoginoutDialog.show();//显示对话框
     }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        long currentTimeMillis = System.currentTimeMillis();
+        if (currentTimeMillis - lastTime > 2000) {
+            ToastUtils.showToast("再按一次退出邻家智能GO便利店");
+            lastTime = System.currentTimeMillis();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+
 }

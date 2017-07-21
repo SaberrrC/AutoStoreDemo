@@ -6,6 +6,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:label="@string/zxing_bar_name"
+
             android:name=".zxing.activity.CaptureActivity"/>
     </application>
 </manifest>

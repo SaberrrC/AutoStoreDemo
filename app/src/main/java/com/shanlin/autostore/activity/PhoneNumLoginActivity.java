@@ -11,20 +11,29 @@ import android.widget.TextView;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
+import com.shanlin.autostore.bean.CodeResponse;
+import com.shanlin.autostore.bean.NumberLoginResponse;
+import com.shanlin.autostore.interf.HttpService;
+import com.shanlin.autostore.net.NetCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
+import com.shanlin.autostore.utils.StrUtils;
+import com.shanlin.autostore.utils.ToastUtils;
+import com.shanlin.autostore.utils.env.DeviceInfo;
 import com.shanlin.autostore.view.CountDownTextView;
+
+import retrofit2.Call;
 
 /**
  * Created by DELL on 2017/7/14 0014.
  */
-public class PhoneNumLoginActivity extends BaseActivity {
+public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEditorActionListener {
 
-    private EditText mEtMsgCode;
-    private EditText mEtPhoneNum;
-    private Button mBtnBindOrLogin;
+    private EditText          mEtMsgCode;
+    private EditText          mEtPhoneNum;
+    private Button            mBtnBindOrLogin;
     private CountDownTextView mBtnGetMsgCode;
-    private View iconAndTitle;
-    private View noVipTip;
+    private View              iconAndTitle;
+    private View              noVipTip;
 
     @Override
     public int initLayout() {
@@ -43,29 +52,17 @@ public class PhoneNumLoginActivity extends BaseActivity {
         mBtnGetMsgCode.setClickable(true);
         mBtnBindOrLogin.setOnClickListener(this);
         mBtnBindOrLogin.setText("登录");
-        mEtMsgCode.setOnEditorActionListener(mOnEditorActionListener);
+        mEtMsgCode.setOnEditorActionListener(this);
+        mEtPhoneNum.setOnEditorActionListener(this);
     }
-    private TextView.OnEditorActionListener mOnEditorActionListener = new TextView.OnEditorActionListener() {
-        @Override
-        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            if (actionId == EditorInfo.IME_ACTION_GO) {
-                bindOrLogin();
-                return true;
-            }
-            return false;
-        }
-    };
 
     @Override
     public void initData() {
-
     }
 
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
-
             case R.id.btn_get_msgcode:
                 //获取验证码
                 doCountDowntime();
@@ -82,39 +79,92 @@ public class PhoneNumLoginActivity extends BaseActivity {
      * 验证码开始倒计时
      */
     private void doCountDowntime() {
-        mBtnGetMsgCode.show(this,60);
+        //是否有网络
+        String networkTypeName = DeviceInfo.getNetworkTypeName();
+        if (TextUtils.isEmpty(networkTypeName)) {//没网络
+            ToastUtils.showToast("无网络");
+            return;
+        }
+        if (checkPhoneNum())
+            return;
+        mEtMsgCode.requestFocus();
+        mBtnGetMsgCode.show(this, 60);
+        deGetCodeFromNet();
+    }
+
+    private boolean checkPhoneNum() {
+        String phone = mEtPhoneNum.getText().toString().trim();
+        if (!StrUtils.isMobileNO(phone)) {//手机号格式不对
+            ToastUtils.showToast("请输入正确的手机号");
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * 获取验证码
+     */
+    private void deGetCodeFromNet() {
+        String phone = mEtPhoneNum.getText().toString().trim();
+        HttpService service = CommonUtils.doNet();
+        // @Field
+        Call<CodeResponse> call = service.postVerificationCode(phone);
+        // 创建 网络请求接口 的实例
+        // 发送网络请求(异步)
+        call.enqueue(NetCallBack.getInstance().getCodeResponseCustomCallBack());
     }
 
     /**
      * 绑定或者登录校验
      */
     private void bindOrLogin() {
-        String num = mEtPhoneNum.getText().toString().trim();
+        String phone = mEtPhoneNum.getText().toString().trim();
         String msgCode = mEtMsgCode.getText().toString().trim();
-
-        if (TextUtils.isEmpty(num) && TextUtils.isEmpty(msgCode)) {
-            CommonUtils.showToast(this,"号码或手机验证码为空");
+        if (!StrUtils.isMobileNO(phone)) {
+            ToastUtils.showToast("请输入正确的手机号");
             return;
         }
-
+        if (TextUtils.isEmpty(msgCode)) {
+            ToastUtils.showToast("请输入验证码");
+            return;
+        }
         // TODO: 2017/7/16 0016  调用登录接口,根据状态码判断情况
+        HttpService service = CommonUtils.doNet();
+        Call<NumberLoginResponse> call = service.postNumCodeLogin(phone, msgCode);
+        call.enqueue(NetCallBack.getInstance().getNumberLoginResponseCustomCallBack());
+
         int state = 0;
 
         if (state == 0) {
             CommonUtils.toNextActivity(this, MainActivity.class);
+            killActivity(LoginActivity.class);
             finish();
         }
-
-        if (state == 1){
+        if (state == 1) {
             //未注册
             mBtnBindOrLogin.setText("绑定");
             iconAndTitle.setVisibility(View.GONE);
             noVipTip.setVisibility(View.VISIBLE);
             return;
         }
-
         mBtnBindOrLogin.setText("登录");
         iconAndTitle.setVisibility(View.VISIBLE);
         noVipTip.setVisibility(View.GONE);
+    }
+
+
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_GO) {
+            bindOrLogin();
+            return true;
+        }
+        if (actionId == EditorInfo.IME_ACTION_NEXT) {
+            if (checkPhoneNum())
+                return true;
+        }
+        return false;
     }
 }

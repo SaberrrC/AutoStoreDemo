@@ -1,5 +1,6 @@
 package com.shanlin.autostore.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +18,7 @@ import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.LogUtils;
+import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.ToastUtils;
 import com.slfinance.facesdk.service.Manager;
 import com.slfinance.facesdk.util.ConUtil;
@@ -56,8 +58,15 @@ public class LoginActivity extends BaseActivity {
         return R.layout.activity_login;
     }
 
+    public LoginActivity mLoginActivity;
+
+    public void finishLoginActivity() {
+        finish();
+    }
+
     @Override
     public void initView() {
+        mLoginActivity = this;
         findViewById(R.id.btn_login_by_face).setOnClickListener(this);
         findViewById(R.id.btn_login_by_phone).setOnClickListener(this);
         findViewById(R.id.btn_login_by_wx).setOnClickListener(this);
@@ -99,10 +108,21 @@ public class LoginActivity extends BaseActivity {
 
         switch (v.getId()) {
 
-            case R.id.btn_login_by_face:
-                                CommonUtils.toNextActivity(this,MainActivity.class);
-//                Intent intent = new Intent(this, LivenessActivity.class);
-//                startActivityForResult(intent, REQUEST_CODE_LOGIN);
+            case R.id.btn_login_by_face://使用人脸识别快速登录
+                //                                CommonUtils.toNextActivity(this,MainActivity.class);
+                MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA}, new MPermissionUtils.OnPermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                        CommonUtils.toNextActivity(LoginActivity.this, MainActivity.class);
+                        // Intent intent = new Intent(LoginActivity.this, LivenessActivity.class);
+                        // startActivityForResult(intent, REQUEST_CODE_LOGIN);
+                    }
+
+                    @Override
+                    public void onPermissionDenied() {
+                        MPermissionUtils.showTipsDialog(LoginActivity.this);
+                    }
+                });
                 break;
             case R.id.btn_login_by_phone:
                 CommonUtils.toNextActivity(this, PhoneNumLoginActivity.class);
@@ -142,14 +162,15 @@ public class LoginActivity extends BaseActivity {
                 //            intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
                 //            startActivity(intent);
                 //            finish();
+                //加入比对成功
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
                 startActivity(intent);
-
-//                Intent intent = new Intent(this, MainActivity.class);
-//                //                intent.putExtra("key","value");
-//                intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
-//                startActivity(intent);
+                finish();
+                //                Intent intent = new Intent(this, MainActivity.class);
+                //                //                intent.putExtra("key","value");
+                //                intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
+                //                startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();
             }
