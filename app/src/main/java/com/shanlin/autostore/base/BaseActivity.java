@@ -24,7 +24,7 @@ public abstract class BaseActivity extends AutoLayoutActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(initLayout());
         addActivity(this);
-        StatusBarUtils.setColor(this, Color.WHITE);
+        StatusBarUtils.setColor(this, Color.TRANSPARENT);
         initView();
         initData();
     }

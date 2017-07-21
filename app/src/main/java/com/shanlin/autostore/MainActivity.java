@@ -37,6 +37,8 @@ import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
 import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.utils.ToastUtils;
+import com.shanlin.autostore.view.NumAnim;
+import com.shanlin.autostore.view.ProgressView;
 import com.slfinance.facesdk.ui.LivenessActivity;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.zhy.autolayout.utils.AutoUtils;
@@ -65,6 +67,8 @@ public class MainActivity extends BaseActivity {
     private TextView     mBtBanlance;
     private AlertDialog  mWelcomeDialog1;
     private long lastTime = 0;
+    private ProgressView pv;
+    private TextView mUserNum;
 
 
     @Override
@@ -78,12 +82,15 @@ public class MainActivity extends BaseActivity {
         mDrawerLayout = ((DrawerLayout) findViewById(R.id.activity_main));
         mTvIdentify = (TextView) findViewById(R.id.identify_tip);
         mBtBanlance = (TextView) findViewById(R.id.btn_yu_e);
+        mUserNum = (TextView) findViewById(R.id.user_num);
+        pv = (ProgressView) findViewById(R.id.pv);
         mBtBanlance.setOnClickListener(this);
         mTvIdentify.setOnClickListener(this);
         findViewById(R.id.btn_lemaibao).setOnClickListener(this);
         findViewById(R.id.btn_open_le_mai_bao).setOnClickListener(this);
         mBtnScan = (Button) findViewById(R.id.btn_scan_bg);
         mBtnScan.setOnClickListener(this);
+
         Intent intent = getIntent();
         String stringExtra = intent.getStringExtra(Constant.MainActivityArgument.MAIN_ACTIVITY);
         if (TextUtils.isEmpty(stringExtra)) {
@@ -99,6 +106,14 @@ public class MainActivity extends BaseActivity {
             showToFaceDialog();
             return;
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        pv.setGirlPercent(60);
+        NumAnim.startAnim(mUserNum,100000000,2000);
+        pv.flush();
     }
 
     @Override
