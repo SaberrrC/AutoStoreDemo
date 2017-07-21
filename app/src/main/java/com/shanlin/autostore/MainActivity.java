@@ -3,8 +3,6 @@ package com.shanlin.autostore;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -39,11 +37,11 @@ import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.utils.ToastUtils;
 import com.shanlin.autostore.view.NumAnim;
 import com.shanlin.autostore.view.ProgressView;
+import com.shanlin.autostore.zhifubao.Base64;
 import com.slfinance.facesdk.ui.LivenessActivity;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.zhy.autolayout.utils.AutoUtils;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -164,7 +162,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
             case R.id.location_2:
                 CommonUtils.toNextActivity(this, BuyRecordActivity.class);
@@ -252,10 +249,11 @@ public class MainActivity extends BaseActivity {
                     return;
                 }
                 String delta = data.getStringExtra("delta");
-                Bitmap bitmap = BitmapFactory.decodeByteArray(mLivenessImgBytes, 0, mLivenessImgBytes.length);
-                File file = CommonUtils.saveBitmap(bitmap);
+                String encode = Base64.encode(mLivenessImgBytes);
+//                Bitmap bitmap = BitmapFactory.decodeByteArray(mLivenessImgBytes, 0, mLivenessImgBytes.length);
+//                File file = CommonUtils.saveBitmap(bitmap);
                 Intent intent = new Intent(this, SaveFaceActivity.class);
-                intent.putExtra(Constant.SaveFaceActivity.IMAGE_PATH, file.getAbsolutePath());//图片路径传过去
+                intent.putExtra(Constant.SaveFaceActivity.IMAGE_BASE64, encode);//图片base64
                 intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.UNREGEST_USER);
                 startActivity(intent);
             } catch (Exception e) {

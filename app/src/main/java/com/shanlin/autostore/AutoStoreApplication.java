@@ -9,14 +9,16 @@ import com.zhy.autolayout.config.AutoLayoutConifg;
  */
 
 public class AutoStoreApplication extends Application {
-    private static AutoStoreApplication app = null;
+
+    private static AutoStoreApplication app     = null;
+    public static  boolean              isLogin = false;
 
     @Override
     public void onCreate() {
         super.onCreate();
         app = this;
         AutoLayoutConifg.getInstance().useDeviceSize();
-//        CrashHandler.getInstance().setCustomCrashHanler(app);
+        //        CrashHandler.getInstance().setCustomCrashHanler(app);
     }
 
     public static AutoStoreApplication getApp() {

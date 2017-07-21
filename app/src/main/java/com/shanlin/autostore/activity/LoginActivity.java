@@ -2,11 +2,10 @@ package com.shanlin.autostore.activity;
 
 import android.Manifest;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -18,9 +17,11 @@ import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.FaceLoginBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
+import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.LogUtils;
 import com.shanlin.autostore.utils.MPermissionUtils;
+import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.ToastUtils;
 import com.shanlin.autostore.zhifubao.Base64;
 import com.slfinance.facesdk.service.Manager;
@@ -165,24 +166,30 @@ public class LoginActivity extends BaseActivity {
                 String encode = Base64.encode(mLivenessImgBytes);
                 HttpService httpService = CommonUtils.doNet();
                 Call<FaceLoginBean> faceLoginBeanCall = httpService.postFaceLogin(encode);
-//                faceLoginBeanCall.enqueue(NetCallBack.getInstance());
+                faceLoginBeanCall.enqueue(new CustomCallBack<FaceLoginBean>() {
+                    @Override
+                    public void success(String code, FaceLoginBean data, String msg) {
+                        if (TextUtils.equals(code, "00")) {//成功
+                            //保存token
+                            AutoStoreApplication.isLogin = true;
+                            SpUtils.saveString(LoginActivity.this, Constant.TOKEN, data.getData().getToken());
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
+                            startActivity(intent);
+                            finish();
+                            return;
+                        }
+                        if (TextUtils.equals(code, "01")) {//失败
+                            ToastUtils.showToast("识别失败，请重试");
+                            return;
+                        }
+                    }
 
-                Bitmap bitmap = BitmapFactory.decodeByteArray(mLivenessImgBytes, 0, mLivenessImgBytes.length);
-                CommonUtils.saveBitmap(bitmap);
-                // TODO: 2017-7-17 发送到服务器进行比对
-                // Intent intent = new Intent(this, MainActivity.class);
-                // intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
-                // startActivity(intent);
-                // finish();
-                //加入比对成功
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
-                startActivity(intent);
-                finish();
-                //                Intent intent = new Intent(this, MainActivity.class);
-                //                //                intent.putExtra("key","value");
-                //                intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
-                //                startActivity(intent);
+                    @Override
+                    public void error(Throwable ex, String code, String msg) {
+                        ToastUtils.showToast(msg);
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -80,7 +80,9 @@
         <activity android:name=".activity.MyLeMaiBaoActivity"></activity>
         <activity android:name=".zhifubao.PayActivity"></activity>
         <activity android:name=".activity.ChoosePayWayActivity"></activity>
-        <activity android:name=".activity.XieYiAndHeTongActivity" android:launchMode="singleTask"></activity>
+        <activity
+            android:name=".activity.XieYiAndHeTongActivity"
+            android:launchMode="singleTask"></activity>
         <activity android:name=".activity.PayResultActivity"></activity>
 
         <activity
@@ -112,11 +114,20 @@
             android:name=".activity.BalanceActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".activity.RefundActivity">
+        <activity
+            android:name=".activity.RefundActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
         </activity>
-        <activity android:name=".activity.RefundMoneyActivity">
+        <activity
+            android:name=".activity.RefundMoneyActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
         </activity>
-        <activity android:name=".activity.RefundExplainActivity">
+        <activity
+            android:name=".activity.RefundExplainActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
         </activity>
     </application>
 
