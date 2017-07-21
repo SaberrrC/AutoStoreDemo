@@ -19,7 +19,6 @@ import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.LogUtils;
 import com.shanlin.autostore.utils.ToastUtils;
 import com.slfinance.facesdk.service.Manager;
-import com.slfinance.facesdk.ui.LivenessActivity;
 import com.slfinance.facesdk.util.ConUtil;
 
 import java.util.Map;
@@ -101,9 +100,9 @@ public class LoginActivity extends BaseActivity {
         switch (v.getId()) {
 
             case R.id.btn_login_by_face:
-//                                CommonUtils.toNextActivity(this,MainActivity.class);
-                Intent intent = new Intent(this, LivenessActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_LOGIN);
+                                CommonUtils.toNextActivity(this,MainActivity.class);
+//                Intent intent = new Intent(this, LivenessActivity.class);
+//                startActivityForResult(intent, REQUEST_CODE_LOGIN);
                 break;
             case R.id.btn_login_by_phone:
                 CommonUtils.toNextActivity(this, PhoneNumLoginActivity.class);

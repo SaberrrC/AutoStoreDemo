@@ -37,4 +37,9 @@
         <!--是否模糊-->
         <item name="android:backgroundDimEnabled">true</item>
     </style>
+
+    <declare-styleable name="ProgressView">
+        <attr name="radius" format="integer"></attr>
+        <attr name="size_text" format="dimension|reference"></attr>
+    </declare-styleable>
 </resources>

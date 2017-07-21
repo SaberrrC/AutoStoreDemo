@@ -31,6 +31,7 @@ import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.LogUtils;
 import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.utils.ToastUtils;
+import com.shanlin.autostore.view.ProgressView;
 import com.slfinance.facesdk.ui.LivenessActivity;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.zhy.autolayout.utils.AutoUtils;
@@ -54,6 +55,7 @@ public class MainActivity extends BaseActivity {
     private AlertDialog  mLoginoutDialog;
     private TextView     mBtBanlance;
     private AlertDialog  mWelcomeDialog1;
+    private ProgressView pv;
 
 
     @Override
@@ -66,6 +68,7 @@ public class MainActivity extends BaseActivity {
         mDrawerLayout = ((DrawerLayout) findViewById(R.id.activity_main));
         mTvIdentify = (TextView) findViewById(R.id.identify_tip);
         mBtBanlance = (TextView) findViewById(R.id.btn_yu_e);
+        pv = (ProgressView) findViewById(R.id.pv);
         mBtBanlance.setOnClickListener(this);
         mTvIdentify.setOnClickListener(this);
         findViewById(R.id.btn_lemaibao).setOnClickListener(this);
@@ -87,6 +90,13 @@ public class MainActivity extends BaseActivity {
             showToFaceDialog();
             return;
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        pv.setGirlPercent(60);
+        pv.flush();
     }
 
     @Override

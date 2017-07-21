@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -9,7 +10,7 @@
         android:layout_height="30px"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="249px"
-        android:layout_marginTop="77px"
+        android:layout_marginTop="10px"
         android:background="@mipmap/face_cetify_bg"
         android:gravity="center"
         android:text="完善身份，智能购物"
@@ -22,7 +23,7 @@
         android:layout_width="111px"
         android:layout_height="18px"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="147px"
+        android:layout_marginTop="40px"
         android:text="今日到店用户"
         android:textColor="#FFB9B9B9"
         android:textSize="18px"
@@ -34,18 +35,31 @@
         android:layout_height="32px"
         android:layout_below="@id/tv_today_user_num"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10px"
+        android:layout_marginTop="11px"
         android:text="100,000,000"
         android:textColor="#FFFCC71F"
         android:textSize="32px"
         />
 
+    <com.shanlin.autostore.view.ProgressView
+        android:layout_centerInParent="true"
+        android:layout_marginTop="41px"
+        android:layout_below="@id/user_num"
+        android:id="@+id/pv"
+        app:radius="6"
+        app:size_text="16sp"
+        android:layout_marginLeft="30px"
+        android:layout_marginRight="30px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <Button
+        android:layout_below="@id/pv"
         android:id="@+id/btn_scan_bg"
         android:layout_width="140px"
         android:layout_height="140px"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="248px"
+        android:layout_marginTop="93px"
         android:background="@mipmap/scan_bg"
         android:text="扫一扫"
         android:textColor="#FFFFFFFF"
