@@ -11,9 +11,10 @@ import android.widget.TextView;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
-import com.shanlin.autostore.bean.CodeResponse;
-import com.shanlin.autostore.bean.NumberLoginResponse;
+import com.shanlin.autostore.bean.CodeBean;
+import com.shanlin.autostore.bean.NumberLoginBean;
 import com.shanlin.autostore.interf.HttpService;
+import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.net.NetCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.StrUtils;
@@ -109,10 +110,10 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
         String phone = mEtPhoneNum.getText().toString().trim();
         HttpService service = CommonUtils.doNet();
         // @Field
-        Call<CodeResponse> call = service.postVerificationCode(phone);
+        Call<CodeBean> call = service.postVerificationCode(phone);
         // 创建 网络请求接口 的实例
         // 发送网络请求(异步)
-        call.enqueue(NetCallBack.getInstance().getCodeResponseCustomCallBack());
+        call.enqueue(NetCallBack.getInstance().getCodeCallBack());
     }
 
     /**
@@ -131,8 +132,21 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
         }
         // TODO: 2017/7/16 0016  调用登录接口,根据状态码判断情况
         HttpService service = CommonUtils.doNet();
-        Call<NumberLoginResponse> call = service.postNumCodeLogin(phone, msgCode);
-        call.enqueue(NetCallBack.getInstance().getNumberLoginResponseCustomCallBack());
+        Call<NumberLoginBean> call = service.postNumCodeLogin(phone, msgCode);
+        call.enqueue(new CustomCallBack<NumberLoginBean>() {
+            @Override
+            public void success(String code, NumberLoginBean data, String msg) {
+                ToastUtils.showToast(data.getMessage());
+
+
+
+            }
+
+            @Override
+            public void error(Throwable ex, String code, String msg) {
+                ToastUtils.showToast(msg);
+            }
+        });
 
         int state = 0;
 
@@ -152,7 +166,6 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
         iconAndTitle.setVisibility(View.VISIBLE);
         noVipTip.setVisibility(View.GONE);
     }
-
 
 
     @Override

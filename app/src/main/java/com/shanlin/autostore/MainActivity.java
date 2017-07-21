@@ -28,12 +28,11 @@ import com.shanlin.autostore.activity.RefundMoneyActivity;
 import com.shanlin.autostore.activity.SaveFaceActivity;
 import com.shanlin.autostore.activity.VersionInfoActivity;
 import com.shanlin.autostore.base.BaseActivity;
-import com.shanlin.autostore.bean.CaptureResponse;
+import com.shanlin.autostore.bean.CaptureBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.NetCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
-import com.shanlin.autostore.utils.LogUtils;
 import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
 import com.shanlin.autostore.utils.ThreadUtils;
@@ -208,7 +207,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_SCAN) {
+        if (requestCode == REQUEST_CODE_SCAN) {//二维码
             if (data == null) {
                 return;
             }
@@ -221,16 +220,15 @@ public class MainActivity extends BaseActivity {
             map.put("code", "1");
             map.put("deviceId", "00001");
             map.put("storeId", "00001");
-            Call<CaptureResponse> call = service.postCapture(map);
+            Call<CaptureBean> call = service.postCapture(map);
             // 创建 网络请求接口 的实例
             // 发送网络请求(异步)
-            call.enqueue(NetCallBack.getInstance().getCaptureResponseCustomCallBack());
-
-
+            call.enqueue(NetCallBack.getInstance().getCaptureCallBack());
         }
         if (requestCode == REQUEST_CODE_REGEST) {//人脸识别成功 拿到图片跳转
             try {
                 if (data == null) {
+                    ToastUtils.showToast("人脸识别失败");
                     return;
                 }
                 mLivenessImgBytes = data.getByteArrayExtra("image_best");
@@ -239,7 +237,6 @@ public class MainActivity extends BaseActivity {
                     return;
                 }
                 String delta = data.getStringExtra("delta");
-                LogUtils.d("delta==" + delta + "  mLivenessImgBytes==" + mLivenessImgBytes);
                 Bitmap bitmap = BitmapFactory.decodeByteArray(mLivenessImgBytes, 0, mLivenessImgBytes.length);
                 File file = CommonUtils.saveBitmap(bitmap);
                 Intent intent = new Intent(this, SaveFaceActivity.class);
@@ -269,8 +266,6 @@ public class MainActivity extends BaseActivity {
             mTvIdentify.setVisibility(View.GONE);
             return;
         }
-
-
     }
 
     /**

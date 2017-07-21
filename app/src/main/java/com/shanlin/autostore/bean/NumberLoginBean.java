@@ -14,7 +14,7 @@ import com.shanlin.autostore.base.BaseBean;
  }
  */
 
-public class NumberLoginResponse extends BaseBean {
+public class NumberLoginBean extends BaseBean {
 
 
     /**

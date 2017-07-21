@@ -10,7 +10,7 @@ import com.shanlin.autostore.base.BaseBean;
  }
  */
 
-public class CodeResponse extends BaseBean {
+public class CodeBean extends BaseBean {
 
 
 }

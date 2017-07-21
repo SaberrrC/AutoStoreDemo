@@ -4,9 +4,10 @@ import android.content.Intent;
 
 import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.activity.GateActivity;
-import com.shanlin.autostore.bean.CaptureResponse;
-import com.shanlin.autostore.bean.CodeResponse;
-import com.shanlin.autostore.bean.NumberLoginResponse;
+import com.shanlin.autostore.bean.CaptureBean;
+import com.shanlin.autostore.bean.CodeBean;
+import com.shanlin.autostore.bean.FaceLoginBean;
+import com.shanlin.autostore.bean.NumberLoginBean;
 import com.shanlin.autostore.utils.ToastUtils;
 
 /**
@@ -27,13 +28,13 @@ public class NetCallBack {
     /**
      * 手机验证码登录
      */
-    public NumberLoginResponseCustomCallBack getNumberLoginResponseCustomCallBack() {
-        return new NumberLoginResponseCustomCallBack();
+    public NumberLoginCallBack getNumberLoginCallBack() {
+        return new NumberLoginCallBack();
     }
 
-    public class NumberLoginResponseCustomCallBack extends CustomCallBack<NumberLoginResponse> {
+    public class NumberLoginCallBack extends CustomCallBack<NumberLoginBean> {
         @Override
-        public void success(String code, NumberLoginResponse data, String msg) {
+        public void success(String code, NumberLoginBean data, String msg) {
             ToastUtils.showToast(data.getMessage());
         }
 
@@ -46,18 +47,17 @@ public class NetCallBack {
     /**
      * 设备管理--设备控制（二维码扫描开闸机）
      */
-    public CaptureResponseCustomCallBack getCaptureResponseCustomCallBack() {
-        return new CaptureResponseCustomCallBack();
+    public CaptureCallBack getCaptureCallBack() {
+        return new CaptureCallBack();
     }
 
-    public class CaptureResponseCustomCallBack extends CustomCallBack<CaptureResponse> {
+    public class CaptureCallBack extends CustomCallBack<CaptureBean> {
         @Override
-        public void success(String code, CaptureResponse data, String msg) {
+        public void success(String code, CaptureBean data, String msg) {
             Intent intent = new Intent(AutoStoreApplication.getApp(), GateActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             AutoStoreApplication.getApp().startActivity(intent);
             // TODO: 2017-7-21 判断用户是否录入人脸
-
 
 
         }
@@ -71,14 +71,14 @@ public class NetCallBack {
     /**
      * 获取短信验证码
      */
-    public CodeResponseCustomCallBack getCodeResponseCustomCallBack() {
-        return new CodeResponseCustomCallBack();
+    public CodeCallBack getCodeCallBack() {
+        return new CodeCallBack();
     }
 
-    public class CodeResponseCustomCallBack extends CustomCallBack<CodeResponse> {
+    public class CodeCallBack extends CustomCallBack<CodeBean> {
 
         @Override
-        public void success(String code, CodeResponse data, String msg) {
+        public void success(String code, CodeBean data, String msg) {
             ToastUtils.showToast(msg);
         }
 
@@ -87,5 +87,26 @@ public class NetCallBack {
             ToastUtils.showToast("网络异常，请稍后再试");
         }
     }
+
+    /**
+     * 脸部识别登陆
+     */
+    public FaceLoginCallBack getFaceLoginCallBackCallBack() {
+        return new FaceLoginCallBack();
+    }
+
+    public class FaceLoginCallBack extends CustomCallBack<FaceLoginBean> {
+
+        @Override
+        public void success(String code, FaceLoginBean data, String msg) {
+            ToastUtils.showToast(msg);
+        }
+
+        @Override
+        public void error(Throwable ex, String code, String msg) {
+            ToastUtils.showToast("网络异常，请稍后再试");
+        }
+    }
+
 
 }
