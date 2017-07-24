@@ -78,7 +78,6 @@
             ></activity>
 
         <activity android:name=".activity.MyLeMaiBaoActivity"></activity>
-        <activity android:name=".zhifubao.PayActivity"></activity>
         <activity android:name=".activity.ChoosePayWayActivity"></activity>
         <activity android:name=".activity.XieYiAndHeTongActivity" android:launchMode="singleTask"></activity>
         <activity android:name=".activity.PayResultActivity"></activity>
