@@ -1,10 +1,12 @@
 package com.shanlin.autostore.base;
 
+import java.io.Serializable;
+
 /**
  * Created by shanlin on 2017-7-21.
  */
 
-public class BaseBean {
+public class BaseBean implements Serializable {
 
     /**
      * code : 200

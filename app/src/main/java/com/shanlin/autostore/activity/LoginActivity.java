@@ -2,11 +2,10 @@ package com.shanlin.autostore.activity;
 
 import android.Manifest;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -15,15 +14,23 @@ import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
+import com.shanlin.autostore.bean.FaceLoginBean;
 import com.shanlin.autostore.constants.Constant;
+import com.shanlin.autostore.interf.HttpService;
+import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.LogUtils;
 import com.shanlin.autostore.utils.MPermissionUtils;
+import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.ToastUtils;
+import com.shanlin.autostore.zhifubao.Base64;
 import com.slfinance.facesdk.service.Manager;
+import com.slfinance.facesdk.ui.LivenessActivity;
 import com.slfinance.facesdk.util.ConUtil;
 
 import java.util.Map;
+
+import retrofit2.Call;
 
 /**
  * Created by DELL on 2017/7/14 0014.
@@ -113,9 +120,9 @@ public class LoginActivity extends BaseActivity {
                 MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA}, new MPermissionUtils.OnPermissionListener() {
                     @Override
                     public void onPermissionGranted() {
-                        CommonUtils.toNextActivity(LoginActivity.this, MainActivity.class);
-                        // Intent intent = new Intent(LoginActivity.this, LivenessActivity.class);
-                        // startActivityForResult(intent, REQUEST_CODE_LOGIN);
+                        //                        CommonUtils.toNextActivity(LoginActivity.this, MainActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, LivenessActivity.class);
+                        startActivityForResult(intent, REQUEST_CODE_LOGIN);
                     }
 
                     @Override
@@ -146,6 +153,7 @@ public class LoginActivity extends BaseActivity {
         if (requestCode == REQUEST_CODE_LOGIN) {
             try {
                 if (data == null) {
+                    ToastUtils.showToast("人脸识别失败");
                     return;
                 }
                 mLivenessImgBytes = data.getByteArrayExtra("image_best");
@@ -154,23 +162,34 @@ public class LoginActivity extends BaseActivity {
                     return;
                 }
                 String delta = data.getStringExtra("delta");
-                LogUtils.d("delta==" + delta + "  mLivenessImgBytes==" + mLivenessImgBytes);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(mLivenessImgBytes, 0, mLivenessImgBytes.length);
-                CommonUtils.saveBitmap(bitmap);
-                // TODO: 2017-7-17 发送到服务器进行比对
-                //            Intent intent = new Intent(this, MainActivity.class);
-                //            intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
-                //            startActivity(intent);
-                //            finish();
-                //加入比对成功
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
-                startActivity(intent);
-                finish();
-                //                Intent intent = new Intent(this, MainActivity.class);
-                //                //                intent.putExtra("key","value");
-                //                intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
-                //                startActivity(intent);
+
+                String encode = Base64.encode(mLivenessImgBytes);
+                HttpService httpService = CommonUtils.doNet();
+                Call<FaceLoginBean> faceLoginBeanCall = httpService.postFaceLogin(encode);
+                faceLoginBeanCall.enqueue(new CustomCallBack<FaceLoginBean>() {
+                    @Override
+                    public void success(String code, FaceLoginBean data, String msg) {
+                        if (TextUtils.equals(code, "00")) {//成功
+                            //保存token
+                            AutoStoreApplication.isLogin = true;
+                            SpUtils.saveString(LoginActivity.this, Constant.TOKEN, data.getData().getToken());
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
+                            startActivity(intent);
+                            finish();
+                            return;
+                        }
+                        if (TextUtils.equals(code, "01")) {//失败
+                            ToastUtils.showToast("识别失败，请重试");
+                            return;
+                        }
+                    }
+
+                    @Override
+                    public void error(Throwable ex, String code, String msg) {
+                        ToastUtils.showToast(msg);
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
             }

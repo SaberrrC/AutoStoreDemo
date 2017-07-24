@@ -73,7 +73,7 @@ public class FaceActivity extends AppCompatActivity {
         mBtCheckFace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkFace(mLivenessImgBytes);
+//                checkFace(mLivenessImgBytes);
             }
         });
         initLiveness();

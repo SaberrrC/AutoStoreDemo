@@ -10,8 +10,8 @@ public class Constant {
     public static final String USER_PHONE           = "USER_PHONE";
     public static final String USER_PHONE_UNREGEST  = "USER_PHONE_UNREGEST";
 
-    public static final String FACE_APP_KEY = "wZXD-Gi2g6Z0AC8qasqa0rldR34MD3CM";
-    public static final String API_SECRET   = "-kYRm5b1SkpfPsnHtMUaa57k5HO3G9Kv";
+//    public static final String FACE_APP_KEY = "wZXD-Gi2g6Z0AC8qasqa0rldR34MD3CM";
+//    public static final String API_SECRET   = "-kYRm5b1SkpfPsnHtMUaa57k5HO3G9Kv";
     //活体照片
     public static final String FACE_PHOTO   = "photo";
     /**

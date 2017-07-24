@@ -6,6 +6,9 @@ package com.shanlin.autostore.constants;
 
 public class Constant {
 
+    public static final String TOKEN            = "TOKEN";
+    public static final String LOGIN_USER_PHONE = "LOGIN_USER_PHONE";
+
     /**
      * 微信注册APPid
      */
@@ -26,6 +29,9 @@ public class Constant {
 
 
     public static final class SaveFaceActivity {
-        public static final String IMAGE_PATH = "IMAGE_PATH";
+        public static final String IMAGE_PATH   = "IMAGE_PATH";
+        public static final String IMAGE_BASE64 = "IMAGE_BASE64";
     }
+
+
 }

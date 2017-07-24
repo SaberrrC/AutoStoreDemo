@@ -3,8 +3,6 @@ package com.shanlin.autostore;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -28,23 +26,22 @@ import com.shanlin.autostore.activity.RefundMoneyActivity;
 import com.shanlin.autostore.activity.SaveFaceActivity;
 import com.shanlin.autostore.activity.VersionInfoActivity;
 import com.shanlin.autostore.base.BaseActivity;
-import com.shanlin.autostore.bean.CaptureResponse;
+import com.shanlin.autostore.bean.CaptureBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.NetCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
-import com.shanlin.autostore.utils.LogUtils;
 import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
 import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.utils.ToastUtils;
 import com.shanlin.autostore.view.NumAnim;
 import com.shanlin.autostore.view.ProgressView;
+import com.shanlin.autostore.zhifubao.Base64;
 import com.slfinance.facesdk.ui.LivenessActivity;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.zhy.autolayout.utils.AutoUtils;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,8 +66,7 @@ public class MainActivity extends BaseActivity {
     private AlertDialog  mWelcomeDialog1;
     private long lastTime = 0;
     private ProgressView pv;
-    private TextView mUserNum;
-
+    private TextView     mUserNum;
 
     @Override
     public int initLayout() {
@@ -113,7 +109,7 @@ public class MainActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         pv.setGirlPercent(60);
-        NumAnim.startAnim(mUserNum,100000000,2000);
+        NumAnim.startAnim(mUserNum, 100000000, 2000);
         pv.flush();
     }
 
@@ -165,7 +161,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
             case R.id.location_2:
                 CommonUtils.toNextActivity(this, BuyRecordActivity.class);
@@ -223,7 +218,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_SCAN) {
+        if (requestCode == REQUEST_CODE_SCAN) {//二维码
             if (data == null) {
                 return;
             }
@@ -236,16 +231,15 @@ public class MainActivity extends BaseActivity {
             map.put("code", "1");
             map.put("deviceId", "00001");
             map.put("storeId", "00001");
-            Call<CaptureResponse> call = service.postCapture(map);
+            Call<CaptureBean> call = service.postCapture(map);
             // 创建 网络请求接口 的实例
             // 发送网络请求(异步)
-            call.enqueue(NetCallBack.getInstance().getCaptureResponseCustomCallBack());
-
-
+            call.enqueue(NetCallBack.getInstance().getCaptureCallBack());
         }
         if (requestCode == REQUEST_CODE_REGEST) {//人脸识别成功 拿到图片跳转
             try {
                 if (data == null) {
+                    ToastUtils.showToast("人脸识别失败");
                     return;
                 }
                 mLivenessImgBytes = data.getByteArrayExtra("image_best");
@@ -254,11 +248,11 @@ public class MainActivity extends BaseActivity {
                     return;
                 }
                 String delta = data.getStringExtra("delta");
-                LogUtils.d("delta==" + delta + "  mLivenessImgBytes==" + mLivenessImgBytes);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(mLivenessImgBytes, 0, mLivenessImgBytes.length);
-                File file = CommonUtils.saveBitmap(bitmap);
+                String encode = Base64.encode(mLivenessImgBytes);
+                //                Bitmap bitmap = BitmapFactory.decodeByteArray(mLivenessImgBytes, 0, mLivenessImgBytes.length);
+                //                File file = CommonUtils.saveBitmap(bitmap);
                 Intent intent = new Intent(this, SaveFaceActivity.class);
-                intent.putExtra(Constant.SaveFaceActivity.IMAGE_PATH, file.getAbsolutePath());//图片路径传过去
+                intent.putExtra(Constant.SaveFaceActivity.IMAGE_BASE64, encode);//图片base64
                 intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.UNREGEST_USER);
                 startActivity(intent);
             } catch (Exception e) {
@@ -284,8 +278,6 @@ public class MainActivity extends BaseActivity {
             mTvIdentify.setVisibility(View.GONE);
             return;
         }
-
-
     }
 
     /**

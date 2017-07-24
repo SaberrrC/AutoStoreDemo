@@ -1,8 +1,9 @@
 package com.shanlin.autostore.interf;
 
-import com.shanlin.autostore.bean.CaptureResponse;
-import com.shanlin.autostore.bean.CodeResponse;
-import com.shanlin.autostore.bean.NumberLoginResponse;
+import com.shanlin.autostore.bean.CaptureBean;
+import com.shanlin.autostore.bean.CodeBean;
+import com.shanlin.autostore.bean.FaceLoginBean;
+import com.shanlin.autostore.bean.NumberLoginBean;
 
 import java.util.Map;
 
@@ -39,26 +40,28 @@ public interface HttpService {
     /**
      * 二维码扫描 打开闸机
      */
-    @POST("mockjsdata/35/device/operate")
+    @POST("mockjsdata/35/memberlogin")
     @FormUrlEncoded
-    Call<CaptureResponse> postCapture(@FieldMap Map<String, String> map);
+    Call<CaptureBean> postCapture(@FieldMap Map<String, String> map);
 
     /**
      * 获取验证码
      */
     @POST("mockjsdata/35/member/getverifycode")
     @FormUrlEncoded
-    Call<CodeResponse> postVerificationCode(@Field("mobile") String mobile);
+    Call<CodeBean> postVerificationCode(@Field("mobile") String mobile);
 
     /**
-     * 登陆
+     * 用手机号 验证码登陆
      */
-    @POST("mockjsdata/35/memberLogin")
+    @POST("mockjsdata/35/memberlogin")
     @FormUrlEncoded
-    Call<NumberLoginResponse> postNumCodeLogin(@Field("userName") String userName, @Field("validCode") String validCode);
+    Call<NumberLoginBean> postNumCodeLogin(@Field("userName") String userName, @Field("validCode") String validCode);
 
-
-
-
-
+    /**
+     * 登陆页面脸部识别登陆
+     */
+    @POST("mockjs/35/member/facelogin")
+    @FormUrlEncoded
+    Call<FaceLoginBean> postFaceLogin(@Field("imageBase64") String imageBase64);
 }
