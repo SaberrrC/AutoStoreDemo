@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.shanlin.autostore.WXPayTools;
 import com.jungly.gridpasswordview.GridPasswordView;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
@@ -95,7 +94,7 @@ public class ChoosePayWayActivity extends BaseActivity{
             case R.id.ll_pay_way_3:
                 //微信支付
 //                requestWxInfo();
-                WXPayTools.pay("wx201410272009395522657a690389285100","C380BEC2BFD727A4B6845133519F3AD6",ChoosePayWayActivity.this);
+//                WXPayTools.pay("wx201410272009395522657a690389285100","C380BEC2BFD727A4B6845133519F3AD6",ChoosePayWayActivity.this);
                 break;
             case R.id.iv_close_dialog:
                 dialog.dismiss();
@@ -138,7 +137,7 @@ public class ChoosePayWayActivity extends BaseActivity{
                         WxChatBean.WxResponseBean wxResponseBean = data.data;
                         String prepay_id = wxResponseBean.prepay_id;
                         String sign = wxResponseBean.sign;
-                        WXPayTools.pay(prepay_id,sign,ChoosePayWayActivity.this);
+                        //WXPayTools.pay(prepay_id,sign,ChoosePayWayActivity.this);
                     }
                 }
             }
