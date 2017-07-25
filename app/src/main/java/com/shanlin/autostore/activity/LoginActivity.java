@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
+
 import com.megvii.livenessdetection.LivenessLicenseManager;
 import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.MainActivity;
@@ -23,6 +24,7 @@ import com.shanlin.autostore.utils.LogUtils;
 import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.ToastUtils;
+import com.shanlin.autostore.wxapi.WXEntryActivity;
 import com.shanlin.autostore.zhifubao.Base64;
 import com.slfinance.facesdk.service.Manager;
 import com.slfinance.facesdk.ui.LivenessActivity;
@@ -139,12 +141,16 @@ public class LoginActivity extends BaseActivity {
                 break;
             case R.id.tv_open:
                 // TODO: 2017/7/16 0016 wx登录
+                Intent intent=new Intent(LoginActivity.this,WXEntryActivity.class);
+                intent.putExtra("wx_type", "1");
+                startActivity(intent);
                 break;
             case R.id.tv_concel:
                 dialog.dismiss();
                 break;
         }
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

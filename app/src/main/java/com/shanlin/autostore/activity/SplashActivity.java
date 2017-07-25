@@ -9,9 +9,15 @@ import android.support.annotation.NonNull;
 import android.view.animation.LinearInterpolator;
 
 import com.shanlin.autostore.R;
+import com.shanlin.autostore.bean.CheckUpdateBean;
+import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by DELL on 2017/7/16 0016.
@@ -37,8 +43,26 @@ public class SplashActivity extends Activity {
                 MPermissionUtils.showTipsDialog(SplashActivity.this);
             }
         });
+        checkUpdate();
     }
+    private void checkUpdate() {
+        HttpService service = CommonUtils.doNet();
+        Call<CheckUpdateBean> call = service.doGetCheckUpdate(2);
+        call.enqueue(new Callback<CheckUpdateBean>() {
+            @Override
+            public void onResponse(Call<CheckUpdateBean> call, Response<CheckUpdateBean> response) {
+                //成功
+                CheckUpdateBean body = response.body();
+//                Log.d("xx", "getMinVersion: "+response.body().getMinVersion());
+            }
 
+
+            @Override
+            public void onFailure(Call<CheckUpdateBean> call, Throwable t) {
+
+            }
+        });
+    }
     /**
      * splash页面等待时长动画
      */
