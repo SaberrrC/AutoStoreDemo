@@ -1,1 +1,1 @@
-include ':app', ':facedemo', ':libzxing'
+include ':app', ':facedemo', ':libzxing', ':weichatmodule'
