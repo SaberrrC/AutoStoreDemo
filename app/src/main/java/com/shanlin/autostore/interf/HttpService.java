@@ -4,6 +4,7 @@ import com.shanlin.autostore.bean.CaptureBean;
 import com.shanlin.autostore.bean.CodeBean;
 import com.shanlin.autostore.bean.FaceLoginBean;
 import com.shanlin.autostore.bean.NumberLoginBean;
+import com.shanlin.autostore.bean.WxChatBean;
 
 import java.util.Map;
 
@@ -64,4 +65,11 @@ public interface HttpService {
     @POST("mockjs/35/member/facelogin")
     @FormUrlEncoded
     Call<FaceLoginBean> postFaceLogin(@Field("imageBase64") String imageBase64);
+
+    /**
+     * 微信订单接口
+     */
+    @POST("/wx/pay")
+    @FormUrlEncoded
+    Call<WxChatBean> postWxRequest(@FieldMap Map<String,String> map);
 }
