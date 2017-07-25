@@ -97,5 +97,5 @@ dependencies {
         }
     }
     compile 'com.slfinance.loan:SLFinance-FaceSDK_android:0.1.6-SNAPSHOT'
-
+    compile project(':weichatmodule')
 }
