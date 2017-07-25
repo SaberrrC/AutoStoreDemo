@@ -1,4 +1,4 @@
-package com.example.autostore;
+package com.shanlin.autostore;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

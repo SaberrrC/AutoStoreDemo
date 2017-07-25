@@ -1,4 +1,4 @@
-package com.example.autostore;
+package com.shanlin.autostore;
 
 /**
  * @author:Zou ChangCheng

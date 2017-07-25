@@ -1,4 +1,4 @@
-package com.example.autostore.wxapi;
+package com.shanlin.autostore.wxapi;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,22 +8,16 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.autostore.R;
-import com.example.autostore.WxTokenBean;
 import com.google.gson.Gson;
+import com.shanlin.autostore.WxTokenBean;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
-import com.tencent.mm.opensdk.modelmsg.GetMessageFromWX;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
-import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
-import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
-import com.tencent.mm.opensdk.modelmsg.WXTextObject;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-
 import java.io.IOException;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -48,7 +42,12 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         if (isInstalled) {
             Log.d("tian", "是否安装: " + isInstalled);
             //授权登陆
-            sendAuth();
+            Intent intent = getIntent();
+            String login = intent.getStringExtra("wx_type");
+            if (login != null && "1".equals(login)) {
+                sendAuth();
+             //   finish();
+            }
         } else {
             Toast.makeText(this, "请安装微信客户端再进行登陆", Toast.LENGTH_SHORT).show();
         }
@@ -62,11 +61,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Intent intent = getIntent();
-        String login = intent.getStringExtra("wx_type");
-        if (login != null && "1".equals(login)) {
-            sendAuth();
-        }
+
     }
 
     private static final String WEIXIN_SCOPE = "snsapi_userinfo";// 用于请求用户信息的作用域
@@ -91,8 +86,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 //        api.sendReq(r);
 
     }
-
-
     private void regisWX() {
         // 通过WXAPIFactory工厂，获取IWXAPI的实例
         api = WXAPIFactory.createWXAPI(this, WX_APPID, true);
@@ -117,7 +110,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     // 第三方应用发送到微信的请求处理后的响应结果，会回调到该方法
     @Override
     public void onResp(BaseResp resp) {
-        Log.e("tian", "resp回调接口执行");
         if (ConstantsAPI.COMMAND_SENDAUTH == resp.getType()) {
             //授权回调
             switch (resp.errCode) {
@@ -130,14 +122,12 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                     Intent intent = new Intent();
                     intent.putExtra("code", code);
                     setResult(2, intent);
-                    Log.e("tiantian", "微信登陆成功设置result");
                     WXEntryActivity.this.finish();
                     finish();
                     getResult(code);
                     break;
                 case BaseResp.ErrCode.ERR_USER_CANCEL:
                     Intent intent1 = new Intent();
-                    Log.e("tiantian", "微信登陆取消设置result");
                     intent1.putExtra("code", "cancel");
                     setResult(2, intent1);
                     finish();
