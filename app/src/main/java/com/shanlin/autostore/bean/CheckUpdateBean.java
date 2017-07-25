@@ -8,4 +8,19 @@ package com.shanlin.autostore.bean;
  */
 
 public class CheckUpdateBean {
+    private  int forceUpdate;
+    private String MinVersion;
+    private String version;
+
+    public int getForceUpdate() {
+        return forceUpdate;
+    }
+
+    public String getMinVersion() {
+        return MinVersion;
+    }
+
+    public String getVersion() {
+        return version;
+    }
 }

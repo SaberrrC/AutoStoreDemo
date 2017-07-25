@@ -1,6 +1,7 @@
 package com.shanlin.autostore.interf;
 
 import com.shanlin.autostore.bean.CaptureBean;
+import com.shanlin.autostore.bean.CheckUpdateBean;
 import com.shanlin.autostore.bean.CodeBean;
 import com.shanlin.autostore.bean.FaceLoginBean;
 import com.shanlin.autostore.bean.NumberLoginBean;
@@ -16,6 +17,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by DELL on 2017/7/14 0014.
@@ -51,7 +53,9 @@ public interface HttpService {
     @POST("mockjsdata/35/member/getverifycode")
     @FormUrlEncoded
     Call<CodeBean> postVerificationCode(@Field("mobile") String mobile);
-
+    //更新
+    @GET("client/version")
+    Call<CheckUpdateBean>doGetCheckUpdate(@Query("type") int type);
     /**
      * 用手机号 验证码登陆
      */
