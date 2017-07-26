@@ -1,5 +1,7 @@
 package com.shanlin.autostore.interf;
 
+import android.media.MediaRouter;
+
 import com.shanlin.autostore.WxTokenBean;
 import com.shanlin.autostore.bean.CaptureBean;
 import com.shanlin.autostore.bean.CheckUpdateBean;
@@ -73,9 +75,20 @@ public interface HttpService {
     @POST("mockjs/35/member/facelogin")
     @FormUrlEncoded
     Call<FaceLoginBean> postFaceLogin(@Field("imageBase64") String imageBase64);
-   @GET
-    Call<WxTokenBean>getWxUserInfo(@Url String url, @Path("appid")String appid, @Path("secret")String secret, @Path("code")String code,
-                                   @Path("grant_type")String grant_type);
+    //微信登录取token
+    @GET
+    Call<WxTokenBean>getWxToken(@Url String url, @Query("appid")String appid, @Query("secret")String secret, @Query("code")String code,
+                                   @Query("grant_type")String grant_type);
+    //微信登录取用户信息
+    @GET
+    Call<WxUserInfoBean>getWxUserInfo(@Url String url, @Query("access_token")String access_token, @Query("openid")String openid);
+
+    //微信认证登录
+    @POST("mockjsdata/35/wechat/wechatlogin")
+    @FormUrlEncoded
+    Call<NumberLoginBean> postWxTokenLogin(@Field("nickname") String nickname, @Field("openid") String openid,@Field("sex") String sex);
+
+
     /**
      * 微信订单接口
      */

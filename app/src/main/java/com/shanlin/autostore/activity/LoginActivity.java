@@ -9,17 +9,18 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 
-import com.google.gson.Gson;
 import com.megvii.livenessdetection.LivenessLicenseManager;
 import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.MainActivity;
+import com.shanlin.autostore.WxMessageEvent;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.WxTokenBean;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.FaceLoginBean;
-import com.shanlin.autostore.bean.MessageEvent;
+import com.shanlin.autostore.bean.NumberLoginBean;
 import com.shanlin.autostore.bean.WxUserInfoBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
@@ -29,7 +30,6 @@ import com.shanlin.autostore.utils.LogUtils;
 import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.ToastUtils;
-import com.shanlin.autostore.wxapi.WXEntryActivity;
 import com.shanlin.autostore.zhifubao.Base64;
 import com.slfinance.facesdk.service.Manager;
 import com.slfinance.facesdk.ui.LivenessActivity;
@@ -40,16 +40,14 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.IOException;
 import java.util.Map;
 
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by DELL on 2017/7/14 0014.
@@ -58,7 +56,6 @@ public class LoginActivity extends BaseActivity {
     public static final String WX_APPID = "wxb51b89cba83263de";
     public static final String WX_SECRET = "1e73ced172f384ef6305e2276d2a9b96";
     public static final int REQUEST_CODE_LOGIN = 100;
-    private static final int WX_CODE_LOGIN = 101;
     private AlertDialog dialog;
     private View dialogOpenWX;
     //微信登录
@@ -88,9 +85,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public int initLayout() {
-        if(!EventBus.getDefault().isRegistered(this)){
-            EventBus.getDefault().register(this);
-        }
+
         return R.layout.activity_login;
     }
 
@@ -102,6 +97,10 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        //注册EventBus
+        if (!EventBus.getDefault().isRegistered(this)) {//判断是否已经注册EventBus
+            EventBus.getDefault().register(this);
+        }
         mLoginActivity = this;
         findViewById(R.id.btn_login_by_face).setOnClickListener(this);
         findViewById(R.id.btn_login_by_phone).setOnClickListener(this);
@@ -141,9 +140,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
-
             case R.id.btn_login_by_face://使用人脸识别快速登录
                 //                                CommonUtils.toNextActivity(this,MainActivity.class);
                 MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA}, new MPermissionUtils.OnPermissionListener() {
@@ -178,6 +175,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void sendAuth() {
+
         api = WXAPIFactory.createWXAPI(this, WX_APPID, false);
         req = new SendAuth.Req();
         req.scope = WEIXIN_SCOPE;
@@ -236,48 +234,16 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void getResult(final String code) {
-                // https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code
-//                String path = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="
-//                        + WX_APPID
-//                        + "&secret="
-//                        + WX_SECRET
-//                        + "&code="
-//                        + code
-//                        + "&grant_type=authorization_code";
-//                OkHttpClient okHttpClient = new OkHttpClient();
-//                Request request = new Request.Builder()
-//                        .get()
-//                        .url(path)
-//                        .build();
-//                okHttpClient.newCall(request).enqueue(new Callback() {
-//                    @Override
-//                    public void onFailure(okhttp3.Call call, IOException e) {
-//                        Log.e("tian", "请求token值失败");
-//                    }
-//
-//                    @Override
-//                    public void onResponse(okhttp3.Call call, Response response) throws IOException {
-//                        Log.e("tian", "请求token值成功");
-//                        //请求成功
-//                        String json = response.body().string();
-//                        Log.e("tian", "请求的token的字符串:" + json);
-//                        Gson gson = new Gson();
-//                        WxTokenBean wxTokenBean = gson.fromJson(json, WxTokenBean.class);
-//                        String access_token = wxTokenBean.getAccess_token();
-//                        String openid = wxTokenBean.getOpenid();
-//                        //TODO:token失效
-//                        Log.e("tian", "token值" + access_token);
-//                        getUserinfo(access_token, openid);
-//                    }
-//
-//                }
-// );
+
                 HttpService httpService = CommonUtils.doNet();
-                Call<WxTokenBean> call = httpService.getWxUserInfo("https://api.weixin.qq.com/sns/oauth2/access_token", WX_APPID, WX_SECRET, code, "authorization_code");
+                Call<WxTokenBean> call = httpService.getWxToken("https://api.weixin.qq.com/sns/oauth2/access_token", WX_APPID, WX_SECRET, code, "authorization_code");
                 call.enqueue(new retrofit2.Callback<WxTokenBean>() {
                     @Override
                     public void onResponse(Call<WxTokenBean> call, retrofit2.Response<WxTokenBean> response) {
-                        WxTokenBean body = response.body();
+                        WxTokenBean wxTokenBean = response.body();
+                        String access_token = wxTokenBean.getAccess_token();
+                        String openid = wxTokenBean.getOpenid();
+                        getUserinfo(access_token, openid);
                     }
 
                     @Override
@@ -291,13 +257,42 @@ public class LoginActivity extends BaseActivity {
 
 
     private void getUserinfo(String access_token, String openid) {
-        String path = "https://api.weixin.qq.com/sns/userinfo?access_token="
-                + access_token + "&openid=" + openid;
-        OkHttpClient okHttpClient = new OkHttpClient();
-        Request request = new Request.Builder()
-                .get()
-                .url(path)
-                .build();
+        final HttpService httpService = CommonUtils.doNet();
+        Call<WxUserInfoBean> call = httpService.getWxUserInfo("https://api.weixin.qq.com/sns/userinfo?access_token", access_token, openid);
+        call.enqueue(new Callback<WxUserInfoBean>() {
+            @Override
+            public void onResponse(Call<WxUserInfoBean> call, Response<WxUserInfoBean> response) {
+                if(response!=null){
+                    WxUserInfoBean body = response.body();
+                    Call<NumberLoginBean> WXLoginCall = httpService.postWxTokenLogin(body.nickname, body.openid, body.sex);
+                    WXLoginCall.enqueue(new CustomCallBack<NumberLoginBean>() {
+                        @Override
+                        public void success(String code, NumberLoginBean data, String msg) {
+                            if(code!=null&&code.equals("200")){
+                                // TODO: 2017/7/26  登录成功，data包含用户数据
+                                CommonUtils.toNextActivity(LoginActivity.this, MainActivity.class);
+                                killActivity(LoginActivity.class);
+                                finish();
+                            }
+                        }
+
+                        @Override
+                        public void error(Throwable ex, String code, String msg) {
+                            // TODO: 2017/7/26  登录失败，暂时无数据，跳到main
+                            Log.d("xx", "error: "+ex.getMessage());
+                            CommonUtils.toNextActivity(LoginActivity.this, MainActivity.class);
+                        }
+                    });
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<WxUserInfoBean> call, Throwable t) {
+
+            }
+        });
+
 
     }
 
@@ -306,12 +301,12 @@ public class LoginActivity extends BaseActivity {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
     //在产生事件的线程中执行
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEventPostThread(MessageEvent messageEvent) {
-        Log.d("xx", "onMessageEventPostThread: ");
-        if (messageEvent.getMessage().equals("code")) {
-            getResult(messageEvent.getMessage());
+    @Subscribe
+    public void onMessageEventPostThread(WxMessageEvent messageEvent) {
+        if (messageEvent.getMessage().equals("WxCode")) {
+            getResult(messageEvent.getCode());
         }
     }
 }
