@@ -2,13 +2,13 @@ package com.shanlin.autostore.interf;
 
 import android.media.MediaRouter;
 
-import com.shanlin.autostore.WxTokenBean;
 import com.shanlin.autostore.bean.CaptureBean;
 import com.shanlin.autostore.bean.CheckUpdateBean;
 import com.shanlin.autostore.bean.CodeBean;
 import com.shanlin.autostore.bean.FaceLoginBean;
 import com.shanlin.autostore.bean.NumberLoginBean;
 import com.shanlin.autostore.bean.WxChatBean;
+import com.shanlin.autostore.bean.WxTokenBean;
 import com.shanlin.autostore.bean.WxUserInfoBean;
 
 import java.util.Map;
@@ -78,7 +78,7 @@ public interface HttpService {
     //微信登录取token
     @GET
     Call<WxTokenBean>getWxToken(@Url String url, @Query("appid")String appid, @Query("secret")String secret, @Query("code")String code,
-                                   @Query("grant_type")String grant_type);
+                                @Query("grant_type")String grant_type);
     //微信登录取用户信息
     @GET
     Call<WxUserInfoBean>getWxUserInfo(@Url String url, @Query("access_token")String access_token, @Query("openid")String openid);
