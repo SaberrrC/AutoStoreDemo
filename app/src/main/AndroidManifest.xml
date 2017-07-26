@@ -126,13 +126,6 @@
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustResize|stateHidden">
         </activity>
-
-        <!-- 微信 -->
-        <activity
-            android:name="com.shanlin.autostore.wxapi.WXEntryActivity"
-            android:exported="true"
-            android:launchMode="singleTop"
-            android:theme="@android:style/Theme.NoDisplay"/>
     </application>
 
 </manifest>
