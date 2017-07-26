@@ -1,5 +1,7 @@
 package com.shanlin.autostore.bean;
 
+import com.shanlin.autostore.base.BaseBean;
+
 /**
  * @author:Zou ChangCheng
  * @date:2017/7/25
@@ -7,10 +9,15 @@ package com.shanlin.autostore.bean;
  * @detail:
  */
 
-public class CheckUpdateBean {
+public class CheckUpdateBean  extends BaseBean{
     private  int forceUpdate;
     private String MinVersion;
     private String version;
+    private String downloadUrl;
+
+    public String getDownloadUrl() {
+        return downloadUrl;
+    }
 
     public int getForceUpdate() {
         return forceUpdate;

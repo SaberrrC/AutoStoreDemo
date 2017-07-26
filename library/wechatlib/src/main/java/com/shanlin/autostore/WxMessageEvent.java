@@ -6,13 +6,10 @@ package com.shanlin.autostore;
  * @detail:
  */
 
-public class MessageEvent {
+public class WxMessageEvent {
 
     private String message;
-
-    public MessageEvent(String message) {
-        this.message = message;
-    }
+    private  String code;
 
     public String getMessage() {
         return message;
@@ -22,5 +19,11 @@ public class MessageEvent {
         this.message = message;
     }
 
+    public String getCode() {
+        return code;
+    }
 
+    public void setCode(String code) {
+        this.code = code;
+    }
 }
