@@ -1,11 +1,13 @@
 package com.shanlin.autostore.interf;
 
+import com.shanlin.autostore.WxTokenBean;
 import com.shanlin.autostore.bean.CaptureBean;
 import com.shanlin.autostore.bean.CheckUpdateBean;
 import com.shanlin.autostore.bean.CodeBean;
 import com.shanlin.autostore.bean.FaceLoginBean;
 import com.shanlin.autostore.bean.NumberLoginBean;
 import com.shanlin.autostore.bean.WxChatBean;
+import com.shanlin.autostore.bean.WxUserInfoBean;
 
 import java.util.Map;
 
@@ -18,6 +20,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 /**
  * Created by DELL on 2017/7/14 0014.
@@ -53,8 +56,9 @@ public interface HttpService {
     @POST("mockjsdata/35/member/getverifycode")
     @FormUrlEncoded
     Call<CodeBean> postVerificationCode(@Field("mobile") String mobile);
+
     //更新
-    @GET("client/version")
+    @GET("mockjsdata/35/client/version")
     Call<CheckUpdateBean>doGetCheckUpdate(@Query("type") int type);
     /**
      * 用手机号 验证码登陆
@@ -69,7 +73,9 @@ public interface HttpService {
     @POST("mockjs/35/member/facelogin")
     @FormUrlEncoded
     Call<FaceLoginBean> postFaceLogin(@Field("imageBase64") String imageBase64);
-
+   @GET
+    Call<WxTokenBean>getWxUserInfo(@Url String url, @Path("appid")String appid, @Path("secret")String secret, @Path("code")String code,
+                                   @Path("grant_type")String grant_type);
     /**
      * 微信订单接口
      */
