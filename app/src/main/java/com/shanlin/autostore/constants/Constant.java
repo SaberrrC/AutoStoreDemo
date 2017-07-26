@@ -10,9 +10,10 @@ public class Constant {
     public static final String LOGIN_USER_PHONE = "LOGIN_USER_PHONE";
 
     /**
-     * 微信注册APPid
+     * 微信
      */
-    public static final String APP_ID = "";
+    public static final String APP_ID = "wxb51b89cba83263de";
+    public static final String APP_SECRET = "1e73ced172f384ef6305e2276d2a9b96";
 
     /**
      * 接口base url
@@ -27,11 +28,9 @@ public class Constant {
         public static final String REGESTED_USER = "REGESTED_USER";
     }
 
-
     public static final class SaveFaceActivity {
         public static final String IMAGE_PATH   = "IMAGE_PATH";
         public static final String IMAGE_BASE64 = "IMAGE_BASE64";
     }
-
 
 }

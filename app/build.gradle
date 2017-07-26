@@ -97,7 +97,7 @@ dependencies {
     compile 'com.jungly:gridPasswordView:0.3'
     compile 'com.slfinance.loan:SLFinance-FaceSDK_android:0.1.6-SNAPSHOT'
 
+    compile project(':library:shareloginlib')
     compile project(':library:zxinglib')
-    compile project(':library:wechatlib')
 //    compile project(':library:livenesslib')
 }

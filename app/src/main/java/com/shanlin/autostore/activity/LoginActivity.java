@@ -6,10 +6,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-
-
+import co.lujun.tpsharelogin.TPManager;
+import co.lujun.tpsharelogin.listener.StateListener;
+import co.lujun.tpsharelogin.platform.weixin.WXManager;
 import com.megvii.livenessdetection.LivenessLicenseManager;
 import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.MainActivity;
@@ -24,14 +26,11 @@ import com.shanlin.autostore.utils.LogUtils;
 import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.ToastUtils;
-import com.shanlin.autostore.wxapi.WXEntryActivity;
 import com.shanlin.autostore.zhifubao.Base64;
 import com.slfinance.facesdk.service.Manager;
 import com.slfinance.facesdk.ui.LivenessActivity;
 import com.slfinance.facesdk.util.ConUtil;
-
 import java.util.Map;
-
 import retrofit2.Call;
 
 /**
@@ -39,9 +38,11 @@ import retrofit2.Call;
  */
 public class LoginActivity extends BaseActivity {
 
+    private static final String TAG = "LoginActivity";
+
     public static final int REQUEST_CODE_LOGIN = 100;
     private AlertDialog dialog;
-    private View        dialogOpenWX;
+    private View dialogOpenWX;
 
     //人脸识别
     public static final int OK_PERCENT = 73;
@@ -55,7 +56,8 @@ public class LoginActivity extends BaseActivity {
             Map<String, Long> managerRegistResult = (Map<String, Long>) msg.obj;
             if (managerRegistResult != null) {
                 //活体检测功能授权成功
-                isLivenessLicenseGet = managerRegistResult.get(livenessLicenseManager.getVersion()) > 0;
+                isLivenessLicenseGet =
+                    managerRegistResult.get(livenessLicenseManager.getVersion()) > 0;
             }
             return true;
         }
@@ -85,7 +87,6 @@ public class LoginActivity extends BaseActivity {
         dialog = new AlertDialog.Builder(this).setView(dialogOpenWX).create();
         //人脸识别
         initLiveness();
-
     }
 
     private void initLiveness() {
@@ -93,7 +94,8 @@ public class LoginActivity extends BaseActivity {
         manager = new Manager(this);
         //如果要使用活体检测抓人脸
         livenessLicenseManager = new LivenessLicenseManager(AutoStoreApplication.getApp());
-        boolean livenessLicenseManagerIsRegisted = manager.registerLicenseManager(livenessLicenseManager);
+        boolean livenessLicenseManagerIsRegisted =
+            manager.registerLicenseManager(livenessLicenseManager);
         //可以选择给自己设备打标
         String uuid = ConUtil.getUUIDString(AutoStoreApplication.getApp());
         //异步进行网络注册请求
@@ -119,19 +121,21 @@ public class LoginActivity extends BaseActivity {
 
             case R.id.btn_login_by_face://使用人脸识别快速登录
                 //                                CommonUtils.toNextActivity(this,MainActivity.class);
-                MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA}, new MPermissionUtils.OnPermissionListener() {
-                    @Override
-                    public void onPermissionGranted() {
-                        //                        CommonUtils.toNextActivity(LoginActivity.this, MainActivity.class);
-                        Intent intent = new Intent(LoginActivity.this, LivenessActivity.class);
-                        startActivityForResult(intent, REQUEST_CODE_LOGIN);
-                    }
+                MPermissionUtils.requestPermissionsResult(this, 1,
+                    new String[] { Manifest.permission.CAMERA },
+                    new MPermissionUtils.OnPermissionListener() {
+                        @Override
+                        public void onPermissionGranted() {
+                            //                        CommonUtils.toNextActivity(LoginActivity.this, MainActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, LivenessActivity.class);
+                            startActivityForResult(intent, REQUEST_CODE_LOGIN);
+                        }
 
-                    @Override
-                    public void onPermissionDenied() {
-                        MPermissionUtils.showTipsDialog(LoginActivity.this);
-                    }
-                });
+                        @Override
+                        public void onPermissionDenied() {
+                            MPermissionUtils.showTipsDialog(LoginActivity.this);
+                        }
+                    });
                 break;
             case R.id.btn_login_by_phone:
                 CommonUtils.toNextActivity(this, PhoneNumLoginActivity.class);
@@ -140,17 +144,31 @@ public class LoginActivity extends BaseActivity {
                 dialog.show();
                 break;
             case R.id.tv_open:
-                // TODO: 2017/7/16 0016 wx登录
-                Intent intent=new Intent(LoginActivity.this,WXEntryActivity.class);
-                intent.putExtra("wx_type", "1");
-                startActivity(intent);
+                TPManager.getInstance().initAppConfig(Constant.APP_ID, Constant.APP_SECRET);
+                WXManager wxManager = new WXManager(this);
+                wxManager.setListener(new StateListener<String>() {
+                    @Override
+                    public void onComplete(String s) {
+                        Log.e(TAG, "onComplete: 登录成功");
+                    }
+
+                    @Override
+                    public void onError(String err) {
+                        Log.e(TAG, "onComplete: 登录出错！");
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        Log.e(TAG, "onComplete: 登录取消！");
+                    }
+                });
+                wxManager.onLoginWithWX();
                 break;
             case R.id.tv_concel:
                 dialog.dismiss();
                 break;
         }
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -178,9 +196,11 @@ public class LoginActivity extends BaseActivity {
                         if (TextUtils.equals(code, "00")) {//成功
                             //保存token
                             AutoStoreApplication.isLogin = true;
-                            SpUtils.saveString(LoginActivity.this, Constant.TOKEN, data.getData().getToken());
+                            SpUtils.saveString(LoginActivity.this, Constant.TOKEN,
+                                data.getData().getToken());
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
+                            intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY,
+                                Constant.MainActivityArgument.LOGIN);
                             startActivity(intent);
                             finish();
                             return;
@@ -201,6 +221,4 @@ public class LoginActivity extends BaseActivity {
             }
         }
     }
-
-
 }
