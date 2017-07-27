@@ -1,78 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <include layout="@layout/icon_title_layout"></include>
 
     <Button
         android:id="@+id/btn_login_by_face"
-        android:layout_marginTop="340px"
         android:layout_width="271px"
+        android:layout_height="50px"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="340px"
+        android:background="@mipmap/face_login_bg"
         android:gravity="center"
         android:paddingBottom="5px"
-        android:layout_centerHorizontal="true"
-        android:background="@mipmap/face_login_bg"
-        android:layout_height="50px"
         android:text="使用人脸快速登录"
         android:textColor="#FFFFFFFF"
         android:textSize="18px"
         />
 
     <Button
-        android:layout_below="@id/btn_login_by_face"
         android:id="@+id/btn_login_by_phone"
-        android:layout_marginTop="60px"
         android:layout_width="221px"
         android:layout_height="41px"
-        android:gravity="center"
-        android:background="@drawable/shape_face_login_bg"
+        android:layout_below="@id/btn_login_by_face"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="60px"
+        android:background="@drawable/shape_face_login_bg"
+        android:gravity="center"
         android:text="手机号登录"
         android:textColor="#FFFCBF0D"
         android:textSize="16px"
         />
 
     <TextView
-        android:layout_below="@id/btn_login_by_phone"
         android:id="@+id/tv_other_way"
-        android:layout_marginTop="25px"
         android:layout_width="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
+        android:layout_below="@id/btn_login_by_phone"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25px"
         android:text="其他方式登录"
         android:textColor="#FFD5D5D5"
         android:textSize="12px"
         />
+
     <View
-        android:layout_marginTop="6px"
+        android:layout_width="91px"
+        android:layout_height="3px"
         android:layout_alignTop="@id/tv_other_way"
         android:layout_below="@id/btn_login_by_phone"
         android:layout_marginRight="16px"
-        android:background="#E5E5E5"
+        android:layout_marginTop="6px"
         android:layout_toLeftOf="@id/tv_other_way"
-        android:layout_width="91px"
-        android:layout_height="3px"
+        android:background="#E5E5E5"
         />
 
     <View
-        android:layout_marginTop="6px"
+        android:layout_width="91px"
+        android:layout_height="3px"
         android:layout_alignTop="@id/tv_other_way"
         android:layout_below="@id/btn_login_by_phone"
         android:layout_marginLeft="16px"
-        android:background="#E5E5E5"
+        android:layout_marginTop="6px"
         android:layout_toRightOf="@id/tv_other_way"
-        android:layout_width="91px"
-        android:layout_height="3px"
+        android:background="#E5E5E5"
         />
 
     <Button
-        android:layout_below="@id/tv_other_way"
         android:id="@+id/btn_login_by_wx"
-        android:layout_marginTop="10px"
-        android:layout_centerHorizontal="true"
         android:layout_width="26px"
         android:layout_height="21.2px"
+        android:layout_below="@id/tv_other_way"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10px"
         android:background="@mipmap/login_wx_icon"
         />
 

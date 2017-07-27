@@ -1,20 +1,21 @@
 package com.shanlin.autostore.interf;
 
-import android.media.MediaRouter;
-
 import com.shanlin.autostore.bean.CaptureBean;
 import com.shanlin.autostore.bean.CheckUpdateBean;
 import com.shanlin.autostore.bean.CodeBean;
 import com.shanlin.autostore.bean.FaceLoginBean;
-import com.shanlin.autostore.bean.NumberLoginBean;
+import com.shanlin.autostore.bean.NumberLoginRsponseBean;
 import com.shanlin.autostore.bean.WxChatBean;
 import com.shanlin.autostore.bean.WxTokenBean;
 import com.shanlin.autostore.bean.WxUserInfoBean;
+import com.shanlin.autostore.bean.sendbean.CodeSendBean;
+import com.shanlin.autostore.bean.sendbean.NumberLoginBean;
 
 import java.util.Map;
 
 import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
@@ -48,31 +49,30 @@ public interface HttpService {
     /**
      * 二维码扫描 打开闸机
      */
-    @POST("mockjsdata/35/memberlogin")
+    @POST("memberlogin")
     @FormUrlEncoded
     Call<CaptureBean> postCapture(@FieldMap Map<String, String> map);
 
     /**
      * 获取验证码
      */
-    @POST("mockjsdata/35/member/getverifycode")
-    @FormUrlEncoded
-    Call<CodeBean> postVerificationCode(@Field("mobile") String mobile);
+    @POST("member/getverifycode")
+    Call<CodeBean> postVerificationCode(@Body CodeSendBean codeSendBean);
 
     //更新
-    @GET("mockjsdata/35/client/version")
-    Call<CheckUpdateBean>doGetCheckUpdate(@Query("type") int type);
+    @GET("client/version")
+    Call<CheckUpdateBean> doGetCheckUpdate(@Query("type") int type);
+
     /**
      * 用手机号 验证码登陆
      */
-    @POST("mockjsdata/35/memberlogin")
-    @FormUrlEncoded
-    Call<NumberLoginBean> postNumCodeLogin(@Field("userName") String userName, @Field("validCode") String validCode);
+    @POST("memberlogin")
+    Call<NumberLoginRsponseBean> postNumCodeLogin(@Body NumberLoginBean numberLoginBean);
 
     /**
      * 登陆页面脸部识别登陆
      */
-    @POST("mockjs/35/member/facelogin")
+    @POST("member/facelogin")
     @FormUrlEncoded
     Call<FaceLoginBean> postFaceLogin(@Field("imageBase64") String imageBase64);
     //微信登录取token
@@ -94,5 +94,5 @@ public interface HttpService {
      */
     @POST("/wx/pay")
     @FormUrlEncoded
-    Call<WxChatBean> postWxRequest(@FieldMap Map<String,String> map);
+    Call<WxChatBean> postWxRequest(@FieldMap Map<String, String> map);
 }
