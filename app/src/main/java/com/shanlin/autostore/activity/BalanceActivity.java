@@ -39,6 +39,7 @@ public class BalanceActivity extends BaseActivity implements FinalRecycleAdapter
         return R.layout.activity_yu_e;
     }
 
+
     @Override
     public void initView() {
         CommonUtils.initToolbar(this, "账户余额", R.color.black, null);
