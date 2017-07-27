@@ -24,6 +24,7 @@ import java.util.Map;
 
 public class BalanceActivity extends BaseActivity implements FinalRecycleAdapter.OnViewAttachListener {
 
+
     private PulltoRefreshRecyclerView mPulltoRefreshRecyclerView;
     private RecyclerView              mRecyclerView;
     private List<Object> mDatas = new ArrayList<>();
