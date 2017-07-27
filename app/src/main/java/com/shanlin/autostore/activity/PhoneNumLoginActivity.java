@@ -1,5 +1,6 @@
 package com.shanlin.autostore.activity;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -56,9 +57,21 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
         mBtnGetMsgCode.setOnClickListener(this);
         mBtnGetMsgCode.setClickable(true);
         mBtnBindOrLogin.setOnClickListener(this);
-        mBtnBindOrLogin.setText("登录");
         mEtMsgCode.setOnEditorActionListener(this);
         mEtPhoneNum.setOnEditorActionListener(this);
+        Intent intent = getIntent();
+        if (intent != null) {
+            String stringExtra = intent.getStringExtra(Constant.FACE_VERIFY);
+            if (TextUtils.equals(stringExtra, Constant.FACE_VERIFY_NO)) {//用户没有人脸认证 显示
+                mBtnBindOrLogin.setText("绑定");
+                iconAndTitle.setVisibility(View.GONE);
+                noVipTip.setVisibility(View.VISIBLE);
+                return;
+            }
+        }
+        mBtnBindOrLogin.setText("登录");
+        iconAndTitle.setVisibility(View.VISIBLE);
+        noVipTip.setVisibility(View.GONE);
     }
 
     @Override
@@ -105,7 +118,6 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
         return false;
     }
 
-
     /**
      * 获取验证码
      */
@@ -145,7 +157,6 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
             ToastUtils.showToast("请输入验证码");
             return;
         }
-        // TODO: 2017/7/16 0016  调用登录接口,根据状态码判断情况
         HttpService service = CommonUtils.doNet();
         Call<NumberLoginRsponseBean> call = service.postNumCodeLogin(new NumberLoginBean(phone, msgCode));
         call.enqueue(new CustomCallBack<NumberLoginRsponseBean>() {
@@ -154,26 +165,14 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                 if (data.getData() == null) {
                     return;
                 }
-                int state = 0;
-                state = Integer.parseInt(data.getData().getFaceVerify());
-                if (state == 0) {
-                    CommonUtils.toNextActivity(PhoneNumLoginActivity.this, MainActivity.class);
-                    killActivity(LoginActivity.class);
-                    finish();
-                }
-                if (state == 1) {
-                    //未注册
-                    mBtnBindOrLogin.setText("绑定");
-                    iconAndTitle.setVisibility(View.GONE);
-                    noVipTip.setVisibility(View.VISIBLE);
-                    return;
-                }
-                mBtnBindOrLogin.setText("登录");
-                iconAndTitle.setVisibility(View.VISIBLE);
-                noVipTip.setVisibility(View.GONE);
                 AutoStoreApplication.isLogin = true;
                 SpUtils.saveString(PhoneNumLoginActivity.this, Constant.TOKEN, data.getData().getToken());
                 SpUtils.saveString(PhoneNumLoginActivity.this, Constant.USER_PHONE_LOGINED, data.getData().getMobile());
+                Intent intent = new Intent(PhoneNumLoginActivity.this, MainActivity.class);
+                intent.putExtra(Constant.FACE_VERIFY, data.getData().getFaceVerify());
+                startActivity(intent);
+                killActivity(LoginActivity.class);
+                finish();
             }
 
             @Override
@@ -181,8 +180,6 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                 ToastUtils.showToast(msg);
             }
         });
-
-
     }
 
 

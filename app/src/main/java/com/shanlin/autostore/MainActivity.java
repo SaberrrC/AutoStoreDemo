@@ -58,7 +58,7 @@ public class MainActivity extends BaseActivity {
     private Dialog       mGateOpenDialog;
     private AlertDialog  mWelcomeDialog;
     private Button       mBtnScan;
-    private Dialog       mToFaceDialog;
+    private AlertDialog       mToFaceDialog;
     private byte[]       mLivenessImgBytes;
     private TextView     mTvIdentify;
     private AlertDialog  mLoginoutDialog;
@@ -87,19 +87,20 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.btn_open_le_mai_bao).setOnClickListener(this);
         mBtnScan = (Button) findViewById(R.id.btn_scan_bg);
         mBtnScan.setOnClickListener(this);
-
         Intent intent = getIntent();
-        String stringExtra = intent.getStringExtra(Constant.MainActivityArgument.MAIN_ACTIVITY);
-        if (TextUtils.isEmpty(stringExtra)) {
+        String faceVerify = intent.getStringExtra(Constant.FACE_VERIFY);
+        if (TextUtils.isEmpty(faceVerify)) {
             return;
         }
-        //刷脸登陆成功
-        if (TextUtils.equals(stringExtra, Constant.MainActivityArgument.LOGIN)) {
+        //刷脸登陆成功 从登录界面人脸验证跳转
+        if (TextUtils.equals(faceVerify, Constant.FACE_VERIFY_OK)) {
+            mTvIdentify.setVisibility(View.GONE);
             showWelcomeDialog();
             return;
         }
-        //刷脸登陆 完成后是未注册用户
-        if (TextUtils.equals(stringExtra, Constant.MainActivityArgument.UNREGEST_USER)) {
+        //未注册用户 从手机号 验证码页面跳转
+        if (TextUtils.equals(faceVerify, Constant.FACE_VERIFY_NO)) {
+            mTvIdentify.setVisibility(View.VISIBLE);
             showToFaceDialog();
             return;
         }
@@ -178,7 +179,7 @@ public class MainActivity extends BaseActivity {
                 CommonUtils.toNextActivity(this, OpenLeMaiBao.class);
                 break;
             case R.id.btn_scan_bg://扫一扫
-                MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, new MPermissionUtils.OnPermissionListener() {
+                MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS}, new MPermissionUtils.OnPermissionListener() {
                     @Override
                     public void onPermissionGranted() {
                         startActivityForResult(new Intent(MainActivity.this, CaptureActivity.class), REQUEST_CODE_SCAN);
@@ -193,7 +194,7 @@ public class MainActivity extends BaseActivity {
 
             case R.id.identify_tip://完善身份，智能购物
                 //                CommonUtils.toNextActivity(this,MainActivity.class);
-                MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, new MPermissionUtils.OnPermissionListener() {
+                MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS}, new MPermissionUtils.OnPermissionListener() {
                     @Override
                     public void onPermissionGranted() {
                         Intent intent = new Intent(MainActivity.this, LivenessActivity.class);
@@ -253,7 +254,7 @@ public class MainActivity extends BaseActivity {
                 //                File file = CommonUtils.saveBitmap(bitmap);
                 Intent intent = new Intent(this, SaveFaceActivity.class);
                 intent.putExtra(Constant.SaveFaceActivity.IMAGE_BASE64, encode);//图片base64
-                intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.UNREGEST_USER);
+                intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_NO);
                 startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -264,16 +265,16 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        String argument = intent.getStringExtra(Constant.MainActivityArgument.MAIN_ACTIVITY);
+        String argument = intent.getStringExtra(Constant.FACE_VERIFY);
         if (TextUtils.equals(Constant.MainActivityArgument.GATE, argument)) {
             showGateOpenDialog();
             return;
         }
-        if (TextUtils.equals(argument, Constant.MainActivityArgument.LOGIN)) {
+        if (TextUtils.equals(argument, Constant.FACE_VERIFY_OK)) {
             showWelcomeDialog();
             return;
         }
-        if (TextUtils.equals(argument, Constant.MainActivityArgument.REGESTED_USER)) {
+        if (TextUtils.equals(argument, Constant.FACE_REGESTED_OK)) {//从录入人脸页面跳转
             showWelcomeDialog();
             mTvIdentify.setVisibility(View.GONE);
             return;
@@ -350,7 +351,7 @@ public class MainActivity extends BaseActivity {
             }
         });
         AutoUtils.autoSize(viewToFace);
-        CommonUtils.getDialog(this, viewToFace, false);
+        mToFaceDialog = CommonUtils.getDialog(this, viewToFace, false);
     }
 
     private void showLoginoutDialog() {

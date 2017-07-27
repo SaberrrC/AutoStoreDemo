@@ -7,30 +7,29 @@ import com.shanlin.autostore.base.BaseBean;
  {
  "code": "200",
  "data": {
- "avetorUrl": "",
- "creaditLevel": "",
- "createdTime": "",
- "faceVerify": "1",
- "gender": "",
+ "gender": "0",
+ "level": "0",
  "idCard": "",
- "level": "",
- "mobile": "",
  "nickName": "",
- "score": "",
- "token": "134U1AH8OOHNTKLFP8DDT3F4LD",
+ "mobile": "18601615173",
  "userDeviceId": "",
- "userName": ""
+ "userName": "141fe1da9e9f20d854a",
+ "token": "1a843d46-e75d-443f-a102-233356060817",
+ "score": 0,
+ "creditLevel": 0,
+ "createTime": 1501134740000,
+ "faceVerify": "1",
+ "avetorUrl": ""
  },
- "message": "登录成功!",
+ "message": "faceToken认证成功!",
  "version": "0.0.1"
  }
  */
 
 public class FaceLoginBean extends BaseBean {
 
-
     /**
-     * data : {"avetorUrl":"","creaditLevel":"","createdTime":"","faceVerify":"1","gender":"","idCard":"","level":"","mobile":"","nickName":"","score":"","token":"134U1AH8OOHNTKLFP8DDT3F4LD","userDeviceId":"","userName":""}
+     * data : {"gender":"0","level":"0","idCard":"","nickName":"","mobile":"18601615173","userDeviceId":"","userName":"141fe1da9e9f20d854a","token":"1a843d46-e75d-443f-a102-233356060817","score":0,"creditLevel":0,"createTime":1501134740000,"faceVerify":"1","avetorUrl":""}
      * version : 0.0.1
      */
 
@@ -55,66 +54,34 @@ public class FaceLoginBean extends BaseBean {
 
     public static class DataBean {
         /**
-         * avetorUrl :
-         * creaditLevel :
-         * createdTime :
-         * faceVerify : 1
-         * gender :
+         * gender : 0
+         * level : 0
          * idCard :
-         * level :
-         * mobile :
          * nickName :
-         * score :
-         * token : 134U1AH8OOHNTKLFP8DDT3F4LD
+         * mobile : 18601615173
          * userDeviceId :
-         * userName :
+         * userName : 141fe1da9e9f20d854a
+         * token : 1a843d46-e75d-443f-a102-233356060817
+         * score : 0
+         * creditLevel : 0
+         * createTime : 1501134740000
+         * faceVerify : 1
+         * avetorUrl :
          */
 
-        private String avetorUrl;
-        private String creaditLevel;
-        private String createdTime;
-        private String faceVerify;
         private String gender;
-        private String idCard;
         private String level;
-        private String mobile;
+        private String idCard;
         private String nickName;
-        private String score;
-        private String token;
+        private String mobile;
         private String userDeviceId;
         private String userName;
-
-        public String getAvetorUrl() {
-            return avetorUrl;
-        }
-
-        public void setAvetorUrl(String avetorUrl) {
-            this.avetorUrl = avetorUrl;
-        }
-
-        public String getCreaditLevel() {
-            return creaditLevel;
-        }
-
-        public void setCreaditLevel(String creaditLevel) {
-            this.creaditLevel = creaditLevel;
-        }
-
-        public String getCreatedTime() {
-            return createdTime;
-        }
-
-        public void setCreatedTime(String createdTime) {
-            this.createdTime = createdTime;
-        }
-
-        public String getFaceVerify() {
-            return faceVerify;
-        }
-
-        public void setFaceVerify(String faceVerify) {
-            this.faceVerify = faceVerify;
-        }
+        private String token;
+        private int    score;
+        private int    creditLevel;
+        private long   createTime;
+        private String faceVerify;
+        private String avetorUrl;
 
         public String getGender() {
             return gender;
@@ -122,14 +89,6 @@ public class FaceLoginBean extends BaseBean {
 
         public void setGender(String gender) {
             this.gender = gender;
-        }
-
-        public String getIdCard() {
-            return idCard;
-        }
-
-        public void setIdCard(String idCard) {
-            this.idCard = idCard;
         }
 
         public String getLevel() {
@@ -140,12 +99,12 @@ public class FaceLoginBean extends BaseBean {
             this.level = level;
         }
 
-        public String getMobile() {
-            return mobile;
+        public String getIdCard() {
+            return idCard;
         }
 
-        public void setMobile(String mobile) {
-            this.mobile = mobile;
+        public void setIdCard(String idCard) {
+            this.idCard = idCard;
         }
 
         public String getNickName() {
@@ -156,20 +115,12 @@ public class FaceLoginBean extends BaseBean {
             this.nickName = nickName;
         }
 
-        public String getScore() {
-            return score;
+        public String getMobile() {
+            return mobile;
         }
 
-        public void setScore(String score) {
-            this.score = score;
-        }
-
-        public String getToken() {
-            return token;
-        }
-
-        public void setToken(String token) {
-            this.token = token;
+        public void setMobile(String mobile) {
+            this.mobile = mobile;
         }
 
         public String getUserDeviceId() {
@@ -186,6 +137,54 @@ public class FaceLoginBean extends BaseBean {
 
         public void setUserName(String userName) {
             this.userName = userName;
+        }
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+
+        public int getScore() {
+            return score;
+        }
+
+        public void setScore(int score) {
+            this.score = score;
+        }
+
+        public int getCreditLevel() {
+            return creditLevel;
+        }
+
+        public void setCreditLevel(int creditLevel) {
+            this.creditLevel = creditLevel;
+        }
+
+        public long getCreateTime() {
+            return createTime;
+        }
+
+        public void setCreateTime(long createTime) {
+            this.createTime = createTime;
+        }
+
+        public String getFaceVerify() {
+            return faceVerify;
+        }
+
+        public void setFaceVerify(String faceVerify) {
+            this.faceVerify = faceVerify;
+        }
+
+        public String getAvetorUrl() {
+            return avetorUrl;
+        }
+
+        public void setAvetorUrl(String avetorUrl) {
+            this.avetorUrl = avetorUrl;
         }
     }
 }

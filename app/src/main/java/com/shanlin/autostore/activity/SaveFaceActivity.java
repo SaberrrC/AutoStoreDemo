@@ -13,7 +13,6 @@ import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.constants.Constant;
-import com.shanlin.autostore.utils.LogUtils;
 import com.shanlin.autostore.utils.ThreadUtils;
 import com.zhy.autolayout.utils.AutoUtils;
 
@@ -32,9 +31,6 @@ public class SaveFaceActivity extends BaseActivity {
     public void initView() {
         mTvSave = (TextView) findViewById(R.id.tv_save);
         mTvSave.setOnClickListener(this);
-        Intent intent = getIntent();
-        String imagePath = intent.getStringExtra(Constant.SaveFaceActivity.IMAGE_PATH);
-        LogUtils.d("imagePath = " + imagePath);
     }
 
     @Override
@@ -54,7 +50,7 @@ public class SaveFaceActivity extends BaseActivity {
                     public void run() {
                         mLoadingDialog.dismiss();
                         Intent intent = new Intent(SaveFaceActivity.this, MainActivity.class);
-                        intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.REGESTED_USER);
+                        intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_REGESTED_OK);
                         startActivity(intent);
                     }
                 }, 3000);

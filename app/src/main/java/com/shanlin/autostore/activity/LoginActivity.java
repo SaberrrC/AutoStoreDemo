@@ -146,7 +146,7 @@ public class LoginActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.btn_login_by_face://使用人脸识别快速登录
                 //                                CommonUtils.toNextActivity(this,MainActivity.class);
-                MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, new MPermissionUtils.OnPermissionListener() {
+                MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS}, new MPermissionUtils.OnPermissionListener() {
                     @Override
                     public void onPermissionGranted() {
                         //CommonUtils.toNextActivity(LoginActivity.this, MainActivity.class);
@@ -160,7 +160,7 @@ public class LoginActivity extends BaseActivity {
                     }
                 });
                 break;
-            case R.id.btn_login_by_phone:
+            case R.id.btn_login_by_phone://手机号登陆
                 CommonUtils.toNextActivity(this, PhoneNumLoginActivity.class);
                 break;
             case R.id.btn_login_by_wx:
@@ -218,7 +218,7 @@ public class LoginActivity extends BaseActivity {
                         if (TextUtils.equals(data.getData().getFaceVerify(), "0")) {
                             //没人脸认证 跳转手机号登陆界面
                             Intent intent = new Intent(LoginActivity.this, PhoneNumLoginActivity.class);
-                            intent.putExtra(Constant.NO_FACE_VERIFY, Constant.NO_FACE_VERIFY);
+                            intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_NO);
                             startActivity(intent);
                         }
                         if (TextUtils.equals(data.getData().getFaceVerify(), "1")) {
@@ -226,12 +226,11 @@ public class LoginActivity extends BaseActivity {
                             AutoStoreApplication.isLogin = true;
                             SpUtils.saveString(LoginActivity.this, Constant.TOKEN, data.getData().getToken());
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
+                            intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_OK);
                             startActivity(intent);
                             finish();
                         }
                     }
-
                     @Override
                     public void error(Throwable ex, String code, String msg) {
                         dismissLoadingDialog();
