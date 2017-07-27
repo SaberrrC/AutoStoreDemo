@@ -113,6 +113,7 @@ dependencies {
     //jpush
     compile 'cn.jiguang.sdk:jpush:3.0.3'  // 此处以JPush 3.0.3 版本为例。
     compile 'cn.jiguang.sdk:jcore:1.1.1'  // 此处以JCore 1.1.1 版本为例。
-
+    //自动获取短信验证码
+    compile 'tech.michaelx.authcode:authcode:1.0.0' // 添加依赖
 //    compile project(':library:livenesslib')
 }

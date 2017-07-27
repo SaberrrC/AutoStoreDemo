@@ -1,5 +1,6 @@
 package com.shanlin.autostore.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -21,6 +22,7 @@ import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
+import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.StrUtils;
 import com.shanlin.autostore.utils.ToastUtils;
@@ -28,13 +30,16 @@ import com.shanlin.autostore.utils.env.DeviceInfo;
 import com.shanlin.autostore.view.CountDownTextView;
 
 import retrofit2.Call;
+import tech.michaelx.authcode.AuthCode;
+import tech.michaelx.authcode.CodeConfig;
 
 /**
  * Created by DELL on 2017/7/14 0014.
  */
 public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEditorActionListener {
 
-    private EditText          mEtMsgCode;
+    public static final int CODE_LENTH = 4;
+    private EditText mEtMsgCode;
     private EditText          mEtPhoneNum;
     private Button            mBtnBindOrLogin;
     private CountDownTextView mBtnGetMsgCode;
@@ -132,6 +137,31 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
             @Override
             public void success(String code, CodeBean data, String msg) {
                 ToastUtils.showToast(msg);
+//                <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+//                <uses-permission android:name="android.permission.READ_SMS"/>
+                MPermissionUtils.requestPermissionsResult(PhoneNumLoginActivity.this, 1, new String[]{Manifest.permission.RECEIVE_SMS,
+                        Manifest.permission.READ_SMS}, new MPermissionUtils.OnPermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                        //CommonUtils.toNextActivity(LoginActivity.this, MainActivity.class);
+                        CodeConfig config = new CodeConfig.Builder()
+                                .codeLength(CODE_LENTH) // 设置验证码长度
+//                                .smsFromStart(10690333) // 设置验证码发送号码前几位数字
+                                .smsFrom(10690333031369L) // 如果验证码发送号码固定，则可以设置验证码发送完整号码
+                                .smsBodyStartWith("验证码") // 设置验证码短信开头文字
+                                .smsBodyContains("在3分钟内有效。如非本人操作请忽略本短信") // 设置验证码短信内容包含文字
+                                .build();
+                        AuthCode.getInstance().with(PhoneNumLoginActivity.this).config(config).into(mEtMsgCode);
+
+
+                    }
+
+                    @Override
+                    public void onPermissionDenied() {
+                    }
+                });
+
+
             }
 
             @Override
@@ -177,6 +207,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
 
             @Override
             public void error(Throwable ex, String code, String msg) {
+                mBtnGetMsgCode.reset();
                 ToastUtils.showToast(msg);
             }
         });
@@ -194,5 +225,20 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                 return true;
         }
         return false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //号码回显
+        String phone = SpUtils.getString(PhoneNumLoginActivity.this, Constant.USER_PHONE_HISTORY, "");
+        mEtPhoneNum.setText(phone);
+        mEtPhoneNum.setSelection(phone.length());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SpUtils.saveString(PhoneNumLoginActivity.this, Constant.USER_PHONE_HISTORY, mEtPhoneNum.getText().toString().trim());
     }
 }
