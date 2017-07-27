@@ -8,12 +8,12 @@ public class Constant {
 
     public static final String TOKEN              = "TOKEN";
     public static final String USER_PHONE_LOGINED = "USER_PHONE_LOGINED";
-
-    public static final String LOGIN_USER_PHONE = "LOGIN_USER_PHONE";
+    public static final String DEVICEID           = "deviceId";
+    public static final String NO_FACE_VERIFY     = "NO_FACE_VERIFY";//用户没有人脸认证
     /**
      * 微信
      */
-    public static final String APP_ID           = "wxb51b89cba83263de";
+    public static final String APP_ID             = "wxb51b89cba83263de";
 
     public static final String APP_SECRET = "1e73ced172f384ef6305e2276d2a9b96";
     /**

@@ -9,6 +9,7 @@ import com.shanlin.autostore.bean.WxChatBean;
 import com.shanlin.autostore.bean.WxTokenBean;
 import com.shanlin.autostore.bean.WxUserInfoBean;
 import com.shanlin.autostore.bean.sendbean.CodeSendBean;
+import com.shanlin.autostore.bean.sendbean.FaceLoginSendBean;
 import com.shanlin.autostore.bean.sendbean.NumberLoginBean;
 
 import java.util.Map;
@@ -73,8 +74,7 @@ public interface HttpService {
      * 登陆页面脸部识别登陆
      */
     @POST("member/facelogin")
-    @FormUrlEncoded
-    Call<FaceLoginBean> postFaceLogin(@Field("imageBase64") String imageBase64);
+    Call<FaceLoginBean> postFaceLogin(@Body FaceLoginSendBean faceLoginSendBean);
     //微信登录取token
     @GET
     Call<WxTokenBean>getWxToken(@Url String url, @Query("appid")String appid, @Query("secret")String secret, @Query("code")String code,

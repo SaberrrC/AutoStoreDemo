@@ -5,18 +5,24 @@ import com.shanlin.autostore.base.BaseBean;
 /**
  * Created by shanlin on 2017-7-21.
  {
- "code": "00",
+ "code": "200",
  "data": {
- "creditLevel": "1",
- "gender": "0",
- "idCard": "350628177766920112",
- "level": "1",
- "memberId": "350628177766920112",
- "score": "200",
- "token": "测试内容do35",
- "userName": "david"
+ "avetorUrl": "",
+ "creaditLevel": "",
+ "createdTime": "",
+ "faceVerify": "1",
+ "gender": "",
+ "idCard": "",
+ "level": "",
+ "mobile": "",
+ "nickName": "",
+ "score": "",
+ "token": "134U1AH8OOHNTKLFP8DDT3F4LD",
+ "userDeviceId": "",
+ "userName": ""
  },
- "message": "成功"
+ "message": "登录成功!",
+ "version": "0.0.1"
  }
  */
 
@@ -24,10 +30,12 @@ public class FaceLoginBean extends BaseBean {
 
 
     /**
-     * data : {"creditLevel":"1","gender":"0","idCard":"350628177766920112","level":"1","memberId":"350628177766920112","score":"200","token":"测试内容do35","userName":"david"}
+     * data : {"avetorUrl":"","creaditLevel":"","createdTime":"","faceVerify":"1","gender":"","idCard":"","level":"","mobile":"","nickName":"","score":"","token":"134U1AH8OOHNTKLFP8DDT3F4LD","userDeviceId":"","userName":""}
+     * version : 0.0.1
      */
 
     private DataBean data;
+    private String version;
 
     public DataBean getData() {
         return data;
@@ -37,33 +45,75 @@ public class FaceLoginBean extends BaseBean {
         this.data = data;
     }
 
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
     public static class DataBean {
         /**
-         * creditLevel : 1
-         * gender : 0
-         * idCard : 350628177766920112
-         * level : 1
-         * memberId : 350628177766920112
-         * score : 200
-         * token : 测试内容do35
-         * userName : david
+         * avetorUrl :
+         * creaditLevel :
+         * createdTime :
+         * faceVerify : 1
+         * gender :
+         * idCard :
+         * level :
+         * mobile :
+         * nickName :
+         * score :
+         * token : 134U1AH8OOHNTKLFP8DDT3F4LD
+         * userDeviceId :
+         * userName :
          */
 
-        private String creditLevel;
+        private String avetorUrl;
+        private String creaditLevel;
+        private String createdTime;
+        private String faceVerify;
         private String gender;
         private String idCard;
         private String level;
-        private String memberId;
+        private String mobile;
+        private String nickName;
         private String score;
         private String token;
+        private String userDeviceId;
         private String userName;
 
-        public String getCreditLevel() {
-            return creditLevel;
+        public String getAvetorUrl() {
+            return avetorUrl;
         }
 
-        public void setCreditLevel(String creditLevel) {
-            this.creditLevel = creditLevel;
+        public void setAvetorUrl(String avetorUrl) {
+            this.avetorUrl = avetorUrl;
+        }
+
+        public String getCreaditLevel() {
+            return creaditLevel;
+        }
+
+        public void setCreaditLevel(String creaditLevel) {
+            this.creaditLevel = creaditLevel;
+        }
+
+        public String getCreatedTime() {
+            return createdTime;
+        }
+
+        public void setCreatedTime(String createdTime) {
+            this.createdTime = createdTime;
+        }
+
+        public String getFaceVerify() {
+            return faceVerify;
+        }
+
+        public void setFaceVerify(String faceVerify) {
+            this.faceVerify = faceVerify;
         }
 
         public String getGender() {
@@ -90,12 +140,20 @@ public class FaceLoginBean extends BaseBean {
             this.level = level;
         }
 
-        public String getMemberId() {
-            return memberId;
+        public String getMobile() {
+            return mobile;
         }
 
-        public void setMemberId(String memberId) {
-            this.memberId = memberId;
+        public void setMobile(String mobile) {
+            this.mobile = mobile;
+        }
+
+        public String getNickName() {
+            return nickName;
+        }
+
+        public void setNickName(String nickName) {
+            this.nickName = nickName;
         }
 
         public String getScore() {
@@ -112,6 +170,14 @@ public class FaceLoginBean extends BaseBean {
 
         public void setToken(String token) {
             this.token = token;
+        }
+
+        public String getUserDeviceId() {
+            return userDeviceId;
+        }
+
+        public void setUserDeviceId(String userDeviceId) {
+            this.userDeviceId = userDeviceId;
         }
 
         public String getUserName() {

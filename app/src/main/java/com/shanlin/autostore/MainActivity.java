@@ -178,7 +178,7 @@ public class MainActivity extends BaseActivity {
                 CommonUtils.toNextActivity(this, OpenLeMaiBao.class);
                 break;
             case R.id.btn_scan_bg://扫一扫
-                MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA}, new MPermissionUtils.OnPermissionListener() {
+                MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, new MPermissionUtils.OnPermissionListener() {
                     @Override
                     public void onPermissionGranted() {
                         startActivityForResult(new Intent(MainActivity.this, CaptureActivity.class), REQUEST_CODE_SCAN);
@@ -193,7 +193,7 @@ public class MainActivity extends BaseActivity {
 
             case R.id.identify_tip://完善身份，智能购物
                 //                CommonUtils.toNextActivity(this,MainActivity.class);
-                MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA}, new MPermissionUtils.OnPermissionListener() {
+                MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, new MPermissionUtils.OnPermissionListener() {
                     @Override
                     public void onPermissionGranted() {
                         Intent intent = new Intent(MainActivity.this, LivenessActivity.class);
