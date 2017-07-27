@@ -6,19 +6,20 @@ package com.shanlin.autostore.constants;
 
 public class Constant {
 
-    public static final String TOKEN            = "TOKEN";
-    public static final String LOGIN_USER_PHONE = "LOGIN_USER_PHONE";
+    public static final String TOKEN              = "TOKEN";
+    public static final String USER_PHONE_LOGINED = "USER_PHONE_LOGINED";
 
+    public static final String LOGIN_USER_PHONE = "LOGIN_USER_PHONE";
     /**
      * 微信
      */
-    public static final String APP_ID = "wxb51b89cba83263de";
-    public static final String APP_SECRET = "1e73ced172f384ef6305e2276d2a9b96";
+    public static final String APP_ID           = "wxb51b89cba83263de";
 
+    public static final String APP_SECRET = "1e73ced172f384ef6305e2276d2a9b96";
     /**
      * 接口base url
      */
-    public static final String BASE_URL = "http://116.62.116.235:8080/linstore/v1/";
+    public static final String BASE_URL   = "http://116.62.116.235:8080/linstore/v1/";
 
     public static class MainActivityArgument {
         public static final String MAIN_ACTIVITY = "MAIN_ACTIVITY";

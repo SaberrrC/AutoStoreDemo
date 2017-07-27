@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
@@ -15,9 +16,11 @@ import com.shanlin.autostore.bean.CodeBean;
 import com.shanlin.autostore.bean.NumberLoginRsponseBean;
 import com.shanlin.autostore.bean.sendbean.CodeSendBean;
 import com.shanlin.autostore.bean.sendbean.NumberLoginBean;
+import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
+import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.StrUtils;
 import com.shanlin.autostore.utils.ToastUtils;
 import com.shanlin.autostore.utils.env.DeviceInfo;
@@ -168,6 +171,9 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                 mBtnBindOrLogin.setText("登录");
                 iconAndTitle.setVisibility(View.VISIBLE);
                 noVipTip.setVisibility(View.GONE);
+                AutoStoreApplication.isLogin = true;
+                SpUtils.saveString(PhoneNumLoginActivity.this, Constant.TOKEN, data.getData().getToken());
+                SpUtils.saveString(PhoneNumLoginActivity.this, Constant.USER_PHONE_LOGINED, data.getData().getMobile());
             }
 
             @Override

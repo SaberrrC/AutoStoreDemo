@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
     package="com.shanlin.autostore">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -126,6 +127,15 @@
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustResize|stateHidden">
         </activity>
+
+        <!--jpush-->
+        <service android:name="cn.jpush.android.service.PushService"
+                 android:process=":multiprocess"
+                 tools:node="replace" >
+        </service>
+
+
+
     </application>
 
 </manifest>
