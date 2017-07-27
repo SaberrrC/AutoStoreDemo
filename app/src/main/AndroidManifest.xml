@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="com.shanlin.autostore"
-          tools:overrideLibrary="com.xys.libzxing">
+    package="com.shanlin.autostore">
 
     <!-- 微信登录权限 --><!--支付宝权限-->
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -26,16 +24,6 @@
             android:name="design_height"
             android:value="667"/>
 
-        <activity
-            android:name=".activity.SplashActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
         <!-- 文件存储 (适配 Android 7.0 应用之间共享文件) -->
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -47,6 +35,16 @@
                 android:resource="@xml/provider_paths"/>
         </provider>
 
+        <activity
+            android:name=".activity.SplashActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activity.PhoneNumLoginActivity"
             android:screenOrientation="portrait"
@@ -95,22 +93,6 @@
         </activity>
         <activity android:name=".activity.OrderDetailActivity">
         </activity>
-
-        <!--支付宝-->
-        <activity
-            android:name="com.alipay.sdk.app.H5PayActivity"
-            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
-            android:exported="false"
-            android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden">
-        </activity>
-        <activity
-            android:name="com.alipay.sdk.app.H5AuthActivity"
-            android:configChanges="orientation|keyboardHidden|navigation"
-            android:exported="false"
-            android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden">
-        </activity>
         <activity
             android:name=".activity.BalanceActivity"
             android:screenOrientation="portrait"
@@ -129,6 +111,22 @@
             android:name=".activity.RefundExplainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
+        </activity>
+
+        <!--支付宝-->
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+        </activity>
+        <activity
+            android:name="com.alipay.sdk.app.H5AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden">
         </activity>
     </application>
 

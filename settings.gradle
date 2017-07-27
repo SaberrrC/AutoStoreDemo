@@ -1,1 +1,4 @@
-include ':app', ':facedemo', ':libzxing'
+include ':app'
+include ':library:livenesslib'
+include ':library:zxinglib'
+include ':library:wechatlib'

@@ -7,9 +7,8 @@ android {
     buildToolsVersion rootProject.ext.android.buildToolsVersion
 
     defaultConfig {
-//        applicationId "com.shanlin.autostore"
-        applicationId "com.shanlinjinrong.lifehelper"
-        minSdkVersion 15
+        applicationId "com.shanlin.autostore"
+        minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
@@ -75,6 +74,13 @@ android {
     }
 }
 
+repositories {
+    maven {
+        //人脸识别
+        url "http://120.27.220.201:8081/nexus/content/repositories/com.slfinance.loan/"
+    }
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -82,20 +88,16 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.zhy:autolayout:1.4.5'
-    compile 'com.android.support:design:25.3.1'
-    compile project(':libzxing')
     compile 'com.jungly:gridPasswordView:0.3'
-    //人脸识别
-    repositories {
-        maven {
-            url "http://120.27.220.201:8081/nexus/content/repositories/com.slfinance.loan/"
-        }
-    }
     compile 'com.slfinance.loan:SLFinance-FaceSDK_android:0.1.6-SNAPSHOT'
 
+    compile project(':library:wechatlib')
+    compile project(':library:zxinglib')
+//    compile project(':library:livenesslib')
 }

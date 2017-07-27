@@ -18,12 +18,18 @@ import com.jungly.gridpasswordview.GridPasswordView;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
+import com.shanlin.autostore.bean.WxChatBean;
+import com.shanlin.autostore.interf.HttpService;
+import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.zhifubao.OrderInfoUtil2_0;
 import com.shanlin.autostore.zhifubao.PayKeys;
 import com.shanlin.autostore.zhifubao.PayResult;
 
 import java.util.Map;
+import com.shanlin.autostore.utils.env.DeviceInfo;
+
+import java.util.HashMap;
 
 /**
  * Created by DELL on 2017/7/17 0017.
@@ -98,6 +104,8 @@ public class ChoosePayWayActivity extends BaseActivity{
                 break;
             case R.id.ll_pay_way_3:
                 //微信支付
+//                requestWxInfo();
+//                WXPayTools.pay("wx201410272009395522657a690389285100","C380BEC2BFD727A4B6845133519F3AD6",ChoosePayWayActivity.this);
                 break;
             case R.id.iv_close_dialog:
                 dialog.dismiss();
@@ -122,6 +130,34 @@ public class ChoosePayWayActivity extends BaseActivity{
         } else {
             dialog.show();
         }
+    }
+
+    private void requestWxInfo(){
+        HttpService httpService = CommonUtils.doNet();
+        HashMap<String,String> map=new HashMap<>();
+        map.put("deviceId", DeviceInfo.getDeviceId());
+        map.put("ip","123.12.12.123");
+        map.put("orderNo","123456");
+        map.put("payAmount","17.1");
+        map.put("storeId","1");
+        httpService.postWxRequest(map).enqueue(new CustomCallBack<WxChatBean>() {
+            @Override
+            public void success(String code, WxChatBean data, String msg) {
+                if(code.equals(200)){
+                    if(data!=null){
+                        WxChatBean.WxResponseBean wxResponseBean = data.data;
+                        String prepay_id = wxResponseBean.prepay_id;
+                        String sign = wxResponseBean.sign;
+                        //WXPayTools.pay(prepay_id,sign,ChoosePayWayActivity.this);
+                    }
+                }
+            }
+
+            @Override
+            public void error(Throwable ex, String code, String msg) {
+                Toast.makeText(ChoosePayWayActivity.this,code+msg,Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
