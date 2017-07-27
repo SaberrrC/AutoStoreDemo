@@ -12,10 +12,11 @@ import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.CodeBean;
-import com.shanlin.autostore.bean.NumberLoginBean;
+import com.shanlin.autostore.bean.NumberLoginRsponseBean;
+import com.shanlin.autostore.bean.sendbean.CodeSendBean;
+import com.shanlin.autostore.bean.sendbean.NumberLoginBean;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
-import com.shanlin.autostore.net.NetCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.StrUtils;
 import com.shanlin.autostore.utils.ToastUtils;
@@ -68,7 +69,6 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                 //获取验证码
                 doCountDowntime();
                 break;
-
             case R.id.btn_bind_or_login:
                 //绑定或者登录
                 bindOrLogin();
@@ -110,10 +110,22 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
         String phone = mEtPhoneNum.getText().toString().trim();
         HttpService service = CommonUtils.doNet();
         // @Field
-        Call<CodeBean> call = service.postVerificationCode(phone);
+        Call<CodeBean> call = service.postVerificationCode(new CodeSendBean(phone));
         // 创建 网络请求接口 的实例
         // 发送网络请求(异步)
-        call.enqueue(NetCallBack.getInstance().getCodeCallBack());
+        call.enqueue(new CustomCallBack<CodeBean>() {
+            @Override
+            public void success(String code, CodeBean data, String msg) {
+                ToastUtils.showToast(msg);
+            }
+
+            @Override
+            public void error(Throwable ex, String code, String msg) {
+                mBtnGetMsgCode.reset();
+                ToastUtils.showToast(msg);
+            }
+        });
+
     }
 
     /**
@@ -132,13 +144,15 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
         }
         // TODO: 2017/7/16 0016  调用登录接口,根据状态码判断情况
         HttpService service = CommonUtils.doNet();
-        Call<NumberLoginBean> call = service.postNumCodeLogin(phone, msgCode);
-        call.enqueue(new CustomCallBack<NumberLoginBean>() {
+        Call<NumberLoginRsponseBean> call = service.postNumCodeLogin(new NumberLoginBean(phone, msgCode));
+        call.enqueue(new CustomCallBack<NumberLoginRsponseBean>() {
             @Override
-            public void success(String code, NumberLoginBean data, String msg) {
-                ToastUtils.showToast(data.getMessage());
+            public void success(String code, NumberLoginRsponseBean data, String msg) {
+                if (data.getData() == null) {
+                    return;
+                }
                 int state = 0;
-
+                state = Integer.parseInt(data.getData().getFaceVerify());
                 if (state == 0) {
                     CommonUtils.toNextActivity(PhoneNumLoginActivity.this, MainActivity.class);
                     killActivity(LoginActivity.class);

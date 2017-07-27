@@ -64,7 +64,6 @@ public class CountDownTextView extends AppCompatTextView {
                     setTextColor(mContext.getResources().getColor(R.color.light_blue));
                     break;
             }
-
         }
     };
 
@@ -95,6 +94,10 @@ public class CountDownTextView extends AppCompatTextView {
                 }
             }
         },1000);
+    }
+
+    public void reset() {
+        mHandler.sendEmptyMessage(1);
     }
 
 }

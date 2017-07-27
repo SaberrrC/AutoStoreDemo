@@ -17,7 +17,7 @@ public class Constant {
     /**
      * 接口base url
      */
-    public static final String BASE_URL = "https://apimock.shanlinjinrong.online/";
+    public static final String BASE_URL = "http://116.62.116.235:8080/linstore/v1/";
 
     public static class MainActivityArgument {
         public static final String MAIN_ACTIVITY = "MAIN_ACTIVITY";

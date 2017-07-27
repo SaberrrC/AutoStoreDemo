@@ -7,7 +7,7 @@ import com.shanlin.autostore.activity.GateActivity;
 import com.shanlin.autostore.bean.CaptureBean;
 import com.shanlin.autostore.bean.CodeBean;
 import com.shanlin.autostore.bean.FaceLoginBean;
-import com.shanlin.autostore.bean.NumberLoginBean;
+import com.shanlin.autostore.bean.NumberLoginRsponseBean;
 import com.shanlin.autostore.utils.ToastUtils;
 
 /**
@@ -32,9 +32,9 @@ public class NetCallBack {
         return new NumberLoginCallBack();
     }
 
-    public class NumberLoginCallBack extends CustomCallBack<NumberLoginBean> {
+    public class NumberLoginCallBack extends CustomCallBack<NumberLoginRsponseBean> {
         @Override
-        public void success(String code, NumberLoginBean data, String msg) {
+        public void success(String code, NumberLoginRsponseBean data, String msg) {
             ToastUtils.showToast(data.getMessage());
         }
 

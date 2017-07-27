@@ -1,6 +1,8 @@
 package com.shanlin.autostore.net;
 
 
+import android.text.TextUtils;
+
 import com.shanlin.autostore.base.BaseBean;
 import com.shanlin.autostore.utils.LogUtils;
 
@@ -27,6 +29,10 @@ public abstract class CustomCallBack<T extends BaseBean> implements Callback<T> 
         T baseBean = response.body();
         String code = baseBean.getCode();
         String msg = baseBean.getMessage();
+        if (!TextUtils.equals(code, "200")) {
+            error(null, code, msg);
+            return;
+        }
         success(code, baseBean, msg);
     }
 

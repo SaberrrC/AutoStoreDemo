@@ -13,4 +13,17 @@ import com.shanlin.autostore.base.BaseBean;
 public class CodeBean extends BaseBean {
 
 
+    /**
+     * version : 0.0.1
+     */
+
+    private String version;
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
 }
