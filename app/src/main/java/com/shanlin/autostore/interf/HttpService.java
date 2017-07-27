@@ -1,17 +1,15 @@
 package com.shanlin.autostore.interf;
 
-import android.media.MediaRouter;
-
 import com.shanlin.autostore.bean.CaptureBean;
 import com.shanlin.autostore.bean.CheckUpdateBean;
 import com.shanlin.autostore.bean.CodeBean;
 import com.shanlin.autostore.bean.FaceLoginBean;
 import com.shanlin.autostore.bean.NumberLoginRsponseBean;
 import com.shanlin.autostore.bean.WxChatBean;
-import com.shanlin.autostore.bean.sendbean.CodeSendBean;
-import com.shanlin.autostore.bean.sendbean.NumberLoginBean;
 import com.shanlin.autostore.bean.WxTokenBean;
 import com.shanlin.autostore.bean.WxUserInfoBean;
+import com.shanlin.autostore.bean.sendbean.CodeSendBean;
+import com.shanlin.autostore.bean.sendbean.NumberLoginBean;
 
 import java.util.Map;
 

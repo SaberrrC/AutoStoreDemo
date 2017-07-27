@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.animation.LinearInterpolator;
 
 import com.shanlin.autostore.R;
@@ -22,8 +21,6 @@ import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by DELL on 2017/7/16 0016.
@@ -62,9 +59,10 @@ public class SplashActivity extends Activity {
                     try {
                         PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
                         String version = data.getVersion();
-                        if (version != null && Integer.valueOf(version).intValue() > packageInfo.versionCode) {
-                            showUpdateDialog(data.getForceUpdate(), data.getDownloadUrl());
-                        }
+                        // TODO: 2017-7-27 版本 0.1.1
+//                        if (version != null && Integer.valueOf(version).intValue() > packageInfo.versionCode) {
+//                            showUpdateDialog(data.getForceUpdate(), data.getDownloadUrl());
+//                        }
                         //判断是否更新
                     } catch (PackageManager.NameNotFoundException e) {
                         e.printStackTrace();
