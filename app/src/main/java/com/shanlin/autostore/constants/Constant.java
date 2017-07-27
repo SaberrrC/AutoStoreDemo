@@ -6,9 +6,10 @@ package com.shanlin.autostore.constants;
 
 public class Constant {
 
-    public static final String TOKEN            = "TOKEN";
-    public static final String LOGIN_USER_PHONE = "LOGIN_USER_PHONE";
+    public static final String TOKEN              = "TOKEN";
+    public static final String USER_PHONE_LOGINED = "USER_PHONE_LOGINED";
 
+    public static final String LOGIN_USER_PHONE = "LOGIN_USER_PHONE";
     /**
      * 微信
      */
