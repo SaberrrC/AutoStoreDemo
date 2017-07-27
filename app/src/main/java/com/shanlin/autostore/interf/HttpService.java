@@ -5,6 +5,7 @@ import com.shanlin.autostore.bean.CheckUpdateBean;
 import com.shanlin.autostore.bean.CodeBean;
 import com.shanlin.autostore.bean.FaceLoginBean;
 import com.shanlin.autostore.bean.NumberLoginRsponseBean;
+import com.shanlin.autostore.bean.RealNameAuthenBean;
 import com.shanlin.autostore.bean.WxChatBean;
 import com.shanlin.autostore.bean.WxTokenBean;
 import com.shanlin.autostore.bean.WxUserInfoBean;
@@ -95,4 +96,15 @@ public interface HttpService {
     @POST("/wx/pay")
     @FormUrlEncoded
     Call<WxChatBean> postWxRequest(@FieldMap Map<String, String> map);
+
+    /**
+     * 乐买宝实名认证接口 -1082
+     * @param idcard
+     * @param username
+     * @return
+     */
+    @POST("buybao/userverify")
+    @FormUrlEncoded
+    Call<RealNameAuthenBean> realNameAuthen(@Field("idCard") String idcard,@Field("userName")
+                                            String username);
 }
