@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.shanlin.autostore"
-        minSdkVersion rootProject.ext.android.minSdkVersion
+        minSdkVersion 15
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
