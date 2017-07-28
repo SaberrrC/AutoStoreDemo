@@ -200,8 +200,6 @@ public class LoginActivity extends BaseActivity {
                 String delta = data.getStringExtra("delta");
                 String encode = Base64.encode(mLivenessImgBytes);
                 final HttpService httpService = CommonUtils.doNet();
-                Call<FaceLoginBean> faceLoginBeanCall = httpService.postFaceLogin(encode);
-                HttpService httpService = CommonUtils.doNet();
                 Call<FaceLoginBean> faceLoginBeanCall = httpService.postFaceLogin(new FaceLoginSendBean(encode, SpUtils.getString(LoginActivity.this, Constant.DEVICEID, "")));
                 faceLoginBeanCall.enqueue(new CustomCallBack<FaceLoginBean>() {
                     @Override
