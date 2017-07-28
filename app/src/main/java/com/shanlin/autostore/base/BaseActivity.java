@@ -9,7 +9,6 @@ import android.view.View;
 
 import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
-import com.zhy.autolayout.AutoLayoutActivity;
 
 import java.util.ArrayList;
 
@@ -17,7 +16,7 @@ import java.util.ArrayList;
  * Created by DELL on 2017/7/14 0014.
  */
 
-public abstract class BaseActivity extends AutoLayoutActivity implements View.OnClickListener {
+public abstract class BaseActivity extends SoftInputBaseActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

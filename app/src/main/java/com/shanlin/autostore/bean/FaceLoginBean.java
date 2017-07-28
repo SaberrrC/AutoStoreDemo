@@ -5,29 +5,36 @@ import com.shanlin.autostore.base.BaseBean;
 /**
  * Created by shanlin on 2017-7-21.
  {
- "code": "00",
+ "code": "200",
  "data": {
- "creditLevel": "1",
  "gender": "0",
- "idCard": "350628177766920112",
- "level": "1",
- "memberId": "350628177766920112",
- "score": "200",
- "token": "测试内容do35",
- "userName": "david"
+ "level": "0",
+ "idCard": "",
+ "nickName": "",
+ "mobile": "18601615173",
+ "userDeviceId": "",
+ "userName": "141fe1da9e9f20d854a",
+ "token": "1a843d46-e75d-443f-a102-233356060817",
+ "score": 0,
+ "creditLevel": 0,
+ "createTime": 1501134740000,
+ "faceVerify": "1",
+ "avetorUrl": ""
  },
- "message": "成功"
+ "message": "faceToken认证成功!",
+ "version": "0.0.1"
  }
  */
 
 public class FaceLoginBean extends BaseBean {
 
-
     /**
-     * data : {"creditLevel":"1","gender":"0","idCard":"350628177766920112","level":"1","memberId":"350628177766920112","score":"200","token":"测试内容do35","userName":"david"}
+     * data : {"gender":"0","level":"0","idCard":"","nickName":"","mobile":"18601615173","userDeviceId":"","userName":"141fe1da9e9f20d854a","token":"1a843d46-e75d-443f-a102-233356060817","score":0,"creditLevel":0,"createTime":1501134740000,"faceVerify":"1","avetorUrl":""}
+     * version : 0.0.1
      */
 
     private DataBean data;
+    private String version;
 
     public DataBean getData() {
         return data;
@@ -37,34 +44,44 @@ public class FaceLoginBean extends BaseBean {
         this.data = data;
     }
 
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
     public static class DataBean {
         /**
-         * creditLevel : 1
          * gender : 0
-         * idCard : 350628177766920112
-         * level : 1
-         * memberId : 350628177766920112
-         * score : 200
-         * token : 测试内容do35
-         * userName : david
+         * level : 0
+         * idCard :
+         * nickName :
+         * mobile : 18601615173
+         * userDeviceId :
+         * userName : 141fe1da9e9f20d854a
+         * token : 1a843d46-e75d-443f-a102-233356060817
+         * score : 0
+         * creditLevel : 0
+         * createTime : 1501134740000
+         * faceVerify : 1
+         * avetorUrl :
          */
 
-        private String creditLevel;
         private String gender;
-        private String idCard;
         private String level;
-        private String memberId;
-        private String score;
-        private String token;
+        private String idCard;
+        private String nickName;
+        private String mobile;
+        private String userDeviceId;
         private String userName;
-
-        public String getCreditLevel() {
-            return creditLevel;
-        }
-
-        public void setCreditLevel(String creditLevel) {
-            this.creditLevel = creditLevel;
-        }
+        private String token;
+        private int    score;
+        private int    creditLevel;
+        private long   createTime;
+        private String faceVerify;
+        private String avetorUrl;
 
         public String getGender() {
             return gender;
@@ -72,14 +89,6 @@ public class FaceLoginBean extends BaseBean {
 
         public void setGender(String gender) {
             this.gender = gender;
-        }
-
-        public String getIdCard() {
-            return idCard;
-        }
-
-        public void setIdCard(String idCard) {
-            this.idCard = idCard;
         }
 
         public String getLevel() {
@@ -90,20 +99,44 @@ public class FaceLoginBean extends BaseBean {
             this.level = level;
         }
 
-        public String getMemberId() {
-            return memberId;
+        public String getIdCard() {
+            return idCard;
         }
 
-        public void setMemberId(String memberId) {
-            this.memberId = memberId;
+        public void setIdCard(String idCard) {
+            this.idCard = idCard;
         }
 
-        public String getScore() {
-            return score;
+        public String getNickName() {
+            return nickName;
         }
 
-        public void setScore(String score) {
-            this.score = score;
+        public void setNickName(String nickName) {
+            this.nickName = nickName;
+        }
+
+        public String getMobile() {
+            return mobile;
+        }
+
+        public void setMobile(String mobile) {
+            this.mobile = mobile;
+        }
+
+        public String getUserDeviceId() {
+            return userDeviceId;
+        }
+
+        public void setUserDeviceId(String userDeviceId) {
+            this.userDeviceId = userDeviceId;
+        }
+
+        public String getUserName() {
+            return userName;
+        }
+
+        public void setUserName(String userName) {
+            this.userName = userName;
         }
 
         public String getToken() {
@@ -114,12 +147,44 @@ public class FaceLoginBean extends BaseBean {
             this.token = token;
         }
 
-        public String getUserName() {
-            return userName;
+        public int getScore() {
+            return score;
         }
 
-        public void setUserName(String userName) {
-            this.userName = userName;
+        public void setScore(int score) {
+            this.score = score;
+        }
+
+        public int getCreditLevel() {
+            return creditLevel;
+        }
+
+        public void setCreditLevel(int creditLevel) {
+            this.creditLevel = creditLevel;
+        }
+
+        public long getCreateTime() {
+            return createTime;
+        }
+
+        public void setCreateTime(long createTime) {
+            this.createTime = createTime;
+        }
+
+        public String getFaceVerify() {
+            return faceVerify;
+        }
+
+        public void setFaceVerify(String faceVerify) {
+            this.faceVerify = faceVerify;
+        }
+
+        public String getAvetorUrl() {
+            return avetorUrl;
+        }
+
+        public void setAvetorUrl(String avetorUrl) {
+            this.avetorUrl = avetorUrl;
         }
     }
 }
