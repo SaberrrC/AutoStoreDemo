@@ -17,6 +17,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.shanlin.autostore.activity.BuyRecordActivity;
 import com.shanlin.autostore.activity.LoginActivity;
@@ -27,11 +28,14 @@ import com.shanlin.autostore.activity.SaveFaceActivity;
 import com.shanlin.autostore.activity.VersionInfoActivity;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.CaptureBean;
+import com.shanlin.autostore.bean.CreditBalanceCheckBean;
 import com.shanlin.autostore.constants.Constant;
+import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.NetCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.MPermissionUtils;
+import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
 import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.utils.ToastUtils;
@@ -46,6 +50,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends BaseActivity {
 
@@ -67,6 +73,8 @@ public class MainActivity extends BaseActivity {
     private long lastTime = 0;
     private ProgressView pv;
     private TextView     mUserNum;
+    private TextView openLMB;
+    private HttpService service;
 
     @Override
     public int initLayout() {
@@ -84,7 +92,8 @@ public class MainActivity extends BaseActivity {
         mBtBanlance.setOnClickListener(this);
         mTvIdentify.setOnClickListener(this);
         findViewById(R.id.btn_lemaibao).setOnClickListener(this);
-        findViewById(R.id.btn_open_le_mai_bao).setOnClickListener(this);
+        openLMB = (TextView) findViewById(R.id.btn_open_le_mai_bao);
+        openLMB.setOnClickListener(this);
         mBtnScan = (Button) findViewById(R.id.btn_scan_bg);
         mBtnScan.setOnClickListener(this);
 
@@ -116,6 +125,37 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initData() {
         initToolBar();
+        service = CommonUtils.doNet();
+        //获取认证状态
+        String authenResult = SpUtils.getString(this, Constant_LeMaiBao.AUTHEN_STATE_KEY, "");
+        if (Constant_LeMaiBao.AUTHEN_NOT.equals(authenResult)) {
+            openLMB.setClickable(true);
+            openLMB.setText("开通乐买宝");
+        } else {
+            //获取用户信用额度
+            openLMB.setClickable(false);
+            getUserCreditBalenceInfo(service);
+        }
+    }
+
+    private void getUserCreditBalenceInfo(HttpService service) {
+        Call<CreditBalanceCheckBean> call = service.getUserCreditBalanceInfo(SpUtils.getString(this, Constant.TOKEN, ""));
+        call.enqueue(new Callback<CreditBalanceCheckBean>() {
+            @Override
+            public void onResponse(Call<CreditBalanceCheckBean> call, Response<CreditBalanceCheckBean> response) {
+                if (response.code() == 200){
+                    int creditBalance = response.body().getCreditBalance();
+                    openLMB.setText(creditBalance+"");
+                } else {
+                    Toast.makeText(MainActivity.this, "获取信用额度失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CreditBalanceCheckBean> call, Throwable t) {
+
+            }
+        });
     }
 
     private void initToolBar() {
@@ -175,7 +215,9 @@ public class MainActivity extends BaseActivity {
                 CommonUtils.toNextActivity(this, MyLeMaiBaoActivity.class);
                 break;
             case R.id.btn_open_le_mai_bao: //开通乐买宝
-                CommonUtils.toNextActivity(this, OpenLeMaiBao.class);
+                if (openLMB.isClickable()) {
+                    CommonUtils.toNextActivity(this, OpenLeMaiBao.class);
+                }
                 break;
             case R.id.btn_scan_bg://扫一扫
                 MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA}, new MPermissionUtils.OnPermissionListener() {

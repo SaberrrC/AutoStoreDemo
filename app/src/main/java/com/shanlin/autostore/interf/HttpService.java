@@ -3,9 +3,11 @@ package com.shanlin.autostore.interf;
 import com.shanlin.autostore.bean.CaptureBean;
 import com.shanlin.autostore.bean.CheckUpdateBean;
 import com.shanlin.autostore.bean.CodeBean;
+import com.shanlin.autostore.bean.CreditBalanceCheckBean;
 import com.shanlin.autostore.bean.FaceLoginBean;
 import com.shanlin.autostore.bean.NumberLoginRsponseBean;
 import com.shanlin.autostore.bean.RealNameAuthenBean;
+import com.shanlin.autostore.bean.UserVertifyStatusBean;
 import com.shanlin.autostore.bean.WxChatBean;
 import com.shanlin.autostore.bean.WxTokenBean;
 import com.shanlin.autostore.bean.WxUserInfoBean;
@@ -107,4 +109,20 @@ public interface HttpService {
     @FormUrlEncoded
     Call<RealNameAuthenBean> realNameAuthen(@Field("idCard") String idcard,@Field("userName")
                                             String username);
+
+    /**
+     * 获取用户乐买宝实名认证信息
+     * @param token
+     * @return
+     */
+    @GET("buybao/userverify/status")
+    Call<UserVertifyStatusBean> getUserVertifyAuthenStatus(@Query("token") String token);
+
+    /**
+     * 获取用户信用和余额
+     * @param token
+     * @return
+     */
+    @GET("buybao/info")
+    Call<CreditBalanceCheckBean> getUserCreditBalanceInfo(@Query("token") String token);
 }

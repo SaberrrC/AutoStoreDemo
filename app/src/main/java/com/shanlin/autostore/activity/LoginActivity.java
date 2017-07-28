@@ -196,7 +196,7 @@ public class LoginActivity extends BaseActivity {
                 }
                 String delta = data.getStringExtra("delta");
                 String encode = Base64.encode(mLivenessImgBytes);
-                HttpService httpService = CommonUtils.doNet();
+                final HttpService httpService = CommonUtils.doNet();
                 Call<FaceLoginBean> faceLoginBeanCall = httpService.postFaceLogin(encode);
                 faceLoginBeanCall.enqueue(new CustomCallBack<FaceLoginBean>() {
                     @Override
@@ -205,6 +205,11 @@ public class LoginActivity extends BaseActivity {
                             //保存token
                             AutoStoreApplication.isLogin = true;
                             SpUtils.saveString(LoginActivity.this, Constant.TOKEN, data.getData().getToken());
+                            //验证乐买宝实名是否认证
+                            CommonUtils.checkAuthenStatus(LoginActivity.this,httpService,data
+                                    .getData()
+                                    .getToken());
+
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.LOGIN);
                             startActivity(intent);

@@ -2,9 +2,12 @@ package com.shanlin.autostore.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
@@ -26,6 +29,10 @@ public class OpenLeMaiBao extends BaseActivity {
     private ImageView ivStep2;
     private View line1Step2;
     private HttpService service;
+    private EditText etName;
+    private EditText etIdNum;
+    private EditText etPsw;
+    private EditText etPswAgain;
 
     @Override
     public int initLayout() {
@@ -45,6 +52,12 @@ public class OpenLeMaiBao extends BaseActivity {
         line2Step2 = findViewById(R.id.line2_step2);
         rlStep1 = findViewById(R.id.rl_step1);
         rlStep2 = findViewById(R.id.rl_step2);
+
+        //姓名和身份证,密码
+        etName = ((EditText) findViewById(R.id.et_name));
+        etIdNum = ((EditText) findViewById(R.id.et_id_num));
+        etPsw = ((EditText) findViewById(R.id.et_psw));
+        etPswAgain = ((EditText) findViewById(R.id.et_psw_again));
     }
 
     @Override
@@ -58,6 +71,9 @@ public class OpenLeMaiBao extends BaseActivity {
         switch (v.getId()) {
 
             case R.id.btn_nextstep_and_confirm:
+                //实名认证姓名和身份证非空判断
+                judgeEmpty(true);
+
                 if (nextOrConfirm.getText().equals("下一步")) {
                     changeUI(2);
                 } else {
@@ -76,6 +92,20 @@ public class OpenLeMaiBao extends BaseActivity {
                 intent2.putExtra("state",2);
                 startActivity(intent2);
                 break;
+        }
+    }
+
+    private void judgeEmpty(boolean step) {
+        if (step) {
+            //第一步
+            String name = etName.getText().toString().trim();
+            String idNum = etIdNum.getText().toString().trim();
+            if (TextUtils.isEmpty(name) || TextUtils.isEmpty(idNum)) {
+                Toast.makeText(this, "请输入完整认证信息!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        } else {
+
         }
     }
 

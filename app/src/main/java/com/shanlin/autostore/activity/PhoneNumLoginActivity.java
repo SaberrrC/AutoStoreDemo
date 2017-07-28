@@ -146,7 +146,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
             return;
         }
         // TODO: 2017/7/16 0016  调用登录接口,根据状态码判断情况
-        HttpService service = CommonUtils.doNet();
+        final HttpService service = CommonUtils.doNet();
         Call<NumberLoginRsponseBean> call = service.postNumCodeLogin(new NumberLoginBean(phone, msgCode));
         call.enqueue(new CustomCallBack<NumberLoginRsponseBean>() {
             @Override
@@ -173,6 +173,8 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                 noVipTip.setVisibility(View.GONE);
                 AutoStoreApplication.isLogin = true;
                 SpUtils.saveString(PhoneNumLoginActivity.this, Constant.TOKEN, data.getData().getToken());
+                //保存用户乐买宝认证信息
+                CommonUtils.checkAuthenStatus(PhoneNumLoginActivity.this,service,data.getData().getToken());
                 SpUtils.saveString(PhoneNumLoginActivity.this, Constant.USER_PHONE_LOGINED, data.getData().getMobile());
             }
 
