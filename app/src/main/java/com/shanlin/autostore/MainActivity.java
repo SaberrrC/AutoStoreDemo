@@ -19,7 +19,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.shanlin.autostore.activity.BuyRecordActivity;
+import com.shanlin.autostore.activity.ChoosePayWayActivity;
 import com.shanlin.autostore.activity.LoginActivity;
 import com.shanlin.autostore.activity.MyLeMaiBaoActivity;
 import com.shanlin.autostore.activity.OpenLeMaiBao;
@@ -27,8 +29,11 @@ import com.shanlin.autostore.activity.RefundMoneyActivity;
 import com.shanlin.autostore.activity.SaveFaceActivity;
 import com.shanlin.autostore.activity.VersionInfoActivity;
 import com.shanlin.autostore.base.BaseActivity;
-import com.shanlin.autostore.bean.CaptureBean;
-import com.shanlin.autostore.bean.CreditBalanceCheckBean;
+import com.shanlin.autostore.bean.resultBean.CaptureBean;
+import com.shanlin.autostore.bean.resultBean.CreditBalanceCheckBean;
+import com.shanlin.autostore.bean.resultBean.RealOrderBean;
+import com.shanlin.autostore.bean.paramsBean.RealOrderBody;
+import com.shanlin.autostore.bean.paramsBean.ZXingOrderBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
@@ -75,6 +80,7 @@ public class MainActivity extends BaseActivity {
     private TextView     mUserNum;
     private TextView openLMB;
     private HttpService service;
+    private Gson gson;
 
     @Override
     public int initLayout() {
@@ -126,9 +132,11 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initData() {
         initToolBar();
+        gson = new Gson();
         service = CommonUtils.doNet();
         //获取认证状态
         String authenResult = SpUtils.getString(this, Constant_LeMaiBao.AUTHEN_STATE_KEY, "");
+        Log.d(TAG, "-----------------是否完成乐买宝认证="+authenResult);
         if (Constant_LeMaiBao.AUTHEN_NOT.equals(authenResult)) {
             openLMB.setClickable(true);
             openLMB.setText("开通乐买宝");
@@ -140,6 +148,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void getUserCreditBalenceInfo(HttpService service) {
+        Log.d(TAG, "-----------------token="+Constant.TOKEN);
         Call<CreditBalanceCheckBean> call = service.getUserCreditBalanceInfo(SpUtils.getString(this, Constant.TOKEN, ""));
         call.enqueue(new Callback<CreditBalanceCheckBean>() {
             @Override
@@ -268,6 +277,14 @@ public class MainActivity extends BaseActivity {
             int width = data.getExtras().getInt("width");
             int height = data.getExtras().getInt("height");
             String result = data.getExtras().getString("result");
+            if (result.contains("orderNo")) {
+                //订单号信息
+                ZXingOrderBean zXingOrderBean = gson.fromJson(result, ZXingOrderBean.class);
+                Log.d(TAG, "----------------二维码订单数据-----"+zXingOrderBean);
+                //调用生成正式订单接口
+                generateRealOrder(zXingOrderBean.getOrderNo());
+            }
+
             // TODO: 2017-7-17 判断 result 成功进入超市
             HttpService service = CommonUtils.doNet();
             Map<String, String> map = new HashMap<>();
@@ -292,8 +309,7 @@ public class MainActivity extends BaseActivity {
                 }
                 String delta = data.getStringExtra("delta");
                 String encode = Base64.encode(mLivenessImgBytes);
-                //                Bitmap bitmap = BitmapFactory.decodeByteArray(mLivenessImgBytes, 0, mLivenessImgBytes.length);
-                //                File file = CommonUtils.saveBitmap(bitmap);
+
                 Intent intent = new Intent(this, SaveFaceActivity.class);
                 intent.putExtra(Constant.SaveFaceActivity.IMAGE_BASE64, encode);//图片base64
                 intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_NO);
@@ -302,6 +318,32 @@ public class MainActivity extends BaseActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void generateRealOrder(String orderNo) {
+        String token = SpUtils.getString(this, Constant
+                .TOKEN, "");
+        Log.d(TAG, "-------------------token="+token);
+        Call<RealOrderBean> call = service.updateTempToReal(token,
+                new RealOrderBody(orderNo));
+        call.enqueue(new Callback<RealOrderBean>() {
+            @Override
+            public void onResponse(Call<RealOrderBean> call, Response<RealOrderBean> response) {
+                RealOrderBean body = response.body();
+                if (TextUtils.equals("200",body.getCode())){
+                    Log.d(TAG, "------------------------*-----------------------"+response.body()
+                            .toString());
+                    String totalAmount = response.body().getData().getTotalAmount();//应付总金额
+                    CommonUtils.sendDataToNextActivity(MainActivity.this, ChoosePayWayActivity
+                            .class,Constant_LeMaiBao.TOTAL_AMOUNT,totalAmount);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RealOrderBean> call, Throwable t) {
+                Log.d(TAG, "------------------error="+t.getMessage());
+            }
+        });
     }
 
     @Override

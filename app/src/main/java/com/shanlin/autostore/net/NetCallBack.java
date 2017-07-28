@@ -4,10 +4,10 @@ import android.content.Intent;
 
 import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.activity.GateActivity;
-import com.shanlin.autostore.bean.CaptureBean;
-import com.shanlin.autostore.bean.CodeBean;
-import com.shanlin.autostore.bean.FaceLoginBean;
-import com.shanlin.autostore.bean.NumberLoginRsponseBean;
+import com.shanlin.autostore.bean.resultBean.CaptureBean;
+import com.shanlin.autostore.bean.resultBean.CodeBean;
+import com.shanlin.autostore.bean.resultBean.FaceLoginBean;
+import com.shanlin.autostore.bean.resultBean.NumberLoginRsponseBean;
 import com.shanlin.autostore.utils.ToastUtils;
 
 /**

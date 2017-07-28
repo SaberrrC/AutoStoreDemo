@@ -1,19 +1,23 @@
 package com.shanlin.autostore.interf;
 
-import com.shanlin.autostore.bean.CaptureBean;
-import com.shanlin.autostore.bean.CheckUpdateBean;
-import com.shanlin.autostore.bean.CodeBean;
-import com.shanlin.autostore.bean.CreditBalanceCheckBean;
-import com.shanlin.autostore.bean.FaceLoginBean;
-import com.shanlin.autostore.bean.NumberLoginRsponseBean;
-import com.shanlin.autostore.bean.RealNameAuthenBean;
-import com.shanlin.autostore.bean.UserVertifyStatusBean;
-import com.shanlin.autostore.bean.WxChatBean;
-import com.shanlin.autostore.bean.WxTokenBean;
-import com.shanlin.autostore.bean.WxUserInfoBean;
-import com.shanlin.autostore.bean.sendbean.CodeSendBean;
-import com.shanlin.autostore.bean.sendbean.FaceLoginSendBean;
-import com.shanlin.autostore.bean.sendbean.NumberLoginBean;
+import com.shanlin.autostore.bean.paramsBean.LeMaiBaoPayBody;
+import com.shanlin.autostore.bean.resultBean.CaptureBean;
+import com.shanlin.autostore.bean.resultBean.CheckUpdateBean;
+import com.shanlin.autostore.bean.resultBean.CodeBean;
+import com.shanlin.autostore.bean.resultBean.CreditBalanceCheckBean;
+import com.shanlin.autostore.bean.resultBean.FaceLoginBean;
+import com.shanlin.autostore.bean.resultBean.LeMaiBaoPayResultBean;
+import com.shanlin.autostore.bean.resultBean.NumberLoginRsponseBean;
+import com.shanlin.autostore.bean.resultBean.RealNameAuthenBean;
+import com.shanlin.autostore.bean.resultBean.RealOrderBean;
+import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
+import com.shanlin.autostore.bean.resultBean.WxChatBean;
+import com.shanlin.autostore.bean.resultBean.WxTokenBean;
+import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
+import com.shanlin.autostore.bean.paramsBean.CodeSendBean;
+import com.shanlin.autostore.bean.paramsBean.FaceLoginSendBean;
+import com.shanlin.autostore.bean.paramsBean.NumberLoginBean;
+import com.shanlin.autostore.bean.paramsBean.RealOrderBody;
 
 import java.util.Map;
 
@@ -24,6 +28,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -125,4 +130,22 @@ public interface HttpService {
      */
     @GET("buybao/info")
     Call<CreditBalanceCheckBean> getUserCreditBalanceInfo(@Query("token") String token);
+
+    /**
+     * 更新临时订单成为正式订单-910
+     * @return
+     */
+    @POST("order/confirm")
+    Call<RealOrderBean> updateTempToReal(@Header("token") String token, @Body
+                                         RealOrderBody body);
+
+
+    /**
+     * 乐买宝支付接口-931
+     * @param token
+     * @param body
+     * @return
+     */
+    @POST("buybao/pay")
+    Call<LeMaiBaoPayResultBean> lemaibaoPay(@Header("token") String token, @Body LeMaiBaoPayBody body);
 }

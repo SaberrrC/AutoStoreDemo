@@ -7,13 +7,14 @@ import android.graphics.Bitmap;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.bean.UserVertifyStatusBean;
+import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
@@ -50,6 +51,7 @@ public class CommonUtils {
                 UserVertifyStatusBean body = response.body();
                 if ("200".equals(body.getCode())) {
                     String status = body.getData().getVerifyStatus();
+                    Log.d("wr", "-----------------authen_status="+status);
                     SpUtils.saveString(context, Constant_LeMaiBao.AUTHEN_STATE_KEY, status);
                 } else {
                     Toast.makeText(context, "未获取到认证数据", Toast.LENGTH_SHORT).show();
@@ -83,6 +85,19 @@ public class CommonUtils {
      */
     public static void toNextActivity(Context context, Class activity) {
         context.startActivity(new Intent(context, activity));
+    }
+
+    /**
+     * 携带数据跳转页面
+     *
+     * @param context
+     * @param activity
+     */
+    public static void sendDataToNextActivity(Context context, Class activity,String key,String
+                                              data) {
+        Intent intent = new Intent(context,activity);
+        intent.putExtra(key,data);
+        context.startActivity(intent);
     }
 
     /**

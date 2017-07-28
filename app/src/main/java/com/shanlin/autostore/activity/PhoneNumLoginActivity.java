@@ -16,10 +16,10 @@ import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
-import com.shanlin.autostore.bean.CodeBean;
-import com.shanlin.autostore.bean.NumberLoginRsponseBean;
-import com.shanlin.autostore.bean.sendbean.CodeSendBean;
-import com.shanlin.autostore.bean.sendbean.NumberLoginBean;
+import com.shanlin.autostore.bean.resultBean.CodeBean;
+import com.shanlin.autostore.bean.resultBean.NumberLoginRsponseBean;
+import com.shanlin.autostore.bean.paramsBean.CodeSendBean;
+import com.shanlin.autostore.bean.paramsBean.NumberLoginBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
@@ -214,7 +214,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
             ToastUtils.showToast("请输入验证码");
             return;
         }
-        HttpService service = CommonUtils.doNet();
+        final HttpService service = CommonUtils.doNet();
         Call<NumberLoginRsponseBean> call = service.postNumCodeLogin(new NumberLoginBean(phone, msgCode));
         call.enqueue(new CustomCallBack<NumberLoginRsponseBean>() {
             @Override

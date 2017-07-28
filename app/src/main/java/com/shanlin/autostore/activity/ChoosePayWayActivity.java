@@ -18,18 +18,18 @@ import com.jungly.gridpasswordview.GridPasswordView;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
-import com.shanlin.autostore.bean.WxChatBean;
+import com.shanlin.autostore.bean.resultBean.WxChatBean;
+import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
+import com.shanlin.autostore.utils.env.DeviceInfo;
 import com.shanlin.autostore.zhifubao.OrderInfoUtil2_0;
 import com.shanlin.autostore.zhifubao.PayKeys;
 import com.shanlin.autostore.zhifubao.PayResult;
 
-import java.util.Map;
-import com.shanlin.autostore.utils.env.DeviceInfo;
-
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by DELL on 2017/7/17 0017.
@@ -44,6 +44,7 @@ public class ChoosePayWayActivity extends BaseActivity{
     private View availableDialogView;
     private AlertDialog availbleDialog;
     private ImageView iconChoose;
+    private TextView totalAmount;
 
     @Override
     public int initLayout() {
@@ -61,6 +62,7 @@ public class ChoosePayWayActivity extends BaseActivity{
         iconChoose = ((ImageView) findViewById(R.id.iv_icon_choose));//圆形logo根据状态切换
         availableBalence = (TextView)findViewById(R.id.get_avaiable_balence);//可用额度
         availableBalence.setOnClickListener(this);
+        totalAmount = (TextView)findViewById(R.id.tv_totla_amount_to_pay);//应付总额
         dialogView = LayoutInflater.from(this).inflate(R.layout.input_psw_dialog_layout, null);
         dialogView.findViewById(R.id.iv_close_dialog).setOnClickListener(this);
         moneyNeedToPay = ((TextView) dialogView.findViewById(R.id.money_need_to_pay));
@@ -82,7 +84,8 @@ public class ChoosePayWayActivity extends BaseActivity{
 
     @Override
     public void initData() {
-
+        String totalMoney = getIntent().getStringExtra(Constant_LeMaiBao.TOTAL_AMOUNT);
+        totalAmount.setText("¥"+totalMoney);
     }
 
     @Override

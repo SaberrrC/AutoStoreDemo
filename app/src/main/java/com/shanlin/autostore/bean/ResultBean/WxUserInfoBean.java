@@ -1,4 +1,4 @@
-package com.shanlin.autostore.bean;
+package com.shanlin.autostore.bean.resultBean;
 
 import java.util.List;
 

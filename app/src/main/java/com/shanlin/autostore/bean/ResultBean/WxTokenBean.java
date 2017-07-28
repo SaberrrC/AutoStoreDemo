@@ -1,4 +1,4 @@
-package com.shanlin.autostore.bean;
+package com.shanlin.autostore.bean.resultBean;
 
 /**
  * @author:Zou ChangCheng

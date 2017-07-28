@@ -1,4 +1,4 @@
-package com.shanlin.autostore.bean.sendbean;
+package com.shanlin.autostore.bean.paramsBean;
 
 /**
  * Created by shanlin on 2017-7-27.
