@@ -15,6 +15,7 @@ import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
+import com.shanlin.autostore.net.LoggingInterceptor;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -59,7 +60,10 @@ public class CommonUtils {
      * @return
      */
     public static HttpService doNet() {
-        Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(Constant.BASE_URL).client(new OkHttpClient()).build();
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.addInterceptor(new LoggingInterceptor());//使用自定义的Log拦截器
+        OkHttpClient client = builder.build();
+        Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(Constant.BASE_URL).client(client).build();
         HttpService service = retrofit.create(HttpService.class);
         return service;
     }

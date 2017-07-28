@@ -2,6 +2,8 @@ package com.shanlin.autostore.bean;
 
 import com.shanlin.autostore.base.BaseBean;
 
+import java.io.Serializable;
+
 /**
  * Created by shanlin on 2017-7-21.
  {
@@ -26,7 +28,7 @@ import com.shanlin.autostore.base.BaseBean;
  }
  */
 
-public class FaceLoginBean extends BaseBean {
+public class LoginBean extends BaseBean implements Serializable{
 
     /**
      * data : {"gender":"0","level":"0","idCard":"","nickName":"","mobile":"18601615173","userDeviceId":"","userName":"141fe1da9e9f20d854a","token":"1a843d46-e75d-443f-a102-233356060817","score":0,"creditLevel":0,"createTime":1501134740000,"faceVerify":"1","avetorUrl":""}
@@ -52,7 +54,7 @@ public class FaceLoginBean extends BaseBean {
         this.version = version;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
          * gender : 0
          * level : 0

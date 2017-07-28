@@ -17,7 +17,7 @@ import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.CodeBean;
-import com.shanlin.autostore.bean.NumberLoginRsponseBean;
+import com.shanlin.autostore.bean.LoginBean;
 import com.shanlin.autostore.bean.sendbean.CodeSendBean;
 import com.shanlin.autostore.bean.sendbean.NumberLoginBean;
 import com.shanlin.autostore.constants.Constant;
@@ -215,10 +215,10 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
             return;
         }
         HttpService service = CommonUtils.doNet();
-        Call<NumberLoginRsponseBean> call = service.postNumCodeLogin(new NumberLoginBean(phone, msgCode));
-        call.enqueue(new CustomCallBack<NumberLoginRsponseBean>() {
+        Call<LoginBean> call = service.postNumCodeLogin(new NumberLoginBean(phone, msgCode));
+        call.enqueue(new CustomCallBack<LoginBean>() {
             @Override
-            public void success(String code, NumberLoginRsponseBean data, String msg) {
+            public void success(String code, LoginBean data, String msg) {
                 if (data.getData() == null) {
                     return;
                 }
@@ -227,6 +227,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                 SpUtils.saveString(PhoneNumLoginActivity.this, Constant.USER_PHONE_LOGINED, data.getData().getMobile());
                 Intent intent = new Intent(PhoneNumLoginActivity.this, MainActivity.class);
                 intent.putExtra(Constant.FACE_VERIFY, data.getData().getFaceVerify());
+                intent.putExtra(Constant.USER_INFO, data);
                 startActivity(intent);
                 killActivity(LoginActivity.class);
                 finish();
