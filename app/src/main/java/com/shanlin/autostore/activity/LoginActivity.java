@@ -51,8 +51,6 @@ import retrofit2.Response;
  * Created by DELL on 2017/7/14 0014.
  */
 public class LoginActivity extends BaseActivity {
-    public static final String WX_APPID           = "wxb51b89cba83263de";
-    public static final String WX_SECRET          = "1e73ced172f384ef6305e2276d2a9b96";
     public static final int    REQUEST_CODE_LOGIN = 100;
     private AlertDialog  dialog;
     private View         dialogOpenWX;
@@ -175,11 +173,11 @@ public class LoginActivity extends BaseActivity {
 
     private void sendAuth() {
 
-        api = WXAPIFactory.createWXAPI(this, WX_APPID, false);
+        api = WXAPIFactory.createWXAPI(this, Constant.APP_ID, false);
         req = new SendAuth.Req();
         req.scope = WEIXIN_SCOPE;
         req.state = WEIXIN_STATE;
-        api.registerApp(WX_APPID);
+        api.registerApp(Constant.APP_ID);
         api.sendReq(req);
     }
 
@@ -244,7 +242,7 @@ public class LoginActivity extends BaseActivity {
     private void getResult(final String code) {
 
         HttpService httpService = CommonUtils.doNet();
-        Call<WxTokenBean> call = httpService.getWxToken("https://api.weixin.qq.com/sns/oauth2/access_token", WX_APPID, WX_SECRET, code, "authorization_code");
+        Call<WxTokenBean> call = httpService.getWxToken("https://api.weixin.qq.com/sns/oauth2/access_token", Constant.APP_ID, Constant.APP_SECRET, code, "authorization_code");
         call.enqueue(new retrofit2.Callback<WxTokenBean>() {
             @Override
             public void onResponse(Call<WxTokenBean> call, retrofit2.Response<WxTokenBean> response) {
@@ -286,7 +284,7 @@ public class LoginActivity extends BaseActivity {
                         @Override
                         public void error(Throwable ex, String code, String msg) {
                             // TODO: 2017/7/26  登录失败，暂时无数据，跳到main
-                            Log.d("xx", "error: " + ex.getMessage());
+                            Log.d("xx", "error: " + msg);
                             CommonUtils.toNextActivity(LoginActivity.this, MainActivity.class);
                         }
                     });
