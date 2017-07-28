@@ -95,4 +95,9 @@ public interface HttpService {
     @POST("/wx/pay")
     @FormUrlEncoded
     Call<WxChatBean> postWxRequest(@FieldMap Map<String, String> map);
+
+    /**
+     * 个人信息修改
+     */
+//    Call<>
 }

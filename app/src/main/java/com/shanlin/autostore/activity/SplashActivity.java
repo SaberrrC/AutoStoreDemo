@@ -14,10 +14,13 @@ import android.view.animation.LinearInterpolator;
 
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.bean.CheckUpdateBean;
+import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
+import com.shanlin.autostore.utils.LogUtils;
 import com.shanlin.autostore.utils.MPermissionUtils;
+import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
 
 import retrofit2.Call;
@@ -34,6 +37,7 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         StatusBarUtils.setColor(this, Color.TRANSPARENT);
+        LogUtils.d("token  " + SpUtils.getString(this, Constant.TOKEN, ""));
         MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_CONTACTS}, new MPermissionUtils.OnPermissionListener() {
             @Override
             public void onPermissionGranted() {
