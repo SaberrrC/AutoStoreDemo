@@ -42,6 +42,7 @@ public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapt
     private static int LOAD          = 1;
     private        int currentAction = 0;//记录当前用户手势是下拉刷新还是上拉更多，默认下拉刷新
     private        int pageno        = 1;
+    private LoginBean mLoginBean;
 
 
     @Override
@@ -120,7 +121,8 @@ public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapt
 
     @Override
     public void initData() {
-
+        Intent intent = getIntent();
+        mLoginBean = (LoginBean) intent.getSerializableExtra(Constant.USER_INFO);
     }
 
     @Override
@@ -148,12 +150,12 @@ public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapt
     }
 
     public void getOrderData() {
-        Intent intent = getIntent();
-        LoginBean loginBean = (LoginBean) intent.getSerializableExtra(Constant.USER_INFO);
-        String userDeviceId = loginBean.getData().getUserDeviceId();
+        String userDeviceId = mLoginBean.getData().getUserDeviceId();
         HttpService httpService = CommonUtils.doNet();
         MemberUpdateSendBean memberUpdateSendBean = new MemberUpdateSendBean(userDeviceId);
         // TODO: 2017-7-28
+
+
 
     }
 }

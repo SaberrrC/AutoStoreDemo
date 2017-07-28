@@ -5,6 +5,7 @@ import com.shanlin.autostore.bean.CheckUpdateBean;
 import com.shanlin.autostore.bean.CodeBean;
 import com.shanlin.autostore.bean.LoginBean;
 import com.shanlin.autostore.bean.MemberUpdateBean;
+import com.shanlin.autostore.bean.RecorderBean;
 import com.shanlin.autostore.bean.WxChatBean;
 import com.shanlin.autostore.bean.WxTokenBean;
 import com.shanlin.autostore.bean.WxUserInfoBean;
@@ -12,6 +13,7 @@ import com.shanlin.autostore.bean.sendbean.CodeSendBean;
 import com.shanlin.autostore.bean.sendbean.FaceLoginSendBean;
 import com.shanlin.autostore.bean.sendbean.MemberUpdateSendBean;
 import com.shanlin.autostore.bean.sendbean.NumberLoginBean;
+import com.shanlin.autostore.bean.sendbean.WechatLoginSendBean;
 
 import java.util.Map;
 
@@ -87,9 +89,8 @@ public interface HttpService {
     Call<WxUserInfoBean> getWxUserInfo(@Url String url, @Query("access_token") String access_token, @Query("openid") String openid);
 
     //微信认证登录
-    @POST("mockjsdata/35/wechat/wechatlogin")
-    @FormUrlEncoded
-    Call<NumberLoginBean> postWxTokenLogin(@Field("nickname") String nickname, @Field("openid") String openid, @Field("sex") String sex);
+    @POST("wechat/wechatlogin")
+    Call<LoginBean> postWxTokenLogin(@Body WechatLoginSendBean wechatLoginSendBean);
 
 
     /**
@@ -104,4 +105,10 @@ public interface HttpService {
      */
     @POST("member/update")
     Call<MemberUpdateBean> postMemberUpdate(@Header("token") String token, @Body MemberUpdateSendBean memberUpdateSendBean);
+
+    /**
+     * 查询订单历史记录
+     */
+    @POST()
+    Call<RecorderBean> getRecorderList(@Header("token") String token);
 }

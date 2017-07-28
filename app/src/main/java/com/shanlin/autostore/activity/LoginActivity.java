@@ -18,12 +18,13 @@ import com.megvii.livenessdetection.LivenessLicenseManager;
 import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
+import com.shanlin.autostore.WxMessageEvent;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.LoginBean;
 import com.shanlin.autostore.bean.WxTokenBean;
 import com.shanlin.autostore.bean.WxUserInfoBean;
 import com.shanlin.autostore.bean.sendbean.FaceLoginSendBean;
-import com.shanlin.autostore.bean.sendbean.NumberLoginBean;
+import com.shanlin.autostore.bean.sendbean.WechatLoginSendBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
@@ -41,6 +42,9 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhy.autolayout.utils.AutoUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.Map;
 
 import retrofit2.Call;
@@ -52,6 +56,7 @@ import retrofit2.Response;
  */
 public class LoginActivity extends BaseActivity {
     public static final int    REQUEST_CODE_LOGIN = 100;
+    public static final String TYPE_WX            = "1";
     private AlertDialog  dialog;
     private View         dialogOpenWX;
     //微信登录
@@ -95,9 +100,9 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void initView() {
         //注册EventBus
-//        if (!EventBus.getDefault().isRegistered(this)) {//判断是否已经注册EventBus
-////            EventBus.getDefault().register(this);
-//        }
+        if (!EventBus.getDefault().isRegistered(this)) {//判断是否已经注册EventBus
+            EventBus.getDefault().register(this);
+        }
         mLoginActivity = this;
         findViewById(R.id.btn_login_by_face).setOnClickListener(this);
         findViewById(R.id.btn_login_by_phone).setOnClickListener(this);
@@ -225,6 +230,7 @@ public class LoginActivity extends BaseActivity {
                             finish();
                         }
                     }
+
                     @Override
                     public void error(Throwable ex, String code, String msg) {
                         dismissLoadingDialog();
@@ -269,32 +275,70 @@ public class LoginActivity extends BaseActivity {
             public void onResponse(Call<WxUserInfoBean> call, Response<WxUserInfoBean> response) {
                 if (response != null) {
                     WxUserInfoBean body = response.body();
-                    Call<NumberLoginBean> WXLoginCall = httpService.postWxTokenLogin(body.nickname, body.openid, body.sex);
-                    WXLoginCall.enqueue(new CustomCallBack<NumberLoginBean>() {
+                    final WechatLoginSendBean wechatLoginSendBean = new WechatLoginSendBean();
+                    wechatLoginSendBean.setType(TYPE_WX);
+                    wechatLoginSendBean.setUnionid(body.unionid);
+                    WechatLoginSendBean.ExtraBean extra = wechatLoginSendBean.getExtra();
+                    extra.setNickname(body.nickname);
+                    extra.setOpenid(body.openid);
+                    extra.setSex(body.sex);
+                    // TODO: 2017-7-28
+                    Call<LoginBean> WXLoginCall = httpService.postWxTokenLogin(wechatLoginSendBean);
+                    WXLoginCall.enqueue(new CustomCallBack<LoginBean>() {
                         @Override
-                        public void success(String code, NumberLoginBean data, String msg) {
-                            if (code != null && code.equals("200")) {
-                                // TODO: 2017/7/26  登录成功，data包含用户数据
-                                CommonUtils.toNextActivity(LoginActivity.this, MainActivity.class);
-                                killActivity(LoginActivity.class);
+                        public void success(String code, LoginBean data, String msg) {
+
+                            if (data.getData() == null) {
+                                ToastUtils.showToast(msg);
+                                return;
+                            }
+                            if (TextUtils.equals(data.getData().getFaceVerify(), "0")) {
+                                //没人脸认证 跳转手机号登陆界面
+                                Intent intent = new Intent(LoginActivity.this, PhoneNumLoginActivity.class);
+                                intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_NO);
+                                // TODO: 2017-7-28 把微信消息传过去
+
+
+
+                                startActivity(intent);
+                            }
+                            if (TextUtils.equals(data.getData().getFaceVerify(), "1")) {
+                                //已经验证 保存token和手机号 跳转到主页
+                                AutoStoreApplication.isLogin = true;
+                                SpUtils.saveString(LoginActivity.this, Constant.TOKEN, data.getData().getToken());
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_OK);
+                                intent.putExtra(Constant.USER_INFO, data);
+                                startActivity(intent);
                                 finish();
                             }
+
+
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            intent.putExtra(Constant.USER_INFO, data);
+                            finish();
                         }
 
                         @Override
                         public void error(Throwable ex, String code, String msg) {
+                            if (code == "204") {//新用户请绑定手机号注册
+                                Intent intent = new Intent(LoginActivity.this, PhoneNumLoginActivity.class);
+                                intent.putExtra(Constant.WX_LOGIN, wechatLoginSendBean);
+                                startActivity(intent);
+                                finish();
+                                return;
+                            }
                             // TODO: 2017/7/26  登录失败，暂时无数据，跳到main
                             Log.d("xx", "error: " + msg);
-                            CommonUtils.toNextActivity(LoginActivity.this, MainActivity.class);
+                            ToastUtils.showToast("微信登录失败，请重试");
                         }
                     });
                 }
-
             }
 
             @Override
             public void onFailure(Call<WxUserInfoBean> call, Throwable t) {
-
+                ToastUtils.showToast("微信登录失败，请重试");
             }
         });
 
@@ -304,16 +348,16 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        EventBus.getDefault().unregister(this);
+        EventBus.getDefault().unregister(this);
     }
 
-    //在产生事件的线程中执行
-//    @Subscribe
-//    public void onMessageEventPostThread(WxMessageEvent messageEvent) {
-//        if (messageEvent.getMessage().equals("WxCode")) {
-//            getResult(messageEvent.getCode());
-//        }
-//    }
+    //    在产生事件的线程中执行
+    @Subscribe
+    public void onMessageEventPostThread(WxMessageEvent messageEvent) {
+        if (messageEvent.getMessage().equals("WxCode")) {
+            getResult(messageEvent.getCode());
+        }
+    }
 
     private void showLoadingDialog() {
         mLoadingDialog = new Dialog(this, R.style.MyDialogCheckVersion);
