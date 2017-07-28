@@ -3,6 +3,7 @@ package com.shanlin.autostore;
 import android.app.Application;
 
 import com.shanlin.autostore.constants.Constant;
+import com.shanlin.autostore.utils.LogUtils;
 import com.shanlin.autostore.utils.SpUtils;
 import com.zhy.autolayout.config.AutoLayoutConifg;
 
@@ -27,6 +28,8 @@ public class AutoStoreApplication extends Application {
         if (!rid.isEmpty()) {
             SpUtils.saveString(this, Constant.DEVICEID, rid);
         }
+
+        LogUtils.d("devicedid  " + rid);
         //        CrashHandler.getInstance().setCustomCrashHanler(app);
     }
 
