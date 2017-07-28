@@ -2,7 +2,9 @@ package com.shanlin.autostore.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -39,12 +41,13 @@ import tech.michaelx.authcode.CodeConfig;
 public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEditorActionListener {
 
     public static final int CODE_LENTH = 4;
-    private EditText mEtMsgCode;
+    private EditText          mEtMsgCode;
     private EditText          mEtPhoneNum;
     private Button            mBtnBindOrLogin;
     private CountDownTextView mBtnGetMsgCode;
     private View              iconAndTitle;
     private View              noVipTip;
+    private boolean togon = false;//控制验证码edittext是否需要在第四位输入后进行操作
 
     @Override
     public int initLayout() {
@@ -77,6 +80,28 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
         mBtnBindOrLogin.setText("登录");
         iconAndTitle.setVisibility(View.VISIBLE);
         noVipTip.setVisibility(View.GONE);
+        mEtMsgCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!togon) {
+                    return;
+                }
+                if (editable.length() >= 4) {
+                    mEtMsgCode.setSelection(editable.length());
+                }
+                togon = false;
+            }
+        });
     }
 
     @Override
@@ -116,8 +141,12 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
 
     private boolean checkPhoneNum() {
         String phone = mEtPhoneNum.getText().toString().trim();
+        if (TextUtils.isEmpty(phone)) {
+            ToastUtils.showToast("请输入手机号");
+            return true;
+        }
         if (!StrUtils.isMobileNO(phone)) {//手机号格式不对
-            ToastUtils.showToast("请输入正确的手机号");
+            ToastUtils.showToast("手机号格式有误");
             return true;
         }
         return false;
@@ -129,31 +158,25 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
     private void deGetCodeFromNet() {
         String phone = mEtPhoneNum.getText().toString().trim();
         HttpService service = CommonUtils.doNet();
-        // @Field
         Call<CodeBean> call = service.postVerificationCode(new CodeSendBean(phone));
-        // 创建 网络请求接口 的实例
-        // 发送网络请求(异步)
         call.enqueue(new CustomCallBack<CodeBean>() {
             @Override
             public void success(String code, CodeBean data, String msg) {
                 ToastUtils.showToast(msg);
-//                <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-//                <uses-permission android:name="android.permission.READ_SMS"/>
-                MPermissionUtils.requestPermissionsResult(PhoneNumLoginActivity.this, 1, new String[]{Manifest.permission.RECEIVE_SMS,
-                        Manifest.permission.READ_SMS}, new MPermissionUtils.OnPermissionListener() {
+                //                <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+                //                <uses-permission android:name="android.permission.READ_SMS"/>
+                MPermissionUtils.requestPermissionsResult(PhoneNumLoginActivity.this, 1, new String[]{Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, new MPermissionUtils.OnPermissionListener() {
                     @Override
                     public void onPermissionGranted() {
                         //CommonUtils.toNextActivity(LoginActivity.this, MainActivity.class);
-                        CodeConfig config = new CodeConfig.Builder()
-                                .codeLength(CODE_LENTH) // 设置验证码长度
-//                                .smsFromStart(10690333) // 设置验证码发送号码前几位数字
+                        CodeConfig config = new CodeConfig.Builder().codeLength(CODE_LENTH) // 设置验证码长度
+                                //                                .smsFromStart(10690333) // 设置验证码发送号码前几位数字
                                 .smsFrom(10690333031369L) // 如果验证码发送号码固定，则可以设置验证码发送完整号码
                                 .smsBodyStartWith("验证码") // 设置验证码短信开头文字
                                 .smsBodyContains("在3分钟内有效。如非本人操作请忽略本短信") // 设置验证码短信内容包含文字
                                 .build();
                         AuthCode.getInstance().with(PhoneNumLoginActivity.this).config(config).into(mEtMsgCode);
-
-
+                        togon = true;
                     }
 
                     @Override
@@ -179,8 +202,12 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
     private void bindOrLogin() {
         String phone = mEtPhoneNum.getText().toString().trim();
         String msgCode = mEtMsgCode.getText().toString().trim();
+        if (TextUtils.isEmpty(phone)) {
+            ToastUtils.showToast("请输入手机号");
+            return;
+        }
         if (!StrUtils.isMobileNO(phone)) {
-            ToastUtils.showToast("请输入正确的手机号");
+            ToastUtils.showToast("手机号格式有误");
             return;
         }
         if (TextUtils.isEmpty(msgCode)) {
@@ -207,7 +234,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
 
             @Override
             public void error(Throwable ex, String code, String msg) {
-                mBtnGetMsgCode.reset();
+                //                mBtnGetMsgCode.reset();
                 ToastUtils.showToast(msg);
             }
         });
