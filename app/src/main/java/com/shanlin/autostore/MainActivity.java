@@ -285,7 +285,7 @@ public class MainActivity extends BaseActivity {
                 ZXingOrderBean zXingOrderBean = gson.fromJson(result, ZXingOrderBean.class);
                 Log.d(TAG, "----------------二维码订单数据-----"+zXingOrderBean);
                 //调用生成正式订单接口
-                generateRealOrder(zXingOrderBean.getOrderNo());
+                generateRealOrder(zXingOrderBean.getOrderNo(),zXingOrderBean.getDeviceId());
             }
 
             // TODO: 2017-7-17 判断 result 成功进入超市
@@ -324,8 +324,11 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void generateRealOrder(String orderNo) {
-        String token = SpUtils.getString(this, Constant
+    private String[] aliArgs = new String[] {Constant_LeMaiBao.DEVICEDID,Constant_LeMaiBao.ORDER_NO,
+            Constant_LeMaiBao.TOTAL_AMOUNT,Constant_LeMaiBao.STORED_ID,Constant.TOKEN};
+
+    private void generateRealOrder(final String orderNo, final String devicedID) {
+        final String token = SpUtils.getString(this, Constant
                 .TOKEN, "");
         Log.d(TAG, "-------------------token="+token);
         Call<RealOrderBean> call = service.updateTempToReal(token,
@@ -339,7 +342,7 @@ public class MainActivity extends BaseActivity {
                             .toString());
                     String totalAmount = response.body().getData().getTotalAmount();//应付总金额
                     CommonUtils.sendDataToNextActivity(MainActivity.this, ChoosePayWayActivity
-                            .class,Constant_LeMaiBao.TOTAL_AMOUNT,totalAmount);
+                            .class,aliArgs,new String[]{devicedID,orderNo,totalAmount,"2",token});
                 }
             }
 

@@ -2,29 +2,27 @@ package com.shanlin.autostore.interf;
 
 import com.shanlin.autostore.bean.LoginBean;
 import com.shanlin.autostore.bean.MemberUpdateBean;
+import com.shanlin.autostore.bean.RecorderBean;
 import com.shanlin.autostore.bean.paramsBean.CodeSendBean;
 import com.shanlin.autostore.bean.paramsBean.FaceLoginSendBean;
 import com.shanlin.autostore.bean.paramsBean.LeMaiBaoPayBody;
 import com.shanlin.autostore.bean.paramsBean.MemberUpdateSendBean;
 import com.shanlin.autostore.bean.paramsBean.NumberLoginBean;
 import com.shanlin.autostore.bean.paramsBean.RealOrderBody;
-import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;
 import com.shanlin.autostore.bean.paramsBean.WechatSaveMobileBody;
 import com.shanlin.autostore.bean.resultBean.CaptureBean;
 import com.shanlin.autostore.bean.resultBean.CheckUpdateBean;
 import com.shanlin.autostore.bean.resultBean.CodeBean;
 import com.shanlin.autostore.bean.resultBean.CreditBalanceCheckBean;
 import com.shanlin.autostore.bean.resultBean.LeMaiBaoPayResultBean;
-import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
 import com.shanlin.autostore.bean.resultBean.RealNameAuthenBean;
 import com.shanlin.autostore.bean.resultBean.RealOrderBean;
 import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
 import com.shanlin.autostore.bean.resultBean.WxChatBean;
 import com.shanlin.autostore.bean.resultBean.WxTokenBean;
 import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
-
+import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;
 import java.util.Map;
-
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -52,12 +50,20 @@ public interface HttpService {
     Call doGet(@Path("url") String url);
 
     /**
-     * 实名认证post
-     *
+     * 实名认证post -1082
      * @return
      */
     @POST("buybao/userverify")
-    Call<RequestBody> sendData(@Field("idCard") String idCard, @Field("name") String name);
+    Call<RealNameAuthenBean> goRealNameAuthen(@Header("token") String token,@Body
+            RealNameAuthenBody body);
+
+    /**
+     * 密码设置-1083
+     * @param password
+     * @return
+     */
+    @POST("buybao/setpassword")
+    Call<PswSettingBean> goPswSetting (@Query("password") String password);
 
     /**
      * 二维码扫描 打开闸机
@@ -110,7 +116,6 @@ public interface HttpService {
 
     /**
      * 乐买宝实名认证接口 -1082
-     *
      * @param idcard
      * @param username
      * @return
@@ -121,7 +126,6 @@ public interface HttpService {
 
     /**
      * 获取用户乐买宝实名认证信息
-     *
      * @param token
      * @return
      */
@@ -130,7 +134,6 @@ public interface HttpService {
 
     /**
      * 获取用户信用和余额
-     *
      * @param token
      * @return
      */
@@ -139,16 +142,15 @@ public interface HttpService {
 
     /**
      * 更新临时订单成为正式订单-910
-     *
      * @return
      */
     @POST("order/confirm")
-    Call<RealOrderBean> updateTempToReal(@Header("token") String token, @Body RealOrderBody body);
+    Call<RealOrderBean> updateTempToReal(@Header("token") String token, @Body
+            RealOrderBody body);
 
 
     /**
      * 乐买宝支付接口-931
-     *
      * @param token
      * @param body
      * @return
@@ -158,7 +160,6 @@ public interface HttpService {
 
     /**
      * 修改个人信息
-     *
      * @param token
      * @param memberUpdateSendBean
      * @return
@@ -172,6 +173,13 @@ public interface HttpService {
     @GET("order/history")
     Call<OrderHistoryBean> getOrderHistory(@Header("token") String token, @Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
 
+    /**
+     * 创建支付宝预订单
+     * @return
+     */
+    @POST("ali/pay")
+    Call<AliPayResultBean> createAliPreOrder(@Header("token") String token, @Body AliPayOrderBody
+            body);
 
     /**
      * 微信认证登录绑定手机号

@@ -94,10 +94,12 @@ public class CommonUtils {
      * @param context
      * @param activity
      */
-    public static void sendDataToNextActivity(Context context, Class activity,String key,String
+    public static void sendDataToNextActivity(Context context, Class activity,String[] key,String[]
                                               data) {
         Intent intent = new Intent(context,activity);
-        intent.putExtra(key,data);
+        for (int i = 0; i < key.length; i++) {
+            intent.putExtra(key[i],data[i]);
+        }
         context.startActivity(intent);
     }
 
@@ -123,6 +125,16 @@ public class CommonUtils {
      */
     public static void showToast(Context context, String text) {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * debug log信息
+     * @param content
+     */
+    public static void debugLog (String content) {
+        if (true) {
+            Log.d("wr", "----946----"+content);
+        }
     }
 
     /**
