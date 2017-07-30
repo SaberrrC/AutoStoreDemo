@@ -1,4 +1,4 @@
-package com.shanlin.autostore.bean.sendbean;
+package com.shanlin.autostore.bean.paramsBean;
 
 import com.shanlin.autostore.base.BaseBean;
 

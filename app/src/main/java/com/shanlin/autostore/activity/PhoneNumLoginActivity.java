@@ -19,7 +19,9 @@ import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.LoginBean;
 import com.shanlin.autostore.bean.paramsBean.CodeSendBean;
 import com.shanlin.autostore.bean.paramsBean.NumberLoginBean;
+import com.shanlin.autostore.bean.paramsBean.WechatSaveMobileBody;
 import com.shanlin.autostore.bean.resultBean.CodeBean;
+import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
@@ -215,10 +217,24 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
             ToastUtils.showToast("请输入验证码");
             return;
         }
-
         final HttpService service = CommonUtils.doNet();
-        Call<LoginBean> call = service.postNumCodeLogin(new NumberLoginBean(phone, msgCode));
-        call.enqueue(new CustomCallBack<LoginBean>() {
+        //判断是普通登陆还是微信绑定
+        WxUserInfoBean wxUserInfoBean = (WxUserInfoBean) getIntent().getSerializableExtra(Constant.WX_INFO);
+        Call<LoginBean> loginBeanCall = null;
+        if (wxUserInfoBean == null) {
+            loginBeanCall = service.postNumCodeLogin(new NumberLoginBean(phone, msgCode));
+        } else {
+            WechatSaveMobileBody wechatSaveMobileBody = new WechatSaveMobileBody();
+            wechatSaveMobileBody.setMobile(phone);
+            wechatSaveMobileBody.setValidCode(msgCode);
+            WechatSaveMobileBody.ExtraBean extraBean = new WechatSaveMobileBody.ExtraBean();
+            extraBean.setNickname(wxUserInfoBean.getNickname());
+            extraBean.setOpenid(wxUserInfoBean.getOpenid());
+            extraBean.setSex(wxUserInfoBean.getSex() + "");
+            wechatSaveMobileBody.setExtra(extraBean);
+            loginBeanCall = service.postWechatSavemobile(wechatSaveMobileBody);
+        }
+        loginBeanCall.enqueue(new CustomCallBack<LoginBean>() {
             @Override
             public void success(String code, LoginBean data, String msg) {
                 if (data.getData() == null) {
@@ -227,7 +243,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                 AutoStoreApplication.isLogin = true;
                 SpUtils.saveString(PhoneNumLoginActivity.this, Constant.TOKEN, data.getData().getToken());
                 //保存用户乐买宝认证信息
-                CommonUtils.checkAuthenStatus(PhoneNumLoginActivity.this,service,data.getData().getToken());
+                CommonUtils.checkAuthenStatus(PhoneNumLoginActivity.this, service, data.getData().getToken());
                 SpUtils.saveString(PhoneNumLoginActivity.this, Constant.USER_PHONE_LOGINED, data.getData().getMobile());
                 Intent intent = new Intent(PhoneNumLoginActivity.this, MainActivity.class);
                 intent.putExtra(Constant.FACE_VERIFY, data.getData().getFaceVerify());
@@ -243,8 +259,8 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                 ToastUtils.showToast(msg);
             }
         });
-    }
 
+    }
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {

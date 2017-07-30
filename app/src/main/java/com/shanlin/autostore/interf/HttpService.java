@@ -11,6 +11,8 @@ import com.shanlin.autostore.bean.paramsBean.MemberUpdateSendBean;
 import com.shanlin.autostore.bean.paramsBean.NumberLoginBean;
 import com.shanlin.autostore.bean.paramsBean.RealNameAuthenBody;
 import com.shanlin.autostore.bean.paramsBean.RealOrderBody;
+import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;
+import com.shanlin.autostore.bean.paramsBean.WechatSaveMobileBody;
 import com.shanlin.autostore.bean.resultBean.AliPayResultBean;
 import com.shanlin.autostore.bean.resultBean.CaptureBean;
 import com.shanlin.autostore.bean.resultBean.CheckUpdateBean;
@@ -24,7 +26,6 @@ import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
 import com.shanlin.autostore.bean.resultBean.WxChatBean;
 import com.shanlin.autostore.bean.resultBean.WxTokenBean;
 import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
-import com.shanlin.autostore.bean.sendbean.WechatLoginSendBean;
 import java.util.Map;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -173,14 +174,21 @@ public interface HttpService {
     /**
      * 查询订单历史记录
      */
-    @POST()
-    Call<RecorderBean> getRecorderList(@Header("token") String token);
+    @GET("order/history")
+    Call<RecorderBean> getRecorderList(@Header("token") String token,@Query("pageNumber") String
+            pageNumber,@Query("pageSize") String pageSize);
 
     /**
      * 创建支付宝预订单
      * @return
      */
     @POST("ali/pay")
-    Call<AliPayResultBean> createAliPreOrder(@Header("token") String token,@Body AliPayOrderBody
+    Call<AliPayResultBean> createAliPreOrder(@Header("token") String token, @Body AliPayOrderBody
             body);
+
+    /**
+     * 微信认证登录绑定手机号
+     */
+    @POST("wechat/savemobile")
+    Call<LoginBean> postWechatSavemobile(@Body WechatSaveMobileBody wechatSaveMobileBody);
 }
