@@ -10,9 +10,6 @@ import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.utils.CommonUtils;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * Created by DELL on 2017/7/19 0019.
  */
@@ -42,14 +39,7 @@ public class PayResultActivity extends BaseActivity {
         String type = intent.getStringExtra(Constant_LeMaiBao.PAY_TYPE);
         payType.setText(type+"为您付款成功");
         payMoney.setText("¥"+totalMoney);
-        initCurrentTime();
-    }
-
-    private void initCurrentTime() {
-        SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd  HH:mm:ss ");
-        Date curDate = new Date(System.currentTimeMillis());//获取当前时间
-        String str = formatter.format(curDate);
-        payTime.setText(str);
+        payTime.setText(CommonUtils.getCurrentTime(true));
     }
 
     @Override

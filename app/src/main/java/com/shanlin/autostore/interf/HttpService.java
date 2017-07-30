@@ -24,6 +24,7 @@ import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
 import com.shanlin.autostore.bean.resultBean.PswSettingBean;
 import com.shanlin.autostore.bean.resultBean.RealNameAuthenBean;
 import com.shanlin.autostore.bean.resultBean.RealOrderBean;
+import com.shanlin.autostore.bean.resultBean.UserNumEverydayBean;
 import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
 import com.shanlin.autostore.bean.resultBean.WxChatBean;
 import com.shanlin.autostore.bean.resultBean.WxTokenBean;
@@ -194,6 +195,17 @@ public interface HttpService {
     Call<LoginBean> postWechatSavemobile(@Body WechatSaveMobileBody wechatSaveMobileBody);
 
     /**
+     * 获取每日到店用户
+     * @param date
+     * @param storeId
+     * @return
+     */
+    @GET("store/statisc")
+    Call<UserNumEverydayBean> getUserNumEveryday(@Header("token") String token,@Query("date")
+            String date,@Query
+            ("storeId") String storeId);
+
+    /*
      * 订单详情
      */
     @GET("order/details")

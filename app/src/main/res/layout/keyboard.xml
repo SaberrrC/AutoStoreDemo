@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <View
+        android:background="#E1E1E1"
+        android:layout_width="match_parent"
+        android:layout_height="1px"></View>
+
+    <ImageView
+        android:clickable="true"
+        android:id="@+id/iv_disapper_keyboard"
+        android:paddingTop="10px"
+        android:layout_gravity="center_horizontal"
+        android:src="@mipmap/arrow_down"
+        android:background="#fff"
+        android:paddingBottom="10px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:background="#E1E1E1"
+        android:layout_width="match_parent"
+        android:layout_height="1px"></View>
+
+    <com.shanlin.autostore.view.XNumberKeyboardView
+        android:id="@+id/view_keyboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#E1E1E1"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:keyBackground="@drawable/selector_key_bg"
+        android:keyTextColor="#000000"
+        android:shadowColor="@android:color/transparent"
+        android:shadowRadius="0"
+        app:xnkv_deleteBackgroundColor="#E0E0E0"
+        app:xnkv_deleteDrawable="@mipmap/delete"
+        app:xnkv_deleteWidth="22dp" />
+
+</LinearLayout>

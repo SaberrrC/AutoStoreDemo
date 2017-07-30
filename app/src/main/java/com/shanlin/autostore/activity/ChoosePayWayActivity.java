@@ -3,14 +3,19 @@ package com.shanlin.autostore.activity;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +33,7 @@ import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.env.DeviceInfo;
+import com.shanlin.autostore.view.XNumberKeyboardView;
 import com.shanlin.autostore.zhifubao.OrderInfoUtil2_0;
 import com.shanlin.autostore.zhifubao.PayKeys;
 import com.shanlin.autostore.zhifubao.PayResult;
@@ -60,6 +66,10 @@ public class ChoosePayWayActivity extends BaseActivity{
     private String storeId;
     private String token;
     private String timestamp;
+    private View keyBoard;
+    private XNumberKeyboardView xnumber;
+    private PopupWindow popTop;
+    private PopupWindow popBottom;
 
     @Override
     public int initLayout() {
@@ -81,18 +91,53 @@ public class ChoosePayWayActivity extends BaseActivity{
         dialogView = LayoutInflater.from(this).inflate(R.layout.input_psw_dialog_layout, null);
         dialogView.findViewById(R.id.iv_close_dialog).setOnClickListener(this);
         moneyNeedToPay = ((TextView) dialogView.findViewById(R.id.money_need_to_pay));
+        initPswView();
+        keyBoard = LayoutInflater.from(this).inflate(R.layout.keyboard, null);
+        initKeyBoard();
+    }
+
+    private StringBuilder sb = new StringBuilder();
+
+    private void initKeyBoard() {
+        xnumber = ((XNumberKeyboardView) keyBoard.findViewById(R.id.view_keyboard));
+        keyBoard.findViewById(R.id.iv_disapper_keyboard).setOnClickListener(this);
+        xnumber.setIOnKeyboardListener(new XNumberKeyboardView.IOnKeyboardListener() {
+            @Override
+            public void onInsertKeyEvent(String text) {
+                if (sb.length() < 6) {
+                    sb.append(text);
+                    pswView.setPassword(sb.toString());
+                }
+            }
+
+            @Override
+            public void onDeleteKeyEvent() {
+                if (sb.length() > 0)
+                sb = sb.deleteCharAt(sb.length() - 1);
+                pswView.setPassword(sb.toString());
+            }
+        });
+    }
+
+    private void initPswView() {
         pswView = ((GridPasswordView) dialogView.findViewById(R.id.pswView));
         pswView.setOnPasswordChangedListener(new GridPasswordView.OnPasswordChangedListener() {
             @Override
             public void onTextChanged(String psw) {
-
+                if (psw.length() < 6) {
+//                    CommonUtils.showToast(ChoosePayWayActivity.this,"请输入六位数密码!");
+                } else {
+                    CommonUtils.debugLog("yyyyyyy");
+                    popTop.dismiss();
+                    popBottom.dismiss();
+                    CommonUtils.toNextActivity(ChoosePayWayActivity.this,PayResultActivity.class);
+                }
             }
 
             @Override
             public void onInputFinish(String psw) {
                 //// TODO: 2017/7/19 0019 联网发送数据
-                dialog.dismiss();
-                CommonUtils.toNextActivity(ChoosePayWayActivity.this,PayResultActivity.class);
+
             }
         });
     }
@@ -107,6 +152,7 @@ public class ChoosePayWayActivity extends BaseActivity{
         storeId = intent.getStringExtra(Constant_LeMaiBao.STORED_ID);
         token = intent.getStringExtra(Constant.TOKEN);
         totalAmount.setText("¥"+ (totalMoney == null ? "0.00" : totalMoney));
+        moneyNeedToPay.setText("¥"+ (totalMoney == null ? "0.00" : totalMoney));
         service = CommonUtils.doNet();
     }
 
@@ -143,7 +189,7 @@ public class ChoosePayWayActivity extends BaseActivity{
             case R.id.ll_pay_way_1:
                 //买乐宝支付
                 showInputPswDialog();
-
+                showKeyBoard();
                 break;
             case R.id.get_avaiable_balence:
                 //可用额度领取
@@ -159,10 +205,13 @@ public class ChoosePayWayActivity extends BaseActivity{
 //                WXPayTools.pay("wx201410272009395522657a690389285100","C380BEC2BFD727A4B6845133519F3AD6",ChoosePayWayActivity.this);
                 break;
             case R.id.iv_close_dialog:
-                dialog.dismiss();
+                if (popTop.isShowing()) popTop.dismiss();
                 break;
             case R.id.btn_diaolog_know:
                 availbleDialog.dismiss();
+                break;
+            case R.id.iv_disapper_keyboard:
+                if (popBottom.isShowing()) popBottom.dismiss();
                 break;
         }
     }
@@ -176,11 +225,32 @@ public class ChoosePayWayActivity extends BaseActivity{
     }
 
     private void showInputPswDialog() {
-        if (dialog == null) {
-            dialog = CommonUtils.getDialog(this,dialogView,false);
-        } else {
-            dialog.show();
-        }
+        popTop = new PopupWindow(this);
+        popTop.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        popTop.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        popTop.setContentView(dialogView);
+        popTop.setBackgroundDrawable(new ColorDrawable(0x00000000));
+        popTop.setOutsideTouchable(false);
+        popTop.setFocusable(false);
+        popTop.showAtLocation(getWindow().getDecorView(), Gravity.CENTER_HORIZONTAL,0,-300);
+        backgroundAlpha(0.5f);
+        popTop.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                backgroundAlpha(1f);
+            }
+        });
+    }
+
+    private void showKeyBoard() {
+        popBottom = new PopupWindow(this);
+        popBottom.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        popBottom.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        popBottom.setContentView(keyBoard);
+        popBottom.setBackgroundDrawable(new ColorDrawable(0x00000000));
+        popBottom.setOutsideTouchable(false);
+        popBottom.setFocusable(false);
+        popBottom.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM,0,0);
     }
 
     private void requestWxInfo(){
@@ -209,6 +279,18 @@ public class ChoosePayWayActivity extends BaseActivity{
                 Toast.makeText(ChoosePayWayActivity.this,code+msg,Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    /**
+     * 设置添加屏幕的背景透明度
+     * @param bgAlpha
+     */
+    public void backgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = bgAlpha; //0.0-1.0
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        getWindow().setAttributes(lp);
+        CommonUtils.debugLog("设置透明度");
     }
 
 
