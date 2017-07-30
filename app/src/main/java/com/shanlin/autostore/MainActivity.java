@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.shanlin.autostore.activity.BuyRecordActivity;
 import com.shanlin.autostore.activity.ChoosePayWayActivity;
+import com.shanlin.autostore.activity.GateActivity;
 import com.shanlin.autostore.activity.LoginActivity;
 import com.shanlin.autostore.activity.MyLeMaiBaoActivity;
 import com.shanlin.autostore.activity.OpenLeMaiBao;
@@ -29,30 +30,30 @@ import com.shanlin.autostore.activity.RefundMoneyActivity;
 import com.shanlin.autostore.activity.SaveFaceActivity;
 import com.shanlin.autostore.activity.VersionInfoActivity;
 import com.shanlin.autostore.base.BaseActivity;
-import com.shanlin.autostore.bean.resultBean.CaptureBean;
-import com.shanlin.autostore.bean.resultBean.CreditBalanceCheckBean;
-import com.shanlin.autostore.bean.resultBean.RealOrderBean;
+import com.shanlin.autostore.bean.LoginBean;
 import com.shanlin.autostore.bean.paramsBean.RealOrderBody;
 import com.shanlin.autostore.bean.paramsBean.ZXingOrderBean;
+import com.shanlin.autostore.bean.resultBean.CreditBalanceCheckBean;
+import com.shanlin.autostore.bean.resultBean.RealOrderBean;
+import com.shanlin.autostore.bean.resultBean.RefundMoneyBean;
+import com.shanlin.autostore.bean.resultBean.UserNumEverydayBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
-import com.shanlin.autostore.net.NetCallBack;
+import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
 import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.utils.ToastUtils;
-import com.shanlin.autostore.view.NumAnim;
 import com.shanlin.autostore.view.ProgressView;
 import com.shanlin.autostore.zhifubao.Base64;
 import com.slfinance.facesdk.ui.LivenessActivity;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.zhy.autolayout.utils.AutoUtils;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -78,12 +79,13 @@ public class MainActivity extends BaseActivity {
     private long lastTime = 0;
     private ProgressView pv;
     private TextView     mUserNum;
-    private TextView openLMB;
-    private HttpService service;
-    private Gson gson;
-    private LoginBean mLoginBean;
-    private int femaleCount;
-    private String token;
+    private TextView     openLMB;
+    private HttpService  service;
+    private Gson         gson;
+    private LoginBean    mLoginBean;
+    private int          femaleCount;
+    private String       token;
+    private TextView     mTvRefundMoney;
 
     @Override
     public int initLayout() {
@@ -98,6 +100,7 @@ public class MainActivity extends BaseActivity {
         mBtBanlance = (TextView) findViewById(R.id.btn_yu_e);
         mUserNum = (TextView) findViewById(R.id.user_num);
         pv = (ProgressView) findViewById(R.id.pv);
+        mTvRefundMoney = (TextView) findViewById(R.id.tv_refund_money);//退款金额
         mBtBanlance.setOnClickListener(this);
         mTvIdentify.setOnClickListener(this);
         findViewById(R.id.btn_lemaibao).setOnClickListener(this);
@@ -152,6 +155,9 @@ public class MainActivity extends BaseActivity {
             openLMB.setClickable(false);
             getUserCreditBalenceInfo(service);
         }
+        //获取退款金额
+        getRefundMoney();
+
     }
 
     private void getUserNumToday() {
@@ -318,22 +324,9 @@ public class MainActivity extends BaseActivity {
                 generateRealOrder(zXingOrderBean.getOrderNo(),zXingOrderBean.getDeviceId());
             }
             if (result.contains("打开闸机")) {//扫描闸机的我二维码
-                Gson gson = new Gson();
-                OpenGardQRBean openGardQRBean = gson.fromJson(result, OpenGardQRBean.class);
-                HttpService service = CommonUtils.doNet();
-                Call<CaptureBean> call = service.postGardOpen(SpUtils.getString(this, Constant.TOKEN, ""), new OpenGardBody(openGardQRBean.getDeviceId(), openGardQRBean.getStoreId(), SpUtils.getString(this, Constant.DEVICEID, "")));
-                call.enqueue(new CustomCallBack<CaptureBean>() {
-                    @Override
-                    public void success(String code, CaptureBean data, String msg) {
-                        Intent intent = new Intent(AutoStoreApplication.getApp(), GateActivity.class);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void error(Throwable ex, String code, String msg) {
-                        ToastUtils.showToast(msg);
-                    }
-                });
+                Intent intent = new Intent(AutoStoreApplication.getApp(), GateActivity.class);
+                intent.putExtra(Constant.QR_GARD, result);
+                startActivity(intent);
             }
         }
         if (requestCode == REQUEST_CODE_REGEST) {//人脸识别成功 拿到图片跳转
@@ -393,7 +386,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        String argument = intent.getStringExtra(Constant.FACE_VERIFY);
+        String argument = intent.getStringExtra(Constant.MainActivityArgument.MAIN_ACTIVITY);
         if (TextUtils.equals(Constant.MainActivityArgument.GATE, argument)) {
             showGateOpenDialog();
             return;
@@ -516,4 +509,20 @@ public class MainActivity extends BaseActivity {
     }
 
 
+    public void getRefundMoney() {
+        CommonUtils.doNet().getRefundMoney(token).enqueue(new CustomCallBack<RefundMoneyBean>() {
+            @Override
+            public void success(String code, RefundMoneyBean data, String msg) {
+                List<RefundMoneyBean.DataBean> beanList = data.getData();
+                mTvRefundMoney.setText("¥0.00");
+            }
+
+            @Override
+            public void error(Throwable ex, String code, String msg) {
+                mTvRefundMoney.setText("¥0.00");
+            }
+        });
+
+
+    }
 }

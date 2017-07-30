@@ -24,6 +24,7 @@ import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
 import com.shanlin.autostore.bean.resultBean.PswSettingBean;
 import com.shanlin.autostore.bean.resultBean.RealNameAuthenBean;
 import com.shanlin.autostore.bean.resultBean.RealOrderBean;
+import com.shanlin.autostore.bean.resultBean.RefundMoneyBean;
 import com.shanlin.autostore.bean.resultBean.UserNumEverydayBean;
 import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
 import com.shanlin.autostore.bean.resultBean.WxChatBean;
@@ -76,7 +77,7 @@ public interface HttpService {
     /**
      * 二维码扫描 打开闸机
      */
-    @POST(" /device/open")
+    @POST("device/open")
     Call<CaptureBean> postGardOpen(@Header("token") String token, @Body OpenGardBody openGardBody);
 
     /**
@@ -205,9 +206,15 @@ public interface HttpService {
             String date,@Query
             ("storeId") String storeId);
 
-    /*
+    /**
      * 订单详情
      */
     @GET("order/details")
     Call<OrderDetailBean> getOrderDetail(@Header("token") String token,@Query("orderNo") String orderNo);
+
+    /**
+     * 退款金额
+     */
+    @GET("refund/query")
+    Call<RefundMoneyBean> getRefundMoney(@Header("token") String token);
 }

@@ -28,6 +28,7 @@ public class Constant {
      */
     public static final String APP_ID     = "wxb51b89cba83263de";
     public static final String APP_SECRET = "1e73ced172f384ef6305e2276d2a9b96";
+    public static String QR_GARD = "QR_GARD";
 
 
     public static class MainActivityArgument {

@@ -39,4 +39,13 @@ public class OpenGardBody {
         this.storeId = storeId;
         this.userDeviceId = userDeviceId;
     }
+
+    @Override
+    public String toString() {
+        return "OpenGardBody{" +
+                "deviceId='" + deviceId + '\'' +
+                ", storeId='" + storeId + '\'' +
+                ", userDeviceId='" + userDeviceId + '\'' +
+                '}';
+    }
 }

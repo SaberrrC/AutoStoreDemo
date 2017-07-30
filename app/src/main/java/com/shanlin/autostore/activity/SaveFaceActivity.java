@@ -71,7 +71,7 @@ public class SaveFaceActivity extends BaseActivity {
                 mLoadingDialog.dismiss();
                 ToastUtils.showToast(msg);
                 Intent intent = new Intent(SaveFaceActivity.this, MainActivity.class);
-                intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_REGESTED_OK);
+                intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.FACE_REGESTED_OK);
                 startActivity(intent);
             }
 
