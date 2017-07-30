@@ -7,13 +7,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
+import com.shanlin.autostore.bean.paramsBean.RealNameAuthenBody;
+import com.shanlin.autostore.bean.resultBean.PswSettingBean;
+import com.shanlin.autostore.bean.resultBean.RealNameAuthenBean;
+import com.shanlin.autostore.constants.Constant;
+import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.utils.CommonUtils;
+import com.shanlin.autostore.utils.SpUtils;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by DELL on 2017/7/17 0017.
@@ -71,13 +80,13 @@ public class OpenLeMaiBao extends BaseActivity {
         switch (v.getId()) {
 
             case R.id.btn_nextstep_and_confirm:
-                //实名认证姓名和身份证非空判断
-                judgeEmpty(true);
 
-                if (nextOrConfirm.getText().equals("下一步")) {
-                    changeUI(2);
+                if (!SpUtils.getBoolean(this,Constant_LeMaiBao.AUTHEN,false)) {
+                    //实名认证姓名和身份证非空判断
+                    judgeEmpty();
                 } else {
-                    CommonUtils.toNextActivity(this,ChoosePayWayActivity.class);
+                    //认证密码
+                    judgeEmpty();
                 }
                 break;
 
@@ -95,18 +104,79 @@ public class OpenLeMaiBao extends BaseActivity {
         }
     }
 
-    private void judgeEmpty(boolean step) {
-        if (step) {
+    private void judgeEmpty() {
+        if (!SpUtils.getBoolean(OpenLeMaiBao.this,Constant_LeMaiBao.AUTHEN,false)) {
             //第一步
             String name = etName.getText().toString().trim();
             String idNum = etIdNum.getText().toString().trim();
             if (TextUtils.isEmpty(name) || TextUtils.isEmpty(idNum)) {
-                Toast.makeText(this, "请输入完整认证信息!", Toast.LENGTH_SHORT).show();
+                CommonUtils.showToast(this,"请输入完整认证信息!");
                 return;
             }
+            //调用实名认证接口
+            doRealNameAuthen(name, idNum);
         } else {
+            //第二步
+            String psw = etPsw.getText().toString().trim();
+            String psw2 = etPswAgain.getText().toString().trim();
+            if (TextUtils.isEmpty(psw) || TextUtils.isEmpty(psw2)) {
+                CommonUtils.showToast(this,"请输入完整密码!");
+                return;
+            }
 
+            if (!TextUtils.equals(psw,psw2)) {
+                CommonUtils.showToast(this,"密码不一致,请重新输入!");
+                etPswAgain.setText("");
+                return;
+            }
+            //调用密码认证接口
+            doPswSetting(psw2);
         }
+    }
+
+    private void doPswSetting(String psw2) {
+        Call<PswSettingBean> call = service.goPswSetting(psw2);
+        call.enqueue(new Callback<PswSettingBean>() {
+            @Override
+            public void onResponse(Call<PswSettingBean> call, Response<PswSettingBean> response) {
+                PswSettingBean body = response.body();
+                if (TextUtils.equals("200",body.getCode())) {
+                    CommonUtils.showToast(OpenLeMaiBao.this,body.getMessage());
+                    CommonUtils.toNextActivity(OpenLeMaiBao.this,ChoosePayWayActivity.class);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PswSettingBean> call, Throwable t) {
+                    CommonUtils.debugLog(t.getMessage());
+            }
+        });
+    }
+
+    //412823199202112412
+    private void doRealNameAuthen(String name, String idNum) {
+        Call<RealNameAuthenBean> call = service.goRealNameAuthen(SpUtils.getString(this, Constant
+                .TOKEN,""),new
+                RealNameAuthenBody
+                ("412823199202112412",
+                "楚明远"));
+        call.enqueue(new Callback<RealNameAuthenBean>() {
+            @Override
+            public void onResponse(Call<RealNameAuthenBean> call, Response<RealNameAuthenBean> response) {
+                RealNameAuthenBean bean = response.body();
+                if (TextUtils.equals("200",bean.getCode())) {
+                    CommonUtils.showToast(OpenLeMaiBao.this,bean.getMessage());
+                    CommonUtils.debugLog(bean.getMessage());
+                    changeUI(2);
+                    SpUtils.saveBoolean(OpenLeMaiBao.this, Constant_LeMaiBao.AUTHEN,true);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RealNameAuthenBean> call, Throwable t) {
+                CommonUtils.debugLog(t.getMessage());
+            }
+        });
     }
 
     private void changeUI(int step) {

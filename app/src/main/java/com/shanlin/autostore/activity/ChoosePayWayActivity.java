@@ -2,6 +2,7 @@ package com.shanlin.autostore.activity;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
@@ -18,7 +19,10 @@ import com.jungly.gridpasswordview.GridPasswordView;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
+import com.shanlin.autostore.bean.paramsBean.AliPayOrderBody;
+import com.shanlin.autostore.bean.resultBean.AliPayResultBean;
 import com.shanlin.autostore.bean.resultBean.WxChatBean;
+import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
@@ -30,6 +34,10 @@ import com.shanlin.autostore.zhifubao.PayResult;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by DELL on 2017/7/17 0017.
@@ -45,6 +53,13 @@ public class ChoosePayWayActivity extends BaseActivity{
     private AlertDialog availbleDialog;
     private ImageView iconChoose;
     private TextView totalAmount;
+    private HttpService service;
+    private String deviceId;
+    private String orderNo;
+    private String totalMoney;
+    private String storeId;
+    private String token;
+    private String timestamp;
 
     @Override
     public int initLayout() {
@@ -84,8 +99,40 @@ public class ChoosePayWayActivity extends BaseActivity{
 
     @Override
     public void initData() {
-        String totalMoney = getIntent().getStringExtra(Constant_LeMaiBao.TOTAL_AMOUNT);
-        totalAmount.setText("¥"+totalMoney);
+        Intent intent = getIntent();
+        //支付参数
+        deviceId = intent.getStringExtra(Constant_LeMaiBao.DEVICEDID);
+        orderNo = intent.getStringExtra(Constant_LeMaiBao.ORDER_NO);
+        totalMoney = intent.getStringExtra(Constant_LeMaiBao.TOTAL_AMOUNT);
+        storeId = intent.getStringExtra(Constant_LeMaiBao.STORED_ID);
+        token = intent.getStringExtra(Constant.TOKEN);
+        totalAmount.setText("¥"+ (totalMoney == null ? "0.00" : totalMoney));
+        service = CommonUtils.doNet();
+    }
+
+    private void doAliPay(String deviceId, String orderNo, String totalMoney, String storeId,
+                          String token) {
+        Call<AliPayResultBean> call = service.createAliPreOrder(token,new AliPayOrderBody
+                (deviceId,
+                orderNo, totalMoney, storeId));
+        call.enqueue(new Callback<AliPayResultBean>() {
+            @Override
+            public void onResponse(Call<AliPayResultBean> call, Response<AliPayResultBean> response) {
+                AliPayResultBean body = response.body();
+                if (TextUtils.equals("200",body.getCode())) {
+                    String alipay = body.getData().getAlipay();
+                    timestamp = body.getData().getTimestamp();
+                    CommonUtils.debugLog(alipay);
+                    CommonUtils.debugLog(timestamp);
+                    pay(alipay);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AliPayResultBean> call, Throwable t) {
+                CommonUtils.debugLog(t.getMessage());
+            }
+        });
     }
 
     @Override
@@ -96,6 +143,7 @@ public class ChoosePayWayActivity extends BaseActivity{
             case R.id.ll_pay_way_1:
                 //买乐宝支付
                 showInputPswDialog();
+
                 break;
             case R.id.get_avaiable_balence:
                 //可用额度领取
@@ -103,7 +151,7 @@ public class ChoosePayWayActivity extends BaseActivity{
                 break;
             case R.id.ll_pay_way_2:
                 //支付宝支付
-                pay();
+                doAliPay(deviceId,orderNo,totalMoney,storeId,token);
                 break;
             case R.id.ll_pay_way_3:
                 //微信支付
@@ -209,6 +257,11 @@ public class ChoosePayWayActivity extends BaseActivity{
                     if (TextUtils.equals(resultStatus, "9000")) {
                         // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
                         Toast.makeText(ChoosePayWayActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
+                        CommonUtils.sendDataToNextActivity(ChoosePayWayActivity.this,
+                                PayResultActivity.class,new String[]{Constant_LeMaiBao
+                                        .TOTAL_AMOUNT,
+                                        Constant_LeMaiBao.PAY_TYPE},new String[]{totalMoney,"支付宝"});
+                                        finish();
                     } else {
                         // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
                         Toast.makeText(ChoosePayWayActivity.this, "支付失败", Toast.LENGTH_SHORT).show();
@@ -225,7 +278,7 @@ public class ChoosePayWayActivity extends BaseActivity{
     /**
      * 支付宝支付业务
      */
-    public void pay() {
+    public void pay(final String order) {
         if (TextUtils.isEmpty(APPID) || (TextUtils.isEmpty(RSA2_PRIVATE) && TextUtils.isEmpty(RSA_PRIVATE))) {
             new AlertDialog.Builder(this).setTitle("警告").setMessage("需要配置APPID | RSA_PRIVATE")
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -257,7 +310,7 @@ public class ChoosePayWayActivity extends BaseActivity{
             @Override
             public void run() {
                 PayTask alipay = new PayTask(ChoosePayWayActivity.this);
-                Map<String, String> result = alipay.payV2(orderInfo, true);
+                Map<String, String> result = alipay.payV2(order, true);
                 Log.i("msp", result.toString());
                 Message msg = new Message();
                 msg.what = SDK_PAY_FLAG;
