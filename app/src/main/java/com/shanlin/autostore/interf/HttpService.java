@@ -10,6 +10,7 @@ import com.shanlin.autostore.bean.paramsBean.LeMaiBaoPayBody;
 import com.shanlin.autostore.bean.paramsBean.MemberUpdateSendBean;
 import com.shanlin.autostore.bean.paramsBean.NumberLoginBean;
 import com.shanlin.autostore.bean.paramsBean.RealOrderBody;
+import com.shanlin.autostore.bean.paramsBean.WechatSaveMobileBody;
 import com.shanlin.autostore.bean.resultBean.CaptureBean;
 import com.shanlin.autostore.bean.resultBean.CheckUpdateBean;
 import com.shanlin.autostore.bean.resultBean.CodeBean;
@@ -21,7 +22,7 @@ import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
 import com.shanlin.autostore.bean.resultBean.WxChatBean;
 import com.shanlin.autostore.bean.resultBean.WxTokenBean;
 import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
-import com.shanlin.autostore.bean.sendbean.WechatLoginSendBean;
+import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;
 import java.util.Map;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -165,4 +166,11 @@ public interface HttpService {
      */
     @POST()
     Call<RecorderBean> getRecorderList(@Header("token") String token);
+
+
+    /**
+     * 微信认证登录绑定手机号
+     */
+    @POST("wechat/savemobile")
+    Call<LoginBean> postWechatSavemobile(@Body WechatSaveMobileBody wechatSaveMobileBody);
 }

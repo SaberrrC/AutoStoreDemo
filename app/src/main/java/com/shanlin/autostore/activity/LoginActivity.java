@@ -7,12 +7,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+
 import com.megvii.livenessdetection.LivenessLicenseManager;
 import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.MainActivity;
@@ -21,8 +21,9 @@ import com.shanlin.autostore.WxMessageEvent;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.LoginBean;
 import com.shanlin.autostore.bean.paramsBean.FaceLoginSendBean;
+import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;
+import com.shanlin.autostore.bean.resultBean.WxTokenBean;
 import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
-import com.shanlin.autostore.bean.sendbean.WechatLoginSendBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
@@ -90,10 +91,6 @@ public class LoginActivity extends BaseActivity {
     }
 
     public LoginActivity mLoginActivity;
-
-    public void finishLoginActivity() {
-        finish();
-    }
 
     @Override
     public void initView() {
@@ -221,9 +218,7 @@ public class LoginActivity extends BaseActivity {
                             AutoStoreApplication.isLogin = true;
                             SpUtils.saveString(LoginActivity.this, Constant.TOKEN, data.getData().getToken());
                             //验证乐买宝实名是否认证
-                            CommonUtils.checkAuthenStatus(LoginActivity.this,httpService,data
-                                    .getData()
-                                    .getToken());
+                            CommonUtils.checkAuthenStatus(LoginActivity.this, httpService, data.getData().getToken());
 
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_OK);
@@ -253,16 +248,20 @@ public class LoginActivity extends BaseActivity {
         Call<com.shanlin.autostore.bean.resultBean.WxTokenBean> call = httpService.getWxToken("https://api.weixin.qq.com/sns/oauth2/access_token", Constant.APP_ID, Constant.APP_SECRET, code, "authorization_code");
         call.enqueue(new retrofit2.Callback<com.shanlin.autostore.bean.resultBean.WxTokenBean>() {
             @Override
-            public void onResponse(Call<com.shanlin.autostore.bean.resultBean.WxTokenBean> call, retrofit2.Response<com.shanlin.autostore.bean.resultBean.WxTokenBean> response) {
-                com.shanlin.autostore.bean.resultBean.WxTokenBean wxTokenBean = response.body();
+            public void onResponse(Call<WxTokenBean> call, retrofit2.Response<WxTokenBean> response) {
+                if (!response.isSuccessful()) {
+                    ToastUtils.showToast(response.message());
+                    return;
+                }
+                WxTokenBean wxTokenBean = response.body();
                 String access_token = wxTokenBean.getAccess_token();
                 String openid = wxTokenBean.getOpenid();
                 getUserinfo(access_token, openid);
             }
 
             @Override
-            public void onFailure(Call<com.shanlin.autostore.bean.resultBean.WxTokenBean> call, Throwable t) {
-
+            public void onFailure(Call<WxTokenBean> call, Throwable t) {
+                ToastUtils.showToast("微信登陆失败，请重试");
             }
         });
 
@@ -272,77 +271,152 @@ public class LoginActivity extends BaseActivity {
     private void getUserinfo(String access_token, String openid) {
         final HttpService httpService = CommonUtils.doNet();
         Call<com.shanlin.autostore.bean.resultBean.WxUserInfoBean> call = httpService.getWxUserInfo("https://api.weixin.qq.com/sns/userinfo?access_token", access_token, openid);
+        ToastUtils.showToast("微信");
         call.enqueue(new Callback<WxUserInfoBean>() {
             @Override
-            public void onResponse(Call<com.shanlin.autostore.bean.resultBean.WxUserInfoBean> call, Response<WxUserInfoBean> response) {
-                if (response != null) {
-                    com.shanlin.autostore.bean.resultBean.WxUserInfoBean body = response.body();
-                    final WechatLoginSendBean wechatLoginSendBean = new WechatLoginSendBean();
-                    wechatLoginSendBean.setType(TYPE_WX);
-                    wechatLoginSendBean.setUnionid(body.unionid);
-                    WechatLoginSendBean.ExtraBean extra = wechatLoginSendBean.getExtra();
-                    extra.setNickname(body.nickname);
-                    extra.setOpenid(body.openid);
-                    extra.setSex(body.sex);
-                    // TODO: 2017-7-28
-                    Call<LoginBean> WXLoginCall = httpService.postWxTokenLogin(wechatLoginSendBean);
-                    WXLoginCall.enqueue(new CustomCallBack<LoginBean>() {
-                        @Override
-                        public void success(String code, LoginBean data, String msg) {
-
-                            if (data.getData() == null) {
-                                ToastUtils.showToast(msg);
-                                return;
-                            }
-                            if (TextUtils.equals(data.getData().getFaceVerify(), "0")) {
-                                //没人脸认证 跳转手机号登陆界面
-                                Intent intent = new Intent(LoginActivity.this, PhoneNumLoginActivity.class);
-                                intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_NO);
-                                // TODO: 2017-7-28 把微信消息传过去
-
-
-
-                                startActivity(intent);
-                            }
-                            if (TextUtils.equals(data.getData().getFaceVerify(), "1")) {
-                                //已经验证 保存token和手机号 跳转到主页
-                                AutoStoreApplication.isLogin = true;
-                                SpUtils.saveString(LoginActivity.this, Constant.TOKEN, data.getData().getToken());
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_OK);
-                                intent.putExtra(Constant.USER_INFO, data);
-                                startActivity(intent);
-                                finish();
-                            }
-
-
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            public void onResponse(Call<WxUserInfoBean> call, Response<WxUserInfoBean> response) {
+                if (!response.isSuccessful()) {
+                    ToastUtils.showToast("微信登陆失败，请重试");
+                    return;
+                }
+                final WxUserInfoBean wxUserInfoBean = response.body();
+                int sex = wxUserInfoBean.getSex();
+                String unionid = wxUserInfoBean.getUnionid();
+                String openid = wxUserInfoBean.getOpenid();
+                String nickname = wxUserInfoBean.getNickname();
+                WechatLoginSendBean sendBean = new WechatLoginSendBean();
+                sendBean.setType(TYPE_WX);
+                sendBean.setUnionid(unionid);
+                WechatLoginSendBean.ExtraBean extraBean = new WechatLoginSendBean.ExtraBean();
+                extraBean.setSex(sex + "");
+                extraBean.setOpenid(openid);
+                extraBean.setNickname(nickname);
+                sendBean.setExtra(extraBean);
+                Call<LoginBean> loginBeanCall = httpService.postWxTokenLogin(sendBean);
+                loginBeanCall.enqueue(new CustomCallBack<LoginBean>() {
+                    public void success(String code, LoginBean data, String msg) {
+                        if (data.getData() == null) {
+                            ToastUtils.showToast(msg);
+                            return;
+                        }
+                        if (TextUtils.equals(data.getData().getFaceVerify(), "0")) {
+                            //没人脸认证 跳转手机号登陆界面
+                            Intent intent = new Intent(LoginActivity.this, PhoneNumLoginActivity.class);
+                            intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_NO);
                             intent.putExtra(Constant.USER_INFO, data);
+                            // TODO: 2017-7-28 把微信消息传过去
+                            startActivity(intent);
+                        }
+                        if (TextUtils.equals(data.getData().getFaceVerify(), "1")) {
+                            //已经验证 保存token和手机号 跳转到主页
+                            AutoStoreApplication.isLogin = true;
+                            SpUtils.saveString(LoginActivity.this, Constant.TOKEN, data.getData().getToken());
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_OK);
+                            intent.putExtra(Constant.USER_INFO, data);
+                            startActivity(intent);
                             finish();
                         }
 
-                        @Override
-                        public void error(Throwable ex, String code, String msg) {
-                            if (code == "204") {//新用户请绑定手机号注册
-                                Intent intent = new Intent(LoginActivity.this, PhoneNumLoginActivity.class);
-                                intent.putExtra(Constant.WX_LOGIN, wechatLoginSendBean);
-                                startActivity(intent);
-                                finish();
-                                return;
-                            }
-                            // TODO: 2017/7/26  登录失败，暂时无数据，跳到main
-                            Log.d("xx", "error: " + msg);
-                            ToastUtils.showToast("微信登录失败，请重试");
+
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.putExtra(Constant.USER_INFO, data);
+                        finish();
+                    }
+
+                    @Override
+                    public void error(Throwable ex, String code, String msg) {
+                        if (TextUtils.equals(code, "204")) {//新用户请绑定手机号注册
+                            Intent intent = new Intent(LoginActivity.this, PhoneNumLoginActivity.class);
+                            intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_NO);
+                            intent.putExtra(Constant.WX_INFO, wxUserInfoBean);
+                            startActivity(intent);
+                            return;
                         }
-                    });
-                }
+                        // TODO: 2017/7/26  登录失败，暂时无数据，跳到main
+                        ToastUtils.showToast("微信登录失败，请重试");
+                    }
+                });
+
+
             }
 
             @Override
-            public void onFailure(Call<com.shanlin.autostore.bean.resultBean.WxUserInfoBean> call, Throwable t) {
+            public void onFailure(Call<WxUserInfoBean> call, Throwable t) {
                 ToastUtils.showToast("微信登录失败，请重试");
             }
         });
+
+
+        //        call.enqueue(new Callback<WxUserInfoBean>() {
+        //            @Override
+        //            public void onResponse(Call<WxUserInfoBean> call, Response<WxUserInfoBean> response) {
+        //                LogUtils.d("微信2");
+        //                if (response.isSuccessful()) {
+        //                    WxUserInfoBean body = response.body();
+        //
+        //
+        //                    final WechatLoginSendBean wechatLoginSendBean = new WechatLoginSendBean();
+        //                    wechatLoginSendBean.setType(TYPE_WX);
+        ////                    wechatLoginSendBean.setUnionid(body.getUnionid());
+        //                    wechatLoginSendBean.setUnionid(body.unionid);
+        //                    //后台查询用户信息sendbean
+        //                    WechatLoginSendBean.ExtraBean extra = wechatLoginSendBean.getExtra();
+        ////                    extra.setNickname(body.getNickname());
+        ////                    extra.setOpenid(body.getOpenid());
+        ////                    extra.setSex(body.getSex() + "");
+        //                    // TODO: 2017-7-28
+        //                    Call<LoginBean> WXLoginCall = httpService.postWxTokenLogin(wechatLoginSendBean);
+        //                    WXLoginCall.enqueue(new CustomCallBack<LoginBean>() {
+        //                        @Override
+        //                        public void success(String code, LoginBean data, String msg) {
+        //
+        //                            if (data.getData() == null) {
+        //                                ToastUtils.showToast(msg);
+        //                                return;
+        //                            }
+        //                            if (TextUtils.equals(data.getData().getFaceVerify(), "0")) {
+        //                                //没人脸认证 跳转手机号登陆界面
+        //                                Intent intent = new Intent(LoginActivity.this, PhoneNumLoginActivity.class);
+        //                                intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_NO);
+        //                                // TODO: 2017-7-28 把微信消息传过去
+        //
+        //
+        //                                startActivity(intent);
+        //                            }
+        //                            if (TextUtils.equals(data.getData().getFaceVerify(), "1")) {
+        //                                //已经验证 保存token和手机号 跳转到主页
+        //                                AutoStoreApplication.isLogin = true;
+        //                                SpUtils.saveString(LoginActivity.this, Constant.TOKEN, data.getData().getToken());
+        //                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        //                                intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_OK);
+        //                                intent.putExtra(Constant.USER_INFO, data);
+        //                                startActivity(intent);
+        //                                finish();
+        //                            }
+        //
+        //
+        //                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        //                            intent.putExtra(Constant.USER_INFO, data);
+        //                            finish();
+        //                        }
+        //
+        //                        @Override
+        //                        public void error(Throwable ex, String code, String msg) {
+        //
+        //                            // TODO: 2017/7/26  登录失败，暂时无数据，跳到main
+        //                            Log.d("xx", "error: " + msg);
+        //                            ToastUtils.showToast("微信登录失败，请重试");
+        //                        }
+        //                    });
+        //                }
+        //            }
+        //
+        //            @Override
+        //            public void onFailure(Call<WxUserInfoBean> call, Throwable t) {
+        //                ToastUtils.showToast("微信登录失败，请重试");
+        //            }
+        //        });
 
 
     }
