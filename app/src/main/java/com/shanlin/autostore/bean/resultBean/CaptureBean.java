@@ -1,4 +1,4 @@
-package com.shanlin.autostore.bean.bean2;
+package com.shanlin.autostore.bean.resultBean;
 
 import com.shanlin.autostore.base.BaseBean;
 

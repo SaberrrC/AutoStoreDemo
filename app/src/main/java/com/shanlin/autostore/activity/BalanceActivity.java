@@ -7,7 +7,7 @@ import android.view.View;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.adapter.FinalRecycleAdapter;
 import com.shanlin.autostore.base.BaseActivity;
-import com.shanlin.autostore.bean.bean2.RecordBean;
+import com.shanlin.autostore.bean.resultBean.RecordBean;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.view.PulltoRefreshRecyclerView;

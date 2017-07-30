@@ -6,8 +6,8 @@ import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.activity.GateActivity;
 import com.shanlin.autostore.bean.LoginBean;
 import com.shanlin.autostore.bean.resultBean.CaptureBean;
-import com.shanlin.autostore.bean.bean2.CodeBean;
-import com.shanlin.autostore.bean.bean2.NumberLoginRsponseBean;
+import com.shanlin.autostore.bean.resultBean.CodeBean;
+import com.shanlin.autostore.bean.resultBean.NumberLoginRsponseBean;
 import com.shanlin.autostore.utils.ToastUtils;
 
 /**
