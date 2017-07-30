@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="18px"
+        android:layout_marginTop="20dp"
         android:text="当前可用额度"
         android:textColor="#FF999999"
         android:textSize="14px"/>

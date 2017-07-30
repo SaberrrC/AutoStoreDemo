@@ -245,6 +245,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                 //保存用户乐买宝认证信息
                 CommonUtils.checkAuthenStatus(PhoneNumLoginActivity.this, service, data.getData().getToken());
                 SpUtils.saveString(PhoneNumLoginActivity.this, Constant.USER_PHONE_LOGINED, data.getData().getMobile());
+                SpUtils.saveString(PhoneNumLoginActivity.this, Constant.TOKEN, data.getData().getToken());
                 Intent intent = new Intent(PhoneNumLoginActivity.this, MainActivity.class);
                 intent.putExtra(Constant.FACE_VERIFY, data.getData().getFaceVerify());
                 intent.putExtra(Constant.USER_INFO, data);

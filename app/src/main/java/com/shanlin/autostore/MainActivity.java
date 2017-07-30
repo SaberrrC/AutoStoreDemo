@@ -34,6 +34,7 @@ import com.shanlin.autostore.bean.LoginBean;
 import com.shanlin.autostore.bean.paramsBean.RealOrderBody;
 import com.shanlin.autostore.bean.paramsBean.ZXingOrderBean;
 import com.shanlin.autostore.bean.resultBean.CreditBalanceCheckBean;
+import com.shanlin.autostore.bean.resultBean.LoginOutBean;
 import com.shanlin.autostore.bean.resultBean.RealOrderBean;
 import com.shanlin.autostore.bean.resultBean.RefundMoneyBean;
 import com.shanlin.autostore.bean.resultBean.UserNumEverydayBean;
@@ -86,6 +87,9 @@ public class MainActivity extends BaseActivity {
     private int          femaleCount;
     private String       token;
     private TextView     mTvRefundMoney;
+    private TextView     mTvPhoneNum;
+    private String       mUserPhone;
+    private String mUserPhoneHide;
 
     @Override
     public int initLayout() {
@@ -100,6 +104,7 @@ public class MainActivity extends BaseActivity {
         mBtBanlance = (TextView) findViewById(R.id.btn_yu_e);
         mUserNum = (TextView) findViewById(R.id.user_num);
         pv = (ProgressView) findViewById(R.id.pv);
+        mTvPhoneNum = (TextView) findViewById(R.id.textView);
         mTvRefundMoney = (TextView) findViewById(R.id.tv_refund_money);//退款金额
         mBtBanlance.setOnClickListener(this);
         mTvIdentify.setOnClickListener(this);
@@ -140,6 +145,9 @@ public class MainActivity extends BaseActivity {
     public void initData() {
         initToolBar();
         token = SpUtils.getString(this, Constant.TOKEN, "");
+        mUserPhone = SpUtils.getString(this, Constant.USER_PHONE_LOGINED, "");
+        mUserPhoneHide = mUserPhone.substring(0, 3) + "****" + mUserPhone.substring(7);
+        mTvPhoneNum.setText(mUserPhoneHide);
         gson = new Gson();
         service = CommonUtils.doNet();
         //调用今日到店人数接口
@@ -477,6 +485,8 @@ public class MainActivity extends BaseActivity {
 
     private void showLoginoutDialog() {
         View viewLoginout = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_loginout, null, false);
+        TextView tvNum = (TextView) viewLoginout.findViewById(R.id.tv_num);
+        tvNum.setText(mUserPhoneHide);
         viewLoginout.findViewById(R.id.tv_cancle).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -487,9 +497,19 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 mLoginoutDialog.dismiss();
-                // TODO: 2017-7-18 登出的操作
-                CommonUtils.toNextActivity(MainActivity.this, LoginActivity.class);
-                finish();
+                CommonUtils.doNet().getLoginOut(token).enqueue(new CustomCallBack<LoginOutBean>() {
+                    @Override
+                    public void success(String code, LoginOutBean data, String msg) {
+                        CommonUtils.toNextActivity(MainActivity.this, LoginActivity.class);
+                        finish();
+                    }
+
+                    @Override
+                    public void error(Throwable ex, String code, String msg) {
+                        CommonUtils.toNextActivity(MainActivity.this, LoginActivity.class);
+                        finish();
+                    }
+                });
             }
         });
         AutoUtils.autoSize(viewLoginout);

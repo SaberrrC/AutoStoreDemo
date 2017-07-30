@@ -19,6 +19,7 @@ import com.shanlin.autostore.bean.resultBean.CheckUpdateBean;
 import com.shanlin.autostore.bean.resultBean.CodeBean;
 import com.shanlin.autostore.bean.resultBean.CreditBalanceCheckBean;
 import com.shanlin.autostore.bean.resultBean.LeMaiBaoPayResultBean;
+import com.shanlin.autostore.bean.resultBean.LoginOutBean;
 import com.shanlin.autostore.bean.resultBean.OrderDetailBean;
 import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
 import com.shanlin.autostore.bean.resultBean.PswSettingBean;
@@ -217,4 +218,10 @@ public interface HttpService {
      */
     @GET("refund/query")
     Call<RefundMoneyBean> getRefundMoney(@Header("token") String token);
+
+    /**
+     * 会员登出
+     */
+    @GET("memberlogout")
+    Call<LoginOutBean> getLoginOut(@Header("token") String token);
 }
