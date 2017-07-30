@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-
 import com.megvii.livenessdetection.LivenessLicenseManager;
 import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.MainActivity;
@@ -112,7 +111,6 @@ public class LoginActivity extends BaseActivity {
         dialog = new AlertDialog.Builder(this).setView(dialogOpenWX).create();
         //人脸识别
         initLiveness();
-
     }
 
     private void initLiveness() {
