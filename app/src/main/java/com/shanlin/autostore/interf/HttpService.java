@@ -2,28 +2,34 @@ package com.shanlin.autostore.interf;
 
 import com.shanlin.autostore.bean.LoginBean;
 import com.shanlin.autostore.bean.MemberUpdateBean;
-import com.shanlin.autostore.bean.RecorderBean;
+import com.shanlin.autostore.bean.paramsBean.AliPayOrderBody;
 import com.shanlin.autostore.bean.paramsBean.CodeSendBean;
 import com.shanlin.autostore.bean.paramsBean.FaceLoginSendBean;
 import com.shanlin.autostore.bean.paramsBean.LeMaiBaoPayBody;
 import com.shanlin.autostore.bean.paramsBean.MemberUpdateSendBean;
 import com.shanlin.autostore.bean.paramsBean.NumberLoginBean;
+import com.shanlin.autostore.bean.paramsBean.RealNameAuthenBody;
 import com.shanlin.autostore.bean.paramsBean.RealOrderBody;
+import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;
 import com.shanlin.autostore.bean.paramsBean.WechatSaveMobileBody;
+import com.shanlin.autostore.bean.resultBean.AliPayResultBean;
 import com.shanlin.autostore.bean.resultBean.CaptureBean;
 import com.shanlin.autostore.bean.resultBean.CheckUpdateBean;
 import com.shanlin.autostore.bean.resultBean.CodeBean;
 import com.shanlin.autostore.bean.resultBean.CreditBalanceCheckBean;
 import com.shanlin.autostore.bean.resultBean.LeMaiBaoPayResultBean;
+import com.shanlin.autostore.bean.resultBean.OrderDetailBean;
+import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
+import com.shanlin.autostore.bean.resultBean.PswSettingBean;
 import com.shanlin.autostore.bean.resultBean.RealNameAuthenBean;
 import com.shanlin.autostore.bean.resultBean.RealOrderBean;
 import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
 import com.shanlin.autostore.bean.resultBean.WxChatBean;
 import com.shanlin.autostore.bean.resultBean.WxTokenBean;
 import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
-import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;
+
 import java.util.Map;
-import okhttp3.RequestBody;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -186,4 +192,10 @@ public interface HttpService {
      */
     @POST("wechat/savemobile")
     Call<LoginBean> postWechatSavemobile(@Body WechatSaveMobileBody wechatSaveMobileBody);
+
+    /**
+     * 订单详情
+     */
+    @GET("order/details")
+    Call<OrderDetailBean> getOrderDetail(@Header("token") String token,@Query("orderNo") String orderNo);
 }

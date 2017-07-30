@@ -151,7 +151,7 @@ public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapt
             TextView tvItemPayWay = (TextView) holder.getViewById(R.id.tv_item_pay_way);//微信支付
             tvItemTitle.setText("领家智能Go");
             long timeLong = bean.getCreateTime();
-            String time = DateUtils.getDateStringWithFormate(new Date(timeLong),null);
+            String time = DateUtils.getDateStringWithFormate(new Date(timeLong), null);
             tvItemDate.setText(time);
             tvItemMoney.setText(bean.getPayAmount() + "");
             tvItemPayWay.setText(bean.getPaymentType());
@@ -168,11 +168,7 @@ public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapt
                 List<OrderHistoryBean.DataBean.ListBean> list = data.getData().getList();
                 totalPage = data.getData().getPages();//总页数
                 currentPage = data.getData().getPageNum();//当前页码
-                if (currentAction == REFRESH) {
-                    if (mDatas != null && mDatas.size() > 0) {
-                        mDatas.clear();
-                    }
-                }
+
                 if (list != null && list.size() > 0) {
                     mDatas.addAll(list);
                 }
@@ -190,13 +186,11 @@ public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapt
 
             @Override
             public void error(Throwable ex, String code, String msg) {
-                if (TextUtils.equals(code, "401")) {//token未认证
-                    if (AutoStoreApplication.isLogin) {
-                        AutoStoreApplication.isLogin = false;
-                        toLoginActivity();
-                    }
-                }
                 ToastUtils.showToast(msg);
+                if (TextUtils.equals(code, "401")) {//token未认证
+                    AutoStoreApplication.isLogin = false;
+                    toLoginActivity();
+                }
             }
         });
 

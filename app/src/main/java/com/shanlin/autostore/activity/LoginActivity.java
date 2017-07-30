@@ -41,7 +41,6 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhy.autolayout.utils.AutoUtils;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Map;
@@ -86,7 +85,6 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public int initLayout() {
-
         return R.layout.activity_login;
     }
 
@@ -94,10 +92,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        //注册EventBus
-        if (!EventBus.getDefault().isRegistered(this)) {//判断是否已经注册EventBus
-            EventBus.getDefault().register(this);
-        }
+//        EventBus.getDefault().register(this);
         mLoginActivity = this;
         findViewById(R.id.btn_login_by_face).setOnClickListener(this);
         findViewById(R.id.btn_login_by_phone).setOnClickListener(this);
@@ -351,7 +346,7 @@ public class LoginActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         dismissLoadingDialog();
-        EventBus.getDefault().unregister(this);
+//        EventBus.getDefault().unregister(this);
     }
 
     //    在产生事件的线程中执行
