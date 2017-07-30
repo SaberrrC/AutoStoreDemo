@@ -7,12 +7,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-
 import com.megvii.livenessdetection.LivenessLicenseManager;
 import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.MainActivity;
@@ -21,9 +21,8 @@ import com.shanlin.autostore.WxMessageEvent;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.LoginBean;
 import com.shanlin.autostore.bean.paramsBean.FaceLoginSendBean;
-import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;
-import com.shanlin.autostore.bean.resultBean.WxTokenBean;
 import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
+import com.shanlin.autostore.bean.sendbean.WechatLoginSendBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
@@ -218,7 +217,9 @@ public class LoginActivity extends BaseActivity {
                             AutoStoreApplication.isLogin = true;
                             SpUtils.saveString(LoginActivity.this, Constant.TOKEN, data.getData().getToken());
                             //验证乐买宝实名是否认证
-                            CommonUtils.checkAuthenStatus(LoginActivity.this, httpService, data.getData().getToken());
+                            CommonUtils.checkAuthenStatus(LoginActivity.this,httpService,data
+                                    .getData()
+                                    .getToken());
 
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_OK);
@@ -342,7 +343,7 @@ public class LoginActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Call<WxUserInfoBean> call, Throwable t) {
+            public void onFailure(Call<com.shanlin.autostore.bean.resultBean.WxUserInfoBean> call, Throwable t) {
                 ToastUtils.showToast("微信登录失败，请重试");
             }
         });

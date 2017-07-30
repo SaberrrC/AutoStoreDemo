@@ -1,6 +1,5 @@
 package com.shanlin.autostore.interf;
 
-
 import com.shanlin.autostore.bean.LoginBean;
 import com.shanlin.autostore.bean.MemberUpdateBean;
 import com.shanlin.autostore.bean.RecorderBean;
