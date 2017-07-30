@@ -1,30 +1,27 @@
 package com.shanlin.autostore.interf;
 
-
 import com.shanlin.autostore.bean.LoginBean;
 import com.shanlin.autostore.bean.MemberUpdateBean;
 import com.shanlin.autostore.bean.RecorderBean;
-import com.shanlin.autostore.bean.bean2.CaptureBean;
-import com.shanlin.autostore.bean.bean2.CheckUpdateBean;
-import com.shanlin.autostore.bean.bean2.CodeBean;
-import com.shanlin.autostore.bean.bean2.CreditBalanceCheckBean;
-import com.shanlin.autostore.bean.bean2.LeMaiBaoPayResultBean;
-import com.shanlin.autostore.bean.bean2.RealNameAuthenBean;
-import com.shanlin.autostore.bean.bean2.RealOrderBean;
-import com.shanlin.autostore.bean.bean2.UserVertifyStatusBean;
-import com.shanlin.autostore.bean.bean2.WxChatBean;
-import com.shanlin.autostore.bean.bean2.WxTokenBean;
-import com.shanlin.autostore.bean.bean2.WxUserInfoBean;
 import com.shanlin.autostore.bean.paramsBean.CodeSendBean;
 import com.shanlin.autostore.bean.paramsBean.FaceLoginSendBean;
 import com.shanlin.autostore.bean.paramsBean.LeMaiBaoPayBody;
 import com.shanlin.autostore.bean.paramsBean.MemberUpdateSendBean;
 import com.shanlin.autostore.bean.paramsBean.NumberLoginBean;
 import com.shanlin.autostore.bean.paramsBean.RealOrderBody;
+import com.shanlin.autostore.bean.resultBean.CaptureBean;
+import com.shanlin.autostore.bean.resultBean.CheckUpdateBean;
+import com.shanlin.autostore.bean.resultBean.CodeBean;
+import com.shanlin.autostore.bean.resultBean.CreditBalanceCheckBean;
+import com.shanlin.autostore.bean.resultBean.LeMaiBaoPayResultBean;
+import com.shanlin.autostore.bean.resultBean.RealNameAuthenBean;
+import com.shanlin.autostore.bean.resultBean.RealOrderBean;
+import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
+import com.shanlin.autostore.bean.resultBean.WxChatBean;
+import com.shanlin.autostore.bean.resultBean.WxTokenBean;
+import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
 import com.shanlin.autostore.bean.sendbean.WechatLoginSendBean;
-
 import java.util.Map;
-
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;

@@ -21,9 +21,9 @@ import com.shanlin.autostore.R;
 import com.shanlin.autostore.WxMessageEvent;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.LoginBean;
-import com.shanlin.autostore.bean.bean2.WxTokenBean;
-import com.shanlin.autostore.bean.bean2.WxUserInfoBean;
 import com.shanlin.autostore.bean.paramsBean.FaceLoginSendBean;
+import com.shanlin.autostore.bean.resultBean.WxTokenBean;
+import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
 import com.shanlin.autostore.bean.sendbean.WechatLoginSendBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
@@ -274,10 +274,10 @@ public class LoginActivity extends BaseActivity {
 
     private void getUserinfo(String access_token, String openid) {
         final HttpService httpService = CommonUtils.doNet();
-        Call<WxUserInfoBean> call = httpService.getWxUserInfo("https://api.weixin.qq.com/sns/userinfo?access_token", access_token, openid);
+        Call<com.shanlin.autostore.bean.resultBean.WxUserInfoBean> call = httpService.getWxUserInfo("https://api.weixin.qq.com/sns/userinfo?access_token", access_token, openid);
         call.enqueue(new Callback<WxUserInfoBean>() {
             @Override
-            public void onResponse(Call<WxUserInfoBean> call, Response<WxUserInfoBean> response) {
+            public void onResponse(Call<com.shanlin.autostore.bean.resultBean.WxUserInfoBean> call, Response<WxUserInfoBean> response) {
                 if (response != null) {
                     WxUserInfoBean body = response.body();
                     final WechatLoginSendBean wechatLoginSendBean = new WechatLoginSendBean();

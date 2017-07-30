@@ -19,7 +19,7 @@ import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.LoginBean;
 import com.shanlin.autostore.bean.paramsBean.CodeSendBean;
 import com.shanlin.autostore.bean.paramsBean.NumberLoginBean;
-import com.shanlin.autostore.bean.bean2.CodeBean;
+import com.shanlin.autostore.bean.resultBean.CodeBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
