@@ -8,6 +8,7 @@ import com.shanlin.autostore.bean.paramsBean.FaceLoginSendBean;
 import com.shanlin.autostore.bean.paramsBean.LeMaiBaoPayBody;
 import com.shanlin.autostore.bean.paramsBean.MemberUpdateSendBean;
 import com.shanlin.autostore.bean.paramsBean.NumberLoginBean;
+import com.shanlin.autostore.bean.paramsBean.OpenGardBody;
 import com.shanlin.autostore.bean.paramsBean.RealNameAuthenBody;
 import com.shanlin.autostore.bean.paramsBean.RealOrderBody;
 import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;
@@ -74,9 +75,8 @@ public interface HttpService {
     /**
      * 二维码扫描 打开闸机
      */
-    @POST("memberlogin")
-    @FormUrlEncoded
-    Call<CaptureBean> postCapture(@FieldMap Map<String, String> map);
+    @POST(" /device/open")
+    Call<CaptureBean> postGardOpen(@Header("token") String token, @Body OpenGardBody openGardBody);
 
     /**
      * 获取验证码

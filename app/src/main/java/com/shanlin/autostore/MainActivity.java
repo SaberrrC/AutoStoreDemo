@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.shanlin.autostore.activity.BuyRecordActivity;
 import com.shanlin.autostore.activity.ChoosePayWayActivity;
+import com.shanlin.autostore.activity.GateActivity;
 import com.shanlin.autostore.activity.LoginActivity;
 import com.shanlin.autostore.activity.MyLeMaiBaoActivity;
 import com.shanlin.autostore.activity.OpenLeMaiBao;
@@ -29,15 +30,18 @@ import com.shanlin.autostore.activity.RefundMoneyActivity;
 import com.shanlin.autostore.activity.SaveFaceActivity;
 import com.shanlin.autostore.activity.VersionInfoActivity;
 import com.shanlin.autostore.base.BaseActivity;
+import com.shanlin.autostore.bean.LoginBean;
+import com.shanlin.autostore.bean.OpenGardQRBean;
+import com.shanlin.autostore.bean.paramsBean.OpenGardBody;
+import com.shanlin.autostore.bean.paramsBean.RealOrderBody;
+import com.shanlin.autostore.bean.paramsBean.ZXingOrderBean;
 import com.shanlin.autostore.bean.resultBean.CaptureBean;
 import com.shanlin.autostore.bean.resultBean.CreditBalanceCheckBean;
 import com.shanlin.autostore.bean.resultBean.RealOrderBean;
-import com.shanlin.autostore.bean.paramsBean.RealOrderBody;
-import com.shanlin.autostore.bean.paramsBean.ZXingOrderBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
-import com.shanlin.autostore.net.NetCallBack;
+import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.SpUtils;
@@ -50,9 +54,6 @@ import com.shanlin.autostore.zhifubao.Base64;
 import com.slfinance.facesdk.ui.LivenessActivity;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.zhy.autolayout.utils.AutoUtils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -81,6 +82,7 @@ public class MainActivity extends BaseActivity {
     private TextView openLMB;
     private HttpService service;
     private Gson gson;
+    private LoginBean mLoginBean;
 
     @Override
     public int initLayout() {
@@ -104,6 +106,7 @@ public class MainActivity extends BaseActivity {
         mBtnScan.setOnClickListener(this);
         Intent intent = getIntent();
         String faceVerify = intent.getStringExtra(Constant.FACE_VERIFY);
+        mLoginBean = (LoginBean) intent.getSerializableExtra(Constant.USER_INFO);
         if (TextUtils.isEmpty(faceVerify)) {
             return;
         }
@@ -287,17 +290,24 @@ public class MainActivity extends BaseActivity {
                 //调用生成正式订单接口
                 generateRealOrder(zXingOrderBean.getOrderNo(),zXingOrderBean.getDeviceId());
             }
+            if (result.contains("打开闸机")) {//扫描闸机的我二维码
+                Gson gson = new Gson();
+                OpenGardQRBean openGardQRBean = gson.fromJson(result, OpenGardQRBean.class);
+                HttpService service = CommonUtils.doNet();
+                Call<CaptureBean> call = service.postGardOpen(SpUtils.getString(this, Constant.TOKEN, ""), new OpenGardBody(openGardQRBean.getDeviceId(), openGardQRBean.getStoreId(), SpUtils.getString(this, Constant.DEVICEID, "")));
+                call.enqueue(new CustomCallBack<CaptureBean>() {
+                    @Override
+                    public void success(String code, CaptureBean data, String msg) {
+                        Intent intent = new Intent(AutoStoreApplication.getApp(), GateActivity.class);
+                        startActivity(intent);
+                    }
 
-            // TODO: 2017-7-17 判断 result 成功进入超市
-            HttpService service = CommonUtils.doNet();
-            Map<String, String> map = new HashMap<>();
-            map.put("code", "1");
-            map.put("deviceId", "00001");
-            map.put("storeId", "00001");
-            Call<CaptureBean> call = service.postCapture(map);
-            // 创建 网络请求接口 的实例
-            // 发送网络请求(异步)
-            call.enqueue(NetCallBack.getInstance().getCaptureCallBack());
+                    @Override
+                    public void error(Throwable ex, String code, String msg) {
+                        ToastUtils.showToast(msg);
+                    }
+                });
+            }
         }
         if (requestCode == REQUEST_CODE_REGEST) {//人脸识别成功 拿到图片跳转
             try {

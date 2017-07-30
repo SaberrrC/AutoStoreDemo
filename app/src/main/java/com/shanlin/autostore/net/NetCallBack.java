@@ -1,11 +1,6 @@
 package com.shanlin.autostore.net;
 
-import android.content.Intent;
-
-import com.shanlin.autostore.AutoStoreApplication;
-import com.shanlin.autostore.activity.GateActivity;
 import com.shanlin.autostore.bean.LoginBean;
-import com.shanlin.autostore.bean.resultBean.CaptureBean;
 import com.shanlin.autostore.bean.resultBean.CodeBean;
 import com.shanlin.autostore.bean.resultBean.NumberLoginRsponseBean;
 import com.shanlin.autostore.utils.ToastUtils;
@@ -41,30 +36,6 @@ public class NetCallBack {
         @Override
         public void error(Throwable ex, String code, String msg) {
             ToastUtils.showToast(msg);
-        }
-    }
-
-    /**
-     * 设备管理--设备控制（二维码扫描开闸机）
-     */
-    public CaptureCallBack getCaptureCallBack() {
-        return new CaptureCallBack();
-    }
-
-    public class CaptureCallBack extends CustomCallBack<CaptureBean> {
-        @Override
-        public void success(String code, CaptureBean data, String msg) {
-            Intent intent = new Intent(AutoStoreApplication.getApp(), GateActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            AutoStoreApplication.getApp().startActivity(intent);
-            // TODO: 2017-7-21 判断用户是否录入人脸
-
-
-        }
-
-        @Override
-        public void error(Throwable ex, String code, String msg) {
-            ToastUtils.showToast("连接失败");
         }
     }
 
