@@ -29,11 +29,12 @@ import com.shanlin.autostore.activity.RefundMoneyActivity;
 import com.shanlin.autostore.activity.SaveFaceActivity;
 import com.shanlin.autostore.activity.VersionInfoActivity;
 import com.shanlin.autostore.base.BaseActivity;
+import com.shanlin.autostore.bean.paramsBean.RealOrderBody;
+import com.shanlin.autostore.bean.paramsBean.ZXingOrderBean;
 import com.shanlin.autostore.bean.resultBean.CaptureBean;
 import com.shanlin.autostore.bean.resultBean.CreditBalanceCheckBean;
 import com.shanlin.autostore.bean.resultBean.RealOrderBean;
-import com.shanlin.autostore.bean.paramsBean.RealOrderBody;
-import com.shanlin.autostore.bean.paramsBean.ZXingOrderBean;
+import com.shanlin.autostore.bean.resultBean.UserNumEverydayBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
@@ -44,7 +45,6 @@ import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
 import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.utils.ToastUtils;
-import com.shanlin.autostore.view.NumAnim;
 import com.shanlin.autostore.view.ProgressView;
 import com.shanlin.autostore.zhifubao.Base64;
 import com.slfinance.facesdk.ui.LivenessActivity;
@@ -81,6 +81,8 @@ public class MainActivity extends BaseActivity {
     private TextView openLMB;
     private HttpService service;
     private Gson gson;
+    private int femaleCount;
+    private String token;
 
     @Override
     public int initLayout() {
@@ -124,16 +126,19 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        pv.setGirlPercent(60);
-        NumAnim.startAnim(mUserNum, 100000000, 2000);
+        pv.setGirlPercent(femaleCount);
+//        NumAnim.startAnim(mUserNum, 100000000, 2000);
         pv.flush();
     }
 
     @Override
     public void initData() {
         initToolBar();
+        token = SpUtils.getString(this, Constant.TOKEN, "");
         gson = new Gson();
         service = CommonUtils.doNet();
+        //调用今日到店人数接口
+        getUserNumToday();
         //获取认证状态
         String authenResult = SpUtils.getString(this, Constant_LeMaiBao.AUTHEN_STATE_KEY, "");
         Log.d(TAG, "-----------------是否完成乐买宝认证="+authenResult);
@@ -147,15 +152,38 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    private void getUserNumToday() {
+        Call<UserNumEverydayBean> call = service.getUserNumEveryday(token,CommonUtils.getCurrentTime
+                (false), "2");
+        call.enqueue(new Callback<UserNumEverydayBean>() {
+            @Override
+            public void onResponse(Call<UserNumEverydayBean> call, Response<UserNumEverydayBean> response) {
+                UserNumEverydayBean body = response.body();
+                if (TextUtils.equals("200",body.getCode())) {
+                    int total = body.getData().getMemberCount();
+                    //女性
+                    femaleCount = body.getData().getFemaleCount();
+                    CommonUtils.debugLog("总人数---"+total);
+                    mUserNum.setText(total+"");
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserNumEverydayBean> call, Throwable t) {
+                    CommonUtils.debugLog(t.getMessage());
+            }
+        });
+    }
+
     private void getUserCreditBalenceInfo(HttpService service) {
-        Log.d(TAG, "-----------------token="+Constant.TOKEN);
-        Call<CreditBalanceCheckBean> call = service.getUserCreditBalanceInfo(SpUtils.getString(this, Constant.TOKEN, ""));
+        Call<CreditBalanceCheckBean> call = service.getUserCreditBalanceInfo(token);
         call.enqueue(new Callback<CreditBalanceCheckBean>() {
             @Override
             public void onResponse(Call<CreditBalanceCheckBean> call, Response<CreditBalanceCheckBean> response) {
                 if (response.code() == 200){
-                    int creditBalance = response.body().getCreditBalance();
-                    openLMB.setText(creditBalance+"");
+                    String creditBalance = response.body().getCreditBalance();
+                    openLMB.setText("¥"+(creditBalance == null ? "0.00" : creditBalance));
                 } else {
                     Toast.makeText(MainActivity.this, "获取信用额度失败", Toast.LENGTH_SHORT).show();
                 }

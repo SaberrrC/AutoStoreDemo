@@ -23,6 +23,8 @@ import com.shanlin.autostore.net.LoggingInterceptor;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -115,6 +117,18 @@ public class CommonUtils {
         Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(Constant.BASE_URL).client(client).build();
         HttpService service = retrofit.create(HttpService.class);
         return service;
+    }
+
+    /**
+     * 获取当前系统时间
+     * @param type  true 详细时间,精确到秒  false 精确到日
+     * @return
+     */
+    public static String getCurrentTime (boolean type) {
+        SimpleDateFormat formatter = new SimpleDateFormat (type ? "yyyy-MM-dd  HH:mm:ss " : "yyyy-MM-dd");
+        Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+        String str = formatter.format(curDate);
+        return str;
     }
 
     /**

@@ -47,7 +47,7 @@
 
     <View
         android:layout_width="91px"
-        android:layout_height="3px"
+        android:layout_height="1px"
         android:layout_alignTop="@id/tv_other_way"
         android:layout_below="@id/btn_login_by_phone"
         android:layout_marginRight="16px"
@@ -58,7 +58,7 @@
 
     <View
         android:layout_width="91px"
-        android:layout_height="3px"
+        android:layout_height="1px"
         android:layout_alignTop="@id/tv_other_way"
         android:layout_below="@id/btn_login_by_phone"
         android:layout_marginLeft="16px"

@@ -22,11 +22,14 @@ import com.shanlin.autostore.bean.resultBean.LeMaiBaoPayResultBean;
 import com.shanlin.autostore.bean.resultBean.PswSettingBean;
 import com.shanlin.autostore.bean.resultBean.RealNameAuthenBean;
 import com.shanlin.autostore.bean.resultBean.RealOrderBean;
+import com.shanlin.autostore.bean.resultBean.UserNumEverydayBean;
 import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
 import com.shanlin.autostore.bean.resultBean.WxChatBean;
 import com.shanlin.autostore.bean.resultBean.WxTokenBean;
 import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
+
 import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -191,4 +194,16 @@ public interface HttpService {
      */
     @POST("wechat/savemobile")
     Call<LoginBean> postWechatSavemobile(@Body WechatSaveMobileBody wechatSaveMobileBody);
+
+    /**
+     * 获取每日到店用户
+     * @param date
+     * @param storeId
+     * @return
+     */
+    @GET("store/statisc")
+    Call<UserNumEverydayBean> getUserNumEveryday(@Header("token") String token,@Query("date")
+            String date,@Query
+            ("storeId")
+                                                 String storeId);
 }

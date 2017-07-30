@@ -16,7 +16,7 @@ public class CreditBalanceCheckBean {
      */
 
     private String credit;
-    private int creditBalance;
+    private String creditBalance;
     private String creditLevel;
     private String creditUsed;
     private String status;
@@ -29,11 +29,11 @@ public class CreditBalanceCheckBean {
         this.credit = credit;
     }
 
-    public int getCreditBalance() {
+    public String getCreditBalance() {
         return creditBalance;
     }
 
-    public void setCreditBalance(int creditBalance) {
+    public void setCreditBalance(String creditBalance) {
         this.creditBalance = creditBalance;
     }
 
