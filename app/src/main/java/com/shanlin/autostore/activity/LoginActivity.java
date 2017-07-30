@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+
 import com.megvii.livenessdetection.LivenessLicenseManager;
 import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.MainActivity;
@@ -20,6 +21,8 @@ import com.shanlin.autostore.R;
 import com.shanlin.autostore.WxMessageEvent;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.LoginBean;
+import com.shanlin.autostore.bean.bean2.WxTokenBean;
+import com.shanlin.autostore.bean.bean2.WxUserInfoBean;
 import com.shanlin.autostore.bean.paramsBean.FaceLoginSendBean;
 import com.shanlin.autostore.bean.sendbean.WechatLoginSendBean;
 import com.shanlin.autostore.constants.Constant;
@@ -45,6 +48,8 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.Map;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by DELL on 2017/7/14 0014.
@@ -247,18 +252,19 @@ public class LoginActivity extends BaseActivity {
     private void getResult(final String code) {
 
         HttpService httpService = CommonUtils.doNet();
-        Call<com.shanlin.autostore.bean.resultBean.WxTokenBean> call = httpService.getWxToken("https://api.weixin.qq.com/sns/oauth2/access_token", Constant.APP_ID, Constant.APP_SECRET, code, "authorization_code");
-        call.enqueue(new retrofit2.Callback<com.shanlin.autostore.bean.resultBean.WxTokenBean>() {
+        Call<WxTokenBean> call = httpService.getWxToken
+                ("https://api.weixin.qq.com/sns/oauth2/access_token", Constant.APP_ID, Constant.APP_SECRET, code, "authorization_code");
+        call.enqueue(new Callback<WxTokenBean>() {
             @Override
-            public void onResponse(Call<com.shanlin.autostore.bean.resultBean.WxTokenBean> call, retrofit2.Response<com.shanlin.autostore.bean.resultBean.WxTokenBean> response) {
-                com.shanlin.autostore.bean.resultBean.WxTokenBean wxTokenBean = response.body();
+            public void onResponse(Call<WxTokenBean> call, retrofit2.Response<WxTokenBean> response) {
+                WxTokenBean wxTokenBean = response.body();
                 String access_token = wxTokenBean.getAccess_token();
                 String openid = wxTokenBean.getOpenid();
                 getUserinfo(access_token, openid);
             }
 
             @Override
-            public void onFailure(Call<com.shanlin.autostore.bean.resultBean.WxTokenBean> call, Throwable t) {
+            public void onFailure(Call<WxTokenBean> call, Throwable t) {
 
             }
         });
@@ -268,12 +274,12 @@ public class LoginActivity extends BaseActivity {
 
     private void getUserinfo(String access_token, String openid) {
         final HttpService httpService = CommonUtils.doNet();
-        Call<com.shanlin.autostore.bean.resultBean.WxUserInfoBean> call = httpService.getWxUserInfo("https://api.weixin.qq.com/sns/userinfo?access_token", access_token, openid);
-        call.enqueue(new Callback<com.shanlin.autostore.bean.resultBean.WxUserInfoBean>() {
+        Call<WxUserInfoBean> call = httpService.getWxUserInfo("https://api.weixin.qq.com/sns/userinfo?access_token", access_token, openid);
+        call.enqueue(new Callback<WxUserInfoBean>() {
             @Override
-            public void onResponse(Call<com.shanlin.autostore.bean.resultBean.WxUserInfoBean> call, Response<com.shanlin.autostore.bean.resultBean.WxUserInfoBean> response) {
+            public void onResponse(Call<WxUserInfoBean> call, Response<WxUserInfoBean> response) {
                 if (response != null) {
-                    com.shanlin.autostore.bean.resultBean.WxUserInfoBean body = response.body();
+                    WxUserInfoBean body = response.body();
                     final WechatLoginSendBean wechatLoginSendBean = new WechatLoginSendBean();
                     wechatLoginSendBean.setType(TYPE_WX);
                     wechatLoginSendBean.setUnionid(body.unionid);
@@ -336,7 +342,7 @@ public class LoginActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Call<com.shanlin.autostore.bean.resultBean.WxUserInfoBean> call, Throwable t) {
+            public void onFailure(Call<WxUserInfoBean> call, Throwable t) {
                 ToastUtils.showToast("微信登录失败，请重试");
             }
         });
