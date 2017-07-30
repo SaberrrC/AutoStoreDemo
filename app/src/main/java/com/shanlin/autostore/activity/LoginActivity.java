@@ -245,7 +245,6 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void getResult(final String code) {
-
         HttpService httpService = CommonUtils.doNet();
         Call<com.shanlin.autostore.bean.resultBean.WxTokenBean> call = httpService.getWxToken("https://api.weixin.qq.com/sns/oauth2/access_token", Constant.APP_ID, Constant.APP_SECRET, code, "authorization_code");
         call.enqueue(new retrofit2.Callback<com.shanlin.autostore.bean.resultBean.WxTokenBean>() {
@@ -263,6 +262,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<WxTokenBean> call, Throwable t) {
+                dismissLoadingDialog();
                 ToastUtils.showToast("微信登陆失败，请重试");
             }
         });
@@ -277,6 +277,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onResponse(Call<WxUserInfoBean> call, Response<WxUserInfoBean> response) {
                 if (!response.isSuccessful()) {
+                    dismissLoadingDialog();
                     ToastUtils.showToast("微信登陆失败，请重试");
                     return;
                 }
@@ -296,6 +297,7 @@ public class LoginActivity extends BaseActivity {
                 Call<LoginBean> loginBeanCall = httpService.postWxTokenLogin(sendBean);
                 loginBeanCall.enqueue(new CustomCallBack<LoginBean>() {
                     public void success(String code, LoginBean data, String msg) {
+                        dismissLoadingDialog();
                         if (data.getData() == null) {
                             ToastUtils.showToast(msg);
                             return;
@@ -318,15 +320,11 @@ public class LoginActivity extends BaseActivity {
                             startActivity(intent);
                             finish();
                         }
-
-
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra(Constant.USER_INFO, data);
-                        finish();
                     }
 
                     @Override
                     public void error(Throwable ex, String code, String msg) {
+                        dismissLoadingDialog();
                         if (TextUtils.equals(code, "204")) {//新用户请绑定手机号注册
                             Intent intent = new Intent(LoginActivity.this, PhoneNumLoginActivity.class);
                             intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_NO);
@@ -343,6 +341,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<com.shanlin.autostore.bean.resultBean.WxUserInfoBean> call, Throwable t) {
+                dismissLoadingDialog();
                 ToastUtils.showToast("微信登录失败，请重试");
             }
         });
@@ -351,6 +350,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        dismissLoadingDialog();
         EventBus.getDefault().unregister(this);
     }
 
@@ -358,6 +358,7 @@ public class LoginActivity extends BaseActivity {
     @Subscribe
     public void onMessageEventPostThread(WxMessageEvent messageEvent) {
         if (messageEvent.getMessage().equals("WxCode")) {
+            showLoadingDialog();
             getResult(messageEvent.getCode());
         }
     }
@@ -387,7 +388,9 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void dismissLoadingDialog() {
-        mLoadingDialog.dismiss();
+        if (mLoadingDialog != null) {
+            mLoadingDialog.dismiss();
+        }
     }
 
 }

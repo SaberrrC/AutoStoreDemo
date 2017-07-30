@@ -8,4 +8,12 @@
     <string name="pull_to_refresh_load_more_release">松开加载更多</string>
     <string name="pull_to_refresh_load_more_up_move">上拉加载更多</string>
     <string name="listView_loading">正在载入...</string>
+
+    <!-- utils类 -->
+    <string name="me_just">刚刚</string>
+    <string name="me_minutes_ago">%1$d分钟前</string>
+    <string name="me_hour_ago">%1$d小时前</string>
+    <string name="me_day_ago">%1$d天前</string>
+    <string name="me_month_ago">%1$d个月前</string>
+    <string name="me_year_ago">%1$d年前</string>
 </resources>

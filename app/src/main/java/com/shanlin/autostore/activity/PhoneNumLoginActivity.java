@@ -172,6 +172,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                     @Override
                     public void onPermissionGranted() {
                         //CommonUtils.toNextActivity(LoginActivity.this, MainActivity.class);
+                        togon = true;
                         CodeConfig config = new CodeConfig.Builder().codeLength(CODE_LENTH) // 设置验证码长度
                                 //                                .smsFromStart(10690333) // 设置验证码发送号码前几位数字
                                 .smsFrom(10690333031369L) // 如果验证码发送号码固定，则可以设置验证码发送完整号码
@@ -179,7 +180,6 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                                 .smsBodyContains("在3分钟内有效。如非本人操作请忽略本短信") // 设置验证码短信内容包含文字
                                 .build();
                         AuthCode.getInstance().with(PhoneNumLoginActivity.this).config(config).into(mEtMsgCode);
-                        togon = true;
                     }
 
                     @Override
