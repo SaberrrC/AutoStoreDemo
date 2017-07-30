@@ -500,6 +500,8 @@ public class MainActivity extends BaseActivity {
                 CommonUtils.doNet().getLoginOut(token).enqueue(new CustomCallBack<LoginOutBean>() {
                     @Override
                     public void success(String code, LoginOutBean data, String msg) {
+                        SpUtils.saveString(MainActivity.this, Constant.TOKEN, "");
+                        SpUtils.saveString(MainActivity.this, Constant.USER_PHONE_LOGINED, "");
                         CommonUtils.toNextActivity(MainActivity.this, LoginActivity.class);
                         finish();
                     }
