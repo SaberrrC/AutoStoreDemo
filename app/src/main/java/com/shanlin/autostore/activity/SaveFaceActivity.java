@@ -12,15 +12,24 @@ import android.widget.TextView;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
+import com.shanlin.autostore.bean.LoginBean;
+import com.shanlin.autostore.bean.MemberUpdateBean;
+import com.shanlin.autostore.bean.paramsBean.MemberUpdateSendBean;
 import com.shanlin.autostore.constants.Constant;
-import com.shanlin.autostore.utils.ThreadUtils;
+import com.shanlin.autostore.interf.HttpService;
+import com.shanlin.autostore.net.CustomCallBack;
+import com.shanlin.autostore.utils.CommonUtils;
+import com.shanlin.autostore.utils.ToastUtils;
 import com.zhy.autolayout.utils.AutoUtils;
+
+import retrofit2.Call;
 
 public class SaveFaceActivity extends BaseActivity {
 
-    private TextView mTvSave;
-    private Dialog   mSaveFaceDialog;
-    private Dialog   mLoadingDialog;
+    private TextView  mTvSave;
+    private Dialog    mSaveFaceDialog;
+    private Dialog    mLoadingDialog;
+    private LoginBean mLoginBean;
 
     @Override
     public int initLayout() {
@@ -35,7 +44,7 @@ public class SaveFaceActivity extends BaseActivity {
 
     @Override
     public void initData() {
-
+        mLoginBean = (LoginBean) getIntent().getSerializableExtra(Constant.USER_INFO);
     }
 
     @Override
@@ -44,18 +53,36 @@ public class SaveFaceActivity extends BaseActivity {
             case R.id.tv_save:
                 //显示loading页面
                 showLoadingDialog();
-                // TODO: 2017-7-18 联网发送数据
-                ThreadUtils.runMainDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mLoadingDialog.dismiss();
-                        Intent intent = new Intent(SaveFaceActivity.this, MainActivity.class);
-                        intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_REGESTED_OK);
-                        startActivity(intent);
-                    }
-                }, 3000);
+                doMemberUpdate();
                 break;
         }
+    }
+
+    private void doMemberUpdate() {
+        String userDeviceId = mLoginBean.getData().getUserDeviceId();
+        String imageBase64 = getIntent().getStringExtra(Constant.SaveFaceActivity.IMAGE_BASE64);
+        HttpService httpService = CommonUtils.doNet();
+        MemberUpdateSendBean memberUpdateSendBean = new MemberUpdateSendBean(userDeviceId);
+        memberUpdateSendBean.imageBase64 = imageBase64;
+        Call<MemberUpdateBean> memberUpdateBeanCall = httpService.postMemberUpdate(mLoginBean.getData().getToken(), memberUpdateSendBean);
+        memberUpdateBeanCall.enqueue(new CustomCallBack<MemberUpdateBean>() {
+            @Override
+            public void success(String code, MemberUpdateBean data, String msg) {
+                mLoadingDialog.dismiss();
+                ToastUtils.showToast(msg);
+                Intent intent = new Intent(SaveFaceActivity.this, MainActivity.class);
+                intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_REGESTED_OK);
+                startActivity(intent);
+            }
+
+            @Override
+            public void error(Throwable ex, String code, String msg) {
+                mLoadingDialog.dismiss();
+                ToastUtils.showToast(msg);
+            }
+        });
+
+
     }
 
     private void showLoadingDialog() {

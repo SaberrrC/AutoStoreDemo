@@ -16,10 +16,10 @@ import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
-import com.shanlin.autostore.bean.resultBean.CodeBean;
-import com.shanlin.autostore.bean.resultBean.NumberLoginRsponseBean;
+import com.shanlin.autostore.bean.LoginBean;
 import com.shanlin.autostore.bean.paramsBean.CodeSendBean;
 import com.shanlin.autostore.bean.paramsBean.NumberLoginBean;
+import com.shanlin.autostore.bean.resultBean.CodeBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
@@ -34,6 +34,7 @@ import com.shanlin.autostore.view.CountDownTextView;
 import retrofit2.Call;
 import tech.michaelx.authcode.AuthCode;
 import tech.michaelx.authcode.CodeConfig;
+
 
 /**
  * Created by DELL on 2017/7/14 0014.
@@ -214,11 +215,12 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
             ToastUtils.showToast("请输入验证码");
             return;
         }
+
         final HttpService service = CommonUtils.doNet();
-        Call<NumberLoginRsponseBean> call = service.postNumCodeLogin(new NumberLoginBean(phone, msgCode));
-        call.enqueue(new CustomCallBack<NumberLoginRsponseBean>() {
+        Call<LoginBean> call = service.postNumCodeLogin(new NumberLoginBean(phone, msgCode));
+        call.enqueue(new CustomCallBack<LoginBean>() {
             @Override
-            public void success(String code, NumberLoginRsponseBean data, String msg) {
+            public void success(String code, LoginBean data, String msg) {
                 if (data.getData() == null) {
                     return;
                 }
@@ -229,6 +231,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                 SpUtils.saveString(PhoneNumLoginActivity.this, Constant.USER_PHONE_LOGINED, data.getData().getMobile());
                 Intent intent = new Intent(PhoneNumLoginActivity.this, MainActivity.class);
                 intent.putExtra(Constant.FACE_VERIFY, data.getData().getFaceVerify());
+                intent.putExtra(Constant.USER_INFO, data);
                 startActivity(intent);
                 killActivity(LoginActivity.class);
                 finish();

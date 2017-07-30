@@ -1,23 +1,25 @@
 package com.shanlin.autostore.interf;
 
+
+import com.shanlin.autostore.bean.LoginBean;
+import com.shanlin.autostore.bean.MemberUpdateBean;
+import com.shanlin.autostore.bean.paramsBean.CodeSendBean;
+import com.shanlin.autostore.bean.paramsBean.FaceLoginSendBean;
 import com.shanlin.autostore.bean.paramsBean.LeMaiBaoPayBody;
+import com.shanlin.autostore.bean.paramsBean.MemberUpdateSendBean;
+import com.shanlin.autostore.bean.paramsBean.NumberLoginBean;
+import com.shanlin.autostore.bean.paramsBean.RealOrderBody;
 import com.shanlin.autostore.bean.resultBean.CaptureBean;
 import com.shanlin.autostore.bean.resultBean.CheckUpdateBean;
 import com.shanlin.autostore.bean.resultBean.CodeBean;
 import com.shanlin.autostore.bean.resultBean.CreditBalanceCheckBean;
-import com.shanlin.autostore.bean.resultBean.FaceLoginBean;
 import com.shanlin.autostore.bean.resultBean.LeMaiBaoPayResultBean;
-import com.shanlin.autostore.bean.resultBean.NumberLoginRsponseBean;
 import com.shanlin.autostore.bean.resultBean.RealNameAuthenBean;
 import com.shanlin.autostore.bean.resultBean.RealOrderBean;
 import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
 import com.shanlin.autostore.bean.resultBean.WxChatBean;
 import com.shanlin.autostore.bean.resultBean.WxTokenBean;
 import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
-import com.shanlin.autostore.bean.paramsBean.CodeSendBean;
-import com.shanlin.autostore.bean.paramsBean.FaceLoginSendBean;
-import com.shanlin.autostore.bean.paramsBean.NumberLoginBean;
-import com.shanlin.autostore.bean.paramsBean.RealOrderBody;
 
 import java.util.Map;
 
@@ -76,31 +78,32 @@ public interface HttpService {
      * 用手机号 验证码登陆
      */
     @POST("memberlogin")
-    Call<NumberLoginRsponseBean> postNumCodeLogin(@Body NumberLoginBean numberLoginBean);
+    Call<LoginBean> postNumCodeLogin(@Body NumberLoginBean numberLoginBean);
 
     /**
      * 登陆页面脸部识别登陆
      */
     @POST("member/facelogin")
-    Call<FaceLoginBean> postFaceLogin(@Body FaceLoginSendBean faceLoginSendBean);
+    Call<LoginBean> postFaceLogin(@Body FaceLoginSendBean faceLoginSendBean);
+
     //微信登录取token
     @GET
-    Call<WxTokenBean>getWxToken(@Url String url, @Query("appid")String appid, @Query("secret")String secret, @Query("code")String code,
-                                @Query("grant_type")String grant_type);
+    Call<WxTokenBean> getWxToken(@Url String url, @Query("appid") String appid, @Query("secret") String secret, @Query("code") String code, @Query("grant_type") String grant_type);
+
     //微信登录取用户信息
     @GET
-    Call<WxUserInfoBean>getWxUserInfo(@Url String url, @Query("access_token")String access_token, @Query("openid")String openid);
+    Call<WxUserInfoBean> getWxUserInfo(@Url String url, @Query("access_token") String access_token, @Query("openid") String openid);
 
     //微信认证登录
     @POST("mockjsdata/35/wechat/wechatlogin")
     @FormUrlEncoded
-    Call<NumberLoginBean> postWxTokenLogin(@Field("nickname") String nickname, @Field("openid") String openid,@Field("sex") String sex);
+    Call<NumberLoginBean> postWxTokenLogin(@Field("nickname") String nickname, @Field("openid") String openid, @Field("sex") String sex);
 
 
     /**
      * 微信订单接口
      */
-    @POST("/wx/pay")
+    @POST("wx/pay")
     @FormUrlEncoded
     Call<WxChatBean> postWxRequest(@FieldMap Map<String, String> map);
 
@@ -112,7 +115,7 @@ public interface HttpService {
      */
     @POST("buybao/userverify")
     @FormUrlEncoded
-    Call<RealNameAuthenBean> realNameAuthen(@Field("idCard") String idcard,@Field("userName")
+    Call<RealNameAuthenBean> realNameAuthen(@Field("idCard") String idcard, @Field("userName")
                                             String username);
 
     /**
@@ -137,7 +140,7 @@ public interface HttpService {
      */
     @POST("order/confirm")
     Call<RealOrderBean> updateTempToReal(@Header("token") String token, @Body
-                                         RealOrderBody body);
+            RealOrderBody body);
 
 
     /**
@@ -148,4 +151,13 @@ public interface HttpService {
      */
     @POST("buybao/pay")
     Call<LeMaiBaoPayResultBean> lemaibaoPay(@Header("token") String token, @Body LeMaiBaoPayBody body);
+
+    /**
+     * 修改个人信息
+     * @param token
+     * @param memberUpdateSendBean
+     * @return
+     */
+    @POST("member/update")
+    Call<MemberUpdateBean> postMemberUpdate(@Header("token") String token, @Body MemberUpdateSendBean memberUpdateSendBean);
 }

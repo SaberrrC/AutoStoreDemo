@@ -19,11 +19,11 @@ import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
-import com.shanlin.autostore.bean.resultBean.FaceLoginBean;
-import com.shanlin.autostore.bean.resultBean.WxTokenBean;
-import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
+import com.shanlin.autostore.bean.LoginBean;
 import com.shanlin.autostore.bean.paramsBean.FaceLoginSendBean;
 import com.shanlin.autostore.bean.paramsBean.NumberLoginBean;
+import com.shanlin.autostore.bean.resultBean.WxTokenBean;
+import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
@@ -172,7 +172,6 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void sendAuth() {
-
         api = WXAPIFactory.createWXAPI(this, Constant.APP_ID, false);
         req = new SendAuth.Req();
         req.scope = WEIXIN_SCOPE;
@@ -200,10 +199,10 @@ public class LoginActivity extends BaseActivity {
                 String delta = data.getStringExtra("delta");
                 String encode = Base64.encode(mLivenessImgBytes);
                 final HttpService httpService = CommonUtils.doNet();
-                Call<FaceLoginBean> faceLoginBeanCall = httpService.postFaceLogin(new FaceLoginSendBean(encode, SpUtils.getString(LoginActivity.this, Constant.DEVICEID, "")));
-                faceLoginBeanCall.enqueue(new CustomCallBack<FaceLoginBean>() {
+                Call<LoginBean> faceLoginBeanCall = httpService.postFaceLogin(new FaceLoginSendBean(encode, SpUtils.getString(LoginActivity.this, Constant.DEVICEID, "")));
+                faceLoginBeanCall.enqueue(new CustomCallBack<LoginBean>() {
                     @Override
-                    public void success(String code, FaceLoginBean data, String msg) {
+                    public void success(String code, LoginBean data, String msg) {
                         dismissLoadingDialog();
                         if (data.getData() == null) {
                             ToastUtils.showToast(msg);
@@ -226,6 +225,7 @@ public class LoginActivity extends BaseActivity {
 
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_OK);
+                            intent.putExtra(Constant.USER_INFO, data);
                             startActivity(intent);
                             finish();
                         }

@@ -69,7 +69,7 @@ public class MainActivity extends BaseActivity {
     private Dialog       mGateOpenDialog;
     private AlertDialog  mWelcomeDialog;
     private Button       mBtnScan;
-    private AlertDialog       mToFaceDialog;
+    private AlertDialog  mToFaceDialog;
     private byte[]       mLivenessImgBytes;
     private TextView     mTvIdentify;
     private AlertDialog  mLoginoutDialog;
@@ -212,8 +212,13 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.location_2:
-                CommonUtils.toNextActivity(this, BuyRecordActivity.class);
+            case R.id.location_2://侧滑 购买记录
+                Intent intent = new Intent(this, BuyRecordActivity.class);
+                Intent mainIntent = getIntent();
+                if (mainIntent != null) {
+                    intent.putExtra(Constant.USER_INFO, mainIntent.getSerializableExtra(Constant.USER_INFO));
+                }
+                startActivity(intent);
                 break;
             case R.id.location_3:
                 CommonUtils.toNextActivity(this, VersionInfoActivity.class);
@@ -242,9 +247,7 @@ public class MainActivity extends BaseActivity {
                     }
                 });
                 break;
-
             case R.id.identify_tip://完善身份，智能购物
-                //                CommonUtils.toNextActivity(this,MainActivity.class);
                 MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS}, new MPermissionUtils.OnPermissionListener() {
                     @Override
                     public void onPermissionGranted() {
@@ -313,6 +316,7 @@ public class MainActivity extends BaseActivity {
                 Intent intent = new Intent(this, SaveFaceActivity.class);
                 intent.putExtra(Constant.SaveFaceActivity.IMAGE_BASE64, encode);//图片base64
                 intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_NO);
+                intent.putExtra(Constant.USER_INFO, getIntent().getSerializableExtra(Constant.USER_INFO));
                 startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();

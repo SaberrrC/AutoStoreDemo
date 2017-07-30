@@ -1,5 +1,6 @@
 package com.shanlin.autostore.activity;
 
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +12,12 @@ import android.widget.TextView;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.adapter.FinalRecycleAdapter;
 import com.shanlin.autostore.base.BaseActivity;
+import com.shanlin.autostore.bean.LoginBean;
+import com.shanlin.autostore.bean.paramsBean.MemberUpdateSendBean;
 import com.shanlin.autostore.bean.resultBean.RecordBean;
+import com.shanlin.autostore.constants.Constant;
+import com.shanlin.autostore.interf.HttpService;
+import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.view.PulltoRefreshRecyclerView;
 
@@ -26,11 +32,11 @@ import java.util.Map;
 
 public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapter.OnViewAttachListener {
 
-    private ListView                  buyRecordLV;
-    private Toolbar                   toolbar;
-    private TextView                  title;
+    private ListView buyRecordLV;
+    private Toolbar toolbar;
+    private TextView title;
     private PulltoRefreshRecyclerView mPulltoRefreshRecyclerView;
-    private RecyclerView              mRecyclerView;
+    private RecyclerView mRecyclerView;
     private List<Object> mDatas = new ArrayList<>();
     private FinalRecycleAdapter mFinalRecycleAdapter;
     private static int REFRESH       = 0;
@@ -64,6 +70,7 @@ public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapt
         for (int i = 0; i < 10; i++) {
             mDatas.add(new RecordBean());
         }
+        getOrderData();
         mFinalRecycleAdapter = new FinalRecycleAdapter(mDatas, map, this);
         mRecyclerView.setAdapter(mFinalRecycleAdapter);
         mPulltoRefreshRecyclerView.setRefreshLoadMoreListener(MyRefreshLoadMoreListener);
@@ -128,7 +135,7 @@ public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapt
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(BuyRecordActivity.this, OrderDetailActivity.class);
-//                    intent.putExtra()
+                    //                    intent.putExtra()
                     startActivity(intent);
                 }
             });
@@ -138,6 +145,16 @@ public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapt
             TextView tvItemMoney = (TextView) findViewById(R.id.tv_item_money);//500.00
             TextView tvItemPayWay = (TextView) findViewById(R.id.tv_item_pay_way);//微信支付
         }
+
+    }
+
+    public void getOrderData() {
+        Intent intent = getIntent();
+        LoginBean loginBean = (LoginBean) intent.getSerializableExtra(Constant.USER_INFO);
+        String userDeviceId = loginBean.getData().getUserDeviceId();
+        HttpService httpService = CommonUtils.doNet();
+        MemberUpdateSendBean memberUpdateSendBean = new MemberUpdateSendBean(userDeviceId);
+        // TODO: 2017-7-28
 
     }
 }
