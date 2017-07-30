@@ -2,7 +2,6 @@ package com.shanlin.autostore.interf;
 
 import com.shanlin.autostore.bean.LoginBean;
 import com.shanlin.autostore.bean.MemberUpdateBean;
-import com.shanlin.autostore.bean.RecorderBean;
 import com.shanlin.autostore.bean.paramsBean.AliPayOrderBody;
 import com.shanlin.autostore.bean.paramsBean.CodeSendBean;
 import com.shanlin.autostore.bean.paramsBean.FaceLoginSendBean;
@@ -19,6 +18,8 @@ import com.shanlin.autostore.bean.resultBean.CheckUpdateBean;
 import com.shanlin.autostore.bean.resultBean.CodeBean;
 import com.shanlin.autostore.bean.resultBean.CreditBalanceCheckBean;
 import com.shanlin.autostore.bean.resultBean.LeMaiBaoPayResultBean;
+import com.shanlin.autostore.bean.resultBean.OrderDetailBean;
+import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
 import com.shanlin.autostore.bean.resultBean.PswSettingBean;
 import com.shanlin.autostore.bean.resultBean.RealNameAuthenBean;
 import com.shanlin.autostore.bean.resultBean.RealOrderBean;
@@ -128,8 +129,7 @@ public interface HttpService {
      */
     @POST("buybao/userverify")
     @FormUrlEncoded
-    Call<RealNameAuthenBean> realNameAuthen(@Field("idCard") String idcard, @Field("userName")
-                                            String username);
+    Call<RealNameAuthenBean> realNameAuthen(@Field("idCard") String idcard, @Field("userName") String username);
 
     /**
      * 获取用户乐买宝实名认证信息
@@ -178,8 +178,7 @@ public interface HttpService {
      * 查询订单历史记录
      */
     @GET("order/history")
-    Call<RecorderBean> getRecorderList(@Header("token") String token,@Query("pageNumber") String
-            pageNumber,@Query("pageSize") String pageSize);
+    Call<OrderHistoryBean> getOrderHistory(@Header("token") String token, @Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
 
     /**
      * 创建支付宝预订单
@@ -204,6 +203,11 @@ public interface HttpService {
     @GET("store/statisc")
     Call<UserNumEverydayBean> getUserNumEveryday(@Header("token") String token,@Query("date")
             String date,@Query
-            ("storeId")
-                                                 String storeId);
+            ("storeId") String storeId);
+
+    /*
+     * 订单详情
+     */
+    @GET("order/details")
+    Call<OrderDetailBean> getOrderDetail(@Header("token") String token,@Query("orderNo") String orderNo);
 }

@@ -19,6 +19,7 @@ public class Constant {
     public static final String USER_PHONE_HISTORY = "USER_PHONE_HISTORY";//用于登录界面数据回显
     public static final String USER_INFO          = "USER_INFO";//传递用户数据
     public static final String WX_INFO            = "WX_INFO";//微信登陆位注册手机号
+    public static final String ORDER_ITEM         = "ORDER_ITEM";
 
     public static final String FACE_REGESTED_OK = "FACE_REGESTED_OK";
 

@@ -9,6 +9,12 @@
 
     <include layout="@layout/toolbar_layout"/>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/tv_all"
+        android:background="#F5F5F5"/>
+
     <com.shanlin.autostore.view.PulltoRefreshRecyclerView
         android:id="@+id/recyclerview_order"
         android:layout_width="match_parent"
