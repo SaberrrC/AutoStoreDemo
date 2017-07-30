@@ -1,4 +1,4 @@
-package com.shanlin.autostore.bean.resultBean;
+package com.shanlin.autostore.bean.bean2;
 
 /**
  * Created by DELL on 2017/7/28 0028.

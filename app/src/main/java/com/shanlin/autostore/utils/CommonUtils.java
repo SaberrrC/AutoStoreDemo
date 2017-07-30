@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
+import com.shanlin.autostore.bean.bean2.UserVertifyStatusBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
