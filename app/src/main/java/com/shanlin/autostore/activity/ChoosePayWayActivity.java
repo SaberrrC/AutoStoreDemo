@@ -18,7 +18,7 @@ import com.jungly.gridpasswordview.GridPasswordView;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
-import com.shanlin.autostore.bean.resultBean.WxChatBean;
+import com.shanlin.autostore.bean.bean2.WxChatBean;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;

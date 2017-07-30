@@ -14,7 +14,7 @@ import com.shanlin.autostore.adapter.FinalRecycleAdapter;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.LoginBean;
 import com.shanlin.autostore.bean.paramsBean.MemberUpdateSendBean;
-import com.shanlin.autostore.bean.resultBean.RecordBean;
+import com.shanlin.autostore.bean.bean2.RecordBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.utils.CommonUtils;
