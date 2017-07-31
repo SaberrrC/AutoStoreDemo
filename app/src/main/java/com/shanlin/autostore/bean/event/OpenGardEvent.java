@@ -40,4 +40,13 @@ public class OpenGardEvent {
     public void setType(String type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "OpenGardEvent{" +
+                "status='" + status + '\'' +
+                ", storeId='" + storeId + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

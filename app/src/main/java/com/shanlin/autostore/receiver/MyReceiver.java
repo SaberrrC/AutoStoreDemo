@@ -73,6 +73,7 @@ public class MyReceiver extends BroadcastReceiver {
             EventBus.getDefault().post(new OpenGardEvent());
         }
     }
+
     // 打印所有的 intent extra 数据
     private static String printBundle(Bundle bundle) {
         StringBuilder sb = new StringBuilder();

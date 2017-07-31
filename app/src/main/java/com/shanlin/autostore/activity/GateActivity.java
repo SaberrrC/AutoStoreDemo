@@ -29,6 +29,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Random;
+
 import retrofit2.Call;
 
 public class GateActivity extends BaseActivity {
@@ -38,7 +40,9 @@ public class GateActivity extends BaseActivity {
     private TextView       mTvProgress;
     private String         mResult;
     private OpenGardQRBean mOpenGardQRBean;
-    private boolean toggen = true;
+    private boolean toggen     = true;
+    private boolean timeToggen = true;
+    public  int     progress   = 0;
 
     @Override
     public int initLayout() {
@@ -59,15 +63,20 @@ public class GateActivity extends BaseActivity {
             @Override
             public void run() {
                 for (int i = 0; i < 80; i++) {
-                    SystemClock.sleep(20);
+                    getRandomTime();
                     final int finalI = i;
+                    progress = i;
                     ThreadUtils.runMain(new Runnable() {
                         @Override
                         public void run() {
                             mPbOpen.setProgress(finalI);
                             mTvProgress.setText(finalI + 1 + "%");
+                            if (!timeToggen) {
+                                return;
+                            }
                         }
                     });
+
                 }
             }
         }.start();
@@ -88,8 +97,8 @@ public class GateActivity extends BaseActivity {
                         if (!toggen) {
                             return;
                         }
-                        for (int i = 80; i < 100; i++) {
-                            SystemClock.sleep(20);
+                        for (int i = progress; i < 100; i++) {
+                            getRandomTime();
                             final int finalI = i;
                             ThreadUtils.runMain(new Runnable() {
                                 @Override
@@ -121,6 +130,10 @@ public class GateActivity extends BaseActivity {
         });
     }
 
+    private void getRandomTime() {
+        SystemClock.sleep(new Random().nextInt(25) + 10);
+    }
+
 
     @Override
     public void initData() {
@@ -140,14 +153,16 @@ public class GateActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getJpushInfo(OpenGardEvent openGardEvent) {
-        if (TextUtils.equals(openGardEvent.getStatus(), mOpenGardQRBean.getStoreId()) && TextUtils.equals(openGardEvent.getStatus(), "1")) {
+        String s = openGardEvent.toString();
+        if (TextUtils.equals(openGardEvent.getStoreId(), mOpenGardQRBean.getStoreId()) && TextUtils.equals(openGardEvent.getType(), "1")) {
             toggen = false;
+            timeToggen = false;
             //闸机开了
             new Thread() {
                 @Override
                 public void run() {
-                    for (int i = 80; i < 100; i++) {
-                        SystemClock.sleep(20);
+                    for (int i = progress; i < 100; i++) {
+                        getRandomTime();
                         final int finalI = i;
                         ThreadUtils.runMain(new Runnable() {
                             @Override
@@ -167,8 +182,6 @@ public class GateActivity extends BaseActivity {
                     }
                 }
             }.start();
-
         }
-
     }
 }
