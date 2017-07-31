@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.alipay.sdk.app.PayTask;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
+import com.shanlin.autostore.WXPayTools;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.paramsBean.AliPayOrderBody;
 import com.shanlin.autostore.bean.paramsBean.LeMaiBaoPayBody;
@@ -258,7 +259,7 @@ public class ChoosePayWayActivity extends BaseActivity{
             case R.id.ll_pay_way_3:
                 //微信支付
 //                requestWxInfo();
-//                WXPayTools.pay("wx201410272009395522657a690389285100","C380BEC2BFD727A4B6845133519F3AD6",ChoosePayWayActivity.this);
+                  WXPayTools.pay(null,this);
                 break;
             case R.id.iv_close_dialog:
                 if (popTop.isShowing()) popTop.dismiss();
@@ -309,10 +310,13 @@ public class ChoosePayWayActivity extends BaseActivity{
         popBottom.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM,0,0);
     }
 
+    /**
+     * 微信支付请求订单信息接口
+     */
     private void requestWxInfo(){
         HttpService httpService = CommonUtils.doNet();
         HashMap<String,String> map=new HashMap<>();
-        map.put("deviceId", DeviceInfo.getDeviceId());
+        map.put("deviceId","190e35f7e0719ecaf77");
         map.put("ip","123.12.12.123");
         map.put("orderNo","123456");
         map.put("payAmount","17.1");
@@ -320,18 +324,30 @@ public class ChoosePayWayActivity extends BaseActivity{
         httpService.postWxRequest(map).enqueue(new CustomCallBack<WxChatBean>() {
             @Override
             public void success(String code, WxChatBean data, String msg) {
+                Log.e("aa","success");
                 if(code.equals(200)){
                     if(data!=null){
                         WxChatBean.WxResponseBean wxResponseBean = data.data;
-                        String prepay_id = wxResponseBean.prepay_id;
-                        String sign = wxResponseBean.sign;
-                        //WXPayTools.pay(prepay_id,sign,ChoosePayWayActivity.this);
+                        HashMap<String,String> paramsMap=new HashMap<String, String>();
+                        //相同订单不能重复支付
+                        if(!TextUtils.isEmpty(wxResponseBean.prepay_id)) {
+                            paramsMap.put("appId", wxResponseBean.appid);
+                            paramsMap.put("partnerId", wxResponseBean.partnerid);
+                            paramsMap.put("prepayId", wxResponseBean.prepay_id);
+                            paramsMap.put("nonceStr", wxResponseBean.noncestr);
+                            paramsMap.put("timeStamp", wxResponseBean.timestamp);
+                            paramsMap.put("sign", wxResponseBean.sign);
+                            WXPayTools.pay(paramsMap, ChoosePayWayActivity.this);
+                        }else {
+                            Toast.makeText(ChoosePayWayActivity.this,"不能重复支付",Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
             }
 
             @Override
             public void error(Throwable ex, String code, String msg) {
+                Log.e("aa","error"+code+msg);
                 Toast.makeText(ChoosePayWayActivity.this,code+msg,Toast.LENGTH_SHORT).show();
             }
         });
