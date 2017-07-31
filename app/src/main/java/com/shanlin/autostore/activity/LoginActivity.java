@@ -97,7 +97,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        EventBus.getDefault().register(this);
+//        EventBus.getDefault().register(this);
         mLoginActivity = this;
         findViewById(R.id.btn_login_by_face).setOnClickListener(this);
         findViewById(R.id.btn_login_by_phone).setOnClickListener(this);

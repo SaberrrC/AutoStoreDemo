@@ -12,6 +12,7 @@ import com.shanlin.autostore.bean.paramsBean.OpenGardBody;
 import com.shanlin.autostore.bean.paramsBean.PswSettingBody;
 import com.shanlin.autostore.bean.paramsBean.RealNameAuthenBody;
 import com.shanlin.autostore.bean.paramsBean.RealOrderBody;
+import com.shanlin.autostore.bean.paramsBean.WXPayBody;
 import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;
 import com.shanlin.autostore.bean.paramsBean.WechatSaveMobileBody;
 import com.shanlin.autostore.bean.resultBean.AliPayResultBean;
@@ -33,12 +34,9 @@ import com.shanlin.autostore.bean.resultBean.WxChatBean;
 import com.shanlin.autostore.bean.resultBean.WxTokenBean;
 import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
 
-import java.util.Map;
-
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
-import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -120,8 +118,7 @@ public interface HttpService {
      * 微信订单接口
      */
     @POST("wx/pay")
-    @FormUrlEncoded
-    Call<WxChatBean> postWxRequest(@FieldMap Map<String, String> map);
+    Call<WxChatBean> postWxRequest(@Header("token") String token, @Body WXPayBody body);
 
     /**
      * 乐买宝实名认证接口 -1082

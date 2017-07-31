@@ -3,6 +3,7 @@ package com.shanlin.autostore.activity;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.os.Message;
@@ -26,15 +27,16 @@ import com.shanlin.autostore.WXPayTools;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.paramsBean.AliPayOrderBody;
 import com.shanlin.autostore.bean.paramsBean.LeMaiBaoPayBody;
+import com.shanlin.autostore.bean.paramsBean.WXPayBody;
 import com.shanlin.autostore.bean.resultBean.AliPayResultBean;
 import com.shanlin.autostore.bean.resultBean.LeMaiBaoPayResultBean;
 import com.shanlin.autostore.bean.resultBean.WxChatBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
+import com.shanlin.autostore.constants.WXConstant;
 import com.shanlin.autostore.interf.HttpService;
-import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
-import com.shanlin.autostore.utils.env.DeviceInfo;
+import com.shanlin.autostore.utils.IpTools;
 import com.shanlin.autostore.view.XNumberKeyboardView;
 import com.shanlin.autostore.view.gridpasswordview.GridPasswordView;
 import com.shanlin.autostore.zhifubao.OrderInfoUtil2_0;
@@ -72,6 +74,8 @@ public class ChoosePayWayActivity extends BaseActivity{
     private XNumberKeyboardView xnumber;
     private PopupWindow popTop;
     private PopupWindow popBottom;
+    private String creditBalance;
+    private TextView availableBalance;
 
     @Override
     public int initLayout() {
@@ -83,6 +87,7 @@ public class ChoosePayWayActivity extends BaseActivity{
         CommonUtils.initToolbar(this,"选择支付方式",R.color.blcak, MainActivity.class);
         availableDialogView = LayoutInflater.from(this).inflate(R.layout.get_available_balence_layout, null);
         availableDialogView.findViewById(R.id.btn_diaolog_know).setOnClickListener(this);
+        availableBalance = ((TextView) findViewById(R.id.get_avaiable_balence));//显示可用余额
         findViewById(R.id.ll_pay_way_1).setOnClickListener(this);
         findViewById(R.id.ll_pay_way_2).setOnClickListener(this);
         findViewById(R.id.ll_pay_way_3).setOnClickListener(this);
@@ -208,6 +213,7 @@ public class ChoosePayWayActivity extends BaseActivity{
         totalMoney = intent.getStringExtra(Constant_LeMaiBao.TOTAL_AMOUNT);
         storeId = intent.getStringExtra(Constant_LeMaiBao.STORED_ID);
         token = intent.getStringExtra(Constant.TOKEN);
+        creditBalance = intent.getStringExtra(Constant_LeMaiBao.CREDIT_BALANCE);
         totalAmount.setText("¥"+ (totalMoney == null ? "0.00" : totalMoney));
         moneyNeedToPay.setText("¥"+ (totalMoney == null ? "0.00" : totalMoney));
         service = CommonUtils.doNet();
@@ -258,8 +264,7 @@ public class ChoosePayWayActivity extends BaseActivity{
                 break;
             case R.id.ll_pay_way_3:
                 //微信支付
-//                requestWxInfo();
-                  WXPayTools.pay(null,this);
+                requestWxInfo();
                 break;
             case R.id.iv_close_dialog:
                 if (popTop.isShowing()) popTop.dismiss();
@@ -290,49 +295,56 @@ public class ChoosePayWayActivity extends BaseActivity{
         popBottom.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM,0,0);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Double.valueOf(creditBalance) >= Double.valueOf(totalMoney)) {
+            availableBalence.setText(creditBalance+" 元可用");
+        } else {
+            availableBalence.setTextColor(Color.RED);
+            availableBalence.setText(creditBalance+" 额度不足");
+        }
+    }
+
     /**
      * 微信支付请求订单信息接口
      */
-    private void requestWxInfo(){
-        HttpService httpService = CommonUtils.doNet();
-        HashMap<String,String> map=new HashMap<>();
-        map.put("deviceId","190e35f7e0719ecaf77");
-        map.put("ip","123.12.12.123");
-        map.put("orderNo","123456");
-        map.put("payAmount","17.1");
-        map.put("storeId","1");
-        httpService.postWxRequest(map).enqueue(new CustomCallBack<WxChatBean>() {
+    private void requestWxInfo() {
+        Call<WxChatBean> call = service.postWxRequest(token, new WXPayBody(deviceId, IpTools
+                .getIPAddress(this), orderNo, Integer.parseInt(totalMoney.replace(".", "")) + "", "2"));
+
+        call.enqueue(new Callback<WxChatBean>() {
             @Override
-            public void success(String code, WxChatBean data, String msg) {
-                Log.e("aa","success");
-                if(code.equals(200)){
-                    if(data!=null){
-                        WxChatBean.WxResponseBean wxResponseBean = data.data;
-                        HashMap<String,String> paramsMap=new HashMap<String, String>();
-                        //相同订单不能重复支付
-                        if(!TextUtils.isEmpty(wxResponseBean.prepay_id)) {
-                            paramsMap.put("appId", wxResponseBean.appid);
-                            paramsMap.put("partnerId", wxResponseBean.partnerid);
-                            paramsMap.put("prepayId", wxResponseBean.prepay_id);
-                            paramsMap.put("nonceStr", wxResponseBean.noncestr);
-                            paramsMap.put("timeStamp", wxResponseBean.timestamp);
-                            paramsMap.put("sign", wxResponseBean.sign);
-                            WXPayTools.pay(paramsMap, ChoosePayWayActivity.this);
-                        }else {
-                            Toast.makeText(ChoosePayWayActivity.this,"不能重复支付",Toast.LENGTH_SHORT).show();
-                        }
+            public void onResponse(Call<WxChatBean> call, Response<WxChatBean> response) {
+                WxChatBean body = response.body();
+                if (TextUtils.equals("200", body.getCode())) {
+                    WxChatBean.DataBean data = body.getData();
+                    CommonUtils.debugLog("wxdata-----" + data.toString());
+                    HashMap<String, String> paramsMap = new HashMap<String, String>();
+                    //相同订单不能重复支付
+                    if (!TextUtils.isEmpty(data.getPrepayid())) {
+                        paramsMap.put(WXConstant.APPID, data.getAppid());
+                        paramsMap.put(WXConstant.PARTENER_ID, data.getPartnerid());
+                        paramsMap.put(WXConstant.PRE_PAY_ID, data.getPrepayid());
+                        paramsMap.put(WXConstant.RANDOM_STRING, data.getNoncestr());
+                        paramsMap.put(WXConstant.TIME, data.getTimestamp());
+                        paramsMap.put(WXConstant.SIGN, data.getSign());
+                        WXPayTools.pay(paramsMap, ChoosePayWayActivity.this);
+                    } else {
+                        Toast.makeText(ChoosePayWayActivity.this, "不能重复支付", Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    String message = response.message();
+                    CommonUtils.debugLog(message);
                 }
             }
 
             @Override
-            public void error(Throwable ex, String code, String msg) {
-                Log.e("aa","error"+code+msg);
-                Toast.makeText(ChoosePayWayActivity.this,code+msg,Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<WxChatBean> call, Throwable t) {
+                CommonUtils.debugLog(t.getMessage());
             }
         });
     }
-
     /**
      * 设置添加屏幕的背景透明度
      * @param bgAlpha

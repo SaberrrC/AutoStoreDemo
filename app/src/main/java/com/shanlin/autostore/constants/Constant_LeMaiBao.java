@@ -24,6 +24,11 @@ public class Constant_LeMaiBao {
     public static final String AUTHEN_REAL_NAME = "1";
 
     /**
+     * 乐买宝可用信用额度
+     */
+    public static final String CREDIT_BALANCE = "creditBalance";
+
+    /**
      * 应付总金额
      */
     public static final String TOTAL_AMOUNT = "total_amount";

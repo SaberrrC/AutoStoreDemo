@@ -91,6 +91,7 @@ public class MainActivity extends BaseActivity {
     private String       mUserPhone;
     private String       mUserPhoneHide;
     private RefundMoneyBean refundMoneyBean = null;
+    private String creditBalance;
 
     @Override
     public int initLayout() {
@@ -206,8 +207,8 @@ public class MainActivity extends BaseActivity {
                 if (TextUtils.equals("200",body.getCode())) {
 
                     CommonUtils.debugLog(body.toString()+"----------"+token);
-                    CreditBalanceCheckBean.DataBean data = body.getData();
-                    openLMB.setText("¥" + (data.getCreditBalance() == null ? "0.00" : data.getCreditBalance()));
+                    creditBalance = body.getData().getCreditBalance();
+                    openLMB.setText("¥" + (creditBalance == null ? "0.00" : creditBalance));
                 } else {
                     Toast.makeText(MainActivity.this, "获取信用额度失败", Toast.LENGTH_SHORT).show();
                 }
@@ -371,7 +372,9 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private String[] aliArgs = new String[]{Constant_LeMaiBao.DEVICEDID, Constant_LeMaiBao.ORDER_NO, Constant_LeMaiBao.TOTAL_AMOUNT, Constant_LeMaiBao.STORED_ID, Constant.TOKEN};
+    private String[] aliArgs = new String[]{Constant_LeMaiBao.DEVICEDID, Constant_LeMaiBao
+            .ORDER_NO, Constant_LeMaiBao.TOTAL_AMOUNT, Constant_LeMaiBao.STORED_ID, Constant
+            .TOKEN,Constant_LeMaiBao.CREDIT_BALANCE};
 
     private void generateRealOrder(final String orderNo, final String devicedID) {
         final String token = SpUtils.getString(this, Constant.TOKEN, "");
@@ -384,7 +387,9 @@ public class MainActivity extends BaseActivity {
                 if (TextUtils.equals("200", body.getCode())) {
                     Log.d(TAG, "------------------------*-----------------------" + response.body().toString());
                     String totalAmount = response.body().getData().getTotalAmount();//应付总金额
-                    CommonUtils.sendDataToNextActivity(MainActivity.this, ChoosePayWayActivity.class, aliArgs, new String[]{devicedID, orderNo, totalAmount, "2", token});
+                    CommonUtils.sendDataToNextActivity(MainActivity.this, ChoosePayWayActivity
+                            .class, aliArgs, new String[]{devicedID, orderNo, totalAmount, "2",
+                            token,creditBalance});
                 }
             }
 

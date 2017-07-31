@@ -105,7 +105,6 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.zhy:autolayout:1.4.5'
-//    compile 'com.jungly:gridPasswordView:0.3'
     compile 'com.slfinance.loan:SLFinance-FaceSDK_android:0.1.6-SNAPSHOT'
 
     compile project(':library:wechatlib')
