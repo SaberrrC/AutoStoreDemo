@@ -1,6 +1,7 @@
 package com.shanlin.autostore;
 
 import android.app.Application;
+import android.text.TextUtils;
 
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.utils.LogUtils;
@@ -24,12 +25,7 @@ public class AutoStoreApplication extends Application {
         app = this;
         AutoLayoutConifg.getInstance().useDeviceSize();
         //保存闸机的DevicedID
-        String rid = JPushInterface.getRegistrationID(getApplicationContext());
-        if (!rid.isEmpty()) {
-            SpUtils.saveString(this, Constant.DEVICEID, rid);
-        }
-
-        LogUtils.d("devicedid  " + rid);
+        getDevicedID();
         //        CrashHandler.getInstance().setCustomCrashHanler(app);
     }
 
@@ -37,4 +33,13 @@ public class AutoStoreApplication extends Application {
         return app;
     }
 
+    private void getDevicedID() {
+        String deviceId = JPushInterface.getRegistrationID(getApplicationContext());
+        if (!TextUtils.isEmpty(deviceId)) {
+            SpUtils.saveString(this, Constant.DEVICEID, deviceId);
+            LogUtils.d(Constant.DEVICEID + "   " + deviceId);
+        } else {
+            getDevicedID();
+        }
+    }
 }

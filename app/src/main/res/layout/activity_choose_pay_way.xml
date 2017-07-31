@@ -29,6 +29,7 @@
         />
 
     <TextView
+        android:id="@+id/tv_totla_amount_to_pay"
         android:layout_marginTop="10px"
         android:layout_width="wrap_content"
         android:layout_height="48px"

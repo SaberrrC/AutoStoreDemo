@@ -14,7 +14,7 @@ import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.LoginBean;
 import com.shanlin.autostore.bean.MemberUpdateBean;
-import com.shanlin.autostore.bean.sendbean.MemberUpdateSendBean;
+import com.shanlin.autostore.bean.paramsBean.MemberUpdateSendBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
@@ -71,7 +71,7 @@ public class SaveFaceActivity extends BaseActivity {
                 mLoadingDialog.dismiss();
                 ToastUtils.showToast(msg);
                 Intent intent = new Intent(SaveFaceActivity.this, MainActivity.class);
-                intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_REGESTED_OK);
+                intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.FACE_REGESTED_OK);
                 startActivity(intent);
             }
 

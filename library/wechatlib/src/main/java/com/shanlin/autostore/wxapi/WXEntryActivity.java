@@ -1,9 +1,9 @@
 package com.shanlin.autostore.wxapi;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+
 import com.shanlin.autostore.WxMessageEvent;
 import com.shanlin.autostore.library.R;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
@@ -13,6 +13,7 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
 import org.greenrobot.eventbus.EventBus;
 
 //微信界面
@@ -76,7 +77,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                     WxMessageEvent wxMessageEvent = new WxMessageEvent();
                     wxMessageEvent.setCode(code);
                     wxMessageEvent.setMessage("WxCode");
-                    EventBus.getDefault().postSticky(wxMessageEvent);
+                    EventBus.getDefault().post(wxMessageEvent);
                     finish();
                     //getResult(code);
                     break;

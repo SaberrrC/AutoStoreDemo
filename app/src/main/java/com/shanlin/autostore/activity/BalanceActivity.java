@@ -7,7 +7,7 @@ import android.view.View;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.adapter.FinalRecycleAdapter;
 import com.shanlin.autostore.base.BaseActivity;
-import com.shanlin.autostore.bean.RecordBean;
+import com.shanlin.autostore.bean.resultBean.RecordBean;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.view.PulltoRefreshRecyclerView;
@@ -24,6 +24,7 @@ import java.util.Map;
 
 public class BalanceActivity extends BaseActivity implements FinalRecycleAdapter.OnViewAttachListener {
 
+
     private PulltoRefreshRecyclerView mPulltoRefreshRecyclerView;
     private RecyclerView              mRecyclerView;
     private List<Object> mDatas = new ArrayList<>();
@@ -37,6 +38,7 @@ public class BalanceActivity extends BaseActivity implements FinalRecycleAdapter
     public int initLayout() {
         return R.layout.activity_yu_e;
     }
+
 
     @Override
     public void initView() {

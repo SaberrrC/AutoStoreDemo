@@ -7,21 +7,29 @@ import android.graphics.Bitmap;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.R;
+import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
 import com.shanlin.autostore.constants.Constant;
+import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.LoggingInterceptor;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -31,6 +39,34 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CommonUtils {
 
+
+    /**
+     * 获取用户乐买宝认证信息
+     * @param context
+     * @param service
+     * @param token
+     */
+    public static void checkAuthenStatus(final Context context, HttpService service, String token) {
+        Call<UserVertifyStatusBean> call = service.getUserVertifyAuthenStatus(token);
+        call.enqueue(new Callback<UserVertifyStatusBean>() {
+            @Override
+            public void onResponse(Call<UserVertifyStatusBean> call, Response<UserVertifyStatusBean> response) {
+                UserVertifyStatusBean body = response.body();
+                if ("200".equals(body.getCode())) {
+                    String status = body.getData().getVerifyStatus();
+                    Log.d("wr", "-----------------authen_status="+status);
+                    SpUtils.saveString(context, Constant_LeMaiBao.AUTHEN_STATE_KEY, status);
+                } else {
+                    Toast.makeText(context, "未获取到认证数据", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserVertifyStatusBean> call, Throwable t) {
+                Toast.makeText(context, "获取信息失败", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
     /**
      * 创建dialog对象
      *
@@ -55,6 +91,21 @@ public class CommonUtils {
     }
 
     /**
+     * 携带数据跳转页面
+     *
+     * @param context
+     * @param activity
+     */
+    public static void sendDataToNextActivity(Context context, Class activity,String[] key,String[]
+                                              data) {
+        Intent intent = new Intent(context,activity);
+        for (int i = 0; i < key.length; i++) {
+            intent.putExtra(key[i],data[i]);
+        }
+        context.startActivity(intent);
+    }
+
+    /**
      * 网络连接工具,get,post通用
      *
      * @return
@@ -69,6 +120,18 @@ public class CommonUtils {
     }
 
     /**
+     * 获取当前系统时间
+     * @param type  true 详细时间,精确到秒  false 精确到日
+     * @return
+     */
+    public static String getCurrentTime (boolean type) {
+        SimpleDateFormat formatter = new SimpleDateFormat (type ? "yyyy-MM-dd  HH:mm:ss " : "yyyy-MM-dd");
+        Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+        String str = formatter.format(curDate);
+        return str;
+    }
+
+    /**
      * toast
      *
      * @param context
@@ -76,6 +139,16 @@ public class CommonUtils {
      */
     public static void showToast(Context context, String text) {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * debug log信息
+     * @param content
+     */
+    public static void debugLog (String content) {
+        if (true) {
+            Log.d("wr", "----946----"+content);
+        }
     }
 
     /**

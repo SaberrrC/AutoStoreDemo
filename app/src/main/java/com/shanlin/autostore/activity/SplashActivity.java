@@ -16,7 +16,7 @@ import android.util.Log;
 import android.view.animation.LinearInterpolator;
 
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.bean.CheckUpdateBean;
+import com.shanlin.autostore.bean.resultBean.CheckUpdateBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;

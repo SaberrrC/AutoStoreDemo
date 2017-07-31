@@ -7,6 +7,7 @@
         android:name="com.shanlin.autostore.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature"/>
 
+    <!-- 微信登录权限 --><!--支付宝权限-->
     <!-- Required -->
     <uses-permission android:name="com.shanlin.autostore.permission.JPUSH_MESSAGE"/>
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>

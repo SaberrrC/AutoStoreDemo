@@ -2,13 +2,18 @@ package com.shanlin.autostore.activity;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.TextView;
 
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.adapter.FinalRecycleAdapter;
 import com.shanlin.autostore.base.BaseActivity;
-import com.shanlin.autostore.bean.RecordBean;
+import com.shanlin.autostore.bean.resultBean.RefundMoneyBean;
+import com.shanlin.autostore.constants.Constant;
+import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
+import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.view.PulltoRefreshRecyclerView;
 
@@ -26,6 +31,7 @@ public class RefundMoneyActivity extends BaseActivity implements FinalRecycleAda
     private static int LOAD          = 1;
     private        int currentAction = 0;//记录当前用户手势是下拉刷新还是上拉更多，默认下拉刷新
     private        int pageno        = 1;
+    private TextView mTvMoney;
 
     @Override
     public int initLayout() {
@@ -36,16 +42,36 @@ public class RefundMoneyActivity extends BaseActivity implements FinalRecycleAda
     public void initView() {
         CommonUtils.initToolbar(this, "退款金额", R.color.black, null);
         findViewById(R.id.tv_explain).setOnClickListener(this);
+        mTvMoney = (TextView) findViewById(R.id.tv_money);
         mPulltoRefreshRecyclerView = (PulltoRefreshRecyclerView) findViewById(R.id.pr_lists);
         mRecyclerView = mPulltoRefreshRecyclerView.getRecyclerView();
         Map<Class, Integer> map = new HashMap<>();
-        map.put(RecordBean.class, R.layout.layout_item_refund);
-        for (int i = 0; i < 10; i++) {
-            mDatas.add(new RecordBean());
-        }
+        map.put(RefundMoneyBean.DataBean.class, R.layout.layout_item_refund);
+        RefundMoneyBean refundMoneyBean = (RefundMoneyBean) getIntent().getSerializableExtra(Constant.REFUND_MONEY_BEAN);
+        setMoneyText(refundMoneyBean);
         mFinalRecycleAdapter = new FinalRecycleAdapter(mDatas, map, this);
         mRecyclerView.setAdapter(mFinalRecycleAdapter);
         mPulltoRefreshRecyclerView.setRefreshLoadMoreListener(MyRefreshLoadMoreListener);
+        getRefundMoney();
+    }
+
+    private void setMoneyText(RefundMoneyBean refundMoneyBean) {
+        List<RefundMoneyBean.DataBean> beanList = refundMoneyBean.getData();
+        if (beanList == null || beanList.size() == 0) {
+            mTvMoney.setText("¥0.00");
+            return;
+        }
+        double sum = 0.00;
+        for (RefundMoneyBean.DataBean dataBean : beanList) {
+            String balance = dataBean.getBalance();
+            if (TextUtils.isEmpty(balance)) {
+                continue;
+            }
+            double refundMoney = Double.parseDouble(balance);
+            sum += refundMoney;
+        }
+        mTvMoney.setText("¥" + sum);
+        mDatas.addAll(beanList);
     }
 
     /**
@@ -107,6 +133,28 @@ public class RefundMoneyActivity extends BaseActivity implements FinalRecycleAda
 
     @Override
     public void onBindViewHolder(FinalRecycleAdapter.ViewHolder holder, int position, Object itemData) {
+        if (itemData instanceof RefundMoneyBean.DataBean) {
+            RefundMoneyBean.DataBean bean = (RefundMoneyBean.DataBean) itemData;
+            TextView tvMouth = (TextView) findViewById(R.id.tv_mouth);//退款
+            TextView tvBanlance = (TextView) findViewById(R.id.tv_banlance);//余额
+            TextView tvMoney = (TextView) findViewById(R.id.tv_money);//+500.00元
+            TextView tvTime = (TextView) findViewById(R.id.tv_time);//日期
 
+
+
+
+        }
     }
+    public void getRefundMoney() {
+        CommonUtils.doNet().getRefundMoney(SpUtils.getString(this,Constant.TOKEN,"")).enqueue(new CustomCallBack<RefundMoneyBean>() {
+            @Override
+            public void success(String code, RefundMoneyBean data, String msg) {
+            }
+
+            @Override
+            public void error(Throwable ex, String code, String msg) {
+            }
+        });
+    }
+
 }

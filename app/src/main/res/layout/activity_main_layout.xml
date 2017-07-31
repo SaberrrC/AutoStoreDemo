@@ -21,8 +21,10 @@
         android:layout_marginTop="10px"
         android:background="@mipmap/face_cetify_bg"
         android:gravity="center"
+        android:paddingLeft="5px"
+        android:paddingRight="5px"
         android:text="完善身份，智能购物"
-        android:textColor="#FF999999"
+        android:textColor="#99999999"
         android:textSize="12px"
         />
 
@@ -39,7 +41,7 @@
 
     <TextView
         android:id="@+id/user_num"
-        android:layout_width="187px"
+        android:layout_width="wrap_content"
         android:layout_height="32px"
         android:layout_below="@id/tv_today_user_num"
         android:layout_centerHorizontal="true"
@@ -54,7 +56,7 @@
         android:layout_marginTop="41px"
         android:layout_below="@id/user_num"
         android:id="@+id/pv"
-        app:radius="6"
+        app:radius="10"
         app:size_text="16sp"
         android:layout_marginLeft="30px"
         android:layout_marginRight="30px"
@@ -112,7 +114,7 @@
 
         <View
             android:id="@+id/cvl"
-            android:layout_width="2px"
+            android:layout_width="1px"
             android:layout_height="match_parent"
             android:background="#E5E5E5"
             />
@@ -139,7 +141,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7px"
                 android:gravity="center"
-                android:text="¥10000.00"
+                android:text="¥0.00"
                 android:textColor="#FFB9B9B9"
                 android:textSize="14px"
                 />

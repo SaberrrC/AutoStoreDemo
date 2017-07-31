@@ -17,8 +17,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.shanlin.autostore.activity.BuyRecordActivity;
+import com.shanlin.autostore.activity.ChoosePayWayActivity;
+import com.shanlin.autostore.activity.GateActivity;
 import com.shanlin.autostore.activity.LoginActivity;
 import com.shanlin.autostore.activity.MyLeMaiBaoActivity;
 import com.shanlin.autostore.activity.OpenLeMaiBao;
@@ -26,26 +30,35 @@ import com.shanlin.autostore.activity.RefundMoneyActivity;
 import com.shanlin.autostore.activity.SaveFaceActivity;
 import com.shanlin.autostore.activity.VersionInfoActivity;
 import com.shanlin.autostore.base.BaseActivity;
-import com.shanlin.autostore.bean.CaptureBean;
+import com.shanlin.autostore.bean.LoginBean;
+import com.shanlin.autostore.bean.paramsBean.RealOrderBody;
+import com.shanlin.autostore.bean.paramsBean.ZXingOrderBean;
+import com.shanlin.autostore.bean.resultBean.CreditBalanceCheckBean;
+import com.shanlin.autostore.bean.resultBean.LoginOutBean;
+import com.shanlin.autostore.bean.resultBean.RealOrderBean;
+import com.shanlin.autostore.bean.resultBean.RefundMoneyBean;
+import com.shanlin.autostore.bean.resultBean.UserNumEverydayBean;
 import com.shanlin.autostore.constants.Constant;
+import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
-import com.shanlin.autostore.net.NetCallBack;
+import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.MPermissionUtils;
+import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
 import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.utils.ToastUtils;
-import com.shanlin.autostore.view.NumAnim;
 import com.shanlin.autostore.view.ProgressView;
 import com.shanlin.autostore.zhifubao.Base64;
 import com.slfinance.facesdk.ui.LivenessActivity;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.zhy.autolayout.utils.AutoUtils;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends BaseActivity {
 
@@ -67,6 +80,17 @@ public class MainActivity extends BaseActivity {
     private long lastTime = 0;
     private ProgressView pv;
     private TextView     mUserNum;
+    private TextView     openLMB;
+    private HttpService  service;
+    private Gson         gson;
+    private LoginBean    mLoginBean;
+    private int          femaleCount;
+    private String       token;
+    private TextView     mTvRefundMoney;
+    private TextView     mTvPhoneNum;
+    private String       mUserPhone;
+    private String       mUserPhoneHide;
+    private RefundMoneyBean refundMoneyBean = null;
 
     @Override
     public int initLayout() {
@@ -81,14 +105,18 @@ public class MainActivity extends BaseActivity {
         mBtBanlance = (TextView) findViewById(R.id.btn_yu_e);
         mUserNum = (TextView) findViewById(R.id.user_num);
         pv = (ProgressView) findViewById(R.id.pv);
+        mTvPhoneNum = (TextView) findViewById(R.id.textView);
+        mTvRefundMoney = (TextView) findViewById(R.id.tv_refund_money);//退款金额
         mBtBanlance.setOnClickListener(this);
         mTvIdentify.setOnClickListener(this);
         findViewById(R.id.btn_lemaibao).setOnClickListener(this);
-        findViewById(R.id.btn_open_le_mai_bao).setOnClickListener(this);
+        openLMB = (TextView) findViewById(R.id.btn_open_le_mai_bao);
+        openLMB.setOnClickListener(this);
         mBtnScan = (Button) findViewById(R.id.btn_scan_bg);
         mBtnScan.setOnClickListener(this);
         Intent intent = getIntent();
         String faceVerify = intent.getStringExtra(Constant.FACE_VERIFY);
+        mLoginBean = (LoginBean) intent.getSerializableExtra(Constant.USER_INFO);
         if (TextUtils.isEmpty(faceVerify)) {
             return;
         }
@@ -109,14 +137,79 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        pv.setGirlPercent(60);
-        NumAnim.startAnim(mUserNum, 100000000, 2000);
+        pv.setGirlPercent(femaleCount);
+        //        NumAnim.startAnim(mUserNum, 100000000, 2000);
         pv.flush();
     }
 
     @Override
     public void initData() {
         initToolBar();
+        token = SpUtils.getString(this, Constant.TOKEN, "");
+        mUserPhone = SpUtils.getString(this, Constant.USER_PHONE_LOGINED, "");
+        mUserPhoneHide = mUserPhone.substring(0, 3) + "****" + mUserPhone.substring(7);
+        mTvPhoneNum.setText(mUserPhoneHide);
+        gson = new Gson();
+        service = CommonUtils.doNet();
+        //调用今日到店人数接口
+        getUserNumToday();
+        //获取认证状态
+        String authenResult = SpUtils.getString(this, Constant_LeMaiBao.AUTHEN_STATE_KEY, "");
+        Log.d(TAG, "-----------------是否完成乐买宝认证=" + authenResult);
+        if (Constant_LeMaiBao.AUTHEN_NOT.equals(authenResult)) {
+            openLMB.setClickable(true);
+            openLMB.setText("开通乐买宝");
+        } else {
+            //获取用户信用额度
+            openLMB.setClickable(false);
+            getUserCreditBalenceInfo(service);
+        }
+        //获取退款金额
+        getRefundMoney();
+
+    }
+
+    private void getUserNumToday() {
+        Call<UserNumEverydayBean> call = service.getUserNumEveryday(token, CommonUtils.getCurrentTime(false), "2");
+        call.enqueue(new Callback<UserNumEverydayBean>() {
+            @Override
+            public void onResponse(Call<UserNumEverydayBean> call, Response<UserNumEverydayBean> response) {
+                UserNumEverydayBean body = response.body();
+                if (TextUtils.equals("200", body.getCode())) {
+                    int total = body.getData().getMemberCount();
+                    //女性
+                    femaleCount = body.getData().getFemaleCount();
+                    CommonUtils.debugLog("总人数---" + total);
+                    mUserNum.setText(total + "");
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserNumEverydayBean> call, Throwable t) {
+                CommonUtils.debugLog(t.getMessage());
+            }
+        });
+    }
+
+    private void getUserCreditBalenceInfo(HttpService service) {
+        Call<CreditBalanceCheckBean> call = service.getUserCreditBalanceInfo(token);
+        call.enqueue(new Callback<CreditBalanceCheckBean>() {
+            @Override
+            public void onResponse(Call<CreditBalanceCheckBean> call, Response<CreditBalanceCheckBean> response) {
+                if (response.code() == 200) {
+                    String creditBalance = response.body().getCreditBalance();
+                    openLMB.setText("¥" + (creditBalance == null ? "0.00" : creditBalance));
+                } else {
+                    Toast.makeText(MainActivity.this, "获取信用额度失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CreditBalanceCheckBean> call, Throwable t) {
+
+            }
+        });
     }
 
     private void initToolBar() {
@@ -181,7 +274,9 @@ public class MainActivity extends BaseActivity {
                 CommonUtils.toNextActivity(this, MyLeMaiBaoActivity.class);
                 break;
             case R.id.btn_open_le_mai_bao: //开通乐买宝
-                CommonUtils.toNextActivity(this, OpenLeMaiBao.class);
+                if (openLMB.isClickable()) {
+                    CommonUtils.toNextActivity(this, OpenLeMaiBao.class);
+                }
                 break;
             case R.id.btn_scan_bg://扫一扫
                 MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS}, new MPermissionUtils.OnPermissionListener() {
@@ -209,11 +304,12 @@ public class MainActivity extends BaseActivity {
                         MPermissionUtils.showTipsDialog(MainActivity.this);
                     }
                 });
-
                 break;
             case R.id.btn_yu_e://退款金额
                 //                startActivity(new Intent(this, BalanceActivity.class));//订单余额
-                startActivity(new Intent(this, RefundMoneyActivity.class));
+                Intent refundMoneyIntent = new Intent(this, RefundMoneyActivity.class);
+                refundMoneyIntent.putExtra(Constant.REFUND_MONEY_BEAN, refundMoneyBean);
+                startActivity(refundMoneyIntent);
                 break;
         }
         mDrawerLayout.closeDrawer(Gravity.LEFT);
@@ -229,16 +325,18 @@ public class MainActivity extends BaseActivity {
             int width = data.getExtras().getInt("width");
             int height = data.getExtras().getInt("height");
             String result = data.getExtras().getString("result");
-            // TODO: 2017-7-17 判断 result 成功进入超市
-            HttpService service = CommonUtils.doNet();
-            Map<String, String> map = new HashMap<>();
-            map.put("code", "1");
-            map.put("deviceId", "00001");
-            map.put("storeId", "00001");
-            Call<CaptureBean> call = service.postCapture(map);
-            // 创建 网络请求接口 的实例
-            // 发送网络请求(异步)
-            call.enqueue(NetCallBack.getInstance().getCaptureCallBack());
+            if (result.contains("orderNo")) {
+                //订单号信息
+                ZXingOrderBean zXingOrderBean = gson.fromJson(result, ZXingOrderBean.class);
+                Log.d(TAG, "----------------二维码订单数据-----" + zXingOrderBean);
+                //调用生成正式订单接口
+                generateRealOrder(zXingOrderBean.getOrderNo(), zXingOrderBean.getDeviceId());
+            }
+            if (result.contains("打开闸机")) {//扫描闸机的我二维码
+                Intent intent = new Intent(AutoStoreApplication.getApp(), GateActivity.class);
+                intent.putExtra(Constant.QR_GARD, result);
+                startActivity(intent);
+            }
         }
         if (requestCode == REQUEST_CODE_REGEST) {//人脸识别成功 拿到图片跳转
             try {
@@ -253,8 +351,7 @@ public class MainActivity extends BaseActivity {
                 }
                 String delta = data.getStringExtra("delta");
                 String encode = Base64.encode(mLivenessImgBytes);
-                //                Bitmap bitmap = BitmapFactory.decodeByteArray(mLivenessImgBytes, 0, mLivenessImgBytes.length);
-                //                File file = CommonUtils.saveBitmap(bitmap);
+
                 Intent intent = new Intent(this, SaveFaceActivity.class);
                 intent.putExtra(Constant.SaveFaceActivity.IMAGE_BASE64, encode);//图片base64
                 intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_NO);
@@ -266,10 +363,34 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    private String[] aliArgs = new String[]{Constant_LeMaiBao.DEVICEDID, Constant_LeMaiBao.ORDER_NO, Constant_LeMaiBao.TOTAL_AMOUNT, Constant_LeMaiBao.STORED_ID, Constant.TOKEN};
+
+    private void generateRealOrder(final String orderNo, final String devicedID) {
+        final String token = SpUtils.getString(this, Constant.TOKEN, "");
+        Log.d(TAG, "-------------------token=" + token);
+        Call<RealOrderBean> call = service.updateTempToReal(token, new RealOrderBody(orderNo));
+        call.enqueue(new Callback<RealOrderBean>() {
+            @Override
+            public void onResponse(Call<RealOrderBean> call, Response<RealOrderBean> response) {
+                RealOrderBean body = response.body();
+                if (TextUtils.equals("200", body.getCode())) {
+                    Log.d(TAG, "------------------------*-----------------------" + response.body().toString());
+                    String totalAmount = response.body().getData().getTotalAmount();//应付总金额
+                    CommonUtils.sendDataToNextActivity(MainActivity.this, ChoosePayWayActivity.class, aliArgs, new String[]{devicedID, orderNo, totalAmount, "2", token});
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RealOrderBean> call, Throwable t) {
+                Log.d(TAG, "------------------error=" + t.getMessage());
+            }
+        });
+    }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        String argument = intent.getStringExtra(Constant.FACE_VERIFY);
+        String argument = intent.getStringExtra(Constant.MainActivityArgument.MAIN_ACTIVITY);
         if (TextUtils.equals(Constant.MainActivityArgument.GATE, argument)) {
             showGateOpenDialog();
             return;
@@ -360,6 +481,8 @@ public class MainActivity extends BaseActivity {
 
     private void showLoginoutDialog() {
         View viewLoginout = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_loginout, null, false);
+        TextView tvNum = (TextView) viewLoginout.findViewById(R.id.tv_num);
+        tvNum.setText(mUserPhoneHide);
         viewLoginout.findViewById(R.id.tv_cancle).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -370,9 +493,21 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 mLoginoutDialog.dismiss();
-                // TODO: 2017-7-18 登出的操作
-                CommonUtils.toNextActivity(MainActivity.this, LoginActivity.class);
-                finish();
+                CommonUtils.doNet().getLoginOut(token).enqueue(new CustomCallBack<LoginOutBean>() {
+                    @Override
+                    public void success(String code, LoginOutBean data, String msg) {
+                        SpUtils.saveString(MainActivity.this, Constant.TOKEN, "");
+                        SpUtils.saveString(MainActivity.this, Constant.USER_PHONE_LOGINED, "");
+                        CommonUtils.toNextActivity(MainActivity.this, LoginActivity.class);
+                        finish();
+                    }
+
+                    @Override
+                    public void error(Throwable ex, String code, String msg) {
+                        CommonUtils.toNextActivity(MainActivity.this, LoginActivity.class);
+                        finish();
+                    }
+                });
             }
         });
         AutoUtils.autoSize(viewLoginout);
@@ -392,4 +527,30 @@ public class MainActivity extends BaseActivity {
     }
 
 
+    public void getRefundMoney() {
+        CommonUtils.doNet().getRefundMoney(token).enqueue(new CustomCallBack<RefundMoneyBean>() {
+            @Override
+            public void success(String code, RefundMoneyBean data, String msg) {
+                MainActivity.this.refundMoneyBean = data;
+                List<RefundMoneyBean.DataBean> beanList = data.getData();
+                if (beanList == null || beanList.size() == 0) {
+                    mTvRefundMoney.setText("¥0.00");
+                } double sum = 0.00;
+                for (RefundMoneyBean.DataBean dataBean : beanList) {
+                    String balance = dataBean.getBalance();
+                    if (TextUtils.isEmpty(balance)) {
+                        continue;
+                    }
+                    double refundMoney = Double.parseDouble(balance);
+                    sum += refundMoney;
+                }
+                mTvRefundMoney.setText("¥" + sum);
+            }
+
+            @Override
+            public void error(Throwable ex, String code, String msg) {
+                mTvRefundMoney.setText("¥0.00");
+            }
+        });
+    }
 }

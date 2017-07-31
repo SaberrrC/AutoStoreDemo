@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:paddingBottom="20dp">
+    android:paddingBottom="10dp">
 
     <View
         android:layout_width="match_parent"
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_item_date"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:text="消费金额："
         android:textColor="#FF999999"
         android:textSize="14sp"/>

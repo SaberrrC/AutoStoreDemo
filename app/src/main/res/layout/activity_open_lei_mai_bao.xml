@@ -214,9 +214,10 @@
                 android:textSize="14px"/>
 
             <EditText
-                android:id="@+id/et_msg_code"
+                android:id="@+id/et_id_num"
                 android:layout_width="131px"
                 android:layout_height="48.7px"
+                android:maxLength="18"
                 android:layout_below="@id/et_name"
                 android:layout_toRightOf="@id/tv_id"
                 android:background="@null"

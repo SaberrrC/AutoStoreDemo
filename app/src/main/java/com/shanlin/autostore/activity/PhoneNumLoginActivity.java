@@ -16,10 +16,12 @@ import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
-import com.shanlin.autostore.bean.CodeBean;
 import com.shanlin.autostore.bean.LoginBean;
-import com.shanlin.autostore.bean.sendbean.CodeSendBean;
-import com.shanlin.autostore.bean.sendbean.NumberLoginBean;
+import com.shanlin.autostore.bean.paramsBean.CodeSendBean;
+import com.shanlin.autostore.bean.paramsBean.NumberLoginBean;
+import com.shanlin.autostore.bean.paramsBean.WechatSaveMobileBody;
+import com.shanlin.autostore.bean.resultBean.CodeBean;
+import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
@@ -34,6 +36,7 @@ import com.shanlin.autostore.view.CountDownTextView;
 import retrofit2.Call;
 import tech.michaelx.authcode.AuthCode;
 import tech.michaelx.authcode.CodeConfig;
+
 
 /**
  * Created by DELL on 2017/7/14 0014.
@@ -169,6 +172,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                     @Override
                     public void onPermissionGranted() {
                         //CommonUtils.toNextActivity(LoginActivity.this, MainActivity.class);
+                        togon = true;
                         CodeConfig config = new CodeConfig.Builder().codeLength(CODE_LENTH) // 设置验证码长度
                                 //                                .smsFromStart(10690333) // 设置验证码发送号码前几位数字
                                 .smsFrom(10690333031369L) // 如果验证码发送号码固定，则可以设置验证码发送完整号码
@@ -176,7 +180,6 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                                 .smsBodyContains("在3分钟内有效。如非本人操作请忽略本短信") // 设置验证码短信内容包含文字
                                 .build();
                         AuthCode.getInstance().with(PhoneNumLoginActivity.this).config(config).into(mEtMsgCode);
-                        togon = true;
                     }
 
                     @Override
@@ -214,9 +217,24 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
             ToastUtils.showToast("请输入验证码");
             return;
         }
-        HttpService service = CommonUtils.doNet();
-        Call<LoginBean> call = service.postNumCodeLogin(new NumberLoginBean(phone, msgCode));
-        call.enqueue(new CustomCallBack<LoginBean>() {
+        final HttpService service = CommonUtils.doNet();
+        //判断是普通登陆还是微信绑定
+        WxUserInfoBean wxUserInfoBean = (WxUserInfoBean) getIntent().getSerializableExtra(Constant.WX_INFO);
+        Call<LoginBean> loginBeanCall = null;
+        if (wxUserInfoBean == null) {
+            loginBeanCall = service.postNumCodeLogin(new NumberLoginBean(phone, msgCode));
+        } else {
+            WechatSaveMobileBody wechatSaveMobileBody = new WechatSaveMobileBody();
+            wechatSaveMobileBody.setMobile(phone);
+            wechatSaveMobileBody.setValidCode(msgCode);
+            WechatSaveMobileBody.ExtraBean extraBean = new WechatSaveMobileBody.ExtraBean();
+            extraBean.setNickname(wxUserInfoBean.getNickname());
+            extraBean.setOpenid(wxUserInfoBean.getOpenid());
+            extraBean.setSex(wxUserInfoBean.getSex() + "");
+            wechatSaveMobileBody.setExtra(extraBean);
+            loginBeanCall = service.postWechatSavemobile(wechatSaveMobileBody);
+        }
+        loginBeanCall.enqueue(new CustomCallBack<LoginBean>() {
             @Override
             public void success(String code, LoginBean data, String msg) {
                 if (data.getData() == null) {
@@ -224,7 +242,10 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                 }
                 AutoStoreApplication.isLogin = true;
                 SpUtils.saveString(PhoneNumLoginActivity.this, Constant.TOKEN, data.getData().getToken());
+                //保存用户乐买宝认证信息
+                CommonUtils.checkAuthenStatus(PhoneNumLoginActivity.this, service, data.getData().getToken());
                 SpUtils.saveString(PhoneNumLoginActivity.this, Constant.USER_PHONE_LOGINED, data.getData().getMobile());
+                SpUtils.saveString(PhoneNumLoginActivity.this, Constant.TOKEN, data.getData().getToken());
                 Intent intent = new Intent(PhoneNumLoginActivity.this, MainActivity.class);
                 intent.putExtra(Constant.FACE_VERIFY, data.getData().getFaceVerify());
                 intent.putExtra(Constant.USER_INFO, data);
@@ -235,12 +256,12 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
 
             @Override
             public void error(Throwable ex, String code, String msg) {
-                //                mBtnGetMsgCode.reset();
+                mBtnGetMsgCode.reset();
                 ToastUtils.showToast(msg);
             }
         });
-    }
 
+    }
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
