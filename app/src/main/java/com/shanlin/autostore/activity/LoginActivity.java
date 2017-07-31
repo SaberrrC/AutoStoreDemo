@@ -5,8 +5,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -15,7 +13,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.megvii.livenessdetection.LivenessLicenseManager;
 import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
@@ -28,6 +25,7 @@ import com.shanlin.autostore.bean.resultBean.WxTokenBean;
 import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
+import com.shanlin.autostore.livenesslib.LivenessActivity;
 import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.LogUtils;
@@ -35,9 +33,6 @@ import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.ToastUtils;
 import com.shanlin.autostore.zhifubao.Base64;
-import com.slfinance.facesdk.service.Manager;
-import com.slfinance.facesdk.ui.LivenessActivity;
-import com.slfinance.facesdk.util.ConUtil;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -48,7 +43,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -70,21 +64,8 @@ public class LoginActivity extends BaseActivity {
 
     //人脸识别
     public static final int OK_PERCENT = 73;
-    private LivenessLicenseManager livenessLicenseManager;
     private boolean isLivenessLicenseGet = false;
     //活体照片路径
-    private Manager manager;
-    private Handler handler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            Map<String, Long> managerRegistResult = (Map<String, Long>) msg.obj;
-            if (managerRegistResult != null) {
-                //活体检测功能授权成功
-                isLivenessLicenseGet = managerRegistResult.get(livenessLicenseManager.getVersion()) > 0;
-            }
-            return true;
-        }
-    });
     private byte[] mLivenessImgBytes;
     private Dialog mLoadingDialog;
 
@@ -111,22 +92,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void initLiveness() {
-        //初始化注册管理器
-        manager = new Manager(this);
-        //如果要使用活体检测抓人脸
-        livenessLicenseManager = new LivenessLicenseManager(AutoStoreApplication.getApp());
-        boolean livenessLicenseManagerIsRegisted = manager.registerLicenseManager(livenessLicenseManager);
-        //可以选择给自己设备打标
-        String uuid = ConUtil.getUUIDString(AutoStoreApplication.getApp());
-        //异步进行网络注册请求
-        final String finalUuid = uuid;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Map<String, Long> managerRegistResult = manager.takeLicenseFromNetwork(finalUuid);
-                handler.sendMessage(handler.obtainMessage(1, managerRegistResult));
-            }
-        }).start();
+
     }
 
     @Override

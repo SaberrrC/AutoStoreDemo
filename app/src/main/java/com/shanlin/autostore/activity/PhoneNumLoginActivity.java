@@ -165,9 +165,11 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
         call.enqueue(new CustomCallBack<CodeBean>() {
             @Override
             public void success(String code, CodeBean data, String msg) {
+                if (!msg.contains("验证码发送成功，请注意查收")) {
+                    error(null, code, msg);
+                    return;
+                }
                 ToastUtils.showToast(msg);
-                //                <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-                //                <uses-permission android:name="android.permission.READ_SMS"/>
                 MPermissionUtils.requestPermissionsResult(PhoneNumLoginActivity.this, 1, new String[]{Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, new MPermissionUtils.OnPermissionListener() {
                     @Override
                     public void onPermissionGranted() {

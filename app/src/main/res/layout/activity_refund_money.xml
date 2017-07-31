@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_refund_explain"
     android:layout_width="match_parent"
-    android:fitsSystemWindows="true"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -59,7 +59,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="18px"
             android:text="提现功能即将开放"
-            android:textColor="#FFB9B9B9"
+            android:textColor="#B9B9B9"
             android:textSize="12px"/>
 
     </com.zhy.autolayout.AutoRelativeLayout>
@@ -71,8 +71,37 @@
         android:paddingLeft="20dp"
         android:text="收支明细"/>
 
-    <com.shanlin.autostore.view.PulltoRefreshRecyclerView
-        android:id="@+id/pr_lists"
+    <com.zhy.autolayout.AutoFrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:id="@+id/rl_wtk"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_wtk"
+                android:layout_width="54px"
+                android:layout_height="59px"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/image_wtk"/>
+            <TextView
+                android:layout_below="@+id/iv_wtk"
+                android:layout_centerHorizontal="true"
+                android:text="无退款记录"
+                android:layout_marginTop="17px"
+                android:textColor="#999999"
+                android:textSize="14px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </com.zhy.autolayout.AutoRelativeLayout>
+        <com.shanlin.autostore.view.PulltoRefreshRecyclerView
+            android:id="@+id/pr_lists"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </com.zhy.autolayout.AutoFrameLayout>
+
 </com.zhy.autolayout.AutoLinearLayout>

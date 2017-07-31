@@ -97,6 +97,7 @@ public class CountDownTextView extends AppCompatTextView {
     }
 
     public void reset() {
+        mHandler.removeCallbacksAndMessages(null);
         mHandler.sendEmptyMessage(1);
     }
 

@@ -9,6 +9,7 @@
 
     <!-- 微信登录权限 --><!--支付宝权限-->
     <!-- Required -->
+    <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="com.shanlin.autostore.permission.JPUSH_MESSAGE"/>
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -21,6 +22,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
     <!-- Optional. Required for location feature -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
@@ -89,13 +91,19 @@
             android:name=".activity.VersionInfoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
+        <!--人脸识别界面-->
+        <activity
+            android:name=".livenesslib.LivenessActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashThemeFullScreen"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".activity.OpenLeMaiBao"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name="com.xys.libzxing.zxing.activity.CaptureActivity"
+            android:name=".zxing.activity.CaptureActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
@@ -304,7 +312,8 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
 
-        <activity android:name=".wxapi.WXPayEntryActivity"
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"
