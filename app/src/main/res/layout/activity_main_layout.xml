@@ -1,154 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.autolayout.AutoLinearLayout
+<com.zhy.autolayout.AutoRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:layout_marginTop="3px"
+    android:background="@color/white"
+    android:fitsSystemWindows="true">
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/identify_tip"
+        android:layout_width="152px"
+        android:layout_height="30px"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="249px"
+        android:layout_marginTop="10px"
+        android:background="@mipmap/face_cetify_bg"
+        android:gravity="center"
+        android:paddingLeft="5px"
+        android:paddingRight="5px"
+        android:text="完善身份，智能购物"
+        android:textColor="#99999999"
+        android:textSize="12px"
+        />
+
+    <TextView
+        android:id="@+id/tv_today_user_num"
+        android:layout_width="111px"
+        android:layout_height="18px"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40px"
+        android:text="今日到店用户"
+        android:textColor="#FFB9B9B9"
+        android:textSize="18px"
+        />
+
+    <TextView
+        android:id="@+id/user_num"
+        android:layout_width="wrap_content"
+        android:layout_height="32px"
+        android:layout_below="@id/tv_today_user_num"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="11px"
+        android:text="100,000,000"
+        android:textColor="#FFFCC71F"
+        android:textSize="32px"
+        />
+
+    <com.shanlin.autostore.view.ProgressView
+        android:id="@+id/pv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="3px"
-        android:background="@color/white">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user_num"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="30px"
+        android:layout_marginRight="30px"
+        android:layout_marginTop="41px"
+        app:radius="10"
+        app:size_text="16sp"/>
 
-        <TextView
-            android:id="@+id/identify_tip"
-            android:layout_width="152px"
-            android:layout_height="30px"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="249px"
-            android:layout_marginTop="10px"
-            android:background="@mipmap/face_cetify_bg"
-            android:gravity="center"
-            android:paddingLeft="5px"
-            android:paddingRight="5px"
-            android:text="完善身份，智能购物"
-            android:textColor="#99999999"
-            android:textSize="12px"
-            />
+    <Button
+        android:id="@+id/btn_scan_bg"
+        android:layout_width="140px"
+        android:layout_height="140px"
+        android:layout_below="@id/pv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="93px"
+        android:background="@mipmap/scan_bg"
+        android:text="扫一扫"
+        android:textColor="#FFFFFFFF"
+        android:textSize="26px"/>
 
-        <TextView
-            android:id="@+id/tv_today_user_num"
-            android:layout_width="111px"
-            android:layout_height="18px"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="40px"
-            android:text="今日到店用户"
-            android:textColor="#FFB9B9B9"
-            android:textSize="18px"
-            />
-
-        <TextView
-            android:id="@+id/user_num"
-            android:layout_width="wrap_content"
-            android:layout_height="32px"
-            android:layout_below="@id/tv_today_user_num"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="11px"
-            android:text="100,000,000"
-            android:textColor="#FFFCC71F"
-            android:textSize="32px"
-            />
-
-        <com.shanlin.autostore.view.ProgressView
-            android:id="@+id/pv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/user_num"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="30px"
-            android:layout_marginRight="30px"
-            android:layout_marginTop="41px"
-            app:radius="10"
-            app:size_text="16sp"/>
-
-        <Button
-            android:id="@+id/btn_scan_bg"
-            android:layout_width="140px"
-            android:layout_height="140px"
-            android:layout_below="@id/pv"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="93px"
-            android:background="@mipmap/scan_bg"
-            android:text="扫一扫"
-            android:textColor="#FFFFFFFF"
-            android:textSize="26px"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_scan_bg"
+        android:layout_marginTop="78px"
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/btn_scan_bg"
-            android:layout_marginTop="78px"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/btn_lemaibao"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:paddingTop="5dp"
+                android:text="乐买宝"
+                android:textColor="#FF333333"
+                android:textSize="16px"/>
 
-                <TextView
-                    android:id="@+id/btn_lemaibao"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center"
-                    android:paddingTop="5dp"
-                    android:text="乐买宝"
-                    android:textColor="#FF333333"
-                    android:textSize="16px"/>
-
-                <TextView
-                    android:id="@+id/btn_open_le_mai_bao"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/btn_lemaibao"
-                    android:layout_marginTop="7px"
-                    android:gravity="center"
-                    android:text="开通乐买宝"
-                    android:textColor="#FFB9B9B9"
-                    android:textSize="14px"
-                    />
-            </LinearLayout>
-
-            <View
-                android:id="@+id/cvl"
-                android:layout_width="1px"
-                android:layout_height="match_parent"
-                android:background="#E5E5E5"
+            <TextView
+                android:id="@+id/btn_open_le_mai_bao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btn_lemaibao"
+                android:layout_marginTop="7px"
+                android:gravity="center"
+                android:text="开通乐买宝"
+                android:textColor="#FFB9B9B9"
+                android:textSize="14px"
                 />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/btn_yu_e"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:paddingTop="5dp"
-                    android:text="退款金额"
-                    android:textColor="#FF333333"
-                    android:textSize="16px"/>
-
-                <TextView
-                    android:id="@+id/tv_refund_money"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="7px"
-                    android:gravity="center"
-                    android:text="¥0.00"
-                    android:textColor="#FFB9B9B9"
-                    android:textSize="14px"
-                    />
-            </LinearLayout>
-
         </LinearLayout>
 
-    </RelativeLayout>
-</com.zhy.autolayout.AutoLinearLayout>
+        <View
+            android:id="@+id/cvl"
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="#E5E5E5"
+            />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/btn_yu_e"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="5dp"
+                android:text="退款金额"
+                android:textColor="#FF333333"
+                android:textSize="16px"/>
+
+            <TextView
+                android:id="@+id/tv_refund_money"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7px"
+                android:gravity="center"
+                android:text="¥0.00"
+                android:textColor="#FFB9B9B9"
+                android:textSize="14px"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+</com.zhy.autolayout.AutoRelativeLayout>
