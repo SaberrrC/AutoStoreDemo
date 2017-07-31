@@ -15,7 +15,9 @@ import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.ThreadUtils;
+import com.shanlin.autostore.utils.ToastUtils;
 import com.shanlin.autostore.view.PulltoRefreshRecyclerView;
+import com.zhy.autolayout.AutoRelativeLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +33,8 @@ public class RefundMoneyActivity extends BaseActivity implements FinalRecycleAda
     private static int LOAD          = 1;
     private        int currentAction = 0;//记录当前用户手势是下拉刷新还是上拉更多，默认下拉刷新
     private        int pageno        = 1;
-    private TextView mTvMoney;
+    private TextView           mTvMoney;
+    private AutoRelativeLayout mRlWtk;
 
     @Override
     public int initLayout() {
@@ -43,6 +46,7 @@ public class RefundMoneyActivity extends BaseActivity implements FinalRecycleAda
         CommonUtils.initToolbar(this, "退款金额", R.color.black, null);
         findViewById(R.id.tv_explain).setOnClickListener(this);
         mTvMoney = (TextView) findViewById(R.id.tv_money);
+        mRlWtk = (AutoRelativeLayout) findViewById(R.id.rl_wtk);
         mPulltoRefreshRecyclerView = (PulltoRefreshRecyclerView) findViewById(R.id.pr_lists);
         mRecyclerView = mPulltoRefreshRecyclerView.getRecyclerView();
         Map<Class, Integer> map = new HashMap<>();
@@ -86,11 +90,7 @@ public class RefundMoneyActivity extends BaseActivity implements FinalRecycleAda
             ThreadUtils.runMainDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    //                    if (SLJRApplication.isLogin) {
-                    //                        getShoppingList();
-                    //                    } else {
-                    //                        toLoginActivity();
-                    //                    }
+                    getRefundMoney();
                     mPulltoRefreshRecyclerView.stopRefresh();
                 }
             }, 500);
@@ -99,18 +99,12 @@ public class RefundMoneyActivity extends BaseActivity implements FinalRecycleAda
         @Override
         public void onLoadMore() {
             currentAction = LOAD;
-            //            LogUtils.d(currentPage + "--------------" + "totalPage--------------------" + +totalPage);
-            //            if (currentPage < totalPage) {
-            //                pageno++;
-            //                getShoppingList();
-            //            } else {
-            //                T.showShort("没有更多数据！");
-            //            }
             //获取数据
             ThreadUtils.runMainDelayed(new Runnable() {
                 @Override
                 public void run() {
                     //拿到数据了
+                    ToastUtils.showToast("没有更多数据");
                     mPulltoRefreshRecyclerView.setLoadMoreCompleted();
                 }
             }, 500);
@@ -139,22 +133,55 @@ public class RefundMoneyActivity extends BaseActivity implements FinalRecycleAda
             TextView tvBanlance = (TextView) findViewById(R.id.tv_banlance);//余额
             TextView tvMoney = (TextView) findViewById(R.id.tv_money);//+500.00元
             TextView tvTime = (TextView) findViewById(R.id.tv_time);//日期
-
-
-
-
+            tvBanlance.setText(bean.getAmount());
+            tvMoney.setText(bean.getAmount());
+            tvTime.setText(bean.getCreatedTime());
         }
     }
+
     public void getRefundMoney() {
-        CommonUtils.doNet().getRefundMoney(SpUtils.getString(this,Constant.TOKEN,"")).enqueue(new CustomCallBack<RefundMoneyBean>() {
+        CommonUtils.doNet().getRefundMoney(SpUtils.getString(this, Constant.TOKEN, "")).enqueue(new CustomCallBack<RefundMoneyBean>() {
             @Override
             public void success(String code, RefundMoneyBean data, String msg) {
+                if (currentAction == REFRESH) {
+                    mDatas.clear();
+                }
+                List<RefundMoneyBean.DataBean> beanList = data.getData();
+                if (beanList == null || beanList.size() == 0) {
+                    mTvMoney.setText("¥0.00");
+                }
+                double sum = 0.00;
+                for (RefundMoneyBean.DataBean dataBean : beanList) {
+                    String balance = dataBean.getBalance();
+                    if (TextUtils.isEmpty(balance)) {
+                        continue;
+                    }
+                    double refundMoney = Double.parseDouble(balance);
+                    sum += refundMoney;
+                }
+                mTvMoney.setText("¥" + sum);
+                mDatas.addAll(beanList);
+                mFinalRecycleAdapter.notifyDataSetChanged();
+                if (mDatas.size() > 0) {
+                    mRlWtk.setVisibility(View.GONE);
+                } else {
+                    mRlWtk.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
             public void error(Throwable ex, String code, String msg) {
+                ToastUtils.showToast(msg);
             }
         });
+    }
+
+    private void toLoginActivity() {
+        mDatas.clear();
+        mFinalRecycleAdapter.notifyDataSetChanged();
+        Intent toLoginActivity = new Intent(this, LoginActivity.class);
+        startActivity(toLoginActivity);
+        finish();
     }
 
 }
