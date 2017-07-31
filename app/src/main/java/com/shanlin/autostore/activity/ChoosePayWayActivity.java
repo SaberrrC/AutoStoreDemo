@@ -20,12 +20,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
-import com.jungly.gridpasswordview.GridPasswordView;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.paramsBean.AliPayOrderBody;
+import com.shanlin.autostore.bean.paramsBean.LeMaiBaoPayBody;
 import com.shanlin.autostore.bean.resultBean.AliPayResultBean;
+import com.shanlin.autostore.bean.resultBean.LeMaiBaoPayResultBean;
 import com.shanlin.autostore.bean.resultBean.WxChatBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
@@ -34,6 +35,7 @@ import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.env.DeviceInfo;
 import com.shanlin.autostore.view.XNumberKeyboardView;
+import com.shanlin.autostore.view.gridpasswordview.GridPasswordView;
 import com.shanlin.autostore.zhifubao.OrderInfoUtil2_0;
 import com.shanlin.autostore.zhifubao.PayKeys;
 import com.shanlin.autostore.zhifubao.PayResult;
@@ -51,7 +53,6 @@ import retrofit2.Response;
 public class ChoosePayWayActivity extends BaseActivity{
 
     private View dialogView;
-    private AlertDialog dialog;
     private TextView moneyNeedToPay;
     private GridPasswordView pswView;
     private TextView availableBalence;
@@ -93,7 +94,32 @@ public class ChoosePayWayActivity extends BaseActivity{
         moneyNeedToPay = ((TextView) dialogView.findViewById(R.id.money_need_to_pay));
         initPswView();
         keyBoard = LayoutInflater.from(this).inflate(R.layout.keyboard, null);
+        initPopwindow();
         initKeyBoard();
+    }
+
+    private void initPopwindow() {
+        popTop = new PopupWindow(this);
+        popTop.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        popTop.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        popTop.setContentView(dialogView);
+        popTop.setBackgroundDrawable(new ColorDrawable(0x00000000));
+        popTop.setOutsideTouchable(false);
+        popTop.setFocusable(false);
+        popTop.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                backgroundAlpha(1f);
+            }
+        });
+
+        popBottom = new PopupWindow(this);
+        popBottom.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        popBottom.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        popBottom.setContentView(keyBoard);
+        popBottom.setBackgroundDrawable(new ColorDrawable(0x00000000));
+        popBottom.setOutsideTouchable(false);
+        popBottom.setFocusable(false);
     }
 
     private StringBuilder sb = new StringBuilder();
@@ -106,6 +132,7 @@ public class ChoosePayWayActivity extends BaseActivity{
             public void onInsertKeyEvent(String text) {
                 if (sb.length() < 6) {
                     sb.append(text);
+                    CommonUtils.debugLog("sb---"+sb.toString());
                     pswView.setPassword(sb.toString());
                 }
             }
@@ -124,19 +151,48 @@ public class ChoosePayWayActivity extends BaseActivity{
         pswView.setOnPasswordChangedListener(new GridPasswordView.OnPasswordChangedListener() {
             @Override
             public void onTextChanged(String psw) {
-                if (psw.length() < 6) {
-//                    CommonUtils.showToast(ChoosePayWayActivity.this,"请输入六位数密码!");
-                } else {
-                    CommonUtils.debugLog("yyyyyyy");
-                    popTop.dismiss();
-                    popBottom.dismiss();
-                    CommonUtils.toNextActivity(ChoosePayWayActivity.this,PayResultActivity.class);
-                }
+
             }
 
             @Override
             public void onInputFinish(String psw) {
-                //// TODO: 2017/7/19 0019 联网发送数据
+                popTop.dismiss();
+                popBottom.dismiss();
+                pswView.clearPassword();
+                //调用乐买宝支付接口
+                leMaiBaoPay(psw);
+            }
+        });
+    }
+
+    private String[] keys = new String[]{Constant_LeMaiBao.TOTAL_AMOUNT,Constant_LeMaiBao
+            .PAY_TYPE,Constant_LeMaiBao.PAY_TIME};
+
+    private void leMaiBaoPay(String psw) {
+        Call<LeMaiBaoPayResultBean> call = service.lemaibaoPay(token, new LeMaiBaoPayBody(deviceId, orderNo, psw, totalMoney, "2"));
+        call.enqueue(new Callback<LeMaiBaoPayResultBean>() {
+            @Override
+            public void onResponse(Call<LeMaiBaoPayResultBean> call, Response<LeMaiBaoPayResultBean> response) {
+                LeMaiBaoPayResultBean body = response.body();
+                if (TextUtils.equals("200",body.getCode())) {
+                    LeMaiBaoPayResultBean.DataBean data = body.getData();
+                    String payStatus = data.getPayStatus();
+                    if ("3".equals(payStatus)) {
+                        CommonUtils.showToast(ChoosePayWayActivity.this,"支付密码错误,请重新输入!");
+                        showInputPswDialog();
+                        showKeyBoard();
+                    } else if ("1".equals(payStatus)){
+                        CommonUtils.showToast(ChoosePayWayActivity.this,"支付成功!");
+                        CommonUtils.sendDataToNextActivity(ChoosePayWayActivity.this,
+                                PayResultActivity.class,keys,new String[]{data.getPayAmount(),
+                                        "乐买宝",data.getPaymentTime()});
+                        finish();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LeMaiBaoPayResultBean> call, Throwable t) {
 
             }
         });
@@ -225,31 +281,31 @@ public class ChoosePayWayActivity extends BaseActivity{
     }
 
     private void showInputPswDialog() {
-        popTop = new PopupWindow(this);
-        popTop.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-        popTop.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        popTop.setContentView(dialogView);
-        popTop.setBackgroundDrawable(new ColorDrawable(0x00000000));
-        popTop.setOutsideTouchable(false);
-        popTop.setFocusable(false);
+//        popTop = new PopupWindow(this);
+//        popTop.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+//        popTop.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+//        popTop.setContentView(dialogView);
+//        popTop.setBackgroundDrawable(new ColorDrawable(0x00000000));
+//        popTop.setOutsideTouchable(false);
+//        popTop.setFocusable(false);
+//        popTop.setOnDismissListener(new PopupWindow.OnDismissListener() {
+//            @Override
+//            public void onDismiss() {
+//                backgroundAlpha(1f);
+//            }
+//        });
         popTop.showAtLocation(getWindow().getDecorView(), Gravity.CENTER_HORIZONTAL,0,-300);
         backgroundAlpha(0.5f);
-        popTop.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                backgroundAlpha(1f);
-            }
-        });
     }
 
     private void showKeyBoard() {
-        popBottom = new PopupWindow(this);
-        popBottom.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-        popBottom.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        popBottom.setContentView(keyBoard);
-        popBottom.setBackgroundDrawable(new ColorDrawable(0x00000000));
-        popBottom.setOutsideTouchable(false);
-        popBottom.setFocusable(false);
+//        popBottom = new PopupWindow(this);
+//        popBottom.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+//        popBottom.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+//        popBottom.setContentView(keyBoard);
+//        popBottom.setBackgroundDrawable(new ColorDrawable(0x00000000));
+//        popBottom.setOutsideTouchable(false);
+//        popBottom.setFocusable(false);
         popBottom.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM,0,0);
     }
 

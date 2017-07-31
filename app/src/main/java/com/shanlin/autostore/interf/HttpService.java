@@ -224,4 +224,5 @@ public interface HttpService {
      */
     @GET("memberlogout")
     Call<LoginOutBean> getLoginOut(@Header("token") String token);
+
 }
