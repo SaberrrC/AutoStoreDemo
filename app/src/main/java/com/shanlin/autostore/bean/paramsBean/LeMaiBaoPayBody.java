@@ -9,10 +9,10 @@ public class LeMaiBaoPayBody {
     private String deviceId;
     private String orderNo;
     private String password;
-    private double payAmount;
+    private String payAmount;
     private String storeId;
 
-    public LeMaiBaoPayBody(String deviceId, String orderNo, String password, double payAmount, String storeId) {
+    public LeMaiBaoPayBody(String deviceId, String orderNo, String password, String payAmount, String storeId) {
         this.deviceId = deviceId;
         this.orderNo = orderNo;
         this.password = password;
@@ -55,11 +55,11 @@ public class LeMaiBaoPayBody {
         this.password = password;
     }
 
-    public double getPayAmount() {
+    public String getPayAmount() {
         return payAmount;
     }
 
-    public void setPayAmount(double payAmount) {
+    public void setPayAmount(String payAmount) {
         this.payAmount = payAmount;
     }
 
