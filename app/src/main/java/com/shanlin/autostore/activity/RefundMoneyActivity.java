@@ -171,6 +171,11 @@ public class RefundMoneyActivity extends BaseActivity implements FinalRecycleAda
 
             @Override
             public void error(Throwable ex, String code, String msg) {
+                if (mDatas.size() > 0) {
+                    mRlWtk.setVisibility(View.GONE);
+                } else {
+                    mRlWtk.setVisibility(View.VISIBLE);
+                }
                 ToastUtils.showToast(msg);
             }
         });

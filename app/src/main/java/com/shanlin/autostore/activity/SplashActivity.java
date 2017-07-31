@@ -5,20 +5,20 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.animation.LinearInterpolator;
 
+import com.megvii.licensemanager.Manager;
+import com.megvii.livenessdetection.LivenessLicenseManager;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.bean.resultBean.CheckUpdateBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
+import com.shanlin.autostore.livenesslib.util.ConUtil;
 import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.LogUtils;
@@ -37,7 +37,7 @@ public class SplashActivity extends Activity {
 
 
     private AlertDialog updateDialog;
-    private int forceUpdate;
+    private int         forceUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +45,16 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.activity_splash);
         StatusBarUtils.setColor(this, Color.TRANSPARENT);
         LogUtils.d("token  " + SpUtils.getString(this, Constant.TOKEN, ""));
-        MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS}, new MPermissionUtils.OnPermissionListener() {
+        MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_CONTACTS}, new MPermissionUtils.OnPermissionListener() {
             @Override
             public void onPermissionGranted() {
                 checkUpdate();
+                netWorkWarranty();
             }
 
             @Override
@@ -57,6 +63,21 @@ public class SplashActivity extends Activity {
             }
         });
 
+    }
+
+    /**
+     * 联网授权
+     */
+    private void netWorkWarranty() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Manager manager = new Manager(SplashActivity.this);
+                LivenessLicenseManager licenseManager = new LivenessLicenseManager(SplashActivity.this);
+                manager.registerLicenseManager(licenseManager);
+                manager.takeLicenseFromNetwork(ConUtil.getUUIDString(SplashActivity.this));
+            }
+        }).start();
     }
 
     @Override

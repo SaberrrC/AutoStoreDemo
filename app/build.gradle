@@ -85,13 +85,6 @@ android {
     }
 }
 
-repositories {
-    maven {
-        //人脸识别
-        url "http://120.27.220.201:8081/nexus/content/repositories/com.slfinance.loan/"
-    }
-}
-
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -106,7 +99,6 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.zhy:autolayout:1.4.5'
 //    compile 'com.jungly:gridPasswordView:0.3'
-    compile 'com.slfinance.loan:SLFinance-FaceSDK_android:0.1.6-SNAPSHOT'
 
     compile project(':library:wechatlib')
     compile project(':library:zxinglib')
