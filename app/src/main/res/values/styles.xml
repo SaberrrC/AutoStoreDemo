@@ -109,4 +109,12 @@
         <attr name="ratio" format="float" />
         <attr name="prefer" format="integer" />
     </declare-styleable>
+    <style name="SplashThemeFullScreen" parent="AppTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowActionBar">false</item>
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
 </resources>
