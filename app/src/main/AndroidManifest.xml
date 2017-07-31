@@ -94,30 +94,47 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
-        <activity android:name="com.xys.libzxing.zxing.activity.CaptureActivity"
-                  android:screenOrientation="portrait"
-                  android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name="com.xys.libzxing.zxing.activity.CaptureActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"
             />
-        <activity android:name=".activity.MyLeMaiBaoActivity"/>
-        <activity android:name=".zhifubao.PayActivity"/>
-        <activity android:name=".activity.ChoosePayWayActivity"/>
+        <activity
+            android:name=".activity.MyLeMaiBaoActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".activity.ChoosePayWayActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".activity.XieYiAndHeTongActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".activity.PayResultActivity"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".activity.PayResultActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".activity.GateActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
         </activity>
-        <activity android:name=".activity.SaveFaceActivity">
+        <activity
+            android:name=".activity.SaveFaceActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
         </activity>
-        <activity android:name=".activity.OrderDetailActivity">
+        <activity
+            android:name=".activity.OrderDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
             android:name=".activity.BalanceActivity"
@@ -160,31 +177,32 @@
         <service
             android:name="cn.jpush.android.service.PushService"
             android:enabled="true"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
-                <action android:name="cn.jpush.android.intent.REGISTER" />
-                <action android:name="cn.jpush.android.intent.REPORT" />
-                <action android:name="cn.jpush.android.intent.PushService" />
-                <action android:name="cn.jpush.android.intent.PUSH_TIME" />
+                <action android:name="cn.jpush.android.intent.REGISTER"/>
+                <action android:name="cn.jpush.android.intent.REPORT"/>
+                <action android:name="cn.jpush.android.intent.PushService"/>
+                <action android:name="cn.jpush.android.intent.PUSH_TIME"/>
             </intent-filter>
         </service>
         <!-- Required SDK核心功能-->
         <receiver
             android:name="cn.jpush.android.service.PushReceiver"
-            android:enabled="true" >
+            android:enabled="true">
             <intent-filter android:priority="1000">
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY"/>
                 <category android:name="com.shanlin.autostore"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.intent.action.USER_PRESENT"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
             <!-- Optional -->
             <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-                <action android:name="android.intent.action.PACKAGE_REMOVED" />
-                <data android:scheme="package" />
+                <action android:name="android.intent.action.PACKAGE_ADDED"/>
+                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
+
+                <data android:scheme="package"/>
             </intent-filter>
         </receiver>
 
@@ -192,12 +210,15 @@
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
             android:configChanges="orientation|keyboardHidden"
+            android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar"
-            android:exported="false" >
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
-                <action android:name="cn.jpush.android.ui.PushActivity" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="com.shanlin.autostore" />
+                <action android:name="cn.jpush.android.ui.PushActivity"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="com.shanlin.autostore"/>
             </intent-filter>
         </activity>
         <!-- SDK核心功能-->
@@ -205,10 +226,12 @@
             android:name="cn.jpush.android.ui.PopWinActivity"
             android:configChanges="orientation|keyboardHidden"
             android:exported="false"
-            android:theme="@style/MyDialogStyle">
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyle"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="com.shanlin.autostore" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="com.shanlin.autostore"/>
             </intent-filter>
         </activity>
 
@@ -216,22 +239,22 @@
         <service
             android:name="cn.jpush.android.service.DownloadService"
             android:enabled="true"
-            android:exported="false" >
+            android:exported="false">
         </service>
 
         <!-- Required SDK核心功能-->
-        <receiver android:name="cn.jpush.android.service.AlarmReceiver" />
+        <receiver android:name="cn.jpush.android.service.AlarmReceiver"/>
 
         <!-- Required since 3.0.7 -->
         <!-- 新的tag/alias接口结果返回需要开发者配置一个自定的广播 -->
         <!-- 该广播需要继承JPush提供的JPushMessageReceiver类, 并如下新增一个 Intent-Filter -->
         <!--<receiver-->
-            <!--android:name="自定义 Receiver"-->
-            <!--android:enabled="true" >-->
-            <!--<intent-filter>-->
-                <!--<action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />-->
-                <!--<category android:name="com.shanlin.autostore" />-->
-            <!--</intent-filter>-->
+        <!--android:name="自定义 Receiver"-->
+        <!--android:enabled="true" >-->
+        <!--<intent-filter>-->
+        <!--<action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />-->
+        <!--<category android:name="com.shanlin.autostore" />-->
+        <!--</intent-filter>-->
         <!--</receiver>-->
         <!-- User defined. 用户自定义的广播接收器-->
         <receiver
@@ -239,16 +262,16 @@
             android:enabled="true">
             <intent-filter>
                 <!--Required 用户注册SDK的intent-->
-                <action android:name="cn.jpush.android.intent.REGISTRATION" />
+                <action android:name="cn.jpush.android.intent.REGISTRATION"/>
                 <!--Required 用户接收SDK消息的intent-->
-                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED"/>
                 <!--Required 用户接收SDK通知栏信息的intent-->
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED"/>
                 <!--Required 用户打开自定义通知栏的intent-->
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED"/>
                 <!-- 接收网络变化 连接/断开 since 1.6.3 -->
-                <action android:name="cn.jpush.android.intent.CONNECTION" />
-                <category android:name="com.shanlin.autostore" />
+                <action android:name="cn.jpush.android.intent.CONNECTION"/>
+                <category android:name="com.shanlin.autostore"/>
             </intent-filter>
         </receiver>
 
@@ -258,15 +281,21 @@
         <!-- 发到 Google Play 的APK可以设置为 google-play; -->
         <!-- 发到其他市场的 APK 可以设置为 xxx-market。 -->
         <!-- 目前这个渠道统计功能的报表还未开放。-->
-        <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default"/>
+        <meta-data
+            android:name="JPUSH_CHANNEL"
+            android:value="developer-default"/>
         <!-- Required. AppKey copied from Portal -->
-        <meta-data android:name="JPUSH_APPKEY" android:value="8661a1ed35ee120124a68743"/>
+        <meta-data
+            android:name="JPUSH_APPKEY"
+            android:value="8661a1ed35ee120124a68743"/>
         <!--微信-->
         <activity
             android:name="com.shanlin.autostore.wxapi.WXEntryActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"/>
 
     </application>
 

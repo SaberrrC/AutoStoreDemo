@@ -5,6 +5,7 @@
     android:id="@+id/activity_refund_explain2"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     android:layout_height="match_parent">
     <include layout="@layout/toolbar_layout"/>
 
