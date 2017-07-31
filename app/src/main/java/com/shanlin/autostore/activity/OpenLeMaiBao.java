@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
+import com.shanlin.autostore.bean.paramsBean.PswSettingBody;
 import com.shanlin.autostore.bean.paramsBean.RealNameAuthenBody;
 import com.shanlin.autostore.bean.resultBean.PswSettingBean;
 import com.shanlin.autostore.bean.resultBean.RealNameAuthenBean;
@@ -42,6 +43,7 @@ public class OpenLeMaiBao extends BaseActivity {
     private EditText etIdNum;
     private EditText etPsw;
     private EditText etPswAgain;
+    private String token;
 
     @Override
     public int initLayout() {
@@ -72,6 +74,7 @@ public class OpenLeMaiBao extends BaseActivity {
     @Override
     public void initData() {
         service = CommonUtils.doNet();
+        token = SpUtils.getString(this, Constant.TOKEN, "");
     }
 
     @Override
@@ -117,6 +120,7 @@ public class OpenLeMaiBao extends BaseActivity {
             doRealNameAuthen(name, idNum);
         } else {
             //第二步
+            changeUI(2);
             String psw = etPsw.getText().toString().trim();
             String psw2 = etPswAgain.getText().toString().trim();
             if (TextUtils.isEmpty(psw) || TextUtils.isEmpty(psw2)) {
@@ -135,14 +139,15 @@ public class OpenLeMaiBao extends BaseActivity {
     }
 
     private void doPswSetting(String psw2) {
-        Call<PswSettingBean> call = service.goPswSetting(psw2);
+        Call<PswSettingBean> call = service.goPswSetting(token,new PswSettingBody(psw2));
         call.enqueue(new Callback<PswSettingBean>() {
             @Override
             public void onResponse(Call<PswSettingBean> call, Response<PswSettingBean> response) {
                 PswSettingBean body = response.body();
                 if (TextUtils.equals("200",body.getCode())) {
                     CommonUtils.showToast(OpenLeMaiBao.this,body.getMessage());
-                    CommonUtils.toNextActivity(OpenLeMaiBao.this,ChoosePayWayActivity.class);
+                    CommonUtils.toNextActivity(OpenLeMaiBao.this,MainActivity.class);
+                    CommonUtils.debugLog("----成功-----");
                 }
             }
 

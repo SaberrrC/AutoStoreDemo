@@ -34,12 +34,12 @@ public class AutoStoreApplication extends Application {
     }
 
     private void getDevicedID() {
-        String deviceId = JPushInterface.getRegistrationID(getApplicationContext());
+        String deviceId = JPushInterface.getRegistrationID(this);
         if (!TextUtils.isEmpty(deviceId)) {
             SpUtils.saveString(this, Constant.DEVICEID, deviceId);
             LogUtils.d(Constant.DEVICEID + "   " + deviceId);
         } else {
-            getDevicedID();
+//            getDevicedID();
         }
     }
 }

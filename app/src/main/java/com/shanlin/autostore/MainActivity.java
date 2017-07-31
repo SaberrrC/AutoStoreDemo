@@ -135,6 +135,22 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        //获取认证状态
+        String authenResult = SpUtils.getString(this, Constant_LeMaiBao.AUTHEN_STATE_KEY, "0");
+        Log.d(TAG, "-----------------是否完成乐买宝认证=" + authenResult);
+        if (Constant_LeMaiBao.AUTHEN_NOT.equals(authenResult)) {
+            openLMB.setClickable(true);
+            openLMB.setText("开通乐买宝");
+        } else {
+            //获取用户信用额度
+            openLMB.setClickable(false);
+            getUserCreditBalenceInfo(service);
+        }
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         pv.setGirlPercent(femaleCount);
@@ -153,17 +169,6 @@ public class MainActivity extends BaseActivity {
         service = CommonUtils.doNet();
         //调用今日到店人数接口
         getUserNumToday();
-        //获取认证状态
-        String authenResult = SpUtils.getString(this, Constant_LeMaiBao.AUTHEN_STATE_KEY, "");
-        Log.d(TAG, "-----------------是否完成乐买宝认证=" + authenResult);
-        if (Constant_LeMaiBao.AUTHEN_NOT.equals(authenResult)) {
-            openLMB.setClickable(true);
-            openLMB.setText("开通乐买宝");
-        } else {
-            //获取用户信用额度
-            openLMB.setClickable(false);
-            getUserCreditBalenceInfo(service);
-        }
         //获取退款金额
         getRefundMoney();
 
@@ -197,9 +202,12 @@ public class MainActivity extends BaseActivity {
         call.enqueue(new Callback<CreditBalanceCheckBean>() {
             @Override
             public void onResponse(Call<CreditBalanceCheckBean> call, Response<CreditBalanceCheckBean> response) {
-                if (response.code() == 200) {
-                    String creditBalance = response.body().getCreditBalance();
-                    openLMB.setText("¥" + (creditBalance == null ? "0.00" : creditBalance));
+                CreditBalanceCheckBean body = response.body();
+                if (TextUtils.equals("200",body.getCode())) {
+
+                    CommonUtils.debugLog(body.toString()+"----------"+token);
+                    CreditBalanceCheckBean.DataBean data = body.getData();
+                    openLMB.setText("¥" + (data.getCreditBalance() == null ? "0.00" : data.getCreditBalance()));
                 } else {
                     Toast.makeText(MainActivity.this, "获取信用额度失败", Toast.LENGTH_SHORT).show();
                 }

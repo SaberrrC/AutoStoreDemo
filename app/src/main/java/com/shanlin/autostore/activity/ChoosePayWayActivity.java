@@ -281,31 +281,11 @@ public class ChoosePayWayActivity extends BaseActivity{
     }
 
     private void showInputPswDialog() {
-//        popTop = new PopupWindow(this);
-//        popTop.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-//        popTop.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-//        popTop.setContentView(dialogView);
-//        popTop.setBackgroundDrawable(new ColorDrawable(0x00000000));
-//        popTop.setOutsideTouchable(false);
-//        popTop.setFocusable(false);
-//        popTop.setOnDismissListener(new PopupWindow.OnDismissListener() {
-//            @Override
-//            public void onDismiss() {
-//                backgroundAlpha(1f);
-//            }
-//        });
         popTop.showAtLocation(getWindow().getDecorView(), Gravity.CENTER_HORIZONTAL,0,-300);
         backgroundAlpha(0.5f);
     }
 
     private void showKeyBoard() {
-//        popBottom = new PopupWindow(this);
-//        popBottom.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-//        popBottom.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-//        popBottom.setContentView(keyBoard);
-//        popBottom.setBackgroundDrawable(new ColorDrawable(0x00000000));
-//        popBottom.setOutsideTouchable(false);
-//        popBottom.setFocusable(false);
         popBottom.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM,0,0);
     }
 

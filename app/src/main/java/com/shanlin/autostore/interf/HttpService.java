@@ -9,6 +9,7 @@ import com.shanlin.autostore.bean.paramsBean.LeMaiBaoPayBody;
 import com.shanlin.autostore.bean.paramsBean.MemberUpdateSendBean;
 import com.shanlin.autostore.bean.paramsBean.NumberLoginBean;
 import com.shanlin.autostore.bean.paramsBean.OpenGardBody;
+import com.shanlin.autostore.bean.paramsBean.PswSettingBody;
 import com.shanlin.autostore.bean.paramsBean.RealNameAuthenBody;
 import com.shanlin.autostore.bean.paramsBean.RealOrderBody;
 import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;
@@ -69,11 +70,10 @@ public interface HttpService {
 
     /**
      * 密码设置-1083
-     * @param password
      * @return
      */
     @POST("buybao/setpassword")
-    Call<PswSettingBean> goPswSetting (@Query("password") String password);
+    Call<PswSettingBean> goPswSetting (@Header("token") String token, @Body PswSettingBody body);
 
     /**
      * 二维码扫描 打开闸机
