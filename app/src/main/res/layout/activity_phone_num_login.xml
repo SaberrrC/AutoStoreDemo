@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<com.zhy.autolayout.AutoRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
+    android:layout_height="match_parent">
 
     <include layout="@layout/icon_title_layout"></include>
 
@@ -9,14 +11,14 @@
 
     <Button
         android:id="@+id/btn_bind_or_login"
-        android:layout_marginTop="490px"
         android:layout_width="180px"
-        android:gravity="center"
-        android:layout_centerHorizontal="true"
-        android:paddingBottom="5px"
         android:layout_height="42.6px"
-        android:text="绑定"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="490px"
         android:background="@mipmap/login_btn_bg"
+        android:gravity="center"
+        android:paddingBottom="5px"
+        android:text="绑定"
         android:textColor="#FFFFFFFF"
         android:textSize="18px"
         />
