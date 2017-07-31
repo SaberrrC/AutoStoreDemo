@@ -93,19 +93,20 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
-
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.zhy:autolayout:1.4.5'
-//    compile 'com.jungly:gridPasswordView:0.3'
-
+    //    compile 'com.jungly:gridPasswordView:0.3'
     compile project(':library:wechatlib')
-    compile project(':library:zxinglib')
     //jpush
-    compile 'cn.jiguang.sdk:jpush:3.0.3'  // 此处以JPush 3.0.3 版本为例。
-    compile 'cn.jiguang.sdk:jcore:1.1.1'  // 此处以JCore 1.1.1 版本为例。
+    compile 'cn.jiguang.sdk:jpush:3.0.3'
+    // 此处以JPush 3.0.3 版本为例。
+    compile 'cn.jiguang.sdk:jcore:1.1.1'
+    // 此处以JCore 1.1.1 版本为例。
     //自动获取短信验证码
-    compile 'tech.michaelx.authcode:authcode:1.0.0' // 添加依赖
-//    compile project(':library:livenesslib')
+    compile 'tech.michaelx.authcode:authcode:1.0.0'
+    // 添加依赖
+    //    compile project(':library:livenesslib')
+    compile 'com.google.zxing:core:3.3.0'
 }

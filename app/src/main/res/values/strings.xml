@@ -73,4 +73,6 @@
     <string name="liveness_detection_failed_action_blend">活体检测动作错误</string>
     <string name="liveness_detection_failed_not_video">活体检测连续性检测失败</string>
     <string name="novalidframe">没有合适的图像用于人脸识别</string>
+
+    <string name="zxing_bar_name">ZxingLib</string>
 </resources>

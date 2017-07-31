@@ -51,7 +51,7 @@ import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.utils.ToastUtils;
 import com.shanlin.autostore.view.ProgressView;
 import com.shanlin.autostore.zhifubao.Base64;
-import com.xys.libzxing.zxing.activity.CaptureActivity;
+import com.shanlin.autostore.zxing.activity.CaptureActivity;
 import com.zhy.autolayout.utils.AutoUtils;
 
 import java.util.List;
