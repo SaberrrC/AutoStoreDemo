@@ -19,6 +19,16 @@ public class CreditBalanceCheckBean {
     private String message;
     private String version;
 
+    @Override
+    public String toString() {
+        return "CreditBalanceCheckBean{" +
+                "code='" + code + '\'' +
+                ", data=" + data +
+                ", message='" + message + '\'' +
+                ", version='" + version + '\'' +
+                '}';
+    }
+
     public String getCode() {
         return code;
     }
@@ -65,6 +75,17 @@ public class CreditBalanceCheckBean {
         private String credit;
         private String creditBalance;
         private String status;
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "creditLevel='" + creditLevel + '\'' +
+                    ", creditUsed='" + creditUsed + '\'' +
+                    ", credit='" + credit + '\'' +
+                    ", creditBalance='" + creditBalance + '\'' +
+                    ", status='" + status + '\'' +
+                    '}';
+        }
 
         public String getCreditLevel() {
             return creditLevel;
