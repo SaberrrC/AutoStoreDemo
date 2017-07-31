@@ -195,7 +195,6 @@ public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapt
                 }
             }
         });
-
     }
 
     private void toLoginActivity() {
