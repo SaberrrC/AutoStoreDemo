@@ -2,6 +2,7 @@ package com.shanlin.autostore.bean.resultBean;
 
 import com.shanlin.autostore.base.BaseBean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,12 +11,13 @@ import java.util.List;
 
 public class RefundMoneyBean extends BaseBean {
 
+
     /**
      * data : [{"amount":"","balance":"","content":"","createdTime":"","paymentType":"","title":""}]
      * version : 0.0.1
      */
 
-    private String version;
+    private String         version;
     private List<DataBean> data;
 
     public String getVersion() {
@@ -34,7 +36,7 @@ public class RefundMoneyBean extends BaseBean {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable {
         /**
          * amount :
          * balance :

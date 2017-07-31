@@ -89,7 +89,8 @@ public class MainActivity extends BaseActivity {
     private TextView     mTvRefundMoney;
     private TextView     mTvPhoneNum;
     private String       mUserPhone;
-    private String mUserPhoneHide;
+    private String       mUserPhoneHide;
+    private RefundMoneyBean refundMoneyBean = null;
 
     @Override
     public int initLayout() {
@@ -137,7 +138,7 @@ public class MainActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         pv.setGirlPercent(femaleCount);
-//        NumAnim.startAnim(mUserNum, 100000000, 2000);
+        //        NumAnim.startAnim(mUserNum, 100000000, 2000);
         pv.flush();
     }
 
@@ -154,7 +155,7 @@ public class MainActivity extends BaseActivity {
         getUserNumToday();
         //获取认证状态
         String authenResult = SpUtils.getString(this, Constant_LeMaiBao.AUTHEN_STATE_KEY, "");
-        Log.d(TAG, "-----------------是否完成乐买宝认证="+authenResult);
+        Log.d(TAG, "-----------------是否完成乐买宝认证=" + authenResult);
         if (Constant_LeMaiBao.AUTHEN_NOT.equals(authenResult)) {
             openLMB.setClickable(true);
             openLMB.setText("开通乐买宝");
@@ -169,25 +170,24 @@ public class MainActivity extends BaseActivity {
     }
 
     private void getUserNumToday() {
-        Call<UserNumEverydayBean> call = service.getUserNumEveryday(token,CommonUtils.getCurrentTime
-                (false), "2");
+        Call<UserNumEverydayBean> call = service.getUserNumEveryday(token, CommonUtils.getCurrentTime(false), "2");
         call.enqueue(new Callback<UserNumEverydayBean>() {
             @Override
             public void onResponse(Call<UserNumEverydayBean> call, Response<UserNumEverydayBean> response) {
                 UserNumEverydayBean body = response.body();
-                if (TextUtils.equals("200",body.getCode())) {
+                if (TextUtils.equals("200", body.getCode())) {
                     int total = body.getData().getMemberCount();
                     //女性
                     femaleCount = body.getData().getFemaleCount();
-                    CommonUtils.debugLog("总人数---"+total);
-                    mUserNum.setText(total+"");
+                    CommonUtils.debugLog("总人数---" + total);
+                    mUserNum.setText(total + "");
 
                 }
             }
 
             @Override
             public void onFailure(Call<UserNumEverydayBean> call, Throwable t) {
-                    CommonUtils.debugLog(t.getMessage());
+                CommonUtils.debugLog(t.getMessage());
             }
         });
     }
@@ -197,9 +197,9 @@ public class MainActivity extends BaseActivity {
         call.enqueue(new Callback<CreditBalanceCheckBean>() {
             @Override
             public void onResponse(Call<CreditBalanceCheckBean> call, Response<CreditBalanceCheckBean> response) {
-                if (response.code() == 200){
+                if (response.code() == 200) {
                     String creditBalance = response.body().getCreditBalance();
-                    openLMB.setText("¥"+(creditBalance == null ? "0.00" : creditBalance));
+                    openLMB.setText("¥" + (creditBalance == null ? "0.00" : creditBalance));
                 } else {
                     Toast.makeText(MainActivity.this, "获取信用额度失败", Toast.LENGTH_SHORT).show();
                 }
@@ -304,11 +304,12 @@ public class MainActivity extends BaseActivity {
                         MPermissionUtils.showTipsDialog(MainActivity.this);
                     }
                 });
-
                 break;
             case R.id.btn_yu_e://退款金额
                 //                startActivity(new Intent(this, BalanceActivity.class));//订单余额
-                startActivity(new Intent(this, RefundMoneyActivity.class));
+                Intent refundMoneyIntent = new Intent(this, RefundMoneyActivity.class);
+                refundMoneyIntent.putExtra(Constant.REFUND_MONEY_BEAN, refundMoneyBean);
+                startActivity(refundMoneyIntent);
                 break;
         }
         mDrawerLayout.closeDrawer(Gravity.LEFT);
@@ -327,9 +328,9 @@ public class MainActivity extends BaseActivity {
             if (result.contains("orderNo")) {
                 //订单号信息
                 ZXingOrderBean zXingOrderBean = gson.fromJson(result, ZXingOrderBean.class);
-                Log.d(TAG, "----------------二维码订单数据-----"+zXingOrderBean);
+                Log.d(TAG, "----------------二维码订单数据-----" + zXingOrderBean);
                 //调用生成正式订单接口
-                generateRealOrder(zXingOrderBean.getOrderNo(),zXingOrderBean.getDeviceId());
+                generateRealOrder(zXingOrderBean.getOrderNo(), zXingOrderBean.getDeviceId());
             }
             if (result.contains("打开闸机")) {//扫描闸机的我二维码
                 Intent intent = new Intent(AutoStoreApplication.getApp(), GateActivity.class);
@@ -362,31 +363,26 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private String[] aliArgs = new String[] {Constant_LeMaiBao.DEVICEDID,Constant_LeMaiBao.ORDER_NO,
-            Constant_LeMaiBao.TOTAL_AMOUNT,Constant_LeMaiBao.STORED_ID,Constant.TOKEN};
+    private String[] aliArgs = new String[]{Constant_LeMaiBao.DEVICEDID, Constant_LeMaiBao.ORDER_NO, Constant_LeMaiBao.TOTAL_AMOUNT, Constant_LeMaiBao.STORED_ID, Constant.TOKEN};
 
     private void generateRealOrder(final String orderNo, final String devicedID) {
-        final String token = SpUtils.getString(this, Constant
-                .TOKEN, "");
-        Log.d(TAG, "-------------------token="+token);
-        Call<RealOrderBean> call = service.updateTempToReal(token,
-                new RealOrderBody(orderNo));
+        final String token = SpUtils.getString(this, Constant.TOKEN, "");
+        Log.d(TAG, "-------------------token=" + token);
+        Call<RealOrderBean> call = service.updateTempToReal(token, new RealOrderBody(orderNo));
         call.enqueue(new Callback<RealOrderBean>() {
             @Override
             public void onResponse(Call<RealOrderBean> call, Response<RealOrderBean> response) {
                 RealOrderBean body = response.body();
-                if (TextUtils.equals("200",body.getCode())){
-                    Log.d(TAG, "------------------------*-----------------------"+response.body()
-                            .toString());
+                if (TextUtils.equals("200", body.getCode())) {
+                    Log.d(TAG, "------------------------*-----------------------" + response.body().toString());
                     String totalAmount = response.body().getData().getTotalAmount();//应付总金额
-                    CommonUtils.sendDataToNextActivity(MainActivity.this, ChoosePayWayActivity
-                            .class,aliArgs,new String[]{devicedID,orderNo,totalAmount,"2",token});
+                    CommonUtils.sendDataToNextActivity(MainActivity.this, ChoosePayWayActivity.class, aliArgs, new String[]{devicedID, orderNo, totalAmount, "2", token});
                 }
             }
 
             @Override
             public void onFailure(Call<RealOrderBean> call, Throwable t) {
-                Log.d(TAG, "------------------error="+t.getMessage());
+                Log.d(TAG, "------------------error=" + t.getMessage());
             }
         });
     }
@@ -535,8 +531,20 @@ public class MainActivity extends BaseActivity {
         CommonUtils.doNet().getRefundMoney(token).enqueue(new CustomCallBack<RefundMoneyBean>() {
             @Override
             public void success(String code, RefundMoneyBean data, String msg) {
+                MainActivity.this.refundMoneyBean = data;
                 List<RefundMoneyBean.DataBean> beanList = data.getData();
-                mTvRefundMoney.setText("¥0.00");
+                if (beanList == null || beanList.size() == 0) {
+                    mTvRefundMoney.setText("¥0.00");
+                } double sum = 0.00;
+                for (RefundMoneyBean.DataBean dataBean : beanList) {
+                    String balance = dataBean.getBalance();
+                    if (TextUtils.isEmpty(balance)) {
+                        continue;
+                    }
+                    double refundMoney = Double.parseDouble(balance);
+                    sum += refundMoney;
+                }
+                mTvRefundMoney.setText("¥" + sum);
             }
 
             @Override
@@ -544,7 +552,5 @@ public class MainActivity extends BaseActivity {
                 mTvRefundMoney.setText("¥0.00");
             }
         });
-
-
     }
 }

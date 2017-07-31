@@ -20,6 +20,7 @@ public class Constant {
     public static final String USER_INFO          = "USER_INFO";//传递用户数据
     public static final String WX_INFO            = "WX_INFO";//微信登陆位注册手机号
     public static final String ORDER_ITEM         = "ORDER_ITEM";
+    public static final String REFUND_MONEY_BEAN  = "REFUND_MONEY_BEAN";//退款金额
 
     public static final String FACE_REGESTED_OK = "FACE_REGESTED_OK";
 
@@ -28,7 +29,7 @@ public class Constant {
      */
     public static final String APP_ID     = "wxb51b89cba83263de";
     public static final String APP_SECRET = "1e73ced172f384ef6305e2276d2a9b96";
-    public static String QR_GARD = "QR_GARD";
+    public static       String QR_GARD    = "QR_GARD";
 
 
     public static class MainActivityArgument {
