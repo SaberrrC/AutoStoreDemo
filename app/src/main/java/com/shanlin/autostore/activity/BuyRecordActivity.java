@@ -168,7 +168,9 @@ public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapt
                 List<OrderHistoryBean.DataBean.ListBean> list = data.getData().getList();
                 totalPage = data.getData().getPages();//总页数
                 currentPage = data.getData().getPageNum();//当前页码
-
+                if (currentAction == REFRESH) {
+                    mDatas.clear();
+                }
                 if (list != null && list.size() > 0) {
                     mDatas.addAll(list);
                 }
@@ -193,7 +195,6 @@ public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapt
                 }
             }
         });
-
     }
 
     private void toLoginActivity() {
