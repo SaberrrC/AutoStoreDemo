@@ -3,6 +3,8 @@ package com.shanlin.autostore.activity;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
@@ -45,6 +47,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -55,13 +58,13 @@ import retrofit2.Response;
  * Created by DELL on 2017/7/14 0014.
  */
 public class LoginActivity extends BaseActivity {
-    public static final int    REQUEST_CODE_LOGIN = 100;
-    public static final String TYPE_WX            = "1";
-    private AlertDialog  dialog;
-    private View         dialogOpenWX;
+    public static final int REQUEST_CODE_LOGIN = 100;
+    public static final String TYPE_WX = "1";
+    private AlertDialog dialog;
+    private View dialogOpenWX;
     //微信登录
     private SendAuth.Req req;
-    private IWXAPI       api;
+    private IWXAPI api;
     private static final String WEIXIN_SCOPE = "snsapi_userinfo";// 用于请求用户信息的作用域
     private static final String WEIXIN_STATE = "login_state"; // 自定义
 
@@ -94,7 +97,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initView() {
-//        EventBus.getDefault().register(this);
+        EventBus.getDefault().register(this);
         mLoginActivity = this;
         findViewById(R.id.btn_login_by_face).setOnClickListener(this);
         findViewById(R.id.btn_login_by_phone).setOnClickListener(this);
@@ -158,7 +161,14 @@ public class LoginActivity extends BaseActivity {
                 break;
             case R.id.tv_open:
                 // TODO: 2017/7/16 0016 wx登录
-                sendAuth();
+                api = WXAPIFactory.createWXAPI(this, Constant.APP_ID, false);
+                boolean isInstalled1 = api.isWXAppInstalled() && api.isWXAppSupportAPI();
+                boolean isInstalled = isWeixinAvilible(this);
+                if (isInstalled) {
+                    sendAuth();
+                }else {
+                    ToastUtils.showToast("请安装微信客户端再进行登陆");
+                }
                 dialog.dismiss();
                 break;
             case R.id.tv_concel:
@@ -167,8 +177,24 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    private boolean isWeixinAvilible(LoginActivity loginActivity) {
+        final PackageManager packageManager = loginActivity.getPackageManager();
+        //  获取packagemanager
+        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);
+        //   获取所有已安装程序的包信息
+        if (pinfo != null) {
+            for (int i = 0; i < pinfo.size(); i++) {
+                String pn = pinfo.get(i).packageName;
+                if (pn.equals("com.tencent.mm")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+
+    }
+
     private void sendAuth() {
-        api = WXAPIFactory.createWXAPI(this, Constant.APP_ID, false);
         req = new SendAuth.Req();
         req.scope = WEIXIN_SCOPE;
         req.state = WEIXIN_STATE;
@@ -215,7 +241,7 @@ public class LoginActivity extends BaseActivity {
                             AutoStoreApplication.isLogin = true;
                             SpUtils.saveString(LoginActivity.this, Constant.TOKEN, data.getData().getToken());
                             //验证乐买宝实名是否认证
-                            CommonUtils.checkAuthenStatus(LoginActivity.this,httpService,data
+                            CommonUtils.checkAuthenStatus(LoginActivity.this, httpService, data
                                     .getData()
                                     .getToken());
 

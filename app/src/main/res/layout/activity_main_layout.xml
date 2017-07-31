@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.autolayout.AutoLinearLayout
+<com.zhy.autolayout.AutoRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <RelativeLayout
-        android:background="@color/white"
-        android:layout_marginTop="3px"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    android:layout_marginTop="3px"
+    android:background="@color/white"
+    android:fitsSystemWindows="true">
 
     <TextView
         android:id="@+id/identify_tip"
@@ -52,22 +48,22 @@
         />
 
     <com.shanlin.autostore.view.ProgressView
-        android:layout_centerInParent="true"
-        android:layout_marginTop="41px"
-        android:layout_below="@id/user_num"
         android:id="@+id/pv"
-        app:radius="10"
-        app:size_text="16sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user_num"
+        android:layout_centerInParent="true"
         android:layout_marginLeft="30px"
         android:layout_marginRight="30px"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_marginTop="41px"
+        app:radius="10"
+        app:size_text="16sp"/>
 
     <Button
-        android:layout_below="@id/pv"
         android:id="@+id/btn_scan_bg"
         android:layout_width="140px"
         android:layout_height="140px"
+        android:layout_below="@id/pv"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="93px"
         android:background="@mipmap/scan_bg"
@@ -75,12 +71,12 @@
         android:textColor="#FFFFFFFF"
         android:textSize="26px"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btn_scan_bg"
-            android:layout_marginTop="78px"
-            android:orientation="horizontal">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_scan_bg"
+        android:layout_marginTop="78px"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -148,6 +144,4 @@
         </LinearLayout>
 
     </LinearLayout>
-
-    </RelativeLayout>
-</com.zhy.autolayout.AutoLinearLayout>
+</com.zhy.autolayout.AutoRelativeLayout>
