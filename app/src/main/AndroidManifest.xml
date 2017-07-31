@@ -91,7 +91,7 @@
             android:name=".activity.VersionInfoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
-
+        <!--人脸识别界面-->
         <activity
             android:name=".livenesslib.LivenessActivity"
             android:screenOrientation="portrait"
