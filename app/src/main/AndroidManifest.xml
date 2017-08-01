@@ -95,7 +95,6 @@
         <activity
             android:name=".livenesslib.LivenessActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/SplashThemeFullScreen"
             android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".activity.OpenLeMaiBao"

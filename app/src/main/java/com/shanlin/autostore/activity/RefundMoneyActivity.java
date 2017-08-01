@@ -13,6 +13,7 @@ import com.shanlin.autostore.bean.resultBean.RefundMoneyBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
+import com.shanlin.autostore.utils.DateUtils;
 import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.utils.ToastUtils;
@@ -20,6 +21,7 @@ import com.shanlin.autostore.view.PulltoRefreshRecyclerView;
 import com.zhy.autolayout.AutoRelativeLayout;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -129,13 +131,15 @@ public class RefundMoneyActivity extends BaseActivity implements FinalRecycleAda
     public void onBindViewHolder(FinalRecycleAdapter.ViewHolder holder, int position, Object itemData) {
         if (itemData instanceof RefundMoneyBean.DataBean) {
             RefundMoneyBean.DataBean bean = (RefundMoneyBean.DataBean) itemData;
-            TextView tvMouth = (TextView) findViewById(R.id.tv_mouth);//退款
-            TextView tvBanlance = (TextView) findViewById(R.id.tv_banlance);//余额
-            TextView tvMoney = (TextView) findViewById(R.id.tv_money);//+500.00元
-            TextView tvTime = (TextView) findViewById(R.id.tv_time);//日期
-            tvBanlance.setText(bean.getAmount());
-            tvMoney.setText(bean.getAmount());
-            tvTime.setText(bean.getCreatedTime());
+            TextView tvMouth = (TextView) holder.getViewById(R.id.tv_mouth);//退款
+            TextView tvBanlance = (TextView) holder.getViewById(R.id.tv_banlance);//余额
+            TextView tvMoney = (TextView) holder.getViewById(R.id.tv_money);//+500.00元
+            TextView tvTime = (TextView) holder.getViewById(R.id.tv_time);//日期
+            tvBanlance.setText("余额：¥" + bean.getBalance());
+            tvMoney.setText("+" + bean.getAmount());
+            long timeLong = Long.parseLong(bean.getCreatedTime());
+            String time = DateUtils.getDateStringWithFormate(new Date(timeLong), null);
+            tvTime.setText(time);
         }
     }
 

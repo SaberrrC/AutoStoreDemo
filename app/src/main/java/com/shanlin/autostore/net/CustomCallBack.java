@@ -1,9 +1,13 @@
 package com.shanlin.autostore.net;
 
 
+import android.content.Intent;
 import android.text.TextUtils;
 
+import com.shanlin.autostore.AutoStoreApplication;
+import com.shanlin.autostore.activity.LoginActivity;
 import com.shanlin.autostore.base.BaseBean;
+import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.LogUtils;
 
 import retrofit2.Call;
@@ -29,12 +33,27 @@ public abstract class CustomCallBack<T extends BaseBean> implements Callback<T> 
         T baseBean = response.body();
         String code = baseBean.getCode();
         String msg = baseBean.getMessage();
+        if (TextUtils.equals(code, "401")) {//token失效
+            AutoStoreApplication.isLogin = false;
+            if (!jumpLogin) {
+                return;
+            }
+            toLoginActivity();
+            return;
+        }
         if (!TextUtils.equals(code, "200")) {
             error(null, code, msg);
             return;
         }
         success(code, baseBean, msg);
     }
+
+    private boolean jumpLogin = true;
+
+    public void setJumpLogin(boolean isjumpLogin) {
+        jumpLogin = isjumpLogin;
+    }
+
 
     @Override
     public void onFailure(Call<T> call, Throwable ex) {
@@ -47,6 +66,10 @@ public abstract class CustomCallBack<T extends BaseBean> implements Callback<T> 
             HttpException httpEx = (HttpException) ex;
             ERR_NETWORK_CODE = httpEx.code() + "";
         }
+        if (!CommonUtils.checkNet()) {
+            error(ex, ERR_NETWORK_CODE, "无网络");
+            return;
+        }
         LogUtils.d(ERR_NETWORK_MSG);
         error(ex, ERR_NETWORK_CODE, ERR_NETWORK_MSG);
     }
@@ -54,4 +77,21 @@ public abstract class CustomCallBack<T extends BaseBean> implements Callback<T> 
     public abstract void success(String code, T data, String msg);
 
     public abstract void error(Throwable ex, String code, String msg);
+
+    private void toLoginActivity() {
+        Intent toLoginActivity = new Intent(AutoStoreApplication.getApp(), LoginActivity.class);
+        if (TextUtils.isEmpty(key) && TextUtils.isEmpty(value)) {
+            toLoginActivity.putExtra(key, value);
+        }
+        toLoginActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        AutoStoreApplication.getApp().startActivity(toLoginActivity);
+    }
+
+    private String key;
+    private String value;
+
+    public void setKeyAndValue(String key, String value) {
+        this.key = key;
+        this.value = value;
+    }
 }

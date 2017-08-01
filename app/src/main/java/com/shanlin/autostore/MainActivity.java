@@ -20,7 +20,6 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.shanlin.autostore.activity.BuyRecordActivity;
@@ -238,7 +237,7 @@ public class MainActivity extends BaseActivity {
                     creditBalance = body.getData().getCreditBalance();
                     openLMB.setText("¥" + (creditBalance == null ? "0.00" : creditBalance));
                 } else {
-                    Toast.makeText(MainActivity.this, "获取信用额度失败", Toast.LENGTH_SHORT).show();
+//                   ToastUtils.showToast("获取信用额度失败");
                 }
             }
 
@@ -381,6 +380,9 @@ public class MainActivity extends BaseActivity {
             }
         }
         if (requestCode == REQUEST_CODE_REGEST) {//人脸识别成功 拿到图片跳转
+            if (TextUtils.equals(Constant.ON_BACK_PRESSED, data.getStringExtra(Constant.ON_BACK_PRESSED))) {
+                return;
+            }
             try {
                 if (data == null) {
                     ToastUtils.showToast("人脸识别失败");

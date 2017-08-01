@@ -13,11 +13,11 @@ public class RefundMoneyBean extends BaseBean {
 
 
     /**
-     * data : [{"amount":"","balance":"","content":"","createdTime":"","paymentType":"","title":""}]
+     * data : [{"amount":"1.00","balance":"1.00","content":"内容2321","createdTime":"1501206138000","paymentType":"1","title":"title"},{"amount":"1.00","balance":"2.00","content":"内容2321","createdTime":"1501206138000","paymentType":"1","title":"title"},{"amount":"11.00","balance":"2.00","content":"内容2321","createdTime":"1501206138000","paymentType":"1","title":"title"},{"amount":"1.00","balance":"2.00","content":"内容2321","createdTime":"1501206138000","paymentType":"1","title":"title"},{"amount":"1.00","balance":"2.00","content":"内容2321","createdTime":"1501206138000","paymentType":"1","title":"title"},{"amount":"1.00","balance":"2.00","content":"内容2321","createdTime":"1501206138000","paymentType":"1","title":"title"},{"amount":"1.00","balance":"2.00","content":"内容2321","createdTime":"1501206138000","paymentType":"1","title":"title"},{"amount":"1.00","balance":"2.00","content":"内容2321","createdTime":"1501206138000","paymentType":"1","title":"title"},{"amount":"1.00","balance":"2.00","content":"内容2321","createdTime":"1501206138000","paymentType":"1","title":"title"}]
      * version : 0.0.1
      */
 
-    private String         version;
+    private String version;
     private List<DataBean> data;
 
     public String getVersion() {
@@ -36,14 +36,14 @@ public class RefundMoneyBean extends BaseBean {
         this.data = data;
     }
 
-    public static class DataBean implements Serializable {
+    public static class DataBean implements Serializable{
         /**
-         * amount :
-         * balance :
-         * content :
-         * createdTime :
-         * paymentType :
-         * title :
+         * amount : 1.00
+         * balance : 1.00
+         * content : 内容2321
+         * createdTime : 1501206138000
+         * paymentType : 1
+         * title : title
          */
 
         private String amount;

@@ -51,6 +51,9 @@ public class SaveFaceActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_save:
+                if (!CommonUtils.checkNet()) {
+                    return;
+                }
                 //显示loading页面
                 showLoadingDialog();
                 doMemberUpdate();

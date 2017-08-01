@@ -52,19 +52,19 @@ import retrofit2.Response;
  * Created by DELL on 2017/7/14 0014.
  */
 public class LoginActivity extends BaseActivity {
-    public static final int REQUEST_CODE_LOGIN = 100;
-    public static final String TYPE_WX = "1";
-    private AlertDialog dialog;
-    private View dialogOpenWX;
+    public static final int    REQUEST_CODE_LOGIN = 100;
+    public static final String TYPE_WX            = "1";
+    private AlertDialog  dialog;
+    private View         dialogOpenWX;
     //微信登录
     private SendAuth.Req req;
-    private IWXAPI api;
+    private IWXAPI       api;
     private static final String WEIXIN_SCOPE = "snsapi_userinfo";// 用于请求用户信息的作用域
     private static final String WEIXIN_STATE = "login_state"; // 自定义
 
     //人脸识别
-    public static final int OK_PERCENT = 73;
-    private boolean isLivenessLicenseGet = false;
+    public static final int     OK_PERCENT           = 73;
+    private             boolean isLivenessLicenseGet = false;
     //活体照片路径
     private byte[] mLivenessImgBytes;
     private Dialog mLoadingDialog;
@@ -103,7 +103,10 @@ public class LoginActivity extends BaseActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_login_by_face://使用人脸识别快速登录
-                //                                CommonUtils.toNextActivity(this,MainActivity.class);
+                //是否有网络
+                if (!CommonUtils.checkNet()) {
+                    return;
+                }
                 MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS}, new MPermissionUtils.OnPermissionListener() {
                     @Override
                     public void onPermissionGranted() {
@@ -122,10 +125,16 @@ public class LoginActivity extends BaseActivity {
                 CommonUtils.toNextActivity(this, PhoneNumLoginActivity.class);
                 break;
             case R.id.btn_login_by_wx:
+                if (!CommonUtils.checkNet()) {
+                    return;
+                }
                 dialog.show();
                 break;
             case R.id.tv_open:
                 dialog.dismiss();
+                if (!CommonUtils.checkNet()) {
+                    return;
+                }
                 // TODO: 2017/7/16 0016 wx登录
                 api = WXAPIFactory.createWXAPI(this, Constant.APP_ID, false);
                 boolean isInstalled1 = api.isWXAppInstalled() && api.isWXAppSupportAPI();
@@ -133,7 +142,7 @@ public class LoginActivity extends BaseActivity {
                 if (isInstalled) {
                     showLoadingDialog();
                     sendAuth();
-                }else {
+                } else {
                     ToastUtils.showToast("请安装微信客户端再进行登陆");
                 }
                 break;
@@ -173,14 +182,17 @@ public class LoginActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         LogUtils.d("resultCode==" + resultCode);
         if (requestCode == REQUEST_CODE_LOGIN) {
+            if (TextUtils.equals(Constant.ON_BACK_PRESSED, data.getStringExtra(Constant.ON_BACK_PRESSED))) {
+                return;
+            }
             try {
                 if (data == null) {
-                    ToastUtils.showToast("人脸识别失败");
+                    ToastUtils.showToast("信息匹配失败，请选择其他方式登陆");
                     return;
                 }
                 mLivenessImgBytes = data.getByteArrayExtra("image_best");
                 if (mLivenessImgBytes == null || mLivenessImgBytes.length == 0) {
-                    ToastUtils.showToast("人脸识别失败");
+                    ToastUtils.showToast("信息匹配失败，请选择其他方式登陆");
                     return;
                 }
                 showLoadingDialog();
@@ -207,9 +219,7 @@ public class LoginActivity extends BaseActivity {
                             AutoStoreApplication.isLogin = true;
                             SpUtils.saveString(LoginActivity.this, Constant.TOKEN, data.getData().getToken());
                             //验证乐买宝实名是否认证
-                            CommonUtils.checkAuthenStatus(LoginActivity.this, httpService, data
-                                    .getData()
-                                    .getToken());
+                            CommonUtils.checkAuthenStatus(LoginActivity.this, httpService, data.getData().getToken());
 
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_OK);

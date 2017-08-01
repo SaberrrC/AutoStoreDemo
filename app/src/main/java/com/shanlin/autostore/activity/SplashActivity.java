@@ -49,10 +49,14 @@ public class SplashActivity extends Activity {
         StatusBarUtils.setColor(this, Color.TRANSPARENT);
         EventBus.getDefault().post(new WxMessageEvent());
         LogUtils.d("token  " + SpUtils.getString(this, Constant.TOKEN, ""));
-        MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA,
+        MPermissionUtils.requestPermissionsResult(this, 1, new String[]{
+                Manifest.permission.CAMERA,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.CHANGE_WIFI_STATE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.READ_PHONE_STATE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_CONTACTS}, new MPermissionUtils.OnPermissionListener() {
             @Override
@@ -63,7 +67,7 @@ public class SplashActivity extends Activity {
 
             @Override
             public void onPermissionDenied() {
-                MPermissionUtils.showTipsDialog(SplashActivity.this);
+//                MPermissionUtils.showTipsDialog(SplashActivity.this);
             }
         });
 
@@ -131,7 +135,7 @@ public class SplashActivity extends Activity {
 
             @Override
             public void error(Throwable ex, String code, String msg) {
-                MPermissionUtils.showTipsDialog(SplashActivity.this);
+                loadAnim();
             }
         });
 
