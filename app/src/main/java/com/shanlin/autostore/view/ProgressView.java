@@ -14,13 +14,11 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.utils.CommonUtils;
 
 
 /**
@@ -32,7 +30,7 @@ public class ProgressView extends View {
     private static final String TAG = "wr";
 
     private final Bitmap boyBM,girlBM;
-    private final int OFF_SET = 10,radius,bottom;
+    private final int OFF_SET = 5,radius,bottom;
     private final int size;
     private int top;
     private float lefts = 100;//左边中间直线的距离
@@ -40,8 +38,6 @@ public class ProgressView extends View {
     private final Path right_path;
 
     static Handler h = new Handler();
-    private int value;
-    private int width;
 
     public ProgressView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -60,7 +56,6 @@ public class ProgressView extends View {
         paintLeft.setStyle(Paint.Style.FILL);
         paintLeft.setShader(new LinearGradient(0,top+radius,lefts,top+radius,Color.parseColor
                 ("#EE4E4F"),Color.parseColor("#F89292"), Shader.TileMode.CLAMP));
-        float v = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, size, new DisplayMetrics());
         paintLeft.setTextSize(size);
 
         paintRight = new Paint();
@@ -79,7 +74,6 @@ public class ProgressView extends View {
         bottom = top + radius*2;
 
         right_path = new Path();
-
     }
 
     public void flush() {
@@ -91,39 +85,40 @@ public class ProgressView extends View {
         });
     }
 
+    Canvas  com_canvas;
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        com_canvas = canvas;
         //背景线条位置
-        RectF left = new RectF(0,top,lefts+2*radius+radius/3,bottom);
-        RectF right = new RectF(0,top,width,bottom);
+        RectF left = new RectF(radius,top,lefts+7*radius/2,bottom);
+        RectF right = new RectF(radius,top,getWidth(),bottom);
         //这里出现radius/2的偏差,不知道什么原因
-        RectF rf1 = new RectF(lefts+radius,top,lefts+3*radius-radius/2,bottom);
+        RectF rf1 = new RectF(lefts+2*radius,top,lefts+4*radius,bottom);
         RectF rf2 = new RectF(getWidth()-2*radius,top,getWidth(),bottom);
 
-        right_path.moveTo(lefts+3*radius,top);
+        right_path.moveTo(lefts+4*radius,top);
         right_path.lineTo(getWidth()-radius,top);
         right_path.addArc(rf2,-90,180);
-        right_path.lineTo(lefts+3*radius,bottom);
-        right_path.lineTo(lefts+3*radius,top);
+        right_path.lineTo(lefts+4*radius,bottom);
+        right_path.lineTo(lefts+4*radius,top);
         right_path.close();
 
-        canvas.drawText(value + "%", girlBM.getWidth() + 2*radius, girlBM
-                        .getHeight() - girlBM.getHeight()/5,
+        canvas.drawText(textLeft + "%", girlBM.getWidth() + 2*radius,
+                girlBM.getHeight() - radius,
                 paintLeft);
 
-        canvas.drawText((total == 0 ? 0 : (100 - value)) + "%", getWidth() - 2*boyBM.getWidth(),
-                boyBM
-                .getHeight
-                        () - boyBM.getHeight()/5,
+        canvas.drawText(textRight + "%", getWidth() - 2*boyBM.getWidth(), boyBM.getHeight
+                        () - radius,
                 paintRight);
 
         canvas.drawBitmap(girlBM,radius,0,null);
         canvas.drawBitmap(boyBM,getWidth()-3*boyBM.getWidth(),0,null);
         if (textLeft != 0) {
-            canvas.drawRoundRect(left,radius,top+radius,paintLeft);
-            canvas.drawArc(rf1,-90,180,false,paint_white);
             canvas.drawPath(right_path,paintRight);
+            canvas.drawArc(rf1,-90,180,false,paint_white);
+            canvas.drawRoundRect(left,radius,top+radius,paintLeft);
         } else {
             canvas.drawRoundRect(right,radius,top+radius,paintRight);
         }
@@ -132,21 +127,23 @@ public class ProgressView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        CommonUtils.debugLog("width="+getWidth()+"-------"+"height="+getHeight());
-        width = MeasureSpec.getSize(widthMeasureSpec);
+        Log.d(TAG, "width="+getWidth()+"-------"+"height="+getHeight());
+        int width =  MeasureSpec.getSize(widthMeasureSpec)+2*radius;
         int height = bottom;
         setMeasuredDimension(width, height);
     }
 
     private int textLeft;
-    private int total;
+    private int textRight;
 
     public void setGirlPercent(int text) {
         textLeft = text;
     }
-    public void setTotalPeople(int totalPeople) {
-        total = totalPeople;
+    public void setBoyPercent(int text) {
+        textRight = text;
     }
+
+
 
 
     public void doNumAnim(int startNum, int endNum) {
@@ -157,7 +154,7 @@ public class ProgressView extends View {
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                value = (int) animation.getAnimatedValue();
+                int value = (int) animation.getAnimatedValue();
                 num2s(value);
                 invalidate();
             }

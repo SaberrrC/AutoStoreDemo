@@ -57,7 +57,7 @@
         android:layout_marginRight="30px"
         android:layout_marginTop="41px"
         app:radius="10"
-        app:size_text="16sp"/>
+        app:size_text="12sp"/>
 
     <TextView
         android:gravity="center"

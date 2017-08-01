@@ -93,6 +93,7 @@ public class MainActivity extends BaseActivity {
     private String creditBalance;
     private int total;
     private View circle;
+    private int maleCount;
 
     @Override
     public int initLayout() {
@@ -181,15 +182,6 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        pv.setGirlPercent(femaleCount);
-        pv.setTotalPeople(total);
-        //        NumAnim.startAnim(mUserNum, 100000000, 2000);
-        pv.flush();
-    }
-
-    @Override
     public void initData() {
         initToolBar();
         token = SpUtils.getString(this, Constant.TOKEN, "");
@@ -200,11 +192,13 @@ public class MainActivity extends BaseActivity {
         service = CommonUtils.doNet();
         //获取退款金额
         getRefundMoney();
-
     }
 
     private void getUserNumToday() {
-        Call<UserNumEverydayBean> call = service.getUserNumEveryday(token, CommonUtils.getCurrentTime(false), "2");
+        Call<UserNumEverydayBean> call = service.getUserNumEveryday(token, CommonUtils
+                .getCurrentTime(false), "1");
+        CommonUtils.debugLog(CommonUtils
+                .getCurrentTime(false));
         call.enqueue(new Callback<UserNumEverydayBean>() {
             @Override
             public void onResponse(Call<UserNumEverydayBean> call, Response<UserNumEverydayBean> response) {
@@ -214,8 +208,15 @@ public class MainActivity extends BaseActivity {
                     total = body.getData().getMemberCount();
                     //女性
                     femaleCount = body.getData().getFemaleCount();
+                    maleCount = body.getData().getMaleCount();
                     CommonUtils.debugLog("总人数---" + total);
                     mUserNum.setText(total + "");
+                    int percent = total == 0 ? 0 : femaleCount*100/total;
+                    pv.setGirlPercent(percent);
+                    pv.setBoyPercent(total == 0 ? 0 : 100 - percent);
+//                    pv.setGirlPercent(0);
+//                    pv.setBoyPercent(0);
+                    pv.flush();
                 }
             }
 
@@ -359,8 +360,6 @@ public class MainActivity extends BaseActivity {
             if (data == null) {
                 return;
             }
-//            int width = data.getExtras().getInt("width");
-//            int height = data.getExtras().getInt("height");
             String result = data.getExtras().getString("result");
             if (result.contains("orderNo")) {
                 //订单号信息
