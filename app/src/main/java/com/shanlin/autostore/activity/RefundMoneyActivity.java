@@ -37,6 +37,7 @@ public class RefundMoneyActivity extends BaseActivity implements FinalRecycleAda
     private        int pageno        = 1;
     private TextView           mTvMoney;
     private AutoRelativeLayout mRlWtk;
+    private java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
 
     @Override
     public int initLayout() {
@@ -76,7 +77,11 @@ public class RefundMoneyActivity extends BaseActivity implements FinalRecycleAda
             double refundMoney = Double.parseDouble(balance);
             sum += refundMoney;
         }
-        mTvMoney.setText("¥" + sum);
+        if (sum == 0.00) {
+            mTvMoney.setText("¥0" + df.format(sum));
+        } else {
+            mTvMoney.setText("¥" + df.format(sum));
+        }
         mDatas.addAll(beanList);
     }
 
@@ -163,7 +168,11 @@ public class RefundMoneyActivity extends BaseActivity implements FinalRecycleAda
                     double refundMoney = Double.parseDouble(balance);
                     sum += refundMoney;
                 }
-                mTvMoney.setText("¥" + sum);
+                if (sum == 0.00) {
+                    mTvMoney.setText("¥0" + df.format(sum));
+                } else {
+                    mTvMoney.setText("¥" + df.format(sum));
+                }
                 mDatas.addAll(beanList);
                 mFinalRecycleAdapter.notifyDataSetChanged();
                 if (mDatas.size() > 0) {

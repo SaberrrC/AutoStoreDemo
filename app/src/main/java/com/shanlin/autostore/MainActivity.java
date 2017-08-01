@@ -69,7 +69,7 @@ public class MainActivity extends BaseActivity {
     private Toolbar      toolbar;
     private Dialog       mGateOpenDialog;
     private AlertDialog  mWelcomeDialog;
-    private TextView       mBtnScan;
+    private TextView     mBtnScan;
     private AlertDialog  mToFaceDialog;
     private byte[]       mLivenessImgBytes;
     private TextView     mTvIdentify;
@@ -91,8 +91,9 @@ public class MainActivity extends BaseActivity {
     private String       mUserPhoneHide;
     private RefundMoneyBean refundMoneyBean = null;
     private String creditBalance;
-    private int total;
-    private View circle;
+    private int    total;
+    private View   circle;
+    private java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
     private int maleCount;
 
     @Override
@@ -124,13 +125,11 @@ public class MainActivity extends BaseActivity {
         if (TextUtils.isEmpty(faceVerify)) {
             return;
         }
-        //刷脸登陆成功 从登录界面人脸验证跳转
         if (TextUtils.equals(faceVerify, Constant.FACE_VERIFY_OK)) {
             mTvIdentify.setVisibility(View.GONE);
             showWelcomeDialog();
             return;
         }
-        //未注册用户 从手机号 验证码页面跳转
         if (TextUtils.equals(faceVerify, Constant.FACE_VERIFY_NO)) {
             mTvIdentify.setVisibility(View.VISIBLE);
             showToFaceDialog();
@@ -139,7 +138,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initScanAnim() {
-        final ValueAnimator animator = ValueAnimator.ofFloat(0.5f,1.0f);
+        final ValueAnimator animator = ValueAnimator.ofFloat(0.5f, 1.0f);
         animator.setInterpolator(new LinearInterpolator());
         animator.setDuration(200);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -148,8 +147,8 @@ public class MainActivity extends BaseActivity {
                 float value = (float) animation.getAnimatedValue();
                 circle.setScaleX(value);
                 circle.setScaleY(value);
-                circle.setAlpha(1-value);
-                if (value == 1.0f){
+                circle.setAlpha(1 - value);
+                if (value == 1.0f) {
                     toScan();
                 }
             }
@@ -203,7 +202,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onResponse(Call<UserNumEverydayBean> call, Response<UserNumEverydayBean> response) {
                 UserNumEverydayBean body = response.body();
-                CommonUtils.debugLog("--------"+body.toString());
+                CommonUtils.debugLog("--------" + body.toString());
                 if (TextUtils.equals("200", body.getCode())) {
                     total = body.getData().getMemberCount();
                     //女性
@@ -233,12 +232,12 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onResponse(Call<CreditBalanceCheckBean> call, Response<CreditBalanceCheckBean> response) {
                 CreditBalanceCheckBean body = response.body();
-                if (TextUtils.equals("200",body.getCode())) {
-                    CommonUtils.debugLog(body.toString()+"----------"+token);
+                if (TextUtils.equals("200", body.getCode())) {
+                    CommonUtils.debugLog(body.toString() + "----------" + token);
                     creditBalance = body.getData().getCreditBalance();
                     openLMB.setText("¥" + (creditBalance == null ? "0.00" : creditBalance));
                 } else {
-//                   ToastUtils.showToast("获取信用额度失败");
+                    //                   ToastUtils.showToast("获取信用额度失败");
                 }
             }
 
@@ -360,6 +359,7 @@ public class MainActivity extends BaseActivity {
             if (data == null) {
                 return;
             }
+            
             String result = data.getExtras().getString("result");
             if (result.contains("orderNo")) {
                 //订单号信息
@@ -402,9 +402,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private String[] aliArgs = new String[]{Constant_LeMaiBao.DEVICEDID, Constant_LeMaiBao
-            .ORDER_NO, Constant_LeMaiBao.TOTAL_AMOUNT, Constant_LeMaiBao.STORED_ID, Constant
-            .TOKEN,Constant_LeMaiBao.CREDIT_BALANCE};
+    private String[] aliArgs = new String[]{Constant_LeMaiBao.DEVICEDID, Constant_LeMaiBao.ORDER_NO, Constant_LeMaiBao.TOTAL_AMOUNT, Constant_LeMaiBao.STORED_ID, Constant.TOKEN, Constant_LeMaiBao.CREDIT_BALANCE};
 
     private void generateRealOrder(final String orderNo, final String devicedID) {
         final String token = SpUtils.getString(this, Constant.TOKEN, "");
@@ -417,9 +415,7 @@ public class MainActivity extends BaseActivity {
                 if (TextUtils.equals("200", body.getCode())) {
                     Log.d(TAG, "------------------------*-----------------------" + response.body().toString());
                     String totalAmount = response.body().getData().getTotalAmount();//应付总金额
-                    CommonUtils.sendDataToNextActivity(MainActivity.this, ChoosePayWayActivity
-                            .class, aliArgs, new String[]{devicedID, orderNo, totalAmount, "2",
-                            token,creditBalance});
+                    CommonUtils.sendDataToNextActivity(MainActivity.this, ChoosePayWayActivity.class, aliArgs, new String[]{devicedID, orderNo, totalAmount, "2", token, creditBalance});
                 }
             }
 
@@ -479,6 +475,12 @@ public class MainActivity extends BaseActivity {
         //       将属性设置给窗体
         dialogWindow.setAttributes(lp);
         mGateOpenDialog.show();//显示对话框
+        ThreadUtils.runMainDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mGateOpenDialog.dismiss();
+            }
+        }, 10000);
     }
 
     /**
@@ -486,6 +488,12 @@ public class MainActivity extends BaseActivity {
      */
     private void showWelcomeDialog() {
         View viewWelcome = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_welcome, null, false);
+        viewWelcome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mWelcomeDialog1.dismiss();
+            }
+        });
         AutoUtils.autoSize(viewWelcome);
         mWelcomeDialog1 = CommonUtils.getDialog(this, viewWelcome, true);
         ThreadUtils.runMainDelayed(new Runnable() {
@@ -578,7 +586,8 @@ public class MainActivity extends BaseActivity {
                 List<RefundMoneyBean.DataBean> beanList = data.getData();
                 if (beanList == null || beanList.size() == 0) {
                     mTvRefundMoney.setText("¥0.00");
-                } double sum = 0.00;
+                }
+                double sum = 0.00;
                 for (RefundMoneyBean.DataBean dataBean : beanList) {
                     String balance = dataBean.getBalance();
                     if (TextUtils.isEmpty(balance)) {
@@ -587,7 +596,11 @@ public class MainActivity extends BaseActivity {
                     double refundMoney = Double.parseDouble(balance);
                     sum += refundMoney;
                 }
-                mTvRefundMoney.setText("¥" + sum);
+                if (sum == 0.00) {
+                    mTvRefundMoney.setText("¥0" + df.format(sum));
+                } else {
+                    mTvRefundMoney.setText("¥" + df.format(sum));
+                }
             }
 
             @Override

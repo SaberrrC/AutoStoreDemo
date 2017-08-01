@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -43,6 +45,7 @@ public class GateActivity extends BaseActivity {
     private boolean toggen     = true;
     private boolean timeToggen = true;
     public  int     progress   = 0;
+    private ImageView mIvFly;
 
     @Override
     public int initLayout() {
@@ -56,6 +59,9 @@ public class GateActivity extends BaseActivity {
         mPbOpen = (ProgressBar) findViewById(R.id.pb_open);
         mTvProgress = (TextView) findViewById(R.id.tv_progress);
         mResult = getIntent().getStringExtra(Constant.QR_GARD);
+        mIvFly = (ImageView) findViewById(R.id.iv_gate_waiting);
+        CommonUtils.initToolbar(this, "扫一扫", R.color.black, null);
+        starttAnim();
         Gson gson = new Gson();
         mOpenGardQRBean = gson.fromJson(mResult, OpenGardQRBean.class);
         sendOpenInfo();
@@ -83,9 +89,22 @@ public class GateActivity extends BaseActivity {
 
     }
 
+    private void starttAnim() {
+        TranslateAnimation animation = new TranslateAnimation(
+                Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, -0.05f,
+                Animation.RELATIVE_TO_SELF, 0.05f);
+        animation.setDuration(300);
+        animation.setRepeatMode(TranslateAnimation.REVERSE);
+        animation.setRepeatCount(Integer.MAX_VALUE);
+        mIvFly.setAnimation(animation);
+    }
+
     private void sendOpenInfo() {
         HttpService service = CommonUtils.doNet();
-        OpenGardBody openGardBody = new OpenGardBody(mOpenGardQRBean.getDeviceId(), mOpenGardQRBean.getStoreId(), SpUtils.getString(this, Constant.DEVICEID, ""));
+        String deviceId = SpUtils.getString(this, Constant.DEVICEID, "");
+        OpenGardBody openGardBody = new OpenGardBody(mOpenGardQRBean.getDeviceId(), mOpenGardQRBean.getStoreId(), deviceId);
         LogUtils.d(openGardBody.toString());
         Call<CaptureBean> call = service.postGardOpen(SpUtils.getString(this, Constant.TOKEN, ""), openGardBody);
         call.enqueue(new CustomCallBack<CaptureBean>() {

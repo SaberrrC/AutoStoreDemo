@@ -108,7 +108,7 @@ public class LoginActivity extends BaseActivity {
                     return;
                 }
                 if (!AutoStoreApplication.FACE) {
-                    showNoFaceDialog();
+                    ToastUtils.showToast("网络错误");
                     return;
                 }
                 CommonUtils.netWorkWarranty();
@@ -223,9 +223,9 @@ public class LoginActivity extends BaseActivity {
                             //已经验证 保存token和手机号 跳转到主页
                             AutoStoreApplication.isLogin = true;
                             SpUtils.saveString(LoginActivity.this, Constant.TOKEN, data.getData().getToken());
+                            SpUtils.saveString(LoginActivity.this, Constant.USER_PHONE_LOGINED, data.getData().getMobile());
                             //验证乐买宝实名是否认证
                             CommonUtils.checkAuthenStatus(LoginActivity.this, httpService, data.getData().getToken());
-
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_OK);
                             intent.putExtra(Constant.USER_INFO, data);
@@ -350,19 +350,6 @@ public class LoginActivity extends BaseActivity {
                 ToastUtils.showToast("微信登录失败，请重试");
             }
         });
-    }
-
-    private void showNoFaceDialog() {
-        View viewLoginout = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_noface, null, false);
-        viewLoginout.findViewById(R.id.tv_cancle).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CommonUtils.netWorkWarranty();
-                mNoFaceDialog.dismiss();
-            }
-        });
-        AutoUtils.autoSize(viewLoginout);
-        mNoFaceDialog = CommonUtils.getDialog(this, viewLoginout, false);
     }
 
     @Override

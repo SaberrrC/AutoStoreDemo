@@ -43,8 +43,9 @@ public class MyLeMaiBaoActivity extends BaseActivity implements FinalRecycleAdap
     private static final int          CHOOSE_STATE_BEHALF_REPAYMENT = 0;//待还款
     private static final int          CHOOSE_STATE_REPAID           = 1;//已还款
     private              int          currentChooseState            = 0;
-    private ImageView mIvNolist;
-    private TextView  mTvNolist;
+    private ImageView          mIvNolist;
+    private TextView           mTvNolist;
+    private AutoRelativeLayout mFlNolist;
 
     @Override
     public int initLayout() {
@@ -61,18 +62,25 @@ public class MyLeMaiBaoActivity extends BaseActivity implements FinalRecycleAdap
         mTvNolist = (TextView) findViewById(R.id.tv_nolist);
         mTvBehalfRepayment = (TextView) findViewById(R.id.tv_behalf_repayment);
         mTvRepaid = (TextView) findViewById(R.id.tv_repaid);
+        mFlNolist = (AutoRelativeLayout) findViewById(R.id.fl_nolist);
         mTvBehalfRepayment.setOnClickListener(this);
         mTvRepaid.setOnClickListener(this);
         mPulltoRefreshRecyclerView = (PulltoRefreshRecyclerView) findViewById(R.id.pr_lists);
         mRecyclerView = mPulltoRefreshRecyclerView.getRecyclerView();
         Map<Class, Integer> map = new HashMap<>();
         map.put(RecordBean.class, R.layout.layout_item_lemaibao_list);
-        for (int i = 0; i < 10; i++) {
-            mDatas.add(new RecordBean());
-        }
         mFinalRecycleAdapter = new FinalRecycleAdapter(mDatas, map, this);
         mRecyclerView.setAdapter(mFinalRecycleAdapter);
         mPulltoRefreshRecyclerView.setRefreshLoadMoreListener(MyRefreshLoadMoreListener);
+        initCheck();
+    }
+
+    private void initCheck() {
+        mTvBehalfRepayment.setTextColor(Color.parseColor("#FFFCBF0D"));
+        mTvRepaid.setTextColor(Color.parseColor("#999999"));
+        mFlNolist.setVisibility(View.VISIBLE);
+        mIvNolist.setImageResource(R.mipmap.image_yhq);
+        mTvNolist.setText("账单都已还清");
     }
 
     /**
@@ -134,6 +142,7 @@ public class MyLeMaiBaoActivity extends BaseActivity implements FinalRecycleAdap
                 currentChooseState = CHOOSE_STATE_BEHALF_REPAYMENT;
                 mTvBehalfRepayment.setTextColor(Color.parseColor("#FFFCBF0D"));
                 mTvRepaid.setTextColor(Color.parseColor("#999999"));
+                mFlNolist.setVisibility(View.VISIBLE);
                 mIvNolist.setImageResource(R.mipmap.image_yhq);
                 mTvNolist.setText("账单都已还清");
                 break;
@@ -144,6 +153,7 @@ public class MyLeMaiBaoActivity extends BaseActivity implements FinalRecycleAdap
                 currentChooseState = CHOOSE_STATE_REPAID;
                 mTvBehalfRepayment.setTextColor(Color.parseColor("#999999"));
                 mTvRepaid.setTextColor(Color.parseColor("#FFFCBF0D"));
+                mFlNolist.setVisibility(View.VISIBLE);
                 mIvNolist.setImageResource(R.mipmap.image_wzd);
                 mTvNolist.setText("没有已还清账单");
                 break;

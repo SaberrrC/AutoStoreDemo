@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="#F5F5F5"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <include layout="@layout/toolbar_layout"></include>
@@ -50,36 +50,41 @@
             android:textSize="16px"/>
     </LinearLayout>
 
-    <com.shanlin.autostore.view.PulltoRefreshRecyclerView
-        android:id="@+id/pr_lists"
+    <com.zhy.autolayout.AutoFrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible"/>
+        android:layout_height="match_parent">
 
-    <com.zhy.autolayout.AutoRelativeLayout
-        android:id="@+id/fl_nolist"
-        android:layout_width="match_parent"
-        android:layout_height="190dp"
-        android:layout_marginTop="2px"
-        android:background="@color/white"
-        android:visibility="gone">
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:id="@+id/fl_nolist"
+            android:layout_width="match_parent"
+            android:layout_height="190dp"
+            android:layout_marginTop="2px"
+            android:background="@color/white"
+            android:visibility="visible">
 
-        <ImageView
-            android:id="@+id/iv_nolist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="60px"/>
+            <ImageView
+                android:id="@+id/iv_nolist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="60px"/>
 
-        <TextView
-            android:id="@+id/tv_nolist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="20dp"
-            android:text=""/>
-    </com.zhy.autolayout.AutoRelativeLayout>
+            <TextView
+                android:id="@+id/tv_nolist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp"
+                android:text=""/>
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+        <com.shanlin.autostore.view.PulltoRefreshRecyclerView
+            android:id="@+id/pr_lists"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"/>
+    </com.zhy.autolayout.AutoFrameLayout>
 
 
 </LinearLayout>
