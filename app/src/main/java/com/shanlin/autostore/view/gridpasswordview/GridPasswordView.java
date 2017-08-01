@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -359,6 +360,7 @@ public class GridPasswordView extends LinearLayout implements PasswordView {
         }
         if (password.length() == 6) {
             mListener.onInputFinish(password);
+            Log.d("WR", "setPassword:----------- "+password);
         }
     }
 

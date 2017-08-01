@@ -71,6 +71,16 @@
         android:textColor="#FFFFFFFF"
         android:textSize="26px"/>
 
+    <ImageView
+        android:id="@+id/circle"
+        android:clickable="true"
+        android:layout_below="@id/pv"
+        android:layout_width="140px"
+        android:layout_height="140px"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="93px"
+        android:src="@mipmap/circle"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -1,6 +1,7 @@
 package com.shanlin.autostore;
 
 import android.Manifest;
+import android.animation.ValueAnimator;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,7 +16,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -92,6 +95,9 @@ public class MainActivity extends BaseActivity {
     private String       mUserPhoneHide;
     private RefundMoneyBean refundMoneyBean = null;
     private String creditBalance;
+    private ImageView circle;
+    private ValueAnimator animator;
+    private int total;
 
     @Override
     public int initLayout() {
@@ -115,6 +121,7 @@ public class MainActivity extends BaseActivity {
         openLMB.setOnClickListener(this);
         mBtnScan = (Button) findViewById(R.id.btn_scan_bg);
         mBtnScan.setOnClickListener(this);
+        initScanAnim();
         Intent intent = getIntent();
         String faceVerify = intent.getStringExtra(Constant.FACE_VERIFY);
         mLoginBean = (LoginBean) intent.getSerializableExtra(Constant.USER_INFO);
@@ -133,6 +140,26 @@ public class MainActivity extends BaseActivity {
             showToFaceDialog();
             return;
         }
+    }
+
+    private void initScanAnim() {
+        circle = ((ImageView) findViewById(R.id.circle));
+        circle.setOnClickListener(this);
+        animator = ValueAnimator.ofFloat(0.5f,1.0f);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.setDuration(200);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (float) animation.getAnimatedValue();
+                circle.setScaleX(value);
+                circle.setScaleY(value);
+                circle.setAlpha(1-value);
+                if (value == 1.0f){
+                    toScan();
+                }
+            }
+        });
     }
 
     @Override
@@ -155,6 +182,7 @@ public class MainActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         pv.setGirlPercent(femaleCount);
+        pv.setTotalPeople(total);
         //        NumAnim.startAnim(mUserNum, 100000000, 2000);
         pv.flush();
     }
@@ -182,7 +210,7 @@ public class MainActivity extends BaseActivity {
             public void onResponse(Call<UserNumEverydayBean> call, Response<UserNumEverydayBean> response) {
                 UserNumEverydayBean body = response.body();
                 if (TextUtils.equals("200", body.getCode())) {
-                    int total = body.getData().getMemberCount();
+                    total = body.getData().getMemberCount();
                     //女性
                     femaleCount = body.getData().getFemaleCount();
                     CommonUtils.debugLog("总人数---" + total);
@@ -287,18 +315,9 @@ public class MainActivity extends BaseActivity {
                     CommonUtils.toNextActivity(this, OpenLeMaiBao.class);
                 }
                 break;
-            case R.id.btn_scan_bg://扫一扫
-                MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS}, new MPermissionUtils.OnPermissionListener() {
-                    @Override
-                    public void onPermissionGranted() {
-                        startActivityForResult(new Intent(MainActivity.this, CaptureActivity.class), REQUEST_CODE_SCAN);
-                    }
+            case R.id.circle://扫一扫
+                animator.start();
 
-                    @Override
-                    public void onPermissionDenied() {
-                        MPermissionUtils.showTipsDialog(MainActivity.this);
-                    }
-                });
                 break;
             case R.id.identify_tip://完善身份，智能购物
                 MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS}, new MPermissionUtils.OnPermissionListener() {
@@ -324,6 +343,20 @@ public class MainActivity extends BaseActivity {
         mDrawerLayout.closeDrawer(Gravity.LEFT);
     }
 
+    private void toScan() {
+        MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS}, new MPermissionUtils.OnPermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                startActivityForResult(new Intent(MainActivity.this, CaptureActivity.class), REQUEST_CODE_SCAN);
+            }
+
+            @Override
+            public void onPermissionDenied() {
+                MPermissionUtils.showTipsDialog(MainActivity.this);
+            }
+        });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -331,8 +364,8 @@ public class MainActivity extends BaseActivity {
             if (data == null) {
                 return;
             }
-            int width = data.getExtras().getInt("width");
-            int height = data.getExtras().getInt("height");
+//            int width = data.getExtras().getInt("width");
+//            int height = data.getExtras().getInt("height");
             String result = data.getExtras().getString("result");
             if (result.contains("orderNo")) {
                 //订单号信息

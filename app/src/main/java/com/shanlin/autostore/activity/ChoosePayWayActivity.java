@@ -82,6 +82,9 @@ public class ChoosePayWayActivity extends BaseActivity{
     private String creditBalance;
     private TextView availableBalance;
     private String message;
+    private View way1;
+    private View way2;
+    private View way3;
 
     @Override
     public int initLayout() {
@@ -94,9 +97,12 @@ public class ChoosePayWayActivity extends BaseActivity{
         availableDialogView = LayoutInflater.from(this).inflate(R.layout.get_available_balence_layout, null);
         availableDialogView.findViewById(R.id.btn_diaolog_know).setOnClickListener(this);
         availableBalance = ((TextView) findViewById(R.id.get_avaiable_balence));//显示可用余额
-        findViewById(R.id.ll_pay_way_1).setOnClickListener(this);
-        findViewById(R.id.ll_pay_way_2).setOnClickListener(this);
-        findViewById(R.id.ll_pay_way_3).setOnClickListener(this);
+        way1 = findViewById(R.id.ll_pay_way_1);
+        way1.setOnClickListener(this);
+        way2 = findViewById(R.id.ll_pay_way_2);
+        way2.setOnClickListener(this);
+        way3 = findViewById(R.id.ll_pay_way_3);
+        way3.setOnClickListener(this);
         iconChoose = ((ImageView) findViewById(R.id.iv_icon_choose));//圆形logo根据状态切换
         availableBalence = (TextView)findViewById(R.id.get_avaiable_balence);//可用额度
         availableBalence.setOnClickListener(this);
@@ -123,6 +129,9 @@ public class ChoosePayWayActivity extends BaseActivity{
             @Override
             public void onDismiss() {
                 backgroundAlpha(1f);
+                popBottom.dismiss();
+                way2.setClickable(true);
+                way3.setClickable(true);
             }
         });
 
@@ -133,6 +142,12 @@ public class ChoosePayWayActivity extends BaseActivity{
         popBottom.setBackgroundDrawable(new ColorDrawable(0x00000000));
         popBottom.setOutsideTouchable(false);
         popBottom.setFocusable(false);
+        popBottom.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                popTop.dismiss();
+            }
+        });
     }
 
     private StringBuilder sb = new StringBuilder();
@@ -143,6 +158,7 @@ public class ChoosePayWayActivity extends BaseActivity{
         xnumber.setIOnKeyboardListener(new XNumberKeyboardView.IOnKeyboardListener() {
             @Override
             public void onInsertKeyEvent(String text) {
+                if (!popTop.isShowing()) return;
                 if (sb.length() < 6) {
                     sb.append(text);
                     CommonUtils.debugLog("sb---"+sb.toString());
@@ -152,6 +168,7 @@ public class ChoosePayWayActivity extends BaseActivity{
 
             @Override
             public void onDeleteKeyEvent() {
+                if (!popTop.isShowing()) return;
                 if (sb.length() > 0)
                 sb = sb.deleteCharAt(sb.length() - 1);
                 pswView.setPassword(sb.toString());
@@ -171,7 +188,6 @@ public class ChoosePayWayActivity extends BaseActivity{
             public void onInputFinish(String psw) {
                 popTop.dismiss();
                 popBottom.dismiss();
-                pswView.clearPassword();
                 //调用乐买宝支付接口
                 leMaiBaoPay(psw);
             }
@@ -192,8 +208,7 @@ public class ChoosePayWayActivity extends BaseActivity{
                     String payStatus = data.getPayStatus();
                     if ("3".equals(payStatus)) {
                         CommonUtils.showToast(ChoosePayWayActivity.this,"支付密码错误,请重新输入!");
-                        showInputPswDialog();
-                        showKeyBoard();
+                        showInputPswPop();
                     } else if ("1".equals(payStatus)){
                         CommonUtils.showToast(ChoosePayWayActivity.this,"支付成功!");
                         CommonUtils.sendDataToNextActivity(ChoosePayWayActivity.this,
@@ -262,8 +277,7 @@ public class ChoosePayWayActivity extends BaseActivity{
 
             case R.id.ll_pay_way_1:
                 //买乐宝支付
-                showInputPswDialog();
-                showKeyBoard();
+                showInputPswPop();
                 break;
             case R.id.get_avaiable_balence:
                 //可用额度领取
@@ -297,14 +311,20 @@ public class ChoosePayWayActivity extends BaseActivity{
         }
     }
 
-    private void showInputPswDialog() {
+    private void showInputPswPop() {
+        sb.delete(0,6);
+        pswView.clearPassword();
         popTop.showAtLocation(getWindow().getDecorView(), Gravity.CENTER_HORIZONTAL,0,-300);
+        showKeyBoard();
         backgroundAlpha(0.5f);
+        way2.setClickable(false);
+        way3.setClickable(false);
     }
 
-    private void showKeyBoard() {
+    public void showKeyBoard () {
         popBottom.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM,0,0);
     }
+
 
     @Override
     protected void onResume() {

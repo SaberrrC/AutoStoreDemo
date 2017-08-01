@@ -15,12 +15,12 @@ import android.graphics.Shader;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
 import com.shanlin.autostore.R;
+import com.shanlin.autostore.utils.CommonUtils;
 
 
 /**
@@ -41,6 +41,8 @@ public class ProgressView extends View {
 
     static Handler h = new Handler();
     private int value;
+    private int width;
+    private final RectF right;
 
     public ProgressView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -79,6 +81,8 @@ public class ProgressView extends View {
 
         right_path = new Path();
 
+        right = new RectF(0,top,width,bottom);
+
     }
 
     public void flush() {
@@ -110,30 +114,40 @@ public class ProgressView extends View {
                         .getHeight() - girlBM.getHeight()/5,
                 paintLeft);
 
-        canvas.drawText((100 - value) + "%", getWidth() - 2*boyBM.getWidth(), boyBM.getHeight
+        canvas.drawText((total == 0 ? 0 : (100 - value)) + "%", getWidth() - 2*boyBM.getWidth(),
+                boyBM
+                .getHeight
                         () - boyBM.getHeight()/5,
                 paintRight);
 
         canvas.drawBitmap(girlBM,radius,0,null);
         canvas.drawBitmap(boyBM,getWidth()-3*boyBM.getWidth(),0,null);
-        canvas.drawPath(right_path,paintRight);
-        canvas.drawArc(rf1,-90,180,false,paint_white);
-        canvas.drawRoundRect(left,radius,top+radius,paintLeft);
+        if (textLeft != 0) {
+            canvas.drawRoundRect(left,radius,top+radius,paintLeft);
+            canvas.drawArc(rf1,-90,180,false,paint_white);
+            canvas.drawPath(right_path,paintRight);
+        } else {
+            canvas.drawRoundRect(right,radius,top+radius,paintRight);
+        }
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        Log.d(TAG, "width="+getWidth()+"-------"+"height="+getHeight());
-        int width =  MeasureSpec.getSize(widthMeasureSpec);
+        CommonUtils.debugLog("width="+getWidth()+"-------"+"height="+getHeight());
+        width = MeasureSpec.getSize(widthMeasureSpec);
         int height = bottom;
         setMeasuredDimension(width, height);
     }
 
     private int textLeft;
+    private int total;
 
     public void setGirlPercent(int text) {
-        textLeft = text < 3 ? 3 : (text > 99 ? 99 : text);
+        textLeft = text;
+    }
+    public void setTotalPeople(int totalPeople) {
+        total = totalPeople;
     }
 
 
