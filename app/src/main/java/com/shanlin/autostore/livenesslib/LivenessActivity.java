@@ -2,6 +2,7 @@ package com.shanlin.autostore.livenesslib;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
@@ -10,6 +11,7 @@ import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.support.v7.widget.Toolbar;
 import android.view.TextureView;
 import android.view.View;
 import android.view.animation.Animation;
@@ -30,6 +32,7 @@ import com.megvii.livenessdetection.FaceQualityManager.FaceQualityErrorType;
 import com.megvii.livenessdetection.bean.FaceIDDataStruct;
 import com.megvii.livenessdetection.bean.FaceInfo;
 import com.shanlin.autostore.R;
+import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.livenesslib.util.ConUtil;
 import com.shanlin.autostore.livenesslib.util.DialogUtil;
 import com.shanlin.autostore.livenesslib.util.ICamera;
@@ -38,6 +41,7 @@ import com.shanlin.autostore.livenesslib.util.IMediaPlayer;
 import com.shanlin.autostore.livenesslib.util.Screen;
 import com.shanlin.autostore.livenesslib.util.SensorUtil;
 import com.shanlin.autostore.livenesslib.view.CircleProgressBar;
+import com.shanlin.autostore.utils.StatusBarUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,7 +54,7 @@ public class LivenessActivity extends Activity implements PreviewCallback, Detec
     private FaceMask          mFaceMask;// 画脸位置的类（调试时会用到）
     private ProgressBar       mProgressBar;// 网络上传请求验证时出现的ProgressBar
     private LinearLayout      headViewLinear;// "请在光线充足的情况下进行检测"这个视图
-    private RelativeLayout    rootView;// 根视图
+    private LinearLayout    rootView;// 根视图
     private TextView          timeOutText;
     private RelativeLayout    timeOutRel;
     private CircleProgressBar mCircleProgressBar;
@@ -74,6 +78,7 @@ public class LivenessActivity extends Activity implements PreviewCallback, Detec
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.liveness_layout);
+        StatusBarUtils.setColor(this, Color.TRANSPARENT);
         init();
         initData();
     }
@@ -86,7 +91,21 @@ public class LivenessActivity extends Activity implements PreviewCallback, Detec
         mHandler = new Handler(mHandlerThread.getLooper());
         mIMediaPlayer = new IMediaPlayer(this);
         mDialogUtil = new DialogUtil(this);
-        rootView = (RelativeLayout) findViewById(R.id.liveness_layout_rootRel);
+        rootView = (LinearLayout) findViewById(R.id.liveness_layout_rootRel);
+        Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
+        TextView title = (TextView) findViewById(R.id.toolbar_title);
+        tb.setNavigationIcon(R.mipmap.nav_back);
+        tb.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.putExtra(Constant.ON_BACK_PRESSED, Constant.ON_BACK_PRESSED);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
+        title.setText("人脸识别");
+        title.setTextColor(getResources().getColor(R.color.black));
         mIDetection = new IDetection(this, rootView);
         mFaceMask = (FaceMask) findViewById(R.id.liveness_layout_facemask);
         mICamera = new ICamera();
@@ -375,6 +394,14 @@ public class LivenessActivity extends Activity implements PreviewCallback, Detec
         intent.putExtra("result", jsonObject.toString());
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra(Constant.ON_BACK_PRESSED, Constant.ON_BACK_PRESSED);
+        setResult(RESULT_OK, intent);
+        super.onBackPressed();
     }
 
     private int mCurStep = 0;// 检测动作的次数

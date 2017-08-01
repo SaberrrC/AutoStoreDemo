@@ -348,6 +348,9 @@ public class MainActivity extends BaseActivity {
             }
         }
         if (requestCode == REQUEST_CODE_REGEST) {//人脸识别成功 拿到图片跳转
+            if (TextUtils.equals(Constant.ON_BACK_PRESSED, data.getStringExtra(Constant.ON_BACK_PRESSED))) {
+                return;
+            }
             try {
                 if (data == null) {
                     ToastUtils.showToast("人脸识别失败");

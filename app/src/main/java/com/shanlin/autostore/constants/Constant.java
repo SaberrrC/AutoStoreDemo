@@ -21,6 +21,7 @@ public class Constant {
     public static final String WX_INFO            = "WX_INFO";//微信登陆位注册手机号
     public static final String ORDER_ITEM         = "ORDER_ITEM";
     public static final String REFUND_MONEY_BEAN  = "REFUND_MONEY_BEAN";//退款金额
+    public static final String ON_BACK_PRESSED    = "ON_BACK_PRESSED";//按返回按钮
 
     public static final String FACE_REGESTED_OK = "FACE_REGESTED_OK";
 
