@@ -55,6 +55,7 @@
         android:layout_below="@id/et_phone_num"
         android:layout_toRightOf="@id/iv_phone"
         android:background="@null"
+        android:maxLength="4"
         android:gravity="center_vertical"
         android:hint="请输入短信验证码"
         android:imeOptions="actionGo"

@@ -2,9 +2,7 @@ package com.shanlin.autostore.base;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.IBinder;
-import android.os.PersistableBundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -21,11 +19,6 @@ public class SoftInputBaseActivity extends AutoLayoutActivity {
 
     public static final String ACTION_HIDE_KEYBROAD = "ACTION_HIDE_KEYBROAD";
     private OnHideKeyBroadListener mOnHideKeyBroadListener;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-    }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
