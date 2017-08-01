@@ -85,7 +85,8 @@ public class GateActivity extends BaseActivity {
 
     private void sendOpenInfo() {
         HttpService service = CommonUtils.doNet();
-        OpenGardBody openGardBody = new OpenGardBody(mOpenGardQRBean.getDeviceId(), mOpenGardQRBean.getStoreId(), SpUtils.getString(this, Constant.DEVICEID, ""));
+        String deviceId = SpUtils.getString(this, Constant.DEVICEID, "");
+        OpenGardBody openGardBody = new OpenGardBody(mOpenGardQRBean.getDeviceId(), mOpenGardQRBean.getStoreId(), deviceId);
         LogUtils.d(openGardBody.toString());
         Call<CaptureBean> call = service.postGardOpen(SpUtils.getString(this, Constant.TOKEN, ""), openGardBody);
         call.enqueue(new CustomCallBack<CaptureBean>() {
