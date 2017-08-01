@@ -164,6 +164,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        //调用今日到店人数接口
+        getUserNumToday();
         //获取认证状态
         String authenResult = SpUtils.getString(this, Constant_LeMaiBao.AUTHEN_STATE_KEY, "0");
         Log.d(TAG, "-----------------是否完成乐买宝认证=" + authenResult);
@@ -195,8 +197,6 @@ public class MainActivity extends BaseActivity {
         mTvPhoneNum.setText(mUserPhoneHide);
         gson = new Gson();
         service = CommonUtils.doNet();
-        //调用今日到店人数接口
-        getUserNumToday();
         //获取退款金额
         getRefundMoney();
 
@@ -208,13 +208,13 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onResponse(Call<UserNumEverydayBean> call, Response<UserNumEverydayBean> response) {
                 UserNumEverydayBean body = response.body();
+                CommonUtils.debugLog("--------"+body.toString());
                 if (TextUtils.equals("200", body.getCode())) {
                     total = body.getData().getMemberCount();
                     //女性
                     femaleCount = body.getData().getFemaleCount();
                     CommonUtils.debugLog("总人数---" + total);
                     mUserNum.setText(total + "");
-
                 }
             }
 

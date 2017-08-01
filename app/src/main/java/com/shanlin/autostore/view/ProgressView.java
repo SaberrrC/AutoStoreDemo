@@ -32,7 +32,7 @@ public class ProgressView extends View {
     private static final String TAG = "wr";
 
     private final Bitmap boyBM,girlBM;
-    private final int OFF_SET = 5,radius,bottom;
+    private final int OFF_SET = 10,radius,bottom;
     private final int size;
     private int top;
     private float lefts = 100;//左边中间直线的距离
@@ -42,7 +42,6 @@ public class ProgressView extends View {
     static Handler h = new Handler();
     private int value;
     private int width;
-    private final RectF right;
 
     public ProgressView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -81,8 +80,6 @@ public class ProgressView extends View {
 
         right_path = new Path();
 
-        right = new RectF(0,top,width,bottom);
-
     }
 
     public void flush() {
@@ -99,6 +96,7 @@ public class ProgressView extends View {
         super.onDraw(canvas);
         //背景线条位置
         RectF left = new RectF(0,top,lefts+2*radius+radius/3,bottom);
+        RectF right = new RectF(0,top,width,bottom);
         //这里出现radius/2的偏差,不知道什么原因
         RectF rf1 = new RectF(lefts+radius,top,lefts+3*radius-radius/2,bottom);
         RectF rf2 = new RectF(getWidth()-2*radius,top,getWidth(),bottom);
