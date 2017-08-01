@@ -1,6 +1,5 @@
 package com.shanlin.autostore.activity;
 
-import android.Manifest;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -49,16 +48,7 @@ public class SplashActivity extends Activity {
         StatusBarUtils.setColor(this, Color.TRANSPARENT);
         EventBus.getDefault().post(new WxMessageEvent());
         LogUtils.d("token  " + SpUtils.getString(this, Constant.TOKEN, ""));
-        MPermissionUtils.requestPermissionsResult(this, 1, new String[]{
-                Manifest.permission.CAMERA,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.CHANGE_WIFI_STATE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_CONTACTS}, new MPermissionUtils.OnPermissionListener() {
+        CommonUtils.checkPermission(this, new MPermissionUtils.OnPermissionListener() {
             @Override
             public void onPermissionGranted() {
                 checkUpdate();
@@ -67,10 +57,9 @@ public class SplashActivity extends Activity {
 
             @Override
             public void onPermissionDenied() {
-//                MPermissionUtils.showTipsDialog(SplashActivity.this);
+
             }
         });
-
     }
 
     /**
@@ -158,7 +147,7 @@ public class SplashActivity extends Activity {
         switch (forceUpdate) {
             //强更
             case 1:
-                MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, new MPermissionUtils.OnPermissionListener() {
+                CommonUtils.checkPermission(SplashActivity.this, new MPermissionUtils.OnPermissionListener() {
                     @Override
                     public void onPermissionGranted() {
                         adInfo.setTitle("版本更新");

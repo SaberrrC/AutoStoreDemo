@@ -1,5 +1,6 @@
 package com.shanlin.autostore.utils;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -224,5 +226,27 @@ public class CommonUtils {
             return false;
         }
         return true;
+    }
+
+    public static void checkPermission(Activity activity,MPermissionUtils.OnPermissionListener listener) {
+        MPermissionUtils.requestPermissionsResult(activity, 1, new String[]{
+                Manifest.permission.CAMERA,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.CHANGE_WIFI_STATE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_CONTACTS},listener);
+    }
+    public static void getDevicedID() {
+        String deviceId = JPushInterface.getRegistrationID(AutoStoreApplication.getApp());
+        if (!TextUtils.isEmpty(deviceId)) {
+            SpUtils.saveString(AutoStoreApplication.getApp(), Constant.DEVICEID, deviceId);
+            LogUtils.d(Constant.DEVICEID + "   " + deviceId);
+        } else {
+
+        }
     }
 }
