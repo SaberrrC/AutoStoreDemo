@@ -16,8 +16,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -71,7 +69,7 @@ public class MainActivity extends BaseActivity {
     private Toolbar      toolbar;
     private Dialog       mGateOpenDialog;
     private AlertDialog  mWelcomeDialog;
-    private Button       mBtnScan;
+    private TextView       mBtnScan;
     private AlertDialog  mToFaceDialog;
     private byte[]       mLivenessImgBytes;
     private TextView     mTvIdentify;
@@ -93,9 +91,8 @@ public class MainActivity extends BaseActivity {
     private String       mUserPhoneHide;
     private RefundMoneyBean refundMoneyBean = null;
     private String creditBalance;
-    private ImageView circle;
-    private ValueAnimator animator;
     private int total;
+    private View circle;
 
     @Override
     public int initLayout() {
@@ -115,10 +112,10 @@ public class MainActivity extends BaseActivity {
         mBtBanlance.setOnClickListener(this);
         mTvIdentify.setOnClickListener(this);
         findViewById(R.id.btn_lemaibao).setOnClickListener(this);
+        circle = findViewById(R.id.iv_circle);
         openLMB = (TextView) findViewById(R.id.btn_open_le_mai_bao);
         openLMB.setOnClickListener(this);
-        mBtnScan = (Button) findViewById(R.id.btn_scan_bg);
-        mBtnScan.setOnClickListener(this);
+        mBtnScan = (TextView) findViewById(R.id.btn_scan_bg);
         initScanAnim();
         Intent intent = getIntent();
         String faceVerify = intent.getStringExtra(Constant.FACE_VERIFY);
@@ -141,9 +138,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initScanAnim() {
-        circle = ((ImageView) findViewById(R.id.circle));
-        circle.setOnClickListener(this);
-        animator = ValueAnimator.ofFloat(0.5f,1.0f);
+        final ValueAnimator animator = ValueAnimator.ofFloat(0.5f,1.0f);
         animator.setInterpolator(new LinearInterpolator());
         animator.setDuration(200);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -156,6 +151,13 @@ public class MainActivity extends BaseActivity {
                 if (value == 1.0f){
                     toScan();
                 }
+            }
+        });
+
+        circle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                animator.start();
             }
         });
     }
@@ -231,7 +233,6 @@ public class MainActivity extends BaseActivity {
             public void onResponse(Call<CreditBalanceCheckBean> call, Response<CreditBalanceCheckBean> response) {
                 CreditBalanceCheckBean body = response.body();
                 if (TextUtils.equals("200",body.getCode())) {
-
                     CommonUtils.debugLog(body.toString()+"----------"+token);
                     creditBalance = body.getData().getCreditBalance();
                     openLMB.setText("¥" + (creditBalance == null ? "0.00" : creditBalance));
@@ -312,10 +313,6 @@ public class MainActivity extends BaseActivity {
                 if (openLMB.isClickable()) {
                     CommonUtils.toNextActivity(this, OpenLeMaiBao.class);
                 }
-                break;
-            case R.id.circle://扫一扫
-                animator.start();
-
                 break;
             case R.id.identify_tip://完善身份，智能购物
                 CommonUtils.checkPermission(this, new MPermissionUtils.OnPermissionListener() {

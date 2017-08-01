@@ -59,7 +59,8 @@
         app:radius="10"
         app:size_text="16sp"/>
 
-    <Button
+    <TextView
+        android:gravity="center"
         android:id="@+id/btn_scan_bg"
         android:layout_width="140px"
         android:layout_height="140px"
@@ -72,7 +73,7 @@
         android:textSize="26px"/>
 
     <ImageView
-        android:id="@+id/circle"
+        android:id="@+id/iv_circle"
         android:clickable="true"
         android:layout_below="@id/pv"
         android:layout_width="140px"
