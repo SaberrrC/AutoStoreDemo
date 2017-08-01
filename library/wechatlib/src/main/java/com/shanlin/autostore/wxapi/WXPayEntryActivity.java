@@ -5,12 +5,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.shanlin.autostore.WxMessageEvent;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by Sxf on 2017/7/25.
@@ -46,6 +50,7 @@ public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEvent
                 //success
                 case 0:
                     Toast.makeText(this,"支付成功",Toast.LENGTH_SHORT).show();
+                    EventBus.getDefault().postSticky(new WxMessageEvent("微信","8"));
                     finish();
                     break;
                 //error

@@ -27,19 +27,11 @@ public class WXPayTools {
         PayReq payReq=new PayReq();
         payReq.appId=APP_ID;
         payReq.packageValue="Sign=WXPay";//固定值
-        payReq.partnerId=map.get("partnerId");//子商户号
-        payReq.prepayId=map.get("prepayId");
-        payReq.nonceStr=map.get("nonceStr");
-        payReq.timeStamp=map.get("timeStamp");//s
+        payReq.partnerId=map.get("partnerid");//子商户号
+        payReq.prepayId=map.get("prepayid");
+        payReq.nonceStr=map.get("noncestr");
+        payReq.timeStamp=map.get("timestamp");//s
         payReq.sign=map.get("sign");
-
-        //TestData
-//        payReq.partnerId="1486219452";//子商户号
-//        payReq.prepayId="wx2017072712525528dfade2ae0240070621";
-//        payReq.packageValue="Sign=WXPay";//固定值
-//        payReq.nonceStr="MJ2bIOBeWamtUvMv";
-//        payReq.timeStamp="1501131179";//s
-//        payReq.sign="8C0AADD0F6A7EB749FDC0A58516B2D48";
         api.sendReq(payReq);
     }
 }

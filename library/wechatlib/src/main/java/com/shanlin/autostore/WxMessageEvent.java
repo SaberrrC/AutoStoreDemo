@@ -11,6 +11,14 @@ public class WxMessageEvent {
     private String message;
     private  String code;
 
+    public WxMessageEvent() {
+    }
+
+    public WxMessageEvent(String message, String code) {
+        this.message = message;
+        this.code = code;
+    }
+
     public String getMessage() {
         return message;
     }
