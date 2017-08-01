@@ -46,6 +46,7 @@ import com.shanlin.autostore.zhifubao.PayResult;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -314,7 +315,7 @@ public class ChoosePayWayActivity extends BaseActivity{
         }
     }
 
-    @Subscribe(sticky = true)
+    @Subscribe(threadMode= ThreadMode.MAIN)
     public void getWXPayResult(WxMessageEvent event){
         if (event.getCode().equals("8")) {
             message = event.getMessage();
@@ -322,6 +323,7 @@ public class ChoosePayWayActivity extends BaseActivity{
                     String[]{Constant_LeMaiBao.PAY_TYPE,Constant_LeMaiBao.TOTAL_AMOUNT,
                     Constant_LeMaiBao.PAY_TIME},new String[]{message,totalMoney,CommonUtils
                     .getCurrentTime(true)});
+            finish();
         }
     }
 
@@ -350,7 +352,7 @@ public class ChoosePayWayActivity extends BaseActivity{
                         paramsMap.put(WXConstant.SIGN, data.getSign());
                         WXPayTools.pay(paramsMap, ChoosePayWayActivity.this);
                     } else {
-                        Toast.makeText(ChoosePayWayActivity.this, "不能重复支付", Toast.LENGTH_SHORT).show();
+                        CommonUtils.showToast(ChoosePayWayActivity.this,"不能重复支付");
                     }
                 } else {
                     String message = response.message();
@@ -361,6 +363,7 @@ public class ChoosePayWayActivity extends BaseActivity{
             @Override
             public void onFailure(Call<WxChatBean> call, Throwable t) {
                 CommonUtils.debugLog(t.getMessage());
+                Log.e("aa",t.toString());
             }
         });
     }
@@ -469,7 +472,6 @@ public class ChoosePayWayActivity extends BaseActivity{
         String privateKey = rsa2 ? RSA2_PRIVATE : RSA_PRIVATE;
         String sign = OrderInfoUtil2_0.getSign(params, privateKey, rsa2);
         final String orderInfo = orderParam + "&" + sign;
-//        Log.i("wr", "pay: "+orderInfo);
         Runnable payRunnable = new Runnable() {
 
             @Override
@@ -486,5 +488,11 @@ public class ChoosePayWayActivity extends BaseActivity{
 
         Thread payThread = new Thread(payRunnable);
         payThread.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }
