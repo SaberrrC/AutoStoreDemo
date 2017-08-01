@@ -17,7 +17,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.shanlin.autostore.activity.BuyRecordActivity;
@@ -210,7 +209,7 @@ public class MainActivity extends BaseActivity {
                     creditBalance = body.getData().getCreditBalance();
                     openLMB.setText("¥" + (creditBalance == null ? "0.00" : creditBalance));
                 } else {
-                    Toast.makeText(MainActivity.this, "获取信用额度失败", Toast.LENGTH_SHORT).show();
+//                   ToastUtils.showToast("获取信用额度失败");
                 }
             }
 

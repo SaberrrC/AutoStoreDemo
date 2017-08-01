@@ -48,7 +48,7 @@
             android:layout_below="@id/tv_available_amount"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="12px"
-            android:text="¥200.00"
+            android:text="¥0.00"
             android:textColor="#FFED4848"
             android:textSize="34px"/>
 
