@@ -201,6 +201,8 @@ public class ChoosePayWayActivity extends BaseActivity{
                                         "乐买宝",data.getPaymentTime()});
                         finish();
                     }
+                } else {
+                    CommonUtils.showToast(ChoosePayWayActivity.this,body.getMessage());
                 }
             }
 
@@ -241,7 +243,7 @@ public class ChoosePayWayActivity extends BaseActivity{
                     CommonUtils.debugLog(alipay);
                     CommonUtils.debugLog(timestamp);
                     pay(alipay);
-                }else {
+                } else {
                     CommonUtils.showToast(ChoosePayWayActivity.this,body.getMessage());
                 }
             }
@@ -340,12 +342,12 @@ public class ChoosePayWayActivity extends BaseActivity{
             @Override
             public void onResponse(Call<WxChatBean> call, Response<WxChatBean> response) {
                 WxChatBean body = response.body();
+                String s = body.toString();
+                CommonUtils.debugLog(s);
                 if (TextUtils.equals("200", body.getCode())) {
                     WxChatBean.DataBean data = body.getData();
                     CommonUtils.debugLog("wxdata-----" + data.toString());
                     HashMap<String, String> paramsMap = new HashMap<String, String>();
-                    //相同订单不能重复支付
-                    if (!TextUtils.isEmpty(data.getPrepayid())) {
                         paramsMap.put(WXConstant.APPID, data.getAppid());
                         paramsMap.put(WXConstant.PARTENER_ID, data.getPartnerid());
                         paramsMap.put(WXConstant.PRE_PAY_ID, data.getPrepayid());
@@ -353,9 +355,6 @@ public class ChoosePayWayActivity extends BaseActivity{
                         paramsMap.put(WXConstant.TIME, data.getTimestamp());
                         paramsMap.put(WXConstant.SIGN, data.getSign());
                         WXPayTools.pay(paramsMap, ChoosePayWayActivity.this);
-                    } else {
-                        CommonUtils.showToast(ChoosePayWayActivity.this,"不能重复支付");
-                    }
                 } else {
                     String message = body.getMessage();
                     CommonUtils.debugLog(message);
