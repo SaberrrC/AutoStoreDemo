@@ -1,6 +1,5 @@
 package com.shanlin.autostore.activity;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -107,7 +106,7 @@ public class LoginActivity extends BaseActivity {
                 if (!CommonUtils.checkNet()) {
                     return;
                 }
-                MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS}, new MPermissionUtils.OnPermissionListener() {
+                CommonUtils.checkPermission(LoginActivity.this, new MPermissionUtils.OnPermissionListener() {
                     @Override
                     public void onPermissionGranted() {
                         //CommonUtils.toNextActivity(LoginActivity.this, MainActivity.class);

@@ -1,6 +1,5 @@
 package com.shanlin.autostore;
 
-import android.Manifest;
 import android.animation.ValueAnimator;
 import android.app.Dialog;
 import android.content.Intent;
@@ -319,7 +318,7 @@ public class MainActivity extends BaseActivity {
 
                 break;
             case R.id.identify_tip://完善身份，智能购物
-                MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS}, new MPermissionUtils.OnPermissionListener() {
+                CommonUtils.checkPermission(this, new MPermissionUtils.OnPermissionListener() {
                     @Override
                     public void onPermissionGranted() {
                         Intent intent = new Intent(MainActivity.this, LivenessActivity.class);
@@ -343,7 +342,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void toScan() {
-        MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS}, new MPermissionUtils.OnPermissionListener() {
+        CommonUtils.checkPermission(this, new MPermissionUtils.OnPermissionListener() {
             @Override
             public void onPermissionGranted() {
                 startActivityForResult(new Intent(MainActivity.this, CaptureActivity.class), REQUEST_CODE_SCAN);

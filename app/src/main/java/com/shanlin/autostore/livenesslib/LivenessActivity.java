@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.megvii.licensemanager.Manager;
 import com.megvii.livenessdetection.DetectionConfig;
 import com.megvii.livenessdetection.DetectionFrame;
 import com.megvii.livenessdetection.Detector;
@@ -28,6 +29,7 @@ import com.megvii.livenessdetection.Detector.DetectionListener;
 import com.megvii.livenessdetection.Detector.DetectionType;
 import com.megvii.livenessdetection.FaceQualityManager;
 import com.megvii.livenessdetection.FaceQualityManager.FaceQualityErrorType;
+import com.megvii.livenessdetection.LivenessLicenseManager;
 import com.megvii.livenessdetection.bean.FaceIDDataStruct;
 import com.megvii.livenessdetection.bean.FaceInfo;
 import com.shanlin.autostore.R;
@@ -79,7 +81,19 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         setContentView(R.layout.liveness_layout);
         StatusBarUtils.setColor(this, Color.TRANSPARENT);
         init();
+        netWorkWarranty();
         initData();
+    }
+    private void netWorkWarranty() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Manager manager = new Manager(LivenessActivity.this);
+                LivenessLicenseManager licenseManager = new LivenessLicenseManager(LivenessActivity.this);
+                manager.registerLicenseManager(licenseManager);
+                manager.takeLicenseFromNetwork(ConUtil.getUUIDString(LivenessActivity.this));
+            }
+        }).start();
     }
 
     private void init() {

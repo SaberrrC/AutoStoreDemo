@@ -1,6 +1,5 @@
 package com.shanlin.autostore.activity;
 
-import android.Manifest;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -176,7 +175,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                     return;
                 }
                 ToastUtils.showToast(msg);
-                MPermissionUtils.requestPermissionsResult(PhoneNumLoginActivity.this, 1, new String[]{Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, new MPermissionUtils.OnPermissionListener() {
+                CommonUtils.checkPermission(PhoneNumLoginActivity.this, new MPermissionUtils.OnPermissionListener() {
                     @Override
                     public void onPermissionGranted() {
                         //CommonUtils.toNextActivity(LoginActivity.this, MainActivity.class);

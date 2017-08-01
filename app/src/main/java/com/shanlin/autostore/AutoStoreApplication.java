@@ -1,11 +1,8 @@
 package com.shanlin.autostore;
 
 import android.app.Application;
-import android.text.TextUtils;
 
-import com.shanlin.autostore.constants.Constant;
-import com.shanlin.autostore.utils.LogUtils;
-import com.shanlin.autostore.utils.SpUtils;
+import com.shanlin.autostore.utils.CommonUtils;
 import com.zhy.autolayout.config.AutoLayoutConifg;
 
 import cn.jpush.android.api.JPushInterface;
@@ -27,7 +24,7 @@ public class AutoStoreApplication extends Application {
         //保存闸机的DevicedID
         JPushInterface.setDebugMode(true);    // 设置开启日志,发布时请关闭日志
         JPushInterface.init(this);            // 初始化 JPush
-        getDevicedID();
+        CommonUtils.getDevicedID();
         //        CrashHandler.getInstance().setCustomCrashHanler(app);
     }
 
@@ -35,13 +32,5 @@ public class AutoStoreApplication extends Application {
         return app;
     }
 
-    private void getDevicedID() {
-        String deviceId = JPushInterface.getRegistrationID(this);
-        if (!TextUtils.isEmpty(deviceId)) {
-            SpUtils.saveString(this, Constant.DEVICEID, deviceId);
-            LogUtils.d(Constant.DEVICEID + "   " + deviceId);
-        } else {
-//            getDevicedID();
-        }
-    }
+
 }
