@@ -11,14 +11,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.view.animation.LinearInterpolator;
 
-import com.megvii.licensemanager.Manager;
-import com.megvii.livenessdetection.LivenessLicenseManager;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.WxMessageEvent;
 import com.shanlin.autostore.bean.resultBean.CheckUpdateBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
-import com.shanlin.autostore.livenesslib.util.ConUtil;
 import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.LogUtils;
@@ -52,7 +49,7 @@ public class SplashActivity extends Activity {
             @Override
             public void onPermissionGranted() {
                 checkUpdate();
-                netWorkWarranty();
+                CommonUtils.netWorkWarranty();
             }
 
             @Override
@@ -60,21 +57,6 @@ public class SplashActivity extends Activity {
 
             }
         });
-    }
-
-    /**
-     * 联网授权
-     */
-    private void netWorkWarranty() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Manager manager = new Manager(SplashActivity.this);
-                LivenessLicenseManager licenseManager = new LivenessLicenseManager(SplashActivity.this);
-                manager.registerLicenseManager(licenseManager);
-                manager.takeLicenseFromNetwork(ConUtil.getUUIDString(SplashActivity.this));
-            }
-        }).start();
     }
 
     @Override

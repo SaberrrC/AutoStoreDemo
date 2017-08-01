@@ -65,8 +65,9 @@ public class LoginActivity extends BaseActivity {
     public static final int     OK_PERCENT           = 73;
     private             boolean isLivenessLicenseGet = false;
     //活体照片路径
-    private byte[] mLivenessImgBytes;
-    private Dialog mLoadingDialog;
+    private byte[]      mLivenessImgBytes;
+    private Dialog      mLoadingDialog;
+    private AlertDialog mNoFaceDialog;
 
     @Override
     public int initLayout() {
@@ -106,6 +107,11 @@ public class LoginActivity extends BaseActivity {
                 if (!CommonUtils.checkNet()) {
                     return;
                 }
+                if (!AutoStoreApplication.FACE) {
+                    showNoFaceDialog();
+                    return;
+                }
+                CommonUtils.netWorkWarranty();
                 CommonUtils.checkPermission(LoginActivity.this, new MPermissionUtils.OnPermissionListener() {
                     @Override
                     public void onPermissionGranted() {
@@ -344,6 +350,19 @@ public class LoginActivity extends BaseActivity {
                 ToastUtils.showToast("微信登录失败，请重试");
             }
         });
+    }
+
+    private void showNoFaceDialog() {
+        View viewLoginout = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_noface, null, false);
+        viewLoginout.findViewById(R.id.tv_cancle).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CommonUtils.netWorkWarranty();
+                mNoFaceDialog.dismiss();
+            }
+        });
+        AutoUtils.autoSize(viewLoginout);
+        mNoFaceDialog = CommonUtils.getDialog(this, viewLoginout, false);
     }
 
     @Override
