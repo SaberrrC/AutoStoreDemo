@@ -62,6 +62,8 @@ public class SplashActivity extends Activity {
         });
     }
 
+
+
     /**
      * 联网授权
      */
@@ -73,6 +75,11 @@ public class SplashActivity extends Activity {
                 LivenessLicenseManager licenseManager = new LivenessLicenseManager(SplashActivity.this);
                 manager.registerLicenseManager(licenseManager);
                 manager.takeLicenseFromNetwork(ConUtil.getUUIDString(SplashActivity.this));
+                if (licenseManager.checkCachedLicense() > 0) {//成功
+//                    AutoStoreApplication = true;
+                } else {//失败
+//                    face = false;
+                }
             }
         }).start();
     }

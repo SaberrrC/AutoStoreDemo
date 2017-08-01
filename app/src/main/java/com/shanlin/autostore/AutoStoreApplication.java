@@ -15,6 +15,7 @@ public class AutoStoreApplication extends Application {
 
     private static AutoStoreApplication app     = null;
     public static  boolean              isLogin = false;
+    private static boolean              FACE    = false;
 
     @Override
     public void onCreate() {
