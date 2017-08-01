@@ -67,9 +67,6 @@ public class MyLeMaiBaoActivity extends BaseActivity implements FinalRecycleAdap
         mRecyclerView = mPulltoRefreshRecyclerView.getRecyclerView();
         Map<Class, Integer> map = new HashMap<>();
         map.put(RecordBean.class, R.layout.layout_item_lemaibao_list);
-        for (int i = 0; i < 10; i++) {
-            mDatas.add(new RecordBean());
-        }
         mFinalRecycleAdapter = new FinalRecycleAdapter(mDatas, map, this);
         mRecyclerView.setAdapter(mFinalRecycleAdapter);
         mPulltoRefreshRecyclerView.setRefreshLoadMoreListener(MyRefreshLoadMoreListener);

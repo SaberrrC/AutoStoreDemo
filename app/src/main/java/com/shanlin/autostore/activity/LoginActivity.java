@@ -223,6 +223,7 @@ public class LoginActivity extends BaseActivity {
                             //已经验证 保存token和手机号 跳转到主页
                             AutoStoreApplication.isLogin = true;
                             SpUtils.saveString(LoginActivity.this, Constant.TOKEN, data.getData().getToken());
+                            SpUtils.saveString(LoginActivity.this, Constant.USER_PHONE_LOGINED, data.getData().getMobile());
                             //验证乐买宝实名是否认证
                             CommonUtils.checkAuthenStatus(LoginActivity.this, httpService, data.getData().getToken());
 
