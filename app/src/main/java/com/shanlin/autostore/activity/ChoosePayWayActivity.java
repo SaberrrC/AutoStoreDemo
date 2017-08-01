@@ -44,7 +44,9 @@ import com.shanlin.autostore.zhifubao.OrderInfoUtil2_0;
 import com.shanlin.autostore.zhifubao.PayKeys;
 import com.shanlin.autostore.zhifubao.PayResult;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -106,7 +108,7 @@ public class ChoosePayWayActivity extends BaseActivity{
         keyBoard = LayoutInflater.from(this).inflate(R.layout.keyboard, null);
         initPopwindow();
         initKeyBoard();
-//        EventBus.getDefault().register(this);
+        EventBus.getDefault().register(this);
     }
 
     private void initPopwindow() {
@@ -303,16 +305,16 @@ public class ChoosePayWayActivity extends BaseActivity{
     @Override
     protected void onResume() {
         super.onResume();
-        if (Double.valueOf(creditBalance) >= Double.valueOf(totalMoney)) {
-            availableBalence.setText(creditBalance+" 元可用");
-        } else {
-            availableBalence.setTextColor(Color.RED);
-            availableBalence.setText(creditBalance+" 额度不足");
-        }
+//        if (Double.valueOf(creditBalance) >= Double.valueOf(totalMoney)) {
+//            availableBalence.setText(creditBalance+" 元可用");
+//        } else {
+//            availableBalence.setTextColor(Color.RED);
+//            availableBalence.setText(creditBalance+" 额度不足");
+//        }
     }
 
     boolean flag;
-    @Subscribe(sticky = true)
+    @Subscribe(threadMode= ThreadMode.MAIN)
     public void getWXPayResult(WxMessageEvent event){
         if (event.getCode().equals("8")) {
             flag = true;
@@ -321,6 +323,7 @@ public class ChoosePayWayActivity extends BaseActivity{
                     String[]{Constant_LeMaiBao.PAY_TYPE,Constant_LeMaiBao.TOTAL_AMOUNT,
                     Constant_LeMaiBao.PAY_TIME},new String[]{message,totalMoney,CommonUtils
                     .getCurrentTime(true)});
+            finish();
         }
     }
 
@@ -360,6 +363,7 @@ public class ChoosePayWayActivity extends BaseActivity{
             @Override
             public void onFailure(Call<WxChatBean> call, Throwable t) {
                 CommonUtils.debugLog(t.getMessage());
+                Log.e("aa",t.toString());
             }
         });
     }
@@ -485,5 +489,11 @@ public class ChoosePayWayActivity extends BaseActivity{
 
         Thread payThread = new Thread(payRunnable);
         payThread.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }
