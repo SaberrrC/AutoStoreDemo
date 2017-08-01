@@ -191,7 +191,7 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                timeOutRel.setVisibility(View.VISIBLE);
+//                timeOutRel.setVisibility(View.VISIBLE);
             }
         });
         // 开始活体检测
