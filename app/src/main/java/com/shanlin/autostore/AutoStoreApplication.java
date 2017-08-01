@@ -15,7 +15,7 @@ public class AutoStoreApplication extends Application {
 
     private static AutoStoreApplication app     = null;
     public static  boolean              isLogin = false;
-    private static boolean              FACE    = false;
+    public static  boolean              FACE    = false;
 
     @Override
     public void onCreate() {
@@ -26,6 +26,7 @@ public class AutoStoreApplication extends Application {
         JPushInterface.setDebugMode(true);    // 设置开启日志,发布时请关闭日志
         JPushInterface.init(this);            // 初始化 JPush
         CommonUtils.getDevicedID();
+        CommonUtils.netWorkWarranty();
         //        CrashHandler.getInstance().setCustomCrashHanler(app);
     }
 

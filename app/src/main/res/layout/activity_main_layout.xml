@@ -42,7 +42,7 @@
         android:layout_below="@id/tv_today_user_num"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="11px"
-        android:text="100,000,000"
+        android:text="0"
         android:textColor="#FFFCC71F"
         android:textSize="32px"
         />

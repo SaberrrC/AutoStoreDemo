@@ -14,12 +14,15 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.megvii.licensemanager.Manager;
+import com.megvii.livenessdetection.LivenessLicenseManager;
 import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
+import com.shanlin.autostore.livenesslib.util.ConUtil;
 import com.shanlin.autostore.net.LoggingInterceptor;
 import com.shanlin.autostore.utils.env.DeviceInfo;
 
@@ -248,5 +251,25 @@ public class CommonUtils {
         } else {
 
         }
+    }
+
+    /**
+     * 联网授权
+     */
+    public static void netWorkWarranty() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Manager manager = new Manager(AutoStoreApplication.getApp());
+                LivenessLicenseManager licenseManager = new LivenessLicenseManager(AutoStoreApplication.getApp());
+                manager.registerLicenseManager(licenseManager);
+                manager.takeLicenseFromNetwork(ConUtil.getUUIDString(AutoStoreApplication.getApp()));
+                if (licenseManager.checkCachedLicense() > 0) {//成功
+                    AutoStoreApplication.FACE = true;
+                } else {//失败
+                    AutoStoreApplication.FACE = false;
+                }
+            }
+        }).start();
     }
 }

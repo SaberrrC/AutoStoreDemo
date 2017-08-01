@@ -29,7 +29,6 @@ import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.StrUtils;
 import com.shanlin.autostore.utils.ToastUtils;
-import com.shanlin.autostore.utils.env.DeviceInfo;
 import com.shanlin.autostore.view.CountDownTextView;
 
 import retrofit2.Call;
@@ -115,16 +114,10 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
         switch (v.getId()) {
             case R.id.btn_get_msgcode:
                 //获取验证码
-                if (!CommonUtils.checkNet()) {
-                    return;
-                }
                 doCountDowntime();
                 break;
             case R.id.btn_bind_or_login:
                 //绑定或者登录
-                if (!CommonUtils.checkNet()) {
-                    return;
-                }
                 bindOrLogin();
                 break;
         }
@@ -135,13 +128,11 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
      */
     private void doCountDowntime() {
         //是否有网络
-        String networkTypeName = DeviceInfo.getNetworkTypeName();
-        if (TextUtils.isEmpty(networkTypeName)) {//没网络
-            ToastUtils.showToast("无网络");
-            return;
-        }
         if (checkPhoneNum())
             return;
+        if (!CommonUtils.checkNet()) {
+            return;
+        }
         mEtMsgCode.requestFocus();
         mBtnGetMsgCode.show(this, 60);
         deGetCodeFromNet();
@@ -222,6 +213,9 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
         }
         if (TextUtils.isEmpty(msgCode)) {
             ToastUtils.showToast("请输入验证码");
+            return;
+        }
+        if (!CommonUtils.checkNet()) {
             return;
         }
         final HttpService service = CommonUtils.doNet();

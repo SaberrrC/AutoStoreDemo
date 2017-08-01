@@ -63,7 +63,7 @@
                 android:id="@+id/liveness_layout_second_layout"
                 layout="@layout/liveness_detection_step"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_above="@+id/activity_main_bottomTitle"
                 android:layout_marginBottom="15dip"
                 android:layout_marginTop="15dip"
