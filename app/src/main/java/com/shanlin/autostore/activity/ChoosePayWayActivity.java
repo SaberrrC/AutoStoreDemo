@@ -356,6 +356,8 @@ public class ChoosePayWayActivity extends BaseActivity{
                         paramsMap.put(WXConstant.SIGN, data.getSign());
                         WXPayTools.pay(paramsMap, ChoosePayWayActivity.this);
                 } else {
+                    String message = body.getMessage();
+                    CommonUtils.debugLog(message);
                     CommonUtils.showToast(ChoosePayWayActivity.this,body.getMessage());
                 }
             }
