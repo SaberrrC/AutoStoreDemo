@@ -97,7 +97,6 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initData() {
-
     }
 
     @Override

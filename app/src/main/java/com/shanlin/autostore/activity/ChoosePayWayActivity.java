@@ -44,6 +44,7 @@ import com.shanlin.autostore.zhifubao.OrderInfoUtil2_0;
 import com.shanlin.autostore.zhifubao.PayKeys;
 import com.shanlin.autostore.zhifubao.PayResult;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
@@ -106,7 +107,7 @@ public class ChoosePayWayActivity extends BaseActivity{
         keyBoard = LayoutInflater.from(this).inflate(R.layout.keyboard, null);
         initPopwindow();
         initKeyBoard();
-//        EventBus.getDefault().register(this);
+        EventBus.getDefault().register(this);
     }
 
     private void initPopwindow() {
@@ -303,19 +304,19 @@ public class ChoosePayWayActivity extends BaseActivity{
     @Override
     protected void onResume() {
         super.onResume();
-        if (Double.valueOf(creditBalance) >= Double.valueOf(totalMoney)) {
-            availableBalence.setText(creditBalance+" 元可用");
+        if (Double.parseDouble(creditBalance == null ? "0.00" : creditBalance) >= Double.parseDouble
+                (totalMoney)) {
+            availableBalence.setClickable(creditBalance == null ? true : false);
+            availableBalence.setText(creditBalance == null ? "开通乐买宝" : creditBalance+" 元可用");
         } else {
             availableBalence.setTextColor(Color.RED);
             availableBalence.setText(creditBalance+" 额度不足");
         }
     }
 
-    boolean flag;
     @Subscribe(sticky = true)
     public void getWXPayResult(WxMessageEvent event){
         if (event.getCode().equals("8")) {
-            flag = true;
             message = event.getMessage();
             CommonUtils.sendDataToNextActivity(this,PayResultActivity.class,new
                     String[]{Constant_LeMaiBao.PAY_TYPE,Constant_LeMaiBao.TOTAL_AMOUNT,
