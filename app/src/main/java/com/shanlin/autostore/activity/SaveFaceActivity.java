@@ -38,6 +38,7 @@ public class SaveFaceActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        CommonUtils.initToolbar(this, "人脸资料录入成功", R.color.black, null);
         mTvSave = (TextView) findViewById(R.id.tv_save);
         mTvSave.setOnClickListener(this);
     }

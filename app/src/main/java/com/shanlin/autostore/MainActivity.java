@@ -123,13 +123,12 @@ public class MainActivity extends BaseActivity {
         if (TextUtils.isEmpty(faceVerify)) {
             return;
         }
-        //刷脸登陆成功 从登录界面人脸验证跳转
         if (TextUtils.equals(faceVerify, Constant.FACE_VERIFY_OK)) {
-            mTvIdentify.setVisibility(View.GONE);
+//            mTvIdentify.setVisibility(View.GONE);
+            mTvIdentify.setVisibility(View.VISIBLE);
             showWelcomeDialog();
             return;
         }
-        //未注册用户 从手机号 验证码页面跳转
         if (TextUtils.equals(faceVerify, Constant.FACE_VERIFY_NO)) {
             mTvIdentify.setVisibility(View.VISIBLE);
             showToFaceDialog();
