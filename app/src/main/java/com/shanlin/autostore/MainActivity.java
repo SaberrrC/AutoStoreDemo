@@ -93,6 +93,7 @@ public class MainActivity extends BaseActivity {
     private String creditBalance;
     private int total;
     private View circle;
+    private java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
 
     @Override
     public int initLayout() {
@@ -587,7 +588,11 @@ public class MainActivity extends BaseActivity {
                     double refundMoney = Double.parseDouble(balance);
                     sum += refundMoney;
                 }
-                mTvRefundMoney.setText("¥" + sum);
+                if (sum == 0.00) {
+                    mTvRefundMoney.setText("¥0" + df.format(sum));
+                } else {
+                    mTvRefundMoney.setText("¥" + df.format(sum));
+                }
             }
 
             @Override
