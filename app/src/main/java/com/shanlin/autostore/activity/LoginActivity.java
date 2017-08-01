@@ -126,16 +126,17 @@ public class LoginActivity extends BaseActivity {
                 dialog.show();
                 break;
             case R.id.tv_open:
+                dialog.dismiss();
                 // TODO: 2017/7/16 0016 wx登录
                 api = WXAPIFactory.createWXAPI(this, Constant.APP_ID, false);
                 boolean isInstalled1 = api.isWXAppInstalled() && api.isWXAppSupportAPI();
                 boolean isInstalled = isWeixinAvilible(this);
                 if (isInstalled) {
+                    showLoadingDialog();
                     sendAuth();
                 }else {
                     ToastUtils.showToast("请安装微信客户端再进行登陆");
                 }
-                dialog.dismiss();
                 break;
             case R.id.tv_concel:
                 dialog.dismiss();
@@ -347,6 +348,10 @@ public class LoginActivity extends BaseActivity {
     //    在产生事件的线程中执行
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEventPostThread(WxMessageEvent messageEvent) {
+        if (TextUtils.equals(messageEvent.getMessage(), "1")) {
+            mLoadingDialog.dismiss();
+            return;
+        }
         if (messageEvent.getMessage().equals("WxCode")) {
             showLoadingDialog();
             getResult(messageEvent.getCode());

@@ -7,6 +7,10 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.shanlin.autostore.bean.event.OpenGardEvent;
+
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,13 +61,19 @@ public class MyReceiver extends BroadcastReceiver {
                 Log.d(TAG, "[MyReceiver] Unhandl·ed intent - " + intent.getAction());
             }
             String type = bundle.getString("cn.jpush.android.CONTENT_TYPE");
-            if (!TextUtils.equals(type, "1")) {
+            String json = bundle.getString("cn.jpush.android.EXTRA");
+//            {"status":"闸机打开成功！","storeId":"1","type":"1"}
+            Gson gson = new Gson();
+            if (!TextUtils.equals(type, "2")) {
                 return;
             }
-
+            OpenGardEvent openGardEvent = gson.fromJson(json, OpenGardEvent.class);
+            EventBus.getDefault().post(openGardEvent);
         } catch (Exception e) {
+            EventBus.getDefault().post(new OpenGardEvent());
         }
     }
+
     // 打印所有的 intent extra 数据
     private static String printBundle(Bundle bundle) {
         StringBuilder sb = new StringBuilder();

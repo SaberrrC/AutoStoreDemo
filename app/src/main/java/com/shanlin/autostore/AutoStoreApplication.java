@@ -25,6 +25,8 @@ public class AutoStoreApplication extends Application {
         app = this;
         AutoLayoutConifg.getInstance().useDeviceSize();
         //保存闸机的DevicedID
+        JPushInterface.setDebugMode(true);    // 设置开启日志,发布时请关闭日志
+        JPushInterface.init(this);            // 初始化 JPush
         getDevicedID();
         //        CrashHandler.getInstance().setCustomCrashHanler(app);
     }
