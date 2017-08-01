@@ -32,7 +32,6 @@ import com.shanlin.autostore.utils.LogUtils;
 import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.ToastUtils;
-import com.shanlin.autostore.utils.env.DeviceInfo;
 import com.shanlin.autostore.zhifubao.Base64;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -105,9 +104,7 @@ public class LoginActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.btn_login_by_face://使用人脸识别快速登录
                 //是否有网络
-                String networkTypeName = DeviceInfo.getNetworkTypeName();
-                if (TextUtils.isEmpty(networkTypeName)) {//没网络
-                    ToastUtils.showToast("无网络");
+                if (!CommonUtils.checkNet()) {
                     return;
                 }
                 MPermissionUtils.requestPermissionsResult(this, 1, new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS}, new MPermissionUtils.OnPermissionListener() {
@@ -128,10 +125,16 @@ public class LoginActivity extends BaseActivity {
                 CommonUtils.toNextActivity(this, PhoneNumLoginActivity.class);
                 break;
             case R.id.btn_login_by_wx:
+                if (!CommonUtils.checkNet()) {
+                    return;
+                }
                 dialog.show();
                 break;
             case R.id.tv_open:
                 dialog.dismiss();
+                if (!CommonUtils.checkNet()) {
+                    return;
+                }
                 // TODO: 2017/7/16 0016 wx登录
                 api = WXAPIFactory.createWXAPI(this, Constant.APP_ID, false);
                 boolean isInstalled1 = api.isWXAppInstalled() && api.isWXAppSupportAPI();
@@ -193,6 +196,7 @@ public class LoginActivity extends BaseActivity {
                     return;
                 }
                 showLoadingDialog();
+                String delta = data.getStringExtra("delta");
                 String encode = Base64.encode(mLivenessImgBytes);
                 final HttpService httpService = CommonUtils.doNet();
                 Call<LoginBean> faceLoginBeanCall = httpService.postFaceLogin(new FaceLoginSendBean(encode, SpUtils.getString(LoginActivity.this, Constant.DEVICEID, "")));

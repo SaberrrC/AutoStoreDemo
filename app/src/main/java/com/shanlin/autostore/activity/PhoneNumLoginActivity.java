@@ -116,10 +116,16 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
         switch (v.getId()) {
             case R.id.btn_get_msgcode:
                 //获取验证码
+                if (!CommonUtils.checkNet()) {
+                    return;
+                }
                 doCountDowntime();
                 break;
             case R.id.btn_bind_or_login:
                 //绑定或者登录
+                if (!CommonUtils.checkNet()) {
+                    return;
+                }
                 bindOrLogin();
                 break;
         }

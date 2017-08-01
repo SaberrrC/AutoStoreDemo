@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.LoggingInterceptor;
+import com.shanlin.autostore.utils.env.DeviceInfo;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -213,5 +215,14 @@ public class CommonUtils {
             e.printStackTrace();
         }
         return f;
+    }
+
+    public static boolean checkNet() {
+        String networkTypeName = DeviceInfo.getNetworkTypeName();
+        if (TextUtils.isEmpty(networkTypeName)) {//没网络
+            ToastUtils.showToast("无网络");
+            return false;
+        }
+        return true;
     }
 }
