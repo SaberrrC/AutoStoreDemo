@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
-import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.PreviewCallback;
 import android.hardware.Camera.Size;
 import android.os.Bundle;
@@ -48,13 +47,13 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class LivenessActivity extends Activity implements PreviewCallback, DetectionListener, TextureView.SurfaceTextureListener {
+public class LivenessActivity extends Activity implements TextureView.SurfaceTextureListener {
 
     private TextureView       camerapreview;
     private FaceMask          mFaceMask;// 画脸位置的类（调试时会用到）
     private ProgressBar       mProgressBar;// 网络上传请求验证时出现的ProgressBar
     private LinearLayout      headViewLinear;// "请在光线充足的情况下进行检测"这个视图
-    private LinearLayout    rootView;// 根视图
+    private LinearLayout      rootView;// 根视图
     private TextView          timeOutText;
     private RelativeLayout    timeOutRel;
     private CircleProgressBar mCircleProgressBar;
@@ -111,6 +110,7 @@ public class LivenessActivity extends Activity implements PreviewCallback, Detec
         mICamera = new ICamera();
         promptText = (TextView) findViewById(R.id.liveness_layout_promptText);
         camerapreview = (TextureView) findViewById(R.id.liveness_layout_textureview);
+        openCamera();
         camerapreview.setSurfaceTextureListener(this);
         mProgressBar = (ProgressBar) findViewById(R.id.liveness_layout_progressbar);
         mProgressBar.setVisibility(View.INVISIBLE);
@@ -119,7 +119,6 @@ public class LivenessActivity extends Activity implements PreviewCallback, Detec
         timeOutRel = (RelativeLayout) findViewById(R.id.detection_step_timeoutRel);
         timeOutText = (TextView) findViewById(R.id.detection_step_timeout_garden);
         mCircleProgressBar = (CircleProgressBar) findViewById(R.id.detection_step_timeout_progressBar);
-
         mIDetection.viewsInit();
     }
 
@@ -149,11 +148,13 @@ public class LivenessActivity extends Activity implements PreviewCallback, Detec
         super.onResume();
         isHandleStart = false;
         // 打开照相机
-        Camera mCamera = mICamera.openCamera(this);
+    }
+    private void openCamera() {
+        Camera mCamera = mICamera.openCamera(LivenessActivity.this);
         if (mCamera != null) {
-            CameraInfo cameraInfo = new CameraInfo();
+            Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
             Camera.getCameraInfo(1, cameraInfo);
-            mFaceMask.setFrontal(cameraInfo.facing == CameraInfo.CAMERA_FACING_FRONT);
+            mFaceMask.setFrontal(cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT);
             // 获取到相机分辨率对应的显示大小，并把这个值复制给camerapreview
             RelativeLayout.LayoutParams layout_params = mICamera.getLayoutParam();
             camerapreview.setLayoutParams(layout_params);
@@ -161,7 +162,6 @@ public class LivenessActivity extends Activity implements PreviewCallback, Detec
             // 初始化人脸质量检测管理类
             mFaceQualityManager = new FaceQualityManager(1 - 0.5f, 0.5f);
             mIDetection.mCurShowIndex = -1;
-
         } else {
             mDialogUtil.showDialog(getString(R.string.meglive_camera_initfailed));
         }
@@ -222,90 +222,116 @@ public class LivenessActivity extends Activity implements PreviewCallback, Detec
         mDetector.changeDetectionType(mIDetection.mDetectionSteps.get(0));
     }
 
-    /**
-     * 照相机预览数据回调 （PreviewCallback的接口回调方法）
-     */
-    @Override
-    public void onPreviewFrame(final byte[] data, Camera camera) {
-        Size previewsize = camera.getParameters().getPreviewSize();
-        // 活体检测器检测
-        mDetector.doDetection(data, previewsize.width, previewsize.height, 360 - mICamera.getCameraAngle(this));
+    public class MyPreviewCallback implements PreviewCallback {
+        /**
+         * 照相机预览数据回调 （PreviewCallback的接口回调方法）
+         */
+        @Override
+        public void onPreviewFrame(final byte[] data, Camera camera) {
+            Size previewsize = camera.getParameters().getPreviewSize();
+            // 活体检测器检测
+            mDetector.doDetection(data, previewsize.width, previewsize.height, 360 - mICamera.getCameraAngle(LivenessActivity.this));
+        }
     }
 
-    /**
-     * 活体验证成功 （DetectionListener的接口回调方法）
-     */
-    @Override
-    public DetectionType onDetectionSuccess(final DetectionFrame validFrame) {
-        mIMediaPlayer.reset();
-        mCurStep++;
-        mFaceMask.setFaceInfo(null);
+    public class MyDetectionListener implements DetectionListener {
+        /**
+         * 活体验证成功 （DetectionListener的接口回调方法）
+         */
+        @Override
+        public DetectionType onDetectionSuccess(final DetectionFrame validFrame) {
+            mIMediaPlayer.reset();
+            mCurStep++;
+            mFaceMask.setFaceInfo(null);
 
-        if (mCurStep == mIDetection.mDetectionSteps.size()) {
-            mProgressBar.setVisibility(View.VISIBLE);
-            getLivenessData();
-            handleResult(R.string.verify_success);
-        } else
-            changeType(mIDetection.mDetectionSteps.get(mCurStep), 10);
+            if (mCurStep == mIDetection.mDetectionSteps.size()) {
+                mProgressBar.setVisibility(View.VISIBLE);
+                getLivenessData();
 
-        // 检测器返回值：如果不希望检测器检测则返回DetectionType.DONE，如果希望检测器检测动作则返回要检测的动作
-        return mCurStep >= mIDetection.mDetectionSteps.size() ? DetectionType.DONE : mIDetection.mDetectionSteps.get(mCurStep);
-    }
+            } else
+                changeType(mIDetection.mDetectionSteps.get(mCurStep), 10);
 
-    private void getLivenessData() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                final FaceIDDataStruct idDataStruct = mDetector.getFaceIDDataStruct();
-                String delta = idDataStruct.delta;
-                for (String key : idDataStruct.images.keySet()) {
-                    byte[] data = idDataStruct.images.get(key);
-                    if (key.equals("image_best")) {
-                        byte[] imageBestData = data;// 这是最好的一张图片
-                    } else if (key.equals("image_env")) {
-                        byte[] imageEnvData = data;// 这是一张全景图
-                    } else {
-                        // 其余为其他图片，根据需求自取
+            // 检测器返回值：如果不希望检测器检测则返回DetectionType.DONE，如果希望检测器检测动作则返回要检测的动作
+            return mCurStep >= mIDetection.mDetectionSteps.size() ? DetectionType.DONE : mIDetection.mDetectionSteps.get(mCurStep);
+        }
+
+        private void getLivenessData() {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    final FaceIDDataStruct idDataStruct = mDetector.getFaceIDDataStruct();
+                    String delta = idDataStruct.delta;
+                    for (String key : idDataStruct.images.keySet()) {
+                        byte[] data = idDataStruct.images.get(key);
+                        if (key.equals("image_best")) {
+                            byte[] imageBestData = data;// 这是最好的一张图片
+                            Intent intent = new Intent();
+                            intent.putExtra("image_best", imageBestData);
+                            setResult(RESULT_OK, intent);
+                            finish();
+                            //                        handleResult(R.string.verify_success);
+
+                        } else if (key.equals("image_env")) {
+                            byte[] imageEnvData = data;// 这是一张全景图
+                        } else {
+                            // 其余为其他图片，根据需求自取
+                        }
                     }
                 }
-            }
-        }).start();
-    }
-
-    /**
-     * 活体检测失败 （DetectionListener的接口回调方法）
-     */
-    @Override
-    public void onDetectionFailed(final DetectionFailedType type) {
-        int resourceID = R.string.liveness_detection_failed;
-        switch (type) {
-            case ACTIONBLEND:
-                resourceID = R.string.liveness_detection_failed_action_blend;
-                break;
-            case NOTVIDEO:
-                resourceID = R.string.liveness_detection_failed_not_video;
-                break;
-            case TIMEOUT:
-                resourceID = R.string.liveness_detection_failed_timeout;
-                break;
+            }).start();
         }
-        handleResult(resourceID);
-    }
 
-    /**
-     * 活体验证中（这个方法会持续不断的回调，返回照片detection信息） （DetectionListener的接口回调方法）
-     */
-    @Override
-    public void onFrameDetected(long timeout, DetectionFrame detectionFrame) {
-        if (sensorUtil.isVertical()) {
+        /**
+         * 活体检测失败 （DetectionListener的接口回调方法）
+         */
+        @Override
+        public void onDetectionFailed(final DetectionFailedType type) {
+            int resourceID = R.string.liveness_detection_failed;
+            switch (type) {
+                case ACTIONBLEND:
+                    resourceID = R.string.liveness_detection_failed_action_blend;
+                    break;
+                case NOTVIDEO:
+                    resourceID = R.string.liveness_detection_failed_not_video;
+                    break;
+                case TIMEOUT:
+                    resourceID = R.string.liveness_detection_failed_timeout;
+                    break;
+            }
+            promptText.setText(resourceID);
+            mHasSurface = true;
+            doPreview();
+            // 添加活体检测回调 （本Activity继承了DetectionListener）
+            mDetector.setDetectionListener(new MyDetectionListener());
+            // 添加相机预览回调（本Activity继承了PreviewCallback）
+            mICamera.actionDetect(new MyPreviewCallback());
+            mProgressBar.setVisibility(View.INVISIBLE);
+            mIDetection.detectionTypeInit();
+            mCurStep = 0;
+            mDetector.reset();
+            mDetector.changeDetectionType(mIDetection.mDetectionSteps.get(0));
+            //        handleResult(resourceID);
+        }
+
+
+        /**
+         * 活体验证中（这个方法会持续不断的回调，返回照片detection信息） （DetectionListener的接口回调方法）
+         */
+        @Override
+        public void onFrameDetected(long timeout, DetectionFrame detectionFrame) {
+            //        if (sensorUtil.isVertical()) {
+            //            faceOcclusion(detectionFrame);
+            //            handleNotPass(timeout);
+            //            mFaceMask.setFaceInfo(detectionFrame);
+            //        } else {
+            //            if (sensorUtil.Y == 0)
+            //                promptText.setText(R.string.meglive_getpermission_motion);
+            //            else
+            //                promptText.setText(R.string.meglive_phone_vertical);
+            //        }
             faceOcclusion(detectionFrame);
-            handleNotPass(timeout);
+            //            handleNotPass(timeout);
             mFaceMask.setFaceInfo(detectionFrame);
-        } else {
-            if (sensorUtil.Y == 0)
-                promptText.setText(R.string.meglive_getpermission_motion);
-            else
-                promptText.setText(R.string.meglive_phone_vertical);
         }
     }
 
@@ -444,9 +470,9 @@ public class LivenessActivity extends Activity implements PreviewCallback, Detec
         doPreview();
 
         // 添加活体检测回调 （本Activity继承了DetectionListener）
-        mDetector.setDetectionListener(this);
+        mDetector.setDetectionListener(new MyDetectionListener());
         // 添加相机预览回调（本Activity继承了PreviewCallback）
-        mICamera.actionDetect(this);
+        mICamera.actionDetect(new MyPreviewCallback());
     }
 
     @Override
@@ -476,16 +502,17 @@ public class LivenessActivity extends Activity implements PreviewCallback, Detec
     @Override
     protected void onPause() {
         super.onPause();
-        mainHandler.removeCallbacksAndMessages(null);
-        mICamera.closeCamera();
-        mIMediaPlayer.close();
 
-        finish();
+
+        //        finish();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mainHandler.removeCallbacksAndMessages(null);
+        mICamera.closeCamera();
+        mIMediaPlayer.close();
         if (mDetector != null)
             mDetector.release();
         mDialogUtil.onDestory();

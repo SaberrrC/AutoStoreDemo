@@ -29,6 +29,10 @@ public abstract class CustomCallBack<T extends BaseBean> implements Callback<T> 
         T baseBean = response.body();
         String code = baseBean.getCode();
         String msg = baseBean.getMessage();
+        if (!TextUtils.equals(code, "401")) {//token失效
+
+            return;
+        }
         if (!TextUtils.equals(code, "200")) {
             error(null, code, msg);
             return;
@@ -54,4 +58,6 @@ public abstract class CustomCallBack<T extends BaseBean> implements Callback<T> 
     public abstract void success(String code, T data, String msg);
 
     public abstract void error(Throwable ex, String code, String msg);
+
+
 }

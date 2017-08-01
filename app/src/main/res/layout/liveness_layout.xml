@@ -101,7 +101,7 @@
                 android:layout_height="35dip"
                 android:layout_alignParentRight="true"
                 android:layout_margin="5dip"
-                android:visibility="invisible">
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/detection_step_timeout_garden"
