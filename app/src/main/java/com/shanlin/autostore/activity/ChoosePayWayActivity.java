@@ -44,7 +44,9 @@ import com.shanlin.autostore.zhifubao.OrderInfoUtil2_0;
 import com.shanlin.autostore.zhifubao.PayKeys;
 import com.shanlin.autostore.zhifubao.PayResult;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -106,7 +108,7 @@ public class ChoosePayWayActivity extends BaseActivity{
         keyBoard = LayoutInflater.from(this).inflate(R.layout.keyboard, null);
         initPopwindow();
         initKeyBoard();
-//        EventBus.getDefault().register(this);
+        EventBus.getDefault().register(this);
     }
 
     private void initPopwindow() {
@@ -199,6 +201,8 @@ public class ChoosePayWayActivity extends BaseActivity{
                                         "乐买宝",data.getPaymentTime()});
                         finish();
                     }
+                } else {
+                    CommonUtils.showToast(ChoosePayWayActivity.this,body.getMessage());
                 }
             }
 
@@ -239,6 +243,8 @@ public class ChoosePayWayActivity extends BaseActivity{
                     CommonUtils.debugLog(alipay);
                     CommonUtils.debugLog(timestamp);
                     pay(alipay);
+                } else {
+                    CommonUtils.showToast(ChoosePayWayActivity.this,body.getMessage());
                 }
             }
 
@@ -303,24 +309,25 @@ public class ChoosePayWayActivity extends BaseActivity{
     @Override
     protected void onResume() {
         super.onResume();
-        if (Double.valueOf(creditBalance) >= Double.valueOf(totalMoney)) {
-            availableBalence.setText(creditBalance+" 元可用");
+        if (Double.parseDouble(creditBalance == null ? "0.00" : creditBalance) >= Double.parseDouble
+                (totalMoney)) {
+            availableBalence.setClickable(creditBalance == null ? true : false);
+            availableBalence.setText(creditBalance == null ? "开通乐买宝" : creditBalance+" 元可用");
         } else {
             availableBalence.setTextColor(Color.RED);
             availableBalence.setText(creditBalance+" 额度不足");
         }
     }
 
-    boolean flag;
-    @Subscribe(sticky = true)
+    @Subscribe(threadMode= ThreadMode.MAIN)
     public void getWXPayResult(WxMessageEvent event){
         if (event.getCode().equals("8")) {
-            flag = true;
             message = event.getMessage();
             CommonUtils.sendDataToNextActivity(this,PayResultActivity.class,new
                     String[]{Constant_LeMaiBao.PAY_TYPE,Constant_LeMaiBao.TOTAL_AMOUNT,
                     Constant_LeMaiBao.PAY_TIME},new String[]{message,totalMoney,CommonUtils
                     .getCurrentTime(true)});
+            finish();
         }
     }
 
@@ -335,12 +342,12 @@ public class ChoosePayWayActivity extends BaseActivity{
             @Override
             public void onResponse(Call<WxChatBean> call, Response<WxChatBean> response) {
                 WxChatBean body = response.body();
+                String s = body.toString();
+                CommonUtils.debugLog(s);
                 if (TextUtils.equals("200", body.getCode())) {
                     WxChatBean.DataBean data = body.getData();
                     CommonUtils.debugLog("wxdata-----" + data.toString());
                     HashMap<String, String> paramsMap = new HashMap<String, String>();
-                    //相同订单不能重复支付
-                    if (!TextUtils.isEmpty(data.getPrepayid())) {
                         paramsMap.put(WXConstant.APPID, data.getAppid());
                         paramsMap.put(WXConstant.PARTENER_ID, data.getPartnerid());
                         paramsMap.put(WXConstant.PRE_PAY_ID, data.getPrepayid());
@@ -348,18 +355,15 @@ public class ChoosePayWayActivity extends BaseActivity{
                         paramsMap.put(WXConstant.TIME, data.getTimestamp());
                         paramsMap.put(WXConstant.SIGN, data.getSign());
                         WXPayTools.pay(paramsMap, ChoosePayWayActivity.this);
-                    } else {
-                        Toast.makeText(ChoosePayWayActivity.this, "不能重复支付", Toast.LENGTH_SHORT).show();
-                    }
                 } else {
-                    String message = response.message();
-                    CommonUtils.debugLog(message);
+                    CommonUtils.showToast(ChoosePayWayActivity.this,body.getMessage());
                 }
             }
 
             @Override
             public void onFailure(Call<WxChatBean> call, Throwable t) {
                 CommonUtils.debugLog(t.getMessage());
+                Log.e("aa",t.toString());
             }
         });
     }
@@ -468,7 +472,6 @@ public class ChoosePayWayActivity extends BaseActivity{
         String privateKey = rsa2 ? RSA2_PRIVATE : RSA_PRIVATE;
         String sign = OrderInfoUtil2_0.getSign(params, privateKey, rsa2);
         final String orderInfo = orderParam + "&" + sign;
-//        Log.i("wr", "pay: "+orderInfo);
         Runnable payRunnable = new Runnable() {
 
             @Override
@@ -485,5 +488,11 @@ public class ChoosePayWayActivity extends BaseActivity{
 
         Thread payThread = new Thread(payRunnable);
         payThread.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }
