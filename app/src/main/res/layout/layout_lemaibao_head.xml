@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_available_amount"
         android:layout_centerHorizontal="true"
-        android:text="¥200.00"
+        android:text="¥0.00"
         android:textColor="#FFED4848"
         android:textSize="34px"/>
 
@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5px"
-            android:text="¥100.00"
+            android:text="¥0.00"
             android:textColor="#FF333333"
             android:textSize="18px"/>
     </LinearLayout>

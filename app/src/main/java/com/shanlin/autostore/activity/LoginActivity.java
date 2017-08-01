@@ -111,6 +111,7 @@ public class LoginActivity extends BaseActivity {
                     showNoFaceDialog();
                     return;
                 }
+                CommonUtils.netWorkWarranty();
                 CommonUtils.checkPermission(LoginActivity.this, new MPermissionUtils.OnPermissionListener() {
                     @Override
                     public void onPermissionGranted() {
