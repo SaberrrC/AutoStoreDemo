@@ -241,6 +241,8 @@ public class ChoosePayWayActivity extends BaseActivity{
                     CommonUtils.debugLog(alipay);
                     CommonUtils.debugLog(timestamp);
                     pay(alipay);
+                }else {
+                    CommonUtils.showToast(ChoosePayWayActivity.this,body.getMessage());
                 }
             }
 
@@ -355,8 +357,9 @@ public class ChoosePayWayActivity extends BaseActivity{
                         CommonUtils.showToast(ChoosePayWayActivity.this,"不能重复支付");
                     }
                 } else {
-                    String message = response.message();
+                    String message = body.getMessage();
                     CommonUtils.debugLog(message);
+                    CommonUtils.showToast(ChoosePayWayActivity.this,body.getMessage());
                 }
             }
 
