@@ -488,6 +488,12 @@ public class MainActivity extends BaseActivity {
      */
     private void showWelcomeDialog() {
         View viewWelcome = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_welcome, null, false);
+        viewWelcome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mWelcomeDialog1.dismiss();
+            }
+        });
         AutoUtils.autoSize(viewWelcome);
         mWelcomeDialog1 = CommonUtils.getDialog(this, viewWelcome, true);
         ThreadUtils.runMainDelayed(new Runnable() {
