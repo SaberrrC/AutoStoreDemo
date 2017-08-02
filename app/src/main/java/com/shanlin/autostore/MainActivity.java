@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.shanlin.autostore.activity.BuyRecordActivity;
 import com.shanlin.autostore.activity.ChoosePayWayActivity;
-import com.shanlin.autostore.activity.GateActivity;
 import com.shanlin.autostore.activity.LoginActivity;
 import com.shanlin.autostore.activity.MyLeMaiBaoActivity;
 import com.shanlin.autostore.activity.OpenLeMaiBao;
@@ -46,7 +45,6 @@ import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
-import com.shanlin.autostore.utils.StrUtils;
 import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.utils.ToastUtils;
 import com.shanlin.autostore.view.ProgressView;
@@ -375,17 +373,6 @@ public class MainActivity extends BaseActivity {
                 Log.d(TAG, "----------------二维码订单数据-----" + zXingOrderBean);
                 //调用生成正式订单接口
                 generateRealOrder(zXingOrderBean.getOrderNo(), zXingOrderBean.getDeviceId());
-            }
-            if (result.contains("打开闸机")) {//扫描闸机的二维码
-                String deviceId = SpUtils.getString(this, Constant.DEVICEID, "");
-                if (StrUtils.isEmpty(deviceId)) {
-                    ToastUtils.showToast("网络异常，请稍后再试");
-                    CommonUtils.getDevicedID();
-                    return;
-                }
-                Intent intent = new Intent(AutoStoreApplication.getApp(), GateActivity.class);
-                intent.putExtra(Constant.QR_GARD, result);
-                startActivity(intent);
             }
         }
         if (requestCode == REQUEST_CODE_REGEST) {//人脸识别成功 拿到图片跳转
