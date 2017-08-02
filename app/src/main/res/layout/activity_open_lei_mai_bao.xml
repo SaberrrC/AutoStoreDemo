@@ -216,7 +216,7 @@
 
             <EditText
                 android:id="@+id/et_id_num"
-                android:layout_width="131px"
+                android:layout_width="wrap_content"
                 android:layout_height="48.7px"
                 android:maxLength="18"
                 android:layout_below="@id/et_name"

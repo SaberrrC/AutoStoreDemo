@@ -95,6 +95,7 @@ public class MainActivity extends BaseActivity {
     private View   circle;
     private java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
     private int maleCount;
+    private String creditUsed;
 
     @Override
     public int initLayout() {
@@ -234,7 +235,8 @@ public class MainActivity extends BaseActivity {
                 CreditBalanceCheckBean body = response.body();
                 if (TextUtils.equals("200", body.getCode())) {
                     CommonUtils.debugLog(body.toString() + "----------" + token);
-                    creditBalance = body.getData().getCreditBalance();
+                    creditBalance = body.getData().getCreditBalance();//可用额度
+                    creditUsed = body.getData().getCreditUsed();//已用额度
                     openLMB.setText("¥" + (creditBalance == null ? "0.00" : creditBalance));
                 } else {
                     //                   ToastUtils.showToast("获取信用额度失败");
@@ -289,6 +291,8 @@ public class MainActivity extends BaseActivity {
         mDrawerLayout.findViewById(R.id.location_4).setOnClickListener(this);
     }
 
+    private String[] creditKeys = new String[]{Constant_LeMaiBao.CREDIT_BALANCE,Constant_LeMaiBao
+            .CREDIT_USED};
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -307,7 +311,8 @@ public class MainActivity extends BaseActivity {
                 showLoginoutDialog();
                 break;
             case R.id.btn_lemaibao:
-                CommonUtils.toNextActivity(this, MyLeMaiBaoActivity.class);
+                CommonUtils.sendDataToNextActivity(this, MyLeMaiBaoActivity.class,creditKeys,
+                        new String[]{creditBalance,creditUsed});
                 break;
             case R.id.btn_open_le_mai_bao: //开通乐买宝
                 if (openLMB.isClickable()) {
@@ -359,7 +364,7 @@ public class MainActivity extends BaseActivity {
             if (data == null) {
                 return;
             }
-            
+
             String result = data.getExtras().getString("result");
             if (result.contains("orderNo")) {
                 //订单号信息

@@ -9,7 +9,7 @@
     tools:showIn="@layout/activity_my_lei_mai_bao">
 
     <TextView
-        android:id="@+id/tv_available_amount"
+        android:id="@+id/tv_credit_balence"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -45,7 +45,7 @@
             android:textSize="12px"/>
 
         <TextView
-            android:id="@+id/tv_used"
+            android:id="@+id/tv_credit_used"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5px"
