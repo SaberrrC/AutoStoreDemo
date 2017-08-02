@@ -23,6 +23,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -34,10 +35,17 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.google.gson.Gson;
 import com.google.zxing.Result;
 import com.shanlin.autostore.R;
+import com.shanlin.autostore.activity.ChoosePayWayActivity;
 import com.shanlin.autostore.activity.GateActivity;
+import com.shanlin.autostore.bean.paramsBean.RealOrderBody;
+import com.shanlin.autostore.bean.paramsBean.ZXingOrderBean;
+import com.shanlin.autostore.bean.resultBean.RealOrderBean;
 import com.shanlin.autostore.constants.Constant;
+import com.shanlin.autostore.constants.Constant_LeMaiBao;
+import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.StrUtils;
 import com.shanlin.autostore.utils.ToastUtils;
@@ -51,6 +59,10 @@ import com.shanlin.autostore.zxing.utils.StatusBarUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * This activity opens the camera and does the actual scanning on a background
@@ -77,6 +89,8 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
 
     private Rect    mCropRect    = null;
     private boolean isHasSurface = false;
+    private HttpService service;
+    private String creditBalence;
 
     public Handler getHandler() {
         return handler;
@@ -121,6 +135,8 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
             }
         });
 
+        creditBalence = getIntent().getStringExtra(Constant_LeMaiBao.CREDIT_BALANCE);
+
     }
 
     @Override
@@ -164,6 +180,7 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
         if (!isHasSurface) {
             scanPreview.getHolder().removeCallback(this);
         }
+        finish();
         super.onPause();
     }
 
@@ -220,12 +237,53 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
             startActivity(intent);
             return;
         }
+
+        //扫描订单处理逻辑
+        service = com.shanlin.autostore.utils.CommonUtils.doNet();
+        if (result.contains("orderNo")) {
+            //订单号信息
+            ZXingOrderBean zXingOrderBean = gson.fromJson(result, ZXingOrderBean.class);
+            Log.d(TAG, "----------------二维码订单数据-----" + zXingOrderBean);
+            //调用生成正式订单接口
+            generateRealOrder(zXingOrderBean.getOrderNo(), zXingOrderBean
+                    .getDeviceId());
+        }
+
         bundle.putInt("width", mCropRect.width());
         bundle.putInt("height", mCropRect.height());
         bundle.putString("result", result);
         resultIntent.putExtras(bundle);
-        this.setResult(RESULT_OK, resultIntent);
-        CaptureActivity.this.finish();
+//        this.setResult(RESULT_OK, resultIntent);
+//        CaptureActivity.this.finish();
+    }
+
+
+    Gson gson = new Gson();
+
+    private String[] aliArgs = new String[]{Constant_LeMaiBao.DEVICEDID, Constant_LeMaiBao.ORDER_NO, Constant_LeMaiBao.TOTAL_AMOUNT, Constant_LeMaiBao.STORED_ID, Constant.TOKEN, Constant_LeMaiBao.CREDIT_BALANCE};
+
+    private void generateRealOrder(final String orderNo, final String devicedID) {
+        final String token = SpUtils.getString(this, Constant.TOKEN, "");
+        Log.d(TAG, "-------------------token=" + token);
+        Call<RealOrderBean> call = service.updateTempToReal(token, new RealOrderBody(orderNo));
+        call.enqueue(new Callback<RealOrderBean>() {
+            @Override
+            public void onResponse(Call<RealOrderBean> call, Response<RealOrderBean> response) {
+                RealOrderBean body = response.body();
+                if (TextUtils.equals("200", body.getCode())) {
+                    Log.d(TAG, "------------------------*-----------------------" + response.body().toString());
+                    String totalAmount = response.body().getData().getTotalAmount();//应付总金额
+                    com.shanlin.autostore.utils.CommonUtils.sendDataToNextActivity(CaptureActivity.this, ChoosePayWayActivity
+                            .class,
+                            aliArgs, new String[]{devicedID, orderNo, totalAmount, "2", token, creditBalence});
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RealOrderBean> call, Throwable t) {
+                Log.d(TAG, "------------------error=" + t.getMessage());
+            }
+        });
     }
 
     private void initCamera(SurfaceHolder surfaceHolder) {

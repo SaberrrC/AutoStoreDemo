@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.shanlin.autostore.activity.BuyRecordActivity;
-import com.shanlin.autostore.activity.ChoosePayWayActivity;
 import com.shanlin.autostore.activity.LoginActivity;
 import com.shanlin.autostore.activity.MyLeMaiBaoActivity;
 import com.shanlin.autostore.activity.OpenLeMaiBao;
@@ -29,11 +28,8 @@ import com.shanlin.autostore.activity.SaveFaceActivity;
 import com.shanlin.autostore.activity.VersionInfoActivity;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.LoginBean;
-import com.shanlin.autostore.bean.paramsBean.RealOrderBody;
-import com.shanlin.autostore.bean.paramsBean.ZXingOrderBean;
 import com.shanlin.autostore.bean.resultBean.CreditBalanceCheckBean;
 import com.shanlin.autostore.bean.resultBean.LoginOutBean;
-import com.shanlin.autostore.bean.resultBean.RealOrderBean;
 import com.shanlin.autostore.bean.resultBean.RefundMoneyBean;
 import com.shanlin.autostore.bean.resultBean.UserNumEverydayBean;
 import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
@@ -368,6 +364,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onPermissionGranted() {
                 Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
+                intent.putExtra(Constant_LeMaiBao.CREDIT_BALANCE,creditBalance);
                 startActivityForResult(intent, REQUEST_CODE_SCAN);
             }
 
@@ -381,20 +378,12 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_SCAN) {//二维码
-            if (data == null) {
-                return;
-            }
-
-            String result = data.getExtras().getString("result");
-            if (result.contains("orderNo")) {
-                //订单号信息
-                ZXingOrderBean zXingOrderBean = gson.fromJson(result, ZXingOrderBean.class);
-                Log.d(TAG, "----------------二维码订单数据-----" + zXingOrderBean);
-                //调用生成正式订单接口
-                generateRealOrder(zXingOrderBean.getOrderNo(), zXingOrderBean.getDeviceId());
-            }
-        }
+//        if (requestCode == REQUEST_CODE_SCAN) {//二维码
+//            if (data == null) {
+//                return;
+//            }
+//            String result = data.getExtras().getString("result");
+//        }
         if (requestCode == REQUEST_CODE_REGEST) {//人脸识别成功 拿到图片跳转
             if (TextUtils.equals(Constant.ON_BACK_PRESSED, data.getStringExtra(Constant.ON_BACK_PRESSED))) {
                 return;
@@ -441,30 +430,6 @@ public class MainActivity extends BaseActivity {
             }
         });
         dialog.show();
-    }
-
-    private String[] aliArgs = new String[]{Constant_LeMaiBao.DEVICEDID, Constant_LeMaiBao.ORDER_NO, Constant_LeMaiBao.TOTAL_AMOUNT, Constant_LeMaiBao.STORED_ID, Constant.TOKEN, Constant_LeMaiBao.CREDIT_BALANCE};
-
-    private void generateRealOrder(final String orderNo, final String devicedID) {
-        final String token = SpUtils.getString(this, Constant.TOKEN, "");
-        Log.d(TAG, "-------------------token=" + token);
-        Call<RealOrderBean> call = service.updateTempToReal(token, new RealOrderBody(orderNo));
-        call.enqueue(new Callback<RealOrderBean>() {
-            @Override
-            public void onResponse(Call<RealOrderBean> call, Response<RealOrderBean> response) {
-                RealOrderBean body = response.body();
-                if (TextUtils.equals("200", body.getCode())) {
-                    Log.d(TAG, "------------------------*-----------------------" + response.body().toString());
-                    String totalAmount = response.body().getData().getTotalAmount();//应付总金额
-                    CommonUtils.sendDataToNextActivity(MainActivity.this, ChoosePayWayActivity.class, aliArgs, new String[]{devicedID, orderNo, totalAmount, "2", token, creditBalance});
-                }
-            }
-
-            @Override
-            public void onFailure(Call<RealOrderBean> call, Throwable t) {
-                Log.d(TAG, "------------------error=" + t.getMessage());
-            }
-        });
     }
 
     @Override
