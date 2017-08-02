@@ -1,5 +1,6 @@
 package com.shanlin.autostore.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -10,6 +11,7 @@ import com.shanlin.autostore.R;
 import com.shanlin.autostore.adapter.FinalRecycleAdapter;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.resultBean.RecordBean;
+import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.view.PulltoRefreshRecyclerView;
@@ -55,9 +57,9 @@ public class MyLeMaiBaoActivity extends BaseActivity implements FinalRecycleAdap
     @Override
     public void initView() {
         CommonUtils.initToolbar(this, "我的乐买宝", R.color.blcak, null);
-        mTvAvailableAmount = (TextView) findViewById(R.id.tv_available_amount);
+        mTvAvailableAmount = (TextView) findViewById(R.id.tv_credit_balence);
         mTvMoney = (TextView) findViewById(tv_money);
-        mTvUsed = (TextView) findViewById(R.id.tv_used);
+        mTvUsed = (TextView) findViewById(R.id.tv_credit_used);
         mIvNolist = (ImageView) findViewById(R.id.iv_nolist);
         mTvNolist = (TextView) findViewById(R.id.tv_nolist);
         mTvBehalfRepayment = (TextView) findViewById(R.id.tv_behalf_repayment);
@@ -129,7 +131,11 @@ public class MyLeMaiBaoActivity extends BaseActivity implements FinalRecycleAdap
 
     @Override
     public void initData() {
-
+        Intent intent = getIntent();
+        String creditBalence = intent.getStringExtra(Constant_LeMaiBao.CREDIT_BALANCE);
+        String creditUsed = intent.getStringExtra(Constant_LeMaiBao.CREDIT_USED);
+        mTvAvailableAmount.setText("¥ "+(creditBalence == null ? "0.00" : creditBalence));
+        mTvUsed.setText("¥ "+(creditUsed == null ? "0.00" : creditUsed));
     }
 
     @Override
