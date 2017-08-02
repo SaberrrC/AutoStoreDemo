@@ -90,7 +90,7 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
     private Rect    mCropRect    = null;
     private boolean isHasSurface = false;
     private HttpService service;
-    private String creditBalence;
+    private String      creditBalence;
 
     public Handler getHandler() {
         return handler;
@@ -245,16 +245,15 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
             ZXingOrderBean zXingOrderBean = gson.fromJson(result, ZXingOrderBean.class);
             Log.d(TAG, "----------------二维码订单数据-----" + zXingOrderBean);
             //调用生成正式订单接口
-            generateRealOrder(zXingOrderBean.getOrderNo(), zXingOrderBean
-                    .getDeviceId());
+            generateRealOrder(zXingOrderBean.getOrderNo(), zXingOrderBean.getDeviceId());
         }
 
         bundle.putInt("width", mCropRect.width());
         bundle.putInt("height", mCropRect.height());
         bundle.putString("result", result);
         resultIntent.putExtras(bundle);
-//        this.setResult(RESULT_OK, resultIntent);
-//        CaptureActivity.this.finish();
+        ToastUtils.showToast("无法识别该二维码");
+        finish();
     }
 
 
@@ -273,9 +272,7 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
                 if (TextUtils.equals("200", body.getCode())) {
                     Log.d(TAG, "------------------------*-----------------------" + response.body().toString());
                     String totalAmount = response.body().getData().getTotalAmount();//应付总金额
-                    com.shanlin.autostore.utils.CommonUtils.sendDataToNextActivity(CaptureActivity.this, ChoosePayWayActivity
-                            .class,
-                            aliArgs, new String[]{devicedID, orderNo, totalAmount, "2", token, creditBalence});
+                    com.shanlin.autostore.utils.CommonUtils.sendDataToNextActivity(CaptureActivity.this, ChoosePayWayActivity.class, aliArgs, new String[]{devicedID, orderNo, totalAmount, "2", token, creditBalence});
                 }
             }
 

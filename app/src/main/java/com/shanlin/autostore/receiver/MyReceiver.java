@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.bean.event.OpenGardEvent;
 import com.shanlin.autostore.constants.Constant;
+import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.SpUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -36,17 +37,13 @@ public class MyReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         try {
             Bundle bundle = intent.getExtras();
-            if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
-                String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
-                //send the Registration Id to your server...
-                SpUtils.saveString(AutoStoreApplication.getApp(), Constant.DEVICEID, regId);
-                Log.d("deviceId", "deviceId: onReceive-- " + SpUtils.getString(AutoStoreApplication.getApp(), "deviceId", ""));
-            }
             Log.d(TAG, "[MyReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
             if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
                 String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
                 Log.d(TAG, "[MyReceiver] 接收Registration Id : " + regId);
-                //send the Registration Id to your server...
+                SpUtils.saveString(AutoStoreApplication.getApp(), Constant.DEVICEID, regId);
+                CommonUtils.saveDevicedID(regId);
+                Log.d("deviceId", "deviceId: onReceive-- " + SpUtils.getString(AutoStoreApplication.getApp(), "deviceId", ""));
 
             } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
                 Log.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
@@ -96,7 +93,6 @@ public class MyReceiver extends BroadcastReceiver {
                     Log.i(TAG, "This message has no Extra data");
                     continue;
                 }
-
                 try {
                     JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
                     Iterator<String> it = json.keys();
