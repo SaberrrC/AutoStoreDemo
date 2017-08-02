@@ -69,25 +69,26 @@ public class SaveFaceActivity extends BaseActivity {
         MemberUpdateSendBean memberUpdateSendBean = new MemberUpdateSendBean(userDeviceId);
         memberUpdateSendBean.imageBase64 = imageBase64;
         Call<MemberUpdateBean> memberUpdateBeanCall = httpService.postMemberUpdate(mLoginBean.getData().getToken(), memberUpdateSendBean);
-        memberUpdateBeanCall.enqueue(new CustomCallBack<MemberUpdateBean>() {
-            @Override
-            public void success(String code, MemberUpdateBean data, String msg) {
-                mLoadingDialog.dismiss();
-                ToastUtils.showToast(msg);
-                Intent intent = new Intent(SaveFaceActivity.this, MainActivity.class);
-                intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.FACE_REGESTED_OK);
-                startActivity(intent);
-            }
-
-            @Override
-            public void error(Throwable ex, String code, String msg) {
-                mLoadingDialog.dismiss();
-                ToastUtils.showToast(msg);
-            }
-        });
-
-
+        mMemberUpdateBeanCustomCallBack.setJumpLogin(false);
+        memberUpdateBeanCall.enqueue(mMemberUpdateBeanCustomCallBack);
     }
+
+    private CustomCallBack<MemberUpdateBean> mMemberUpdateBeanCustomCallBack = new CustomCallBack<MemberUpdateBean>() {
+        @Override
+        public void success(String code, MemberUpdateBean data, String msg) {
+            mLoadingDialog.dismiss();
+            ToastUtils.showToast(msg);
+            Intent intent = new Intent(SaveFaceActivity.this, MainActivity.class);
+            intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.FACE_REGESTED_OK);
+            startActivity(intent);
+        }
+
+        @Override
+        public void error(Throwable ex, String code, String msg) {
+            mLoadingDialog.dismiss();
+            ToastUtils.showToast(msg);
+        }
+    };
 
     private void showLoadingDialog() {
         mLoadingDialog = new Dialog(this, R.style.MyDialogCheckVersion);

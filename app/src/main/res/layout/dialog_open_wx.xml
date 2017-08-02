@@ -10,8 +10,8 @@
         android:id="@+id/content"
         android:layout_marginTop="44px"
         android:layout_centerHorizontal="true"
-        android:layout_width="223px"
-        android:layout_height="25px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="“邻家APP”想要打开“微信”"
         android:textColor="#FF000000"
         android:textSize="18px"/>

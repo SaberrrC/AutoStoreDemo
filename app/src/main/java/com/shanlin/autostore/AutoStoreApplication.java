@@ -1,12 +1,8 @@
 package com.shanlin.autostore;
 
 import android.app.Application;
-import android.text.TextUtils;
 
-import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.utils.CommonUtils;
-import com.shanlin.autostore.utils.LogUtils;
-import com.shanlin.autostore.utils.SpUtils;
 import com.zhy.autolayout.config.AutoLayoutConifg;
 
 import cn.jpush.android.api.JPushInterface;
@@ -31,7 +27,6 @@ public class AutoStoreApplication extends Application {
         JPushInterface.init(this);            // 初始化 JPush
         CommonUtils.getDevicedID();
         CommonUtils.netWorkWarranty();
-        getDevicedId();
         //        CrashHandler.getInstance().setCustomCrashHanler(app);
     }
 
@@ -39,14 +34,4 @@ public class AutoStoreApplication extends Application {
         return app;
     }
 
-
-    public void getDevicedId() {
-        String registrationID = JPushInterface.getRegistrationID(getApplicationContext());
-        if (TextUtils.isEmpty(registrationID)) {
-//            getDevicedId();
-        }
-        LogUtils.d("LogUtils.d(registrationID)---- " + registrationID);
-        SpUtils.saveString(this, Constant.DEVICEID, registrationID);
-
-    }
 }

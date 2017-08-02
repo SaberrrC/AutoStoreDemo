@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.shanlin.autostore.activity.BuyRecordActivity;
 import com.shanlin.autostore.activity.ChoosePayWayActivity;
-import com.shanlin.autostore.activity.GateActivity;
 import com.shanlin.autostore.activity.LoginActivity;
 import com.shanlin.autostore.activity.MyLeMaiBaoActivity;
 import com.shanlin.autostore.activity.OpenLeMaiBao;
@@ -129,7 +128,7 @@ public class MainActivity extends BaseActivity {
         }
         if (TextUtils.equals(faceVerify, Constant.FACE_VERIFY_OK)) {
             mTvIdentify.setVisibility(View.GONE);
-            showWelcomeDialog();
+//            showWelcomeDialog();
             return;
         }
         if (TextUtils.equals(faceVerify, Constant.FACE_VERIFY_NO)) {
@@ -344,6 +343,7 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void onPermissionGranted() {
                         Intent intent = new Intent(MainActivity.this, LivenessActivity.class);
+                        intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.GATE);
                         startActivityForResult(intent, REQUEST_CODE_REGEST);
                     }
 
@@ -367,7 +367,8 @@ public class MainActivity extends BaseActivity {
         CommonUtils.checkPermission(this, new MPermissionUtils.OnPermissionListener() {
             @Override
             public void onPermissionGranted() {
-                startActivityForResult(new Intent(MainActivity.this, CaptureActivity.class), REQUEST_CODE_SCAN);
+                Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_SCAN);
             }
 
             @Override
@@ -392,11 +393,6 @@ public class MainActivity extends BaseActivity {
                 Log.d(TAG, "----------------二维码订单数据-----" + zXingOrderBean);
                 //调用生成正式订单接口
                 generateRealOrder(zXingOrderBean.getOrderNo(), zXingOrderBean.getDeviceId());
-            }
-            if (result.contains("打开闸机")) {//扫描闸机的我二维码
-                Intent intent = new Intent(AutoStoreApplication.getApp(), GateActivity.class);
-                intent.putExtra(Constant.QR_GARD, result);
-                startActivity(intent);
             }
         }
         if (requestCode == REQUEST_CODE_REGEST) {//人脸识别成功 拿到图片跳转

@@ -21,7 +21,7 @@ import retrofit2.Response;
 
 public abstract class CustomCallBack<T extends BaseBean> implements Callback<T> {
 
-    public static final String ERR_NETWORK_MSG  = "网络异常,请重试!";
+    public static final String ERR_NETWORK_MSG  = "网络异常，请重试";
     public static       String ERR_NETWORK_CODE = "0";
 
     @Override
