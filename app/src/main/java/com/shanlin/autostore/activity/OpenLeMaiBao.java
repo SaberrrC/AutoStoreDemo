@@ -85,7 +85,6 @@ public class OpenLeMaiBao extends BaseActivity {
             case R.id.btn_nextstep_and_confirm:
                 judgeEmpty();
                 break;
-
             case R.id.tv_xie_yi:
                 Intent intent1 = new Intent(this,XieYiAndHeTongActivity.class);
                 intent1.putExtra("state",1);
@@ -105,11 +104,6 @@ public class OpenLeMaiBao extends BaseActivity {
             //第一步
             String name = etName.getText().toString().trim();
             String idNum = etIdNum.getText().toString().trim();
-            if (TextUtils.isEmpty(name) || TextUtils.isEmpty(idNum)) {
-                CommonUtils.showToast(this,"请输入完整认证信息!");
-                return;
-            }
-
             //调用实名认证接口
             doRealNameAuthen(name, idNum);
         } else if (SpUtils.getBoolean(OpenLeMaiBao.this,Constant_LeMaiBao.AUTHEN,false) && !SpUtils
@@ -118,19 +112,14 @@ public class OpenLeMaiBao extends BaseActivity {
             changeUI(2);
             String psw = etPsw.getText().toString().trim();
             String psw2 = etPswAgain.getText().toString().trim();
-            if (TextUtils.isEmpty(psw) || TextUtils.isEmpty(psw2)) {
-                CommonUtils.showToast(this,"请输入完整密码!");
-                return;
-            }
-
-            if (!TextUtils.equals(psw,psw2)) {
-                CommonUtils.showToast(this,"密码不一致,请重新输入!");
-                etPswAgain.setText("");
-                return;
-            }
             //调用密码认证接口
             doPswSetting(psw2);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     private void doPswSetting(String psw2) {
@@ -142,9 +131,7 @@ public class OpenLeMaiBao extends BaseActivity {
                 if (TextUtils.equals("200",body.getCode())) {
                     CommonUtils.showToast(OpenLeMaiBao.this,body.getMessage());
                     SpUtils.saveBoolean(OpenLeMaiBao.this, Constant_LeMaiBao.PASSWORD,true);
-                    Intent data = new Intent();
-                    data.putExtra("success",true);
-                    OpenLeMaiBao.this.setResult(500,data);
+                    SpUtils.saveBoolean(OpenLeMaiBao.this,Constant_LeMaiBao.GET_BALENCE,true);
                     finish();
                 } else {
                     CommonUtils.showToast(OpenLeMaiBao.this,body.getMessage());

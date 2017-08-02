@@ -16,6 +16,8 @@ public class Constant_LeMaiBao {
      */
     public static final String AUTHEN = "AUTHEN";
     public static final String PASSWORD = "PASSWORD";
+    public static final String GET_BALENCE = "creditMoney";//是否有可领取额度
+    public static final String CREDIT = "credit";//授信额度
 
     /**
      * 认证状态 0未认证 , 1 已实名认证, 2 已认证(全部认证完毕)

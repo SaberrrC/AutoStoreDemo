@@ -12,6 +12,8 @@
             android:layout_height="146dp">
 
             <ImageView
+                android:id="@+id/iv_head_img"
+                android:clickable="true"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="48dp"
                 android:src="@mipmap/head_default"

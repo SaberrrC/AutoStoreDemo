@@ -12,6 +12,7 @@
     <color name="yellow">#FCC70D</color>
     <color name="light_blue">#67B7E0</color>
     <color name="blcak">#000</color>
+    <color name="red">#6f00</color>
     <!--界面直线-->
     <color name="line">#f5f5f5</color>
     <color name="white">#ffffff</color>

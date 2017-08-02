@@ -83,7 +83,6 @@ public class CommonUtils {
     public static AlertDialog getDialog(Context context, View view, boolean cancelable) {
         AlertDialog dialog = new AlertDialog.Builder(context).setView(view).create();
         dialog.setCancelable(cancelable);
-        dialog.show();
         return dialog;
     }
 

@@ -180,7 +180,6 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
         if (!isHasSurface) {
             scanPreview.getHolder().removeCallback(this);
         }
-        finish();
         super.onPause();
     }
 
@@ -247,6 +246,8 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
             //调用生成正式订单接口
             generateRealOrder(zXingOrderBean.getOrderNo(), zXingOrderBean
                     .getDeviceId());
+        } else {
+            finish();
         }
 
         bundle.putInt("width", mCropRect.width());
@@ -254,7 +255,7 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
         bundle.putString("result", result);
         resultIntent.putExtras(bundle);
 //        this.setResult(RESULT_OK, resultIntent);
-//        CaptureActivity.this.finish();
+
     }
 
 
@@ -276,6 +277,7 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
                     com.shanlin.autostore.utils.CommonUtils.sendDataToNextActivity(CaptureActivity.this, ChoosePayWayActivity
                             .class,
                             aliArgs, new String[]{devicedID, orderNo, totalAmount, "2", token, creditBalence});
+                    CaptureActivity.this.finish();
                 }
             }
 

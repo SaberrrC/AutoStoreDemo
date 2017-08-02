@@ -9,13 +9,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -92,6 +92,10 @@ public class MainActivity extends BaseActivity {
     private java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
     private int maleCount;
     private String creditUsed;
+    private ImageView headImage;
+    private String credit;
+    private View inflate;
+    private AlertDialog dialog;
 
     @Override
     public int initLayout() {
@@ -103,6 +107,8 @@ public class MainActivity extends BaseActivity {
         StatusBarUtils.setColor(this, Color.WHITE);
         mDrawerLayout = ((DrawerLayout) findViewById(R.id.activity_main));
         mTvIdentify = (TextView) findViewById(R.id.identify_tip);
+        headImage = (ImageView) findViewById(R.id.iv_head_img);//头像
+        headImage.setOnClickListener(this);
         mBtBanlance = (TextView) findViewById(R.id.btn_yu_e);
         mUserNum = (TextView) findViewById(R.id.user_num);
         pv = (ProgressView) findViewById(R.id.pv);
@@ -166,6 +172,10 @@ public class MainActivity extends BaseActivity {
         getUserNumToday();
         //获取认证状态
         getUserAuthenStatus();
+
+        if (SpUtils.getBoolean(this,Constant_LeMaiBao.GET_BALENCE,false)) {
+            dialog.show();
+        }
     }
 
     private void getUserAuthenStatus() {
@@ -176,12 +186,13 @@ public class MainActivity extends BaseActivity {
                 UserVertifyStatusBean body = response.body();
                 if (TextUtils.equals("200",body.getCode())) {
                     String status = body.getData().getVerifyStatus();
-                    if (Constant_LeMaiBao.AUTHEN_NOT.equals(status)) {
+                    if (!Constant_LeMaiBao.AUTHEN_FINISHED.equals(status)) {
                         openLMB.setClickable(true);
                         CommonUtils.debugLog("----------top---------");
                         openLMB.setText("开通乐买宝");
                     } else {
                         //获取用户信用额度
+                        SpUtils.saveBoolean(MainActivity.this,Constant_LeMaiBao.PASSWORD,true);
                         openLMB.setClickable(false);
                         getUserCreditBalenceInfo(service);
                     }
@@ -198,6 +209,9 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initData() {
         initToolBar();
+        inflate = LayoutInflater.from(this).inflate(R.layout.get_available_balence_layout, null);
+        inflate.findViewById(R.id.btn_diaolog_know).setOnClickListener(this);
+        dialog = CommonUtils.getDialog(this, inflate, false);
         token = SpUtils.getString(this, Constant.TOKEN, "");
         mUserPhone = SpUtils.getString(this, Constant.USER_PHONE_LOGINED, "");
         mUserPhoneHide = mUserPhone.substring(0, 3) + "****" + mUserPhone.substring(7);
@@ -228,8 +242,6 @@ public class MainActivity extends BaseActivity {
                     int percent = total == 0 ? 0 : femaleCount*100/total;
                     pv.setGirlPercent(percent);
                     pv.setBoyPercent(total == 0 ? 0 : 100 - percent);
-//                    pv.setGirlPercent(0);
-//                    pv.setBoyPercent(0);
                     pv.flush();
                 }
             }
@@ -250,10 +262,12 @@ public class MainActivity extends BaseActivity {
                 if (TextUtils.equals("200", body.getCode())) {
                     CommonUtils.debugLog(body.toString() + "----------" + token);
                     creditBalance = body.getData().getCreditBalance();//可用额度
+                    credit = body.getData().getCredit();//信用额度
+                    SpUtils.saveString(MainActivity.this,Constant_LeMaiBao.CREDIT,credit);
                     creditUsed = body.getData().getCreditUsed();//已用额度
                     openLMB.setText("¥" + (creditBalance == null ? "0.00" : creditBalance));
                 } else {
-                    //                   ToastUtils.showToast("获取信用额度失败");
+                    CommonUtils.showToast(MainActivity.this,body.getMessage());
                 }
             }
 
@@ -271,7 +285,6 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 CommonUtils.toNextActivity(v.getContext(), MainActivity.class);
-                Log.d(TAG, "onClick: ");
             }
         });
         setSupportActionBar(toolbar);
@@ -325,13 +338,15 @@ public class MainActivity extends BaseActivity {
                 showLoginoutDialog();
                 break;
             case R.id.btn_lemaibao:
-                CommonUtils.sendDataToNextActivity(this, MyLeMaiBaoActivity.class,creditKeys,
-                        new String[]{creditBalance,creditUsed});
+                if (!openLMB.isClickable()) {
+                    CommonUtils.sendDataToNextActivity(this, MyLeMaiBaoActivity.class,creditKeys,
+                            new String[]{creditBalance,creditUsed});
+                }
                 break;
             case R.id.btn_open_le_mai_bao: //开通乐买宝
                 if (openLMB.isClickable()) {
                     CommonUtils.debugLog("-----------开通乐买宝");
-                    startActivityForResult(new Intent(this, OpenLeMaiBao.class),500);
+                    CommonUtils.toNextActivity(this,OpenLeMaiBao.class);
                 }
                 break;
             case R.id.identify_tip://完善身份，智能购物
@@ -355,6 +370,17 @@ public class MainActivity extends BaseActivity {
                 refundMoneyIntent.putExtra(Constant.REFUND_MONEY_BEAN, refundMoneyBean);
                 startActivity(refundMoneyIntent);
                 break;
+
+            case R.id.btn_diaolog_know:
+                dialog.dismiss();
+                SpUtils.saveBoolean(this,Constant_LeMaiBao.GET_BALENCE,false);
+                break;
+
+            case R.id.iv_head_img:
+                //点击头像
+
+                break;
+
         }
         mDrawerLayout.closeDrawer(Gravity.LEFT);
     }
@@ -378,12 +404,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == REQUEST_CODE_SCAN) {//二维码
-//            if (data == null) {
-//                return;
-//            }
-//            String result = data.getExtras().getString("result");
-//        }
+
         if (requestCode == REQUEST_CODE_REGEST) {//人脸识别成功 拿到图片跳转
             if (TextUtils.equals(Constant.ON_BACK_PRESSED, data.getStringExtra(Constant.ON_BACK_PRESSED))) {
                 return;
@@ -410,26 +431,6 @@ public class MainActivity extends BaseActivity {
                 e.printStackTrace();
             }
         }
-
-        if (requestCode == 500) {
-            if (data == null) return;
-            boolean success = data.getBooleanExtra("success", false);
-            if (success) {
-                showBalenceDialog();
-            }
-        }
-    }
-
-    private void showBalenceDialog() {
-        View inflate = LayoutInflater.from(this).inflate(R.layout.get_available_balence_layout, null);
-        final AlertDialog dialog = CommonUtils.getDialog(this, inflate, false);
-        inflate.findViewById(R.id.btn_diaolog_know).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
     }
 
     @Override

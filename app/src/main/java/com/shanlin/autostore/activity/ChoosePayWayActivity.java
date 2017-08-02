@@ -38,6 +38,7 @@ import com.shanlin.autostore.constants.WXConstant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.IpTools;
+import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.view.XNumberKeyboardView;
 import com.shanlin.autostore.view.gridpasswordview.GridPasswordView;
 import com.shanlin.autostore.zhifubao.OrderInfoUtil2_0;
@@ -85,6 +86,10 @@ public class ChoosePayWayActivity extends BaseActivity{
     private View way1;
     private View way2;
     private View way3;
+    private Intent intent;
+    private boolean pswResult;
+    private boolean balenceResult;
+    private String credit;
 
     @Override
     public int initLayout() {
@@ -230,14 +235,13 @@ public class ChoosePayWayActivity extends BaseActivity{
 
     @Override
     public void initData() {
-        Intent intent = getIntent();
+        intent = getIntent();
         //支付参数
         deviceId = intent.getStringExtra(Constant_LeMaiBao.DEVICEDID);
         orderNo = intent.getStringExtra(Constant_LeMaiBao.ORDER_NO);
         totalMoney = intent.getStringExtra(Constant_LeMaiBao.TOTAL_AMOUNT);
         storeId = intent.getStringExtra(Constant_LeMaiBao.STORED_ID);
         token = intent.getStringExtra(Constant.TOKEN);
-        creditBalance = intent.getStringExtra(Constant_LeMaiBao.CREDIT_BALANCE);
         totalAmount.setText("¥"+ (totalMoney == null ? "0.00" : totalMoney));
         moneyNeedToPay.setText("¥"+ (totalMoney == null ? "0.00" : totalMoney));
         service = CommonUtils.doNet();
@@ -280,8 +284,13 @@ public class ChoosePayWayActivity extends BaseActivity{
                 showInputPswPop();
                 break;
             case R.id.get_avaiable_balence:
-                //可用额度领取
-                showGetAvailableBalenceDialog();
+                if (!pswResult) {
+                    //开通乐买宝
+                    CommonUtils.toNextActivity(this,OpenLeMaiBao.class);
+                } else if (SpUtils.getBoolean(this,Constant_LeMaiBao.GET_BALENCE,false)) {
+                    //可用额度领取
+                    showGetAvailableBalenceDialog();
+                }
                 break;
             case R.id.ll_pay_way_2:
                 //支付宝支付
@@ -296,6 +305,7 @@ public class ChoosePayWayActivity extends BaseActivity{
                 break;
             case R.id.btn_diaolog_know:
                 availbleDialog.dismiss();
+                SpUtils.saveBoolean(this,Constant_LeMaiBao.GET_BALENCE,false);
                 break;
             case R.id.iv_disapper_keyboard:
                 if (popBottom.isShowing()) popBottom.dismiss();
@@ -329,14 +339,38 @@ public class ChoosePayWayActivity extends BaseActivity{
     @Override
     protected void onResume() {
         super.onResume();
-        if (Double.parseDouble(creditBalance == null ? "0.00" : creditBalance) >= Double.parseDouble
-                (totalMoney)) {
-            availableBalence.setClickable(creditBalance == null ? true : false);
-            availableBalence.setText(creditBalance == null ? "开通乐买宝" : creditBalance+" 元可用");
+        creditBalance = intent.getStringExtra(Constant_LeMaiBao.CREDIT_BALANCE);
+        initSPData();
+        judgeStatus();
+    }
+
+
+    private void judgeStatus() {
+
+        if (!pswResult) {
+            availableBalence.setText("开通乐买宝");
+            availableBalence.setClickable(true);
         } else {
-            availableBalence.setTextColor(Color.RED);
-            availableBalence.setText(creditBalance+" 额度不足");
+            if (SpUtils.getBoolean(this,Constant_LeMaiBao.GET_BALENCE,false)) {
+                //有可领取额度
+                availableBalence.setText(credit+" 元可领取");
+                availableBalence.setClickable(true);
+            } else {
+                availableBalence.setClickable(false);
+                if (Double.parseDouble(creditBalance == null ? "0.00" : creditBalance) >= Double.parseDouble(totalMoney)){
+                    availableBalence.setText(creditBalance+"元可用");
+                } else {
+                    availableBalence.setTextColor(Color.RED);
+                    availableBalence.setText(creditBalance+" 额度不足");
+                }
+            }
         }
+    }
+
+    private void initSPData() {
+        credit = SpUtils.getString(this, Constant_LeMaiBao.CREDIT, "0.00");//授信额度
+        pswResult = SpUtils.getBoolean(this, Constant_LeMaiBao.PASSWORD, false);
+        balenceResult = SpUtils.getBoolean(this, Constant_LeMaiBao.GET_BALENCE, false);
     }
 
     @Subscribe(threadMode= ThreadMode.MAIN)
