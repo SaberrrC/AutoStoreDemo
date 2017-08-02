@@ -134,7 +134,7 @@ public class MyLeMaiBaoActivity extends BaseActivity implements FinalRecycleAdap
         Intent intent = getIntent();
         String creditBalence = intent.getStringExtra(Constant_LeMaiBao.CREDIT_BALANCE);
         String creditUsed = intent.getStringExtra(Constant_LeMaiBao.CREDIT_USED);
-        mTvAvailableAmount.setText("¥ "+(creditBalence == null ? "0.00" : creditBalence));
+        mTvMoney.setText("¥ "+(creditBalence == null ? "0.00" : creditBalence));
         mTvUsed.setText("¥ "+(creditUsed == null ? "0.00" : creditUsed));
     }
 

@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.shanlin.autostore.activity.BuyRecordActivity;
-import com.shanlin.autostore.activity.ChoosePayWayActivity;
 import com.shanlin.autostore.activity.LoginActivity;
 import com.shanlin.autostore.activity.MyLeMaiBaoActivity;
 import com.shanlin.autostore.activity.OpenLeMaiBao;
@@ -29,13 +28,11 @@ import com.shanlin.autostore.activity.SaveFaceActivity;
 import com.shanlin.autostore.activity.VersionInfoActivity;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.LoginBean;
-import com.shanlin.autostore.bean.paramsBean.RealOrderBody;
-import com.shanlin.autostore.bean.paramsBean.ZXingOrderBean;
 import com.shanlin.autostore.bean.resultBean.CreditBalanceCheckBean;
 import com.shanlin.autostore.bean.resultBean.LoginOutBean;
-import com.shanlin.autostore.bean.resultBean.RealOrderBean;
 import com.shanlin.autostore.bean.resultBean.RefundMoneyBean;
 import com.shanlin.autostore.bean.resultBean.UserNumEverydayBean;
+import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
@@ -168,16 +165,34 @@ public class MainActivity extends BaseActivity {
         //调用今日到店人数接口
         getUserNumToday();
         //获取认证状态
-        String authenResult = SpUtils.getString(this, Constant_LeMaiBao.AUTHEN_STATE_KEY, "0");
-        Log.d(TAG, "-----------------是否完成乐买宝认证=" + authenResult);
-        if (Constant_LeMaiBao.AUTHEN_NOT.equals(authenResult)) {
-            openLMB.setClickable(true);
-            openLMB.setText("开通乐买宝");
-        } else {
-            //获取用户信用额度
-            openLMB.setClickable(false);
-            getUserCreditBalenceInfo(service);
-        }
+        getUserAuthenStatus();
+    }
+
+    private void getUserAuthenStatus() {
+        Call<UserVertifyStatusBean> call = service.getUserVertifyAuthenStatus(token);
+        call.enqueue(new Callback<UserVertifyStatusBean>() {
+            @Override
+            public void onResponse(Call<UserVertifyStatusBean> call, Response<UserVertifyStatusBean> response) {
+                UserVertifyStatusBean body = response.body();
+                if (TextUtils.equals("200",body.getCode())) {
+                    String status = body.getData().getVerifyStatus();
+                    if (Constant_LeMaiBao.AUTHEN_NOT.equals(status)) {
+                        openLMB.setClickable(true);
+                        CommonUtils.debugLog("----------top---------");
+                        openLMB.setText("开通乐买宝");
+                    } else {
+                        //获取用户信用额度
+                        openLMB.setClickable(false);
+                        getUserCreditBalenceInfo(service);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserVertifyStatusBean> call, Throwable t) {
+                    CommonUtils.debugLog(t.getMessage());
+            }
+        });
     }
 
     @Override
@@ -315,7 +330,8 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.btn_open_le_mai_bao: //开通乐买宝
                 if (openLMB.isClickable()) {
-                    CommonUtils.toNextActivity(this, OpenLeMaiBao.class);
+                    CommonUtils.debugLog("-----------开通乐买宝");
+                    startActivityForResult(new Intent(this, OpenLeMaiBao.class),500);
                 }
                 break;
             case R.id.identify_tip://完善身份，智能购物
@@ -348,6 +364,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onPermissionGranted() {
                 Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
+                intent.putExtra(Constant_LeMaiBao.CREDIT_BALANCE,creditBalance);
                 startActivityForResult(intent, REQUEST_CODE_SCAN);
             }
 
@@ -361,20 +378,12 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_SCAN) {//二维码
-            if (data == null) {
-                return;
-            }
-
-            String result = data.getExtras().getString("result");
-            if (result.contains("orderNo")) {
-                //订单号信息
-                ZXingOrderBean zXingOrderBean = gson.fromJson(result, ZXingOrderBean.class);
-                Log.d(TAG, "----------------二维码订单数据-----" + zXingOrderBean);
-                //调用生成正式订单接口
-                generateRealOrder(zXingOrderBean.getOrderNo(), zXingOrderBean.getDeviceId());
-            }
-        }
+//        if (requestCode == REQUEST_CODE_SCAN) {//二维码
+//            if (data == null) {
+//                return;
+//            }
+//            String result = data.getExtras().getString("result");
+//        }
         if (requestCode == REQUEST_CODE_REGEST) {//人脸识别成功 拿到图片跳转
             if (TextUtils.equals(Constant.ON_BACK_PRESSED, data.getStringExtra(Constant.ON_BACK_PRESSED))) {
                 return;
@@ -401,30 +410,26 @@ public class MainActivity extends BaseActivity {
                 e.printStackTrace();
             }
         }
+
+        if (requestCode == 500) {
+            if (data == null) return;
+            boolean success = data.getBooleanExtra("success", false);
+            if (success) {
+                showBalenceDialog();
+            }
+        }
     }
 
-    private String[] aliArgs = new String[]{Constant_LeMaiBao.DEVICEDID, Constant_LeMaiBao.ORDER_NO, Constant_LeMaiBao.TOTAL_AMOUNT, Constant_LeMaiBao.STORED_ID, Constant.TOKEN, Constant_LeMaiBao.CREDIT_BALANCE};
-
-    private void generateRealOrder(final String orderNo, final String devicedID) {
-        final String token = SpUtils.getString(this, Constant.TOKEN, "");
-        Log.d(TAG, "-------------------token=" + token);
-        Call<RealOrderBean> call = service.updateTempToReal(token, new RealOrderBody(orderNo));
-        call.enqueue(new Callback<RealOrderBean>() {
+    private void showBalenceDialog() {
+        View inflate = LayoutInflater.from(this).inflate(R.layout.get_available_balence_layout, null);
+        final AlertDialog dialog = CommonUtils.getDialog(this, inflate, false);
+        inflate.findViewById(R.id.btn_diaolog_know).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onResponse(Call<RealOrderBean> call, Response<RealOrderBean> response) {
-                RealOrderBean body = response.body();
-                if (TextUtils.equals("200", body.getCode())) {
-                    Log.d(TAG, "------------------------*-----------------------" + response.body().toString());
-                    String totalAmount = response.body().getData().getTotalAmount();//应付总金额
-                    CommonUtils.sendDataToNextActivity(MainActivity.this, ChoosePayWayActivity.class, aliArgs, new String[]{devicedID, orderNo, totalAmount, "2", token, creditBalance});
-                }
-            }
-
-            @Override
-            public void onFailure(Call<RealOrderBean> call, Throwable t) {
-                Log.d(TAG, "------------------error=" + t.getMessage());
+            public void onClick(View v) {
+                dialog.dismiss();
             }
         });
+        dialog.show();
     }
 
     @Override

@@ -93,13 +93,13 @@
             android:textSize="14px"
             />
 
-        <ImageView
-            android:layout_marginRight="20px"
-            android:layout_marginLeft="11px"
-            android:layout_width="9px"
-            android:layout_height="15.9px"
-            android:src="@mipmap/nav_enter"
-            />
+        <!--<ImageView-->
+            <!--android:layout_marginRight="20px"-->
+            <!--android:layout_marginLeft="11px"-->
+            <!--android:layout_width="9px"-->
+            <!--android:layout_height="15.9px"-->
+            <!--android:src="@mipmap/nav_enter"-->
+            <!--/>-->
     </LinearLayout>
 <!--2-->
     <LinearLayout

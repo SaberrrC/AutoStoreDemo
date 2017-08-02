@@ -33,4 +33,5 @@ public class AutoStoreApplication extends Application {
     public static AutoStoreApplication getApp() {
         return app;
     }
+
 }
