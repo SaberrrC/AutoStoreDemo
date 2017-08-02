@@ -244,21 +244,21 @@ public class CommonUtils {
             @Override
             public void run() {
                 String deviceId = JPushInterface.getRegistrationID(AutoStoreApplication.getApp());
-                //                if (!TextUtils.isEmpty(deviceId)) {
-                //                    SpUtils.saveString(AutoStoreApplication.getApp(), Constant.DEVICEID, deviceId);
-                //                    saveDevicedID(deviceId);
-                //                } else {
-                //                    deviceId = SpUtils.getString(AutoStoreApplication.getApp(), Constant.DEVICEID, "");
-                //                    if (!TextUtils.isEmpty(deviceId)) {
-                //                        LogUtils.d(Constant.DEVICEID + "   " + deviceId);
-                //                        return;
-                //                    }
-                deviceId = getDIsKDevicedID();
                 if (!TextUtils.isEmpty(deviceId)) {
                     SpUtils.saveString(AutoStoreApplication.getApp(), Constant.DEVICEID, deviceId);
+                    saveDevicedID(deviceId);
+                } else {
+                    deviceId = SpUtils.getString(AutoStoreApplication.getApp(), Constant.DEVICEID, "");
+                    if (!TextUtils.isEmpty(deviceId)) {
+                        LogUtils.d(Constant.DEVICEID + "   " + deviceId);
+                        return;
+                    }
+                    deviceId = getDIsKDevicedID();
+                    if (!TextUtils.isEmpty(deviceId)) {
+                        SpUtils.saveString(AutoStoreApplication.getApp(), Constant.DEVICEID, deviceId);
+                    }
                 }
-                //                }
-                //                LogUtils.d(Constant.DEVICEID + "   " + deviceId);
+                LogUtils.d(Constant.DEVICEID + "   " + deviceId);
             }
         });
     }
