@@ -83,23 +83,55 @@
                 android:textSize="16px"
                 />
         </LinearLayout>
-        <TextView
-            android:id="@+id/get_avaiable_balence"
+
+        <RelativeLayout
             android:layout_marginLeft="53px"
             android:layout_width="wrap_content"
-            android:layout_height="20px"
-            android:text="200元可用"
+            android:layout_height="match_parent">
+        <TextView
+            android:layout_centerVertical="true"
+            android:id="@+id/get_avaiable_balence"
+            android:layout_width="68px"
+            android:layout_height="wrap_content"
+            android:text="200.00元"
             android:textColor="#FF999999"
-            android:textSize="14px"
-            />
+            android:textSize="14px"/>
 
-        <!--<ImageView-->
-            <!--android:layout_marginRight="20px"-->
-            <!--android:layout_marginLeft="11px"-->
-            <!--android:layout_width="9px"-->
-            <!--android:layout_height="15.9px"-->
-            <!--android:src="@mipmap/nav_enter"-->
-            <!--/>-->
+            <TextView
+                android:id="@+id/tv_not_enough"
+                android:text="余额不足"
+                android:textSize="12px"
+                android:textColor="#f00"
+                android:layout_below="@id/get_avaiable_balence"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tv_can_get"
+                android:text="可领取额度"
+                android:textSize="12px"
+                android:textColor="#000"
+                android:visibility="invisible"
+                android:layout_below="@id/get_avaiable_balence"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/tv_can_use"
+                android:text="可用余额"
+                android:textSize="12px"
+                android:textColor="#000"
+                android:visibility="invisible"
+                android:layout_below="@id/get_avaiable_balence"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+        <ImageView
+            android:layout_marginRight="20px"
+            android:layout_marginLeft="11px"
+            android:layout_width="9px"
+            android:layout_height="15.9px"
+            android:src="@mipmap/nav_enter"
+            />
     </LinearLayout>
 <!--2-->
     <LinearLayout

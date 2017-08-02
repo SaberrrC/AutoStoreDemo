@@ -34,7 +34,7 @@
         android:layout_marginTop="13dp"
         android:layout_below="@id/tv_dialog_title"
         android:layout_width="280dp"
-        android:layout_height="3px"
+        android:layout_height="1px"
         />
 
     <TextView

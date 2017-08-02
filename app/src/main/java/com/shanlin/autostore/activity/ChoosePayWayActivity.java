@@ -3,7 +3,6 @@ package com.shanlin.autostore.activity;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.os.Message;
@@ -90,6 +89,9 @@ public class ChoosePayWayActivity extends BaseActivity{
     private boolean pswResult;
     private boolean balenceResult;
     private String credit;
+    private TextView moneyNotEnough;
+    private TextView moneyCanGet;
+    private TextView moneyCanUse;
 
     @Override
     public int initLayout() {
@@ -102,6 +104,9 @@ public class ChoosePayWayActivity extends BaseActivity{
         availableDialogView = LayoutInflater.from(this).inflate(R.layout.get_available_balence_layout, null);
         availableDialogView.findViewById(R.id.btn_diaolog_know).setOnClickListener(this);
         availableBalance = ((TextView) findViewById(R.id.get_avaiable_balence));//显示可用余额
+        moneyNotEnough = ((TextView) findViewById(R.id.tv_not_enough));//余额不足
+        moneyCanGet = ((TextView) findViewById(R.id.tv_can_get));//可领取额度
+        moneyCanUse = ((TextView) findViewById(R.id.tv_can_use));//可用余额
         way1 = findViewById(R.id.ll_pay_way_1);
         way1.setOnClickListener(this);
         way2 = findViewById(R.id.ll_pay_way_2);
@@ -306,6 +311,7 @@ public class ChoosePayWayActivity extends BaseActivity{
             case R.id.btn_diaolog_know:
                 availbleDialog.dismiss();
                 SpUtils.saveBoolean(this,Constant_LeMaiBao.GET_BALENCE,false);
+                judgeStatus();
                 break;
             case R.id.iv_disapper_keyboard:
                 if (popBottom.isShowing()) popBottom.dismiss();
@@ -350,18 +356,29 @@ public class ChoosePayWayActivity extends BaseActivity{
         if (!pswResult) {
             availableBalence.setText("开通乐买宝");
             availableBalence.setClickable(true);
+            moneyCanGet.setVisibility(View.INVISIBLE);
+            moneyNotEnough.setVisibility(View.INVISIBLE);
+            moneyCanUse.setVisibility(View.INVISIBLE);
         } else {
             if (SpUtils.getBoolean(this,Constant_LeMaiBao.GET_BALENCE,false)) {
                 //有可领取额度
-                availableBalence.setText(credit+" 元可领取");
+                availableBalence.setText(credit+" 元");
+                moneyCanGet.setVisibility(View.VISIBLE);
+                moneyNotEnough.setVisibility(View.INVISIBLE);
+                moneyCanUse.setVisibility(View.INVISIBLE);
                 availableBalence.setClickable(true);
             } else {
                 availableBalence.setClickable(false);
                 if (Double.parseDouble(creditBalance == null ? "0.00" : creditBalance) >= Double.parseDouble(totalMoney)){
-                    availableBalence.setText(creditBalance+"元可用");
+                    availableBalence.setText(creditBalance+" 元");
+                    moneyCanUse.setVisibility(View.VISIBLE);
+                    moneyCanGet.setVisibility(View.INVISIBLE);
+                    moneyNotEnough.setVisibility(View.INVISIBLE);
                 } else {
-                    availableBalence.setTextColor(Color.RED);
-                    availableBalence.setText(creditBalance+" 额度不足");
+                    availableBalence.setText(creditBalance+" 元");
+                    moneyNotEnough.setVisibility(View.VISIBLE);
+                    moneyCanUse.setVisibility(View.INVISIBLE);
+                    moneyCanGet.setVisibility(View.INVISIBLE);
                 }
             }
         }
