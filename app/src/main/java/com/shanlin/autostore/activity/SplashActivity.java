@@ -58,11 +58,6 @@ public class SplashActivity extends Activity {
 
             }
         });
-        saveDeviceId();
-    }
-
-    private void saveDeviceId() {
-
     }
 
     @Override
