@@ -8,7 +8,10 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.bean.event.OpenGardEvent;
+import com.shanlin.autostore.constants.Constant;
+import com.shanlin.autostore.utils.SpUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
@@ -33,6 +36,12 @@ public class MyReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         try {
             Bundle bundle = intent.getExtras();
+            if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
+                String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
+                //send the Registration Id to your server...
+                SpUtils.saveString(AutoStoreApplication.getApp(), Constant.DEVICEID, regId);
+                Log.d("deviceId", "deviceId: onReceive-- " + SpUtils.getString(AutoStoreApplication.getApp(), "deviceId", ""));
+            }
             Log.d(TAG, "[MyReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
             if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
                 String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
@@ -62,7 +71,7 @@ public class MyReceiver extends BroadcastReceiver {
             }
             String type = bundle.getString("cn.jpush.android.CONTENT_TYPE");
             String json = bundle.getString("cn.jpush.android.EXTRA");
-//            {"status":"闸机打开成功！","storeId":"1","type":"1"}
+            //            {"status":"闸机打开成功！","storeId":"1","type":"1"}
             Gson gson = new Gson();
             if (!TextUtils.equals(type, "2")) {
                 return;
