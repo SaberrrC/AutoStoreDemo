@@ -36,6 +36,11 @@ import android.widget.RelativeLayout;
 
 import com.google.zxing.Result;
 import com.shanlin.autostore.R;
+import com.shanlin.autostore.activity.GateActivity;
+import com.shanlin.autostore.constants.Constant;
+import com.shanlin.autostore.utils.SpUtils;
+import com.shanlin.autostore.utils.StrUtils;
+import com.shanlin.autostore.utils.ToastUtils;
 import com.shanlin.autostore.zxing.camera.CameraManager;
 import com.shanlin.autostore.zxing.decode.DecodeThread;
 import com.shanlin.autostore.zxing.utils.BeepManager;
@@ -199,10 +204,25 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
     public void handleDecode(Result rawResult, Bundle bundle) {
         inactivityTimer.onActivity();
         beepManager.playBeepSoundAndVibrate();
+        String result = rawResult.getText();
         Intent resultIntent = new Intent();
+        //处理逻辑
+        if (result.contains("打开闸机")) {//扫描闸机的二维码
+            String deviceId = SpUtils.getString(this, Constant.DEVICEID, "");
+            if (StrUtils.isEmpty(deviceId)) {
+                ToastUtils.showToast("网络异常，请稍后再试");
+                com.shanlin.autostore.utils.CommonUtils.getDevicedID();
+                finish();
+                return;
+            }
+            Intent intent = new Intent(this, GateActivity.class);
+            intent.putExtra(Constant.QR_GARD, result);
+            startActivity(intent);
+            return;
+        }
         bundle.putInt("width", mCropRect.width());
         bundle.putInt("height", mCropRect.height());
-        bundle.putString("result", rawResult.getText());
+        bundle.putString("result", result);
         resultIntent.putExtras(bundle);
         this.setResult(RESULT_OK, resultIntent);
         CaptureActivity.this.finish();

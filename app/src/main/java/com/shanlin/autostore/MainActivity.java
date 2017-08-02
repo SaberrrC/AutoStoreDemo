@@ -46,6 +46,7 @@ import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
+import com.shanlin.autostore.utils.StrUtils;
 import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.utils.ToastUtils;
 import com.shanlin.autostore.view.ProgressView;
@@ -127,7 +128,7 @@ public class MainActivity extends BaseActivity {
         }
         if (TextUtils.equals(faceVerify, Constant.FACE_VERIFY_OK)) {
             mTvIdentify.setVisibility(View.GONE);
-            showWelcomeDialog();
+//            showWelcomeDialog();
             return;
         }
         if (TextUtils.equals(faceVerify, Constant.FACE_VERIFY_NO)) {
@@ -319,6 +320,7 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void onPermissionGranted() {
                         Intent intent = new Intent(MainActivity.this, LivenessActivity.class);
+                        intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.GATE);
                         startActivityForResult(intent, REQUEST_CODE_REGEST);
                     }
 
@@ -342,7 +344,8 @@ public class MainActivity extends BaseActivity {
         CommonUtils.checkPermission(this, new MPermissionUtils.OnPermissionListener() {
             @Override
             public void onPermissionGranted() {
-                startActivityForResult(new Intent(MainActivity.this, CaptureActivity.class), REQUEST_CODE_SCAN);
+                Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_SCAN);
             }
 
             @Override
@@ -368,7 +371,13 @@ public class MainActivity extends BaseActivity {
                 //调用生成正式订单接口
                 generateRealOrder(zXingOrderBean.getOrderNo(), zXingOrderBean.getDeviceId());
             }
-            if (result.contains("打开闸机")) {//扫描闸机的我二维码
+            if (result.contains("打开闸机")) {//扫描闸机的二维码
+                String deviceId = SpUtils.getString(this, Constant.DEVICEID, "");
+                if (StrUtils.isEmpty(deviceId)) {
+                    ToastUtils.showToast("网络异常，请稍后再试");
+                    CommonUtils.getDevicedID();
+                    return;
+                }
                 Intent intent = new Intent(AutoStoreApplication.getApp(), GateActivity.class);
                 intent.putExtra(Constant.QR_GARD, result);
                 startActivity(intent);

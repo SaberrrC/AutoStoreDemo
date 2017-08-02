@@ -248,8 +248,6 @@ public class CommonUtils {
         if (!TextUtils.isEmpty(deviceId)) {
             SpUtils.saveString(AutoStoreApplication.getApp(), Constant.DEVICEID, deviceId);
             LogUtils.d(Constant.DEVICEID + "   " + deviceId);
-        } else {
-
         }
     }
 

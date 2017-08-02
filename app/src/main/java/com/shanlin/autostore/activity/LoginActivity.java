@@ -53,7 +53,7 @@ import retrofit2.Response;
 public class LoginActivity extends BaseActivity {
     public static final int    REQUEST_CODE_LOGIN = 100;
     public static final String TYPE_WX            = "1";
-    private AlertDialog  dialog;
+    private AlertDialog  WxLoginDialog;
     private View         dialogOpenWX;
     //微信登录
     private SendAuth.Req req;
@@ -86,7 +86,7 @@ public class LoginActivity extends BaseActivity {
         dialogOpenWX = LayoutInflater.from(this).inflate(R.layout.dialog_open_wx, null);
         dialogOpenWX.findViewById(R.id.tv_open).setOnClickListener(this);
         dialogOpenWX.findViewById(R.id.tv_concel).setOnClickListener(this);
-        dialog = new AlertDialog.Builder(this).setView(dialogOpenWX).create();
+        WxLoginDialog = new AlertDialog.Builder(this).setView(dialogOpenWX).create();
         //人脸识别
         initLiveness();
     }
@@ -129,14 +129,14 @@ public class LoginActivity extends BaseActivity {
             case R.id.btn_login_by_phone://手机号登陆
                 CommonUtils.toNextActivity(this, PhoneNumLoginActivity.class);
                 break;
-            case R.id.btn_login_by_wx:
+            case R.id.btn_login_by_wx://微信登陆
                 if (!CommonUtils.checkNet()) {
                     return;
                 }
-                dialog.show();
+                WxLoginDialog.show();
                 break;
             case R.id.tv_open:
-                dialog.dismiss();
+                WxLoginDialog.dismiss();
                 if (!CommonUtils.checkNet()) {
                     return;
                 }
@@ -152,7 +152,7 @@ public class LoginActivity extends BaseActivity {
                 }
                 break;
             case R.id.tv_concel:
-                dialog.dismiss();
+                WxLoginDialog.dismiss();
                 break;
         }
     }
