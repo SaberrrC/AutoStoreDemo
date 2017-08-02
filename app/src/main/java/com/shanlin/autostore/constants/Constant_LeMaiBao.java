@@ -15,6 +15,7 @@ public class Constant_LeMaiBao {
      * 实名认证结果
      */
     public static final String AUTHEN = "AUTHEN";
+    public static final String PASSWORD = "PASSWORD";
 
     /**
      * 认证状态 0未认证 , 1 已实名认证, 2 已认证(全部认证完毕)

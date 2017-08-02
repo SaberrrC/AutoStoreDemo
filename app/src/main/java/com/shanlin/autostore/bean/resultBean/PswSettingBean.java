@@ -8,18 +8,21 @@ public class PswSettingBean {
 
 
     /**
-     * code : 200
-     * message : 支付密码设置成功
+     * code : 400
+     * message : 密码格式不正确
+     * version : 0.0.1
      */
 
     private String code;
     private String message;
+    private String version;
 
     @Override
     public String toString() {
         return "PswSettingBean{" +
                 "code='" + code + '\'' +
                 ", message='" + message + '\'' +
+                ", version='" + version + '\'' +
                 '}';
     }
 
@@ -37,5 +40,13 @@ public class PswSettingBean {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 }

@@ -40,7 +40,7 @@
         android:background="#E1E1E1"
         android:layout_marginTop="18.9px"
         android:layout_width="match_parent"
-        android:layout_height="3px"
+        android:layout_height="1px"
         />
 
     <Button

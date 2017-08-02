@@ -83,14 +83,7 @@ public class OpenLeMaiBao extends BaseActivity {
         switch (v.getId()) {
 
             case R.id.btn_nextstep_and_confirm:
-
-                if (!SpUtils.getBoolean(this,Constant_LeMaiBao.AUTHEN,false)) {
-                    //实名认证姓名和身份证非空判断
-                    judgeEmpty();
-                } else {
-                    //认证密码
-                    judgeEmpty();
-                }
+                judgeEmpty();
                 break;
 
             case R.id.tv_xie_yi:
@@ -116,9 +109,11 @@ public class OpenLeMaiBao extends BaseActivity {
                 CommonUtils.showToast(this,"请输入完整认证信息!");
                 return;
             }
+
             //调用实名认证接口
             doRealNameAuthen(name, idNum);
-        } else {
+        } else if (SpUtils.getBoolean(OpenLeMaiBao.this,Constant_LeMaiBao.AUTHEN,false) && !SpUtils
+                .getBoolean(OpenLeMaiBao.this,Constant_LeMaiBao.PASSWORD,false)){
             //第二步
             changeUI(2);
             String psw = etPsw.getText().toString().trim();
@@ -146,8 +141,13 @@ public class OpenLeMaiBao extends BaseActivity {
                 PswSettingBean body = response.body();
                 if (TextUtils.equals("200",body.getCode())) {
                     CommonUtils.showToast(OpenLeMaiBao.this,body.getMessage());
-                    CommonUtils.toNextActivity(OpenLeMaiBao.this,MainActivity.class);
-                    CommonUtils.debugLog("----成功-----");
+                    SpUtils.saveBoolean(OpenLeMaiBao.this, Constant_LeMaiBao.PASSWORD,true);
+                    Intent data = new Intent();
+                    data.putExtra("success",true);
+                    OpenLeMaiBao.this.setResult(500,data);
+                    finish();
+                } else {
+                    CommonUtils.showToast(OpenLeMaiBao.this,body.getMessage());
                 }
             }
 
@@ -158,22 +158,21 @@ public class OpenLeMaiBao extends BaseActivity {
         });
     }
 
-    //412823199202112412
     private void doRealNameAuthen(String name, String idNum) {
-        Call<RealNameAuthenBean> call = service.goRealNameAuthen(SpUtils.getString(this, Constant
-                .TOKEN,""),new
+        Call<RealNameAuthenBean> call = service.goRealNameAuthen(token,new
                 RealNameAuthenBody
-                ("412823199202112412",
-                "楚明远"));
+                (idNum,
+                name));
         call.enqueue(new Callback<RealNameAuthenBean>() {
             @Override
             public void onResponse(Call<RealNameAuthenBean> call, Response<RealNameAuthenBean> response) {
-                RealNameAuthenBean bean = response.body();
-                if (TextUtils.equals("200",bean.getCode())) {
-                    CommonUtils.showToast(OpenLeMaiBao.this,bean.getMessage());
-                    CommonUtils.debugLog(bean.getMessage());
+                RealNameAuthenBean body = response.body();
+                if (TextUtils.equals("200",body.getCode())) {
+                    CommonUtils.showToast(OpenLeMaiBao.this,body.getMessage());
                     changeUI(2);
                     SpUtils.saveBoolean(OpenLeMaiBao.this, Constant_LeMaiBao.AUTHEN,true);
+                } else {
+                    CommonUtils.showToast(OpenLeMaiBao.this,body.getMessage());
                 }
             }
 

@@ -43,7 +43,7 @@ public class AutoStoreApplication extends Application {
     public void getDevicedId() {
         String registrationID = JPushInterface.getRegistrationID(getApplicationContext());
         if (TextUtils.isEmpty(registrationID)) {
-            getDevicedId();
+//            getDevicedId();
         }
         LogUtils.d("LogUtils.d(registrationID)---- " + registrationID);
         SpUtils.saveString(this, Constant.DEVICEID, registrationID);

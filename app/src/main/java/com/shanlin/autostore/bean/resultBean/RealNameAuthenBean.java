@@ -8,12 +8,23 @@ public class RealNameAuthenBean {
 
 
     /**
-     * code : 200
-     * message : 实名认证成功
+     * code : 400
+     * message : 姓名或身份证号错误
+     * version : 0.0.1
      */
 
     private String code;
     private String message;
+    private String version;
+
+    @Override
+    public String toString() {
+        return "RealNameAuthenBean{" +
+                "code='" + code + '\'' +
+                ", message='" + message + '\'' +
+                ", version='" + version + '\'' +
+                '}';
+    }
 
     public String getCode() {
         return code;
@@ -29,5 +40,13 @@ public class RealNameAuthenBean {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 }
