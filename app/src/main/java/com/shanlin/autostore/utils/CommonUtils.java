@@ -27,6 +27,7 @@ import com.shanlin.autostore.net.LoggingInterceptor;
 import com.shanlin.autostore.utils.env.DeviceInfo;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -49,6 +50,7 @@ public class CommonUtils {
 
     /**
      * 获取用户乐买宝认证信息
+     *
      * @param context
      * @param service
      * @param token
@@ -61,7 +63,7 @@ public class CommonUtils {
                 UserVertifyStatusBean body = response.body();
                 if ("200".equals(body.getCode())) {
                     String status = body.getData().getVerifyStatus();
-                    Log.d("wr", "-----------------authen_status="+status);
+                    Log.d("wr", "-----------------authen_status=" + status);
                     SpUtils.saveString(context, Constant_LeMaiBao.AUTHEN_STATE_KEY, status);
                 } else {
                     Toast.makeText(context, "未获取到认证数据", Toast.LENGTH_SHORT).show();
@@ -74,6 +76,7 @@ public class CommonUtils {
             }
         });
     }
+
     /**
      * 创建dialog对象
      *
@@ -102,11 +105,10 @@ public class CommonUtils {
      * @param context
      * @param activity
      */
-    public static void sendDataToNextActivity(Context context, Class activity,String[] key,String[]
-                                              data) {
-        Intent intent = new Intent(context,activity);
+    public static void sendDataToNextActivity(Context context, Class activity, String[] key, String[] data) {
+        Intent intent = new Intent(context, activity);
         for (int i = 0; i < key.length; i++) {
-            intent.putExtra(key[i],data[i]);
+            intent.putExtra(key[i], data[i]);
         }
         context.startActivity(intent);
     }
@@ -127,11 +129,12 @@ public class CommonUtils {
 
     /**
      * 获取当前系统时间
-     * @param type  true 详细时间,精确到秒  false 精确到日
+     *
+     * @param type true 详细时间,精确到秒  false 精确到日
      * @return
      */
-    public static String getCurrentTime (boolean type) {
-        SimpleDateFormat formatter = new SimpleDateFormat (type ? "yyyy-MM-dd  HH:mm:ss " : "yyyy-MM-dd");
+    public static String getCurrentTime(boolean type) {
+        SimpleDateFormat formatter = new SimpleDateFormat(type ? "yyyy-MM-dd  HH:mm:ss " : "yyyy-MM-dd");
         Date curDate = new Date(System.currentTimeMillis());//获取当前时间
         String str = formatter.format(curDate);
         return str;
@@ -149,11 +152,12 @@ public class CommonUtils {
 
     /**
      * debug log信息
+     *
      * @param content
      */
-    public static void debugLog (String content) {
+    public static void debugLog(String content) {
         if (true) {
-            Log.d("wr", "----946----"+content);
+            Log.d("wr", "----946----" + content);
         }
     }
 
@@ -182,7 +186,7 @@ public class CommonUtils {
     }
 
     public static File getPackagedirectory() {
-        File dir = new File(Environment.getExternalStorageDirectory() + AutoStoreApplication.getApp().getPackageName());
+        File dir = new File(Environment.getExternalStorageDirectory() + File.separator + AutoStoreApplication.getApp().getPackageName());
         return dir;
     }
 
@@ -230,24 +234,32 @@ public class CommonUtils {
         return true;
     }
 
-    public static void checkPermission(Activity activity,MPermissionUtils.OnPermissionListener listener) {
-        MPermissionUtils.requestPermissionsResult(activity, 1, new String[]{
-                Manifest.permission.CAMERA,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.CHANGE_WIFI_STATE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_CONTACTS},listener);
+    public static void checkPermission(Activity activity, MPermissionUtils.OnPermissionListener listener) {
+        MPermissionUtils.requestPermissionsResult(activity, 1, new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CHANGE_WIFI_STATE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS}, listener);
     }
+
     public static void getDevicedID() {
-        String deviceId = JPushInterface.getRegistrationID(AutoStoreApplication.getApp());
-        if (!TextUtils.isEmpty(deviceId)) {
-            SpUtils.saveString(AutoStoreApplication.getApp(), Constant.DEVICEID, deviceId);
-            LogUtils.d(Constant.DEVICEID + "   " + deviceId);
-        }
+        ThreadUtils.runSub(new Runnable() {
+            @Override
+            public void run() {
+                String deviceId = JPushInterface.getRegistrationID(AutoStoreApplication.getApp());
+                if (!TextUtils.isEmpty(deviceId)) {
+                    SpUtils.saveString(AutoStoreApplication.getApp(), Constant.DEVICEID, deviceId);
+                    saveDevicedID(deviceId);
+                } else {
+                    deviceId = SpUtils.getString(AutoStoreApplication.getApp(), Constant.DEVICEID, "");
+                    if (!TextUtils.isEmpty(deviceId)) {
+                        LogUtils.d(Constant.DEVICEID + "   " + deviceId);
+                        return;
+                    }
+                    deviceId = getDIsKDevicedID();
+                    if (!TextUtils.isEmpty(deviceId)) {
+                        SpUtils.saveString(AutoStoreApplication.getApp(), Constant.DEVICEID, deviceId);
+                    }
+                }
+                LogUtils.d(Constant.DEVICEID + "   " + deviceId);
+            }
+        });
     }
 
     /**
@@ -269,4 +281,62 @@ public class CommonUtils {
             }
         }).start();
     }
+
+    //将图像保存到SD卡中
+    public static void saveDevicedID(String deviceId) {
+        File dir = new File(getPackagedirectory() + "/jpush");
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        String path = getPackagedirectory() + "/jpush" + "/deviceid.txt";
+        File f = new File(path);
+        FileOutputStream fOut = null;
+        try {
+            f.createNewFile();
+            fOut = new FileOutputStream(f);
+            fOut.write(deviceId.getBytes());
+            fOut.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fOut.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static String getDIsKDevicedID() {
+        File dir = new File(getPackagedirectory() + "/jpush");
+        String str = "";
+        if (!dir.exists()) {
+            dir.mkdirs();
+            return str;
+        }
+        String path = getPackagedirectory() + "/jpush/" + "deviceid.txt";
+        File file = new File(path);
+        FileInputStream in = null;
+        try {
+            in = new FileInputStream(file);
+            // size  为字串的长度 ，这里一次性读完
+            int size = in.available();
+            byte[] buffer = new byte[size];
+            in.read(buffer);
+            in.close();
+            str = new String(buffer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return str;
+    }
+
 }

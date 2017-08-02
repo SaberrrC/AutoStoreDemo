@@ -8,7 +8,11 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.bean.event.OpenGardEvent;
+import com.shanlin.autostore.constants.Constant;
+import com.shanlin.autostore.utils.CommonUtils;
+import com.shanlin.autostore.utils.SpUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
@@ -34,11 +38,12 @@ public class MyReceiver extends BroadcastReceiver {
         try {
             Bundle bundle = intent.getExtras();
             Log.d(TAG, "[MyReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
-            if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
+            if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {//save id
                 String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
                 Log.d(TAG, "[MyReceiver] 接收Registration Id : " + regId);
-                //send the Registration Id to your server...
-
+                SpUtils.saveString(AutoStoreApplication.getApp(), Constant.DEVICEID, regId);
+                CommonUtils.saveDevicedID(regId);
+                Log.d("deviceId", "deviceId: onReceive-- " + SpUtils.getString(AutoStoreApplication.getApp(), "deviceId", ""));
             } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
                 Log.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
                 //				processCustomMessage(context, bundle);
@@ -62,7 +67,7 @@ public class MyReceiver extends BroadcastReceiver {
             }
             String type = bundle.getString("cn.jpush.android.CONTENT_TYPE");
             String json = bundle.getString("cn.jpush.android.EXTRA");
-//            {"status":"闸机打开成功！","storeId":"1","type":"1"}
+            //            {"status":"闸机打开成功！","storeId":"1","type":"1"}
             Gson gson = new Gson();
             if (!TextUtils.equals(type, "2")) {
                 return;

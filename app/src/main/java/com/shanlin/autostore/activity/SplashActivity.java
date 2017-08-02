@@ -48,8 +48,9 @@ public class SplashActivity extends Activity {
         CommonUtils.checkPermission(this, new MPermissionUtils.OnPermissionListener() {
             @Override
             public void onPermissionGranted() {
-                checkUpdate();
+                CommonUtils.getDevicedID();
                 CommonUtils.netWorkWarranty();
+                checkUpdate();
             }
 
             @Override
@@ -57,11 +58,6 @@ public class SplashActivity extends Activity {
 
             }
         });
-        saveDeviceId();
-    }
-
-    private void saveDeviceId() {
-
     }
 
     @Override

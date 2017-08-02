@@ -63,6 +63,7 @@ import java.lang.reflect.Field;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.HEAD;
 
 /**
  * This activity opens the camera and does the actual scanning on a background
@@ -90,7 +91,7 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
     private Rect    mCropRect    = null;
     private boolean isHasSurface = false;
     private HttpService service;
-    private String creditBalence;
+    private String      creditBalence;
 
     public Handler getHandler() {
         return handler;
@@ -247,6 +248,7 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
             generateRealOrder(zXingOrderBean.getOrderNo(), zXingOrderBean
                     .getDeviceId());
         } else {
+            com.shanlin.autostore.utils.CommonUtils.showToast(this,"无法识别此二维码");
             finish();
         }
 
@@ -255,7 +257,6 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
         bundle.putString("result", result);
         resultIntent.putExtras(bundle);
 //        this.setResult(RESULT_OK, resultIntent);
-
     }
 
 
