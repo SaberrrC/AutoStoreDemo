@@ -569,6 +569,13 @@ public class MainActivity extends BaseActivity {
                     public void success(String code, LoginOutBean data, String msg) {
                         SpUtils.saveString(MainActivity.this, Constant.TOKEN, "");
                         SpUtils.saveString(MainActivity.this, Constant.USER_PHONE_LOGINED, "");
+                        //清空用户数据
+                        SpUtils.saveBoolean(MainActivity.this,Constant_LeMaiBao.GET_BALENCE,
+                                false);
+                        SpUtils.saveBoolean(MainActivity.this,Constant_LeMaiBao.AUTHEN,false);
+                        SpUtils.saveString(MainActivity.this,Constant_LeMaiBao.CREDIT,"0.00");
+                        SpUtils.saveBoolean(MainActivity.this,Constant_LeMaiBao.PASSWORD,false);
+
                         CommonUtils.toNextActivity(MainActivity.this, LoginActivity.class);
                         finish();
                     }

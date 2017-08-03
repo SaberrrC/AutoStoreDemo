@@ -262,6 +262,8 @@
                 android:layout_height="48.7px"
                 android:layout_below="@id/et_psw"
                 android:background="@null"
+                android:inputType="numberPassword"
+                android:maxLength="6"
                 android:gravity="center_vertical"
                 android:hint="请确认支付密码"
                 android:paddingLeft="20px"

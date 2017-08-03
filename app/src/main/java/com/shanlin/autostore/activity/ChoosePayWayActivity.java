@@ -376,7 +376,7 @@ public class ChoosePayWayActivity extends BaseActivity{
                     moneyCanGet.setVisibility(View.INVISIBLE);
                     moneyNotEnough.setVisibility(View.INVISIBLE);
                 } else {
-                    availableBalence.setText(creditBalance+" 元");
+                    availableBalence.setText((creditBalance == null ? "0.00": creditBalance)+" 元");
                     iconChoose.setImageResource(R.mipmap.icon_gray);
                     moneyNotEnough.setVisibility(View.VISIBLE);
                     moneyCanUse.setVisibility(View.INVISIBLE);

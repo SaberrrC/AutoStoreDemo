@@ -13,6 +13,7 @@ import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.paramsBean.PswSettingBody;
 import com.shanlin.autostore.bean.paramsBean.RealNameAuthenBody;
+import com.shanlin.autostore.bean.resultBean.CreditBalanceCheckBean;
 import com.shanlin.autostore.bean.resultBean.PswSettingBean;
 import com.shanlin.autostore.bean.resultBean.RealNameAuthenBean;
 import com.shanlin.autostore.constants.Constant;
@@ -132,7 +133,7 @@ public class OpenLeMaiBao extends BaseActivity {
                     CommonUtils.showToast(OpenLeMaiBao.this,body.getMessage());
                     SpUtils.saveBoolean(OpenLeMaiBao.this, Constant_LeMaiBao.PASSWORD,true);
                     SpUtils.saveBoolean(OpenLeMaiBao.this,Constant_LeMaiBao.GET_BALENCE,true);
-                    finish();
+                    getBalenceInfo();
                 } else {
                     CommonUtils.showToast(OpenLeMaiBao.this,body.getMessage());
                 }
@@ -141,6 +142,26 @@ public class OpenLeMaiBao extends BaseActivity {
             @Override
             public void onFailure(Call<PswSettingBean> call, Throwable t) {
                     CommonUtils.debugLog(t.getMessage());
+            }
+        });
+    }
+
+    private void getBalenceInfo() {
+        Call<CreditBalanceCheckBean> userCreditBalanceInfo = service.getUserCreditBalanceInfo(token);
+        userCreditBalanceInfo.enqueue(new Callback<CreditBalanceCheckBean>() {
+            @Override
+            public void onResponse(Call<CreditBalanceCheckBean> call, Response<CreditBalanceCheckBean> response) {
+                CreditBalanceCheckBean body = response.body();
+                if (TextUtils.equals("200",body.getCode())) {
+                    String credit = body.getData().getCredit();
+                    SpUtils.saveString(OpenLeMaiBao.this,Constant_LeMaiBao.CREDIT,credit);
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CreditBalanceCheckBean> call, Throwable t) {
+
             }
         });
     }
