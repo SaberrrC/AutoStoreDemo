@@ -67,7 +67,7 @@ public class CommonUtils {
                     Log.d("wr", "-----------------authen_status=" + status);
                     SpUtils.saveString(context, Constant_LeMaiBao.AUTHEN_STATE_KEY, status);
                 } else {
-                    Toast.makeText(context, "未获取到认证数据", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "未获取到认证数据", Toast.LENGTH_SHORT).show();
                 }
             }
 

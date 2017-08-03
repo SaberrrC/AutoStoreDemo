@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:fitsSystemWindows="true"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:fitsSystemWindows="true">
 
     <include layout="@layout/icon_title_layout"></include>
 
@@ -12,7 +13,7 @@
         android:layout_height="50px"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="340px"
-        android:background="@mipmap/face_login_bg"
+        android:background="@drawable/select_bg_bt"
         android:gravity="center"
         android:paddingBottom="5px"
         android:text="使用人脸快速登录"

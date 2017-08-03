@@ -311,6 +311,7 @@ public class LoginActivity extends BaseActivity {
                             Intent intent = new Intent(LoginActivity.this, PhoneNumLoginActivity.class);
                             intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_NO);
                             intent.putExtra(Constant.USER_INFO, data);
+                            intent.putExtra(Constant.WX_INFO, wxUserInfoBean);
                             // TODO: 2017-7-28 把微信消息传过去
                             startActivity(intent);
                         }
@@ -320,6 +321,7 @@ public class LoginActivity extends BaseActivity {
                             SpUtils.saveString(LoginActivity.this, Constant.TOKEN, data.getData().getToken());
                             SpUtils.saveString(LoginActivity.this, Constant.USER_PHONE_LOGINED, data.getData().getMobile());
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            intent.putExtra(Constant.WX_INFO, wxUserInfoBean);
                             intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_OK);
                             intent.putExtra(Constant.USER_INFO, data);
                             startActivity(intent);
