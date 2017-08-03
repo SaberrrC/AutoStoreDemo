@@ -80,10 +80,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".activity.FaceIdentify"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
-        <activity
             android:name=".activity.BuyRecordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
@@ -154,11 +150,6 @@
             android:name=".activity.BalanceActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
-        <activity
-            android:name=".activity.RefundActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan">
-        </activity>
         <activity
             android:name=".activity.RefundMoneyActivity"
             android:screenOrientation="portrait"

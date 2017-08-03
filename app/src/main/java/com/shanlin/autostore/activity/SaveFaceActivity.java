@@ -19,6 +19,7 @@ import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
+import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.ToastUtils;
 import com.zhy.autolayout.utils.AutoUtils;
 
@@ -63,7 +64,8 @@ public class SaveFaceActivity extends BaseActivity {
     }
 
     private void doMemberUpdate() {
-        String userDeviceId = mLoginBean.getData().getUserDeviceId();
+//        String userDeviceId = mLoginBean.getData().getUserDeviceId();
+        String userDeviceId = SpUtils.getString(this, Constant.DEVICEID, "");
         String imageBase64 = getIntent().getStringExtra(Constant.SaveFaceActivity.IMAGE_BASE64);
         HttpService httpService = CommonUtils.doNet();
         MemberUpdateSendBean memberUpdateSendBean = new MemberUpdateSendBean(userDeviceId);
