@@ -60,11 +60,9 @@ public class MainActivity extends BaseActivity {
     private static final int REQUEST_CODE_REGEST = 101;
     private static final int REQUEST_CODE_SCAN   = 102;
     private ActionBarDrawerToggle mDrawerToggle;
-    private static final String TAG = "wr";
     private DrawerLayout mDrawerLayout;
     private Toolbar      toolbar;
     private Dialog       mGateOpenDialog;
-    private AlertDialog  mWelcomeDialog;
     private TextView     mBtnScan;
     private AlertDialog  mToFaceDialog;
     private byte[]       mLivenessImgBytes;
@@ -494,6 +492,10 @@ public class MainActivity extends BaseActivity {
      * 刷脸登陆成功 录入人脸成功后跳转至主页面
      */
     private void showWelcomeDialog() {
+        if (mWelcomeDialog1 != null) {
+            mWelcomeDialog1.show();
+            return;
+        }
         View viewWelcome = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_welcome, null, false);
         viewWelcome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -509,12 +511,17 @@ public class MainActivity extends BaseActivity {
                 mWelcomeDialog1.dismiss();
             }
         }, 3000);
+        mWelcomeDialog1.show();
     }
 
     /**
      * 提醒用户完成人脸录入的弹窗
      */
     private void showToFaceDialog() {
+        if (mToFaceDialog != null) {
+            mToFaceDialog.show();
+            return;
+        }
         View viewToFace = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_toface, null, false);
         //跳过
         viewToFace.findViewById(R.id.tv_cancle).setOnClickListener(new View.OnClickListener() {
@@ -535,9 +542,14 @@ public class MainActivity extends BaseActivity {
         });
         AutoUtils.autoSize(viewToFace);
         mToFaceDialog = CommonUtils.getDialog(this, viewToFace, false);
+        mToFaceDialog.show();
     }
 
     private void showLoginoutDialog() {
+        if (mLoginoutDialog != null) {
+            mLoginoutDialog.show();
+            return;
+        }
         View viewLoginout = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_loginout, null, false);
         TextView tvNum = (TextView) viewLoginout.findViewById(R.id.tv_num);
         tvNum.setText(mUserPhoneHide);
@@ -570,6 +582,7 @@ public class MainActivity extends BaseActivity {
         });
         AutoUtils.autoSize(viewLoginout);
         mLoginoutDialog = CommonUtils.getDialog(this, viewLoginout, false);
+        mLoginoutDialog.show();
     }
 
     @Override
