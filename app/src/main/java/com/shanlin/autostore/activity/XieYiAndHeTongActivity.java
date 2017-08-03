@@ -43,7 +43,7 @@ public class XieYiAndHeTongActivity extends AppCompatActivity {
         agreementText.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         agreementText.getSettings().setDefaultTextEncodingName("utf-8");
         agreementText.setWebChromeClient(new WebChromeClient());
-        agreementText.loadUrl("file:////android_asset/ShnLinCreditAerviceAgreement.htm");
+        agreementText.loadUrl("file:////android_asset/lemaibao.html");
     }
 
 

@@ -53,7 +53,6 @@ public class SplashActivity extends Activity implements ValueAnimator.AnimatorUp
     @Override
     public void onAnimationUpdate(ValueAnimator valueAnimator) {
         int curValue = (int) valueAnimator.getAnimatedValue();
-        LogUtils.d("curValue == " + curValue);
         if (curValue != 0) {
             return;
         }
