@@ -7,8 +7,13 @@ package com.shanlin.autostore.constants;
 public class Constant {
     /**
      * 接口base url
+     * 开发联调：http://linstore-dev.shanlinjinrong.online:8080/linstore/v1/
+     * 测试地址：http://linstore-uat.shanlinjinrong.online:8080/linstore/v1/
      */
-    public static final String BASE_URL = "http://116.62.116.235:8080/linstore/v1/";
+    //开发联调
+    public static final String BASE_URL = "http://linstore-dev.shanlinjinrong.online:8080/linstore/v1/";
+    //测试地址
+    // public static final String BASE_URL = "http://linstore-uat.shanlinjinrong.online:8080/linstore/v1/";
 
     public static final String TOKEN              = "TOKEN";
     public static final String USER_PHONE_LOGINED = "USER_PHONE_LOGINED";

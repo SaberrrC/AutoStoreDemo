@@ -67,7 +67,7 @@ public class CommonUtils {
                     Log.d("wr", "-----------------authen_status=" + status);
                     SpUtils.saveString(context, Constant_LeMaiBao.AUTHEN_STATE_KEY, status);
                 } else {
-//                    Toast.makeText(context, "未获取到认证数据", Toast.LENGTH_SHORT).show();
+                    //                    Toast.makeText(context, "未获取到认证数据", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -80,9 +80,10 @@ public class CommonUtils {
 
     /**
      * 设置添加屏幕的背景透明度
+     *
      * @param bgAlpha
      */
-    public static void setBackgroundAlpha(Activity activity,float bgAlpha) {
+    public static void setBackgroundAlpha(Activity activity, float bgAlpha) {
         WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
         lp.alpha = bgAlpha; //0.0-1.0
         activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
@@ -98,6 +99,12 @@ public class CommonUtils {
      */
     public static AlertDialog getDialog(Context context, View view, boolean cancelable) {
         AlertDialog dialog = new AlertDialog.Builder(context).setView(view).create();
+        dialog.setCancelable(cancelable);
+        return dialog;
+    }
+
+    public static AlertDialog getDialog(Context context, View view, int style, boolean cancelable) {
+        AlertDialog dialog = new AlertDialog.Builder(context, style).setView(view).create();
         dialog.setCancelable(cancelable);
         return dialog;
     }

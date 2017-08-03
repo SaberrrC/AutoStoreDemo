@@ -4,6 +4,7 @@ import android.animation.ValueAnimator;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Message;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -43,7 +44,6 @@ import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
-import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.utils.ToastUtils;
 import com.shanlin.autostore.view.ProgressView;
 import com.shanlin.autostore.zhifubao.Base64;
@@ -55,6 +55,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.HEAD;
 
 public class MainActivity extends BaseActivity {
 
@@ -90,13 +91,13 @@ public class MainActivity extends BaseActivity {
     private int    total;
     private View   circle;
     private java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
-    private int maleCount;
-    private String creditUsed;
-    private ImageView headImage;
-    private String credit;
-    private View inflate;
+    private int         maleCount;
+    private String      creditUsed;
+    private ImageView   headImage;
+    private String      credit;
+    private View        inflate;
     private AlertDialog dialog;
-    private String status;
+    private boolean showToggen = true;
 
     @Override
     public int initLayout() {
@@ -131,7 +132,7 @@ public class MainActivity extends BaseActivity {
         }
         if (TextUtils.equals(faceVerify, Constant.FACE_VERIFY_OK)) {
             mTvIdentify.setVisibility(View.GONE);
-//            showWelcomeDialog();
+            //            showWelcomeDialog();
             return;
         }
         if (TextUtils.equals(faceVerify, Constant.FACE_VERIFY_NO)) {
@@ -172,7 +173,6 @@ public class MainActivity extends BaseActivity {
         getUserNumToday();
         //获取认证状态
         getUserAuthenStatus();
-
     }
 
     boolean flag;
@@ -184,7 +184,7 @@ public class MainActivity extends BaseActivity {
             public void onResponse(Call<UserVertifyStatusBean> call, Response<UserVertifyStatusBean> response) {
                 UserVertifyStatusBean body = response.body();
                 if (TextUtils.equals("200",body.getCode())) {
-                    status = body.getData().getVerifyStatus();
+                    String status = body.getData().getVerifyStatus();
                     if (!Constant_LeMaiBao.AUTHEN_FINISHED.equals(status)) {
                         openLMB.setClickable(true);
                         CommonUtils.debugLog("----------top---------");
@@ -200,7 +200,7 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<UserVertifyStatusBean> call, Throwable t) {
-                    CommonUtils.debugLog(t.getMessage());
+                CommonUtils.debugLog(t.getMessage());
             }
         });
     }
@@ -222,10 +222,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void getUserNumToday() {
-        Call<UserNumEverydayBean> call = service.getUserNumEveryday(token, CommonUtils
-                .getCurrentTime(false), "1");
-        CommonUtils.debugLog(CommonUtils
-                .getCurrentTime(false));
+        Call<UserNumEverydayBean> call = service.getUserNumEveryday(token, CommonUtils.getCurrentTime(false), "1");
+        CommonUtils.debugLog(CommonUtils.getCurrentTime(false));
         call.enqueue(new Callback<UserNumEverydayBean>() {
             @Override
             public void onResponse(Call<UserNumEverydayBean> call, Response<UserNumEverydayBean> response) {
@@ -238,7 +236,7 @@ public class MainActivity extends BaseActivity {
                     maleCount = body.getData().getMaleCount();
                     CommonUtils.debugLog("总人数---" + total);
                     mUserNum.setText(total + "");
-                    int percent = total == 0 ? 0 : femaleCount*100/total;
+                    int percent = total == 0 ? 0 : femaleCount * 100 / total;
                     pv.setGirlPercent(percent);
                     pv.setBoyPercent(total == 0 ? 0 : 100 - percent);
                     pv.flush();
@@ -270,7 +268,7 @@ public class MainActivity extends BaseActivity {
                         flag = false;
                     }
                 } else {
-                    CommonUtils.showToast(MainActivity.this,body.getMessage());
+                    CommonUtils.showToast(MainActivity.this, body.getMessage());
                 }
             }
 
@@ -321,8 +319,8 @@ public class MainActivity extends BaseActivity {
         mDrawerLayout.findViewById(R.id.location_4).setOnClickListener(this);
     }
 
-    private String[] creditKeys = new String[]{Constant_LeMaiBao.CREDIT_BALANCE,Constant_LeMaiBao
-            .CREDIT_USED};
+    private String[] creditKeys = new String[]{Constant_LeMaiBao.CREDIT_BALANCE, Constant_LeMaiBao.CREDIT_USED};
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -342,14 +340,13 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.btn_lemaibao:
                 if (!openLMB.isClickable()) {
-                    CommonUtils.sendDataToNextActivity(this, MyLeMaiBaoActivity.class,creditKeys,
-                            new String[]{creditBalance,creditUsed});
+                    CommonUtils.sendDataToNextActivity(this, MyLeMaiBaoActivity.class, creditKeys, new String[]{creditBalance, creditUsed});
                 }
                 break;
             case R.id.btn_open_le_mai_bao: //开通乐买宝
                 if (openLMB.isClickable()) {
                     CommonUtils.debugLog("-----------开通乐买宝");
-                    CommonUtils.toNextActivity(this,OpenLeMaiBao.class);
+                    CommonUtils.toNextActivity(this, OpenLeMaiBao.class);
                 }
                 break;
             case R.id.identify_tip://完善身份，智能购物
@@ -368,7 +365,6 @@ public class MainActivity extends BaseActivity {
                 });
                 break;
             case R.id.btn_yu_e://退款金额
-                //                startActivity(new Intent(this, BalanceActivity.class));//订单余额
                 Intent refundMoneyIntent = new Intent(this, RefundMoneyActivity.class);
                 refundMoneyIntent.putExtra(Constant.REFUND_MONEY_BEAN, refundMoneyBean);
                 startActivity(refundMoneyIntent);
@@ -392,7 +388,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onPermissionGranted() {
                 Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
-                intent.putExtra(Constant_LeMaiBao.CREDIT_BALANCE,creditBalance);
+                intent.putExtra(Constant_LeMaiBao.CREDIT_BALANCE, creditBalance);
                 startActivityForResult(intent, REQUEST_CODE_SCAN);
             }
 
@@ -458,64 +454,71 @@ public class MainActivity extends BaseActivity {
      * 扫完二维码开闸机
      */
     private void showGateOpenDialog() {
-        mGateOpenDialog = new Dialog(this, R.style.MyDialogCheckVersion);
-        //点击其他地方消失
-        mGateOpenDialog.setCanceledOnTouchOutside(true);
-        //填充对话框的布局
-        View viewGateOpen = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_gateopen, null, false);
-        viewGateOpen.findViewById(R.id.rl_root).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mGateOpenDialog.dismiss();
-            }
-        });
-        AutoUtils.autoSize(viewGateOpen);
-        //初始化控件
-        //将布局设置给Dialog
-        mGateOpenDialog.setContentView(viewGateOpen);
-        //获取当前Activity所在的窗体
-        Window dialogWindow = mGateOpenDialog.getWindow();
-        //设置Dialog从窗体中间弹出
-        dialogWindow.setGravity(Gravity.CENTER);
-        //获得窗体的属性
-        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        //        lp.y = 20;//设置Dialog距离底部的距离
-        //       将属性设置给窗体
-        dialogWindow.setAttributes(lp);
+        if (mGateOpenDialog == null) {
+            mGateOpenDialog = new Dialog(this, R.style.MyDialogWithAnim);
+            //点击其他地方消失
+            mGateOpenDialog.setCanceledOnTouchOutside(true);
+            //填充对话框的布局
+            View viewGateOpen = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_gateopen, null, false);
+            viewGateOpen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mGateOpenDialog.dismiss();
+                }
+            });
+            AutoUtils.autoSize(viewGateOpen);
+            //初始化控件
+            //将布局设置给Dialog
+            mGateOpenDialog.setContentView(viewGateOpen);
+            //获取当前Activity所在的窗体
+            Window dialogWindow = mGateOpenDialog.getWindow();
+            //设置Dialog从窗体中间弹出
+            dialogWindow.setGravity(Gravity.CENTER);
+            //获得窗体的属性
+            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+            //        lp.y = 20;//设置Dialog距离底部的距离
+            //       将属性设置给窗体
+            dialogWindow.setAttributes(lp);
+        }
         mGateOpenDialog.show();//显示对话框
-        ThreadUtils.runMainDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mGateOpenDialog.dismiss();
-            }
-        }, 10000);
+        mHandler.removeCallbacksAndMessages(null);
+        mHandler.sendEmptyMessageDelayed(1, 10000);
     }
+
+    private android.os.Handler mHandler = new android.os.Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1://闸机欢迎dialog
+                    mGateOpenDialog.dismiss();
+                    break;
+                case 2://录入人脸成功后跳转至主页面
+                    mWelcomeDialog1.dismiss();
+                    break;
+            }
+        }
+    };
 
     /**
      * 刷脸登陆成功 录入人脸成功后跳转至主页面
      */
     private void showWelcomeDialog() {
-        if (mWelcomeDialog1 != null) {
-            mWelcomeDialog1.show();
+        if (mWelcomeDialog1 == null) {
+            View viewWelcome = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_welcome, null, false);
+            viewWelcome.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mWelcomeDialog1.dismiss();
+                }
+            });
+            AutoUtils.autoSize(viewWelcome);
+            mWelcomeDialog1 = CommonUtils.getDialog(this, viewWelcome, R.style.MyDialogWithAnim, true);
             return;
         }
-        View viewWelcome = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_welcome, null, false);
-        viewWelcome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mWelcomeDialog1.dismiss();
-            }
-        });
-        AutoUtils.autoSize(viewWelcome);
-        mWelcomeDialog1 = CommonUtils.getDialog(this, viewWelcome, true);
-        ThreadUtils.runMainDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mWelcomeDialog1.dismiss();
-            }
-        }, 3000);
         mWelcomeDialog1.show();
+        mHandler.removeCallbacksAndMessages(null);
+        mHandler.sendEmptyMessageDelayed(2, 3000);
     }
 
     /**
@@ -545,7 +548,7 @@ public class MainActivity extends BaseActivity {
             }
         });
         AutoUtils.autoSize(viewToFace);
-        mToFaceDialog = CommonUtils.getDialog(this, viewToFace, false);
+        mToFaceDialog = CommonUtils.getDialog(this, viewToFace, R.style.MyDialogWithAnim, false);
         mToFaceDialog.show();
     }
 

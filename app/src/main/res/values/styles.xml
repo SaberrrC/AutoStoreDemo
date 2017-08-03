@@ -37,7 +37,15 @@
         <!--是否模糊-->
         <item name="android:backgroundDimEnabled">true</item>
     </style>
-
+        <!--带动画的dialog-->
+    <style name="MyDialogWithAnim" parent="MyDialogCheckVersion">
+        <item name="android:windowAnimationStyle">@style/ActionSheetDialogAnimation</item>
+    </style>
+    <!-- ActionSheet进出动画 -->
+    <style name="ActionSheetDialogAnimation" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/dialog_exit</item>
+    </style>
     <declare-styleable name="ProgressView">
         <attr name="radius" format="integer"></attr>
         <attr name="size_text" format="dimension|reference"></attr>
@@ -47,42 +55,43 @@
     <declare-styleable name="XNumberKeyboardView">
 
         <!-- 删除按键的图标 -->
-        <attr name="xnkv_deleteDrawable" format="reference" />
+        <attr name="xnkv_deleteDrawable" format="reference"/>
 
         <!-- 删除按键图标的宽度 -->
-        <attr name="xnkv_deleteWidth" format="dimension|reference" />
+        <attr name="xnkv_deleteWidth" format="dimension|reference"/>
 
         <!-- 删除按键图标的高度 -->
-        <attr name="xnkv_deleteHeight" format="dimension|reference" />
+        <attr name="xnkv_deleteHeight" format="dimension|reference"/>
 
         <!-- 删除按键图标的颜色 -->
-        <attr name="xnkv_deleteBackgroundColor" format="color|reference" />
+        <attr name="xnkv_deleteBackgroundColor" format="color|reference"/>
 
     </declare-styleable>
 
     <declare-styleable name="gridPasswordView">
 
-        <attr name="gpvTextColor" format="color|reference" />
-        <attr name="gpvTextSize" format="dimension" />
+        <attr name="gpvTextColor" format="color|reference"/>
+        <attr name="gpvTextSize" format="dimension"/>
 
-        <attr name="gpvLineColor" format="color" />
-        <attr name="gpvGridColor" format="color" />
-        <attr name="gpvLineWidth" format="dimension" />
+        <attr name="gpvLineColor" format="color"/>
+        <attr name="gpvGridColor" format="color"/>
+        <attr name="gpvLineWidth" format="dimension"/>
 
-        <attr name="gpvPasswordLength" format="integer" />
-        <attr name="gpvPasswordTransformation" format="string" />
+        <attr name="gpvPasswordLength" format="integer"/>
+        <attr name="gpvPasswordTransformation" format="string"/>
 
         <attr name="gpvPasswordType" format="enum">
-            <enum name="numberPassword" value="0" />
-            <enum name="textPassword" value="1" />
-            <enum name="textVisiblePassword" value="2" />
-            <enum name="textWebPassword" value="3" />
+            <enum name="numberPassword" value="0"/>
+            <enum name="textPassword" value="1"/>
+            <enum name="textVisiblePassword" value="2"/>
+            <enum name="textWebPassword" value="3"/>
         </attr>
 
     </declare-styleable>
 
 
-    <style name="GridPasswordView" />
+    <style name="GridPasswordView"/>
+
     <style name="GridPasswordView.TextView">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
@@ -106,9 +115,10 @@
     <declare-styleable name="AutoRatioImageView">
 
         <!-- -ratio 高/宽 -->
-        <attr name="ratio" format="float" />
-        <attr name="prefer" format="integer" />
+        <attr name="ratio" format="float"/>
+        <attr name="prefer" format="integer"/>
     </declare-styleable>
+
     <style name="SplashThemeFullScreen" parent="AppTheme">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowNoTitle">true</item>
