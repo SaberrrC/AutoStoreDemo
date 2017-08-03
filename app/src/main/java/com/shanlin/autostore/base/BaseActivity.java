@@ -18,6 +18,8 @@ import java.util.ArrayList;
 
 public abstract class BaseActivity extends SoftInputBaseActivity implements View.OnClickListener {
 
+    public boolean flag;//是否有可领取额度
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
