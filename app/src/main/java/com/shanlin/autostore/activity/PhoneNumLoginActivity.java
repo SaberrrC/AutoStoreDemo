@@ -238,7 +238,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
             loginBeanCall = service.postWechatSavemobile(wechatSaveMobileBody);
         }
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        imm.toggleSoftInput(1, InputMethodManager.HIDE_NOT_ALWAYS);
         loginBeanCall.enqueue(new CustomCallBack<LoginBean>() {
             @Override
             public void success(String code, LoginBean data, String msg) {

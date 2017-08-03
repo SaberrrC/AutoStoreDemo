@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,8 @@ import com.shanlin.autostore.activity.SaveFaceActivity;
 import com.shanlin.autostore.activity.VersionInfoActivity;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.LoginBean;
+import com.shanlin.autostore.bean.MemberUpdateBean;
+import com.shanlin.autostore.bean.paramsBean.MemberUpdateSendBean;
 import com.shanlin.autostore.bean.resultBean.CreditBalanceCheckBean;
 import com.shanlin.autostore.bean.resultBean.LoginOutBean;
 import com.shanlin.autostore.bean.resultBean.RefundMoneyBean;
@@ -55,7 +58,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.HEAD;
 
 public class MainActivity extends BaseActivity {
 
@@ -123,10 +125,13 @@ public class MainActivity extends BaseActivity {
         openLMB = (TextView) findViewById(R.id.btn_open_le_mai_bao);
         openLMB.setOnClickListener(this);
         mBtnScan = (TextView) findViewById(R.id.btn_scan_bg);
+        token = SpUtils.getString(this, Constant.TOKEN, "");
+        mUserPhone = SpUtils.getString(this, Constant.USER_PHONE_LOGINED, "");
         initScanAnim();
         Intent intent = getIntent();
         String faceVerify = intent.getStringExtra(Constant.FACE_VERIFY);
         mLoginBean = (LoginBean) intent.getSerializableExtra(Constant.USER_INFO);
+        sendUserDeviceID();
         if (TextUtils.isEmpty(faceVerify)) {
             return;
         }
@@ -139,6 +144,25 @@ public class MainActivity extends BaseActivity {
             mTvIdentify.setVisibility(View.VISIBLE);
             showToFaceDialog();
         }
+    }
+
+    private void sendUserDeviceID() {
+        String userDeviceId = SpUtils.getString(this, Constant.DEVICEID, "");
+        MemberUpdateSendBean memberUpdateSendBean = new MemberUpdateSendBean(userDeviceId);
+        Log.d(TAG, "sendUserDeviceID: " + memberUpdateSendBean.toString());
+        CommonUtils.doNet().postMemberUpdate(token, memberUpdateSendBean).enqueue(new CustomCallBack<MemberUpdateBean>() {
+            @Override
+            public void success(String code, MemberUpdateBean data, String msg) {
+
+            }
+
+            @Override
+            public void error(Throwable ex, String code, String msg) {
+
+            }
+        });
+
+
     }
 
     private void initScanAnim() {
@@ -183,7 +207,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onResponse(Call<UserVertifyStatusBean> call, Response<UserVertifyStatusBean> response) {
                 UserVertifyStatusBean body = response.body();
-                if (TextUtils.equals("200",body.getCode())) {
+                if (TextUtils.equals("200", body.getCode())) {
                     String status = body.getData().getVerifyStatus();
                     if (!Constant_LeMaiBao.AUTHEN_FINISHED.equals(status)) {
                         openLMB.setClickable(true);
@@ -211,8 +235,6 @@ public class MainActivity extends BaseActivity {
         inflate = LayoutInflater.from(this).inflate(R.layout.get_available_balence_layout, null);
         inflate.findViewById(R.id.btn_diaolog_know).setOnClickListener(this);
         dialog = CommonUtils.getDialog(this, inflate, false);
-        token = SpUtils.getString(this, Constant.TOKEN, "");
-        mUserPhone = SpUtils.getString(this, Constant.USER_PHONE_LOGINED, "");
         mUserPhoneHide = mUserPhone.substring(0, 3) + "****" + mUserPhone.substring(7);
         mTvPhoneNum.setText(mUserPhoneHide);
         gson = new Gson();
@@ -263,7 +285,7 @@ public class MainActivity extends BaseActivity {
                     creditUsed = body.getData().getCreditUsed();//已用额度
                     openLMB.setText("¥" + (creditBalance == null ? "0.00" : creditBalance));
 
-                    if (flag && credit != null){
+                    if (flag && credit != null) {
                         dialog.show();
                         flag = false;
                     }
@@ -575,12 +597,12 @@ public class MainActivity extends BaseActivity {
                     public void success(String code, LoginOutBean data, String msg) {
                         SpUtils.saveString(MainActivity.this, Constant.TOKEN, "");
                         SpUtils.saveString(MainActivity.this, Constant.USER_PHONE_LOGINED, "");
-//                        //清空用户数据
-//                        SpUtils.saveBoolean(MainActivity.this,Constant_LeMaiBao.GET_BALENCE,
-//                                false);
-//                        SpUtils.saveBoolean(MainActivity.this,Constant_LeMaiBao.AUTHEN,false);
-//                        SpUtils.saveString(MainActivity.this,Constant_LeMaiBao.CREDIT,"0.00");
-//                        SpUtils.saveBoolean(MainActivity.this,Constant_LeMaiBao.PASSWORD,false);
+                        //                        //清空用户数据
+                        //                        SpUtils.saveBoolean(MainActivity.this,Constant_LeMaiBao.GET_BALENCE,
+                        //                                false);
+                        //                        SpUtils.saveBoolean(MainActivity.this,Constant_LeMaiBao.AUTHEN,false);
+                        //                        SpUtils.saveString(MainActivity.this,Constant_LeMaiBao.CREDIT,"0.00");
+                        //                        SpUtils.saveBoolean(MainActivity.this,Constant_LeMaiBao.PASSWORD,false);
 
                         CommonUtils.toNextActivity(MainActivity.this, LoginActivity.class);
                         finish();

@@ -25,60 +25,58 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Random;
 import java.util.UUID;
 
 public class ConUtil {
 
-	/**
-	 * 根据byte数组，生成文件
-	 */
-	public static String saveJPGFile(Context mContext, byte[] data, String key) {
-		if (data == null)
-			return null;
-
-		File mediaStorageDir = mContext.getExternalFilesDir(Constant.cacheImage);
-
-		if (!mediaStorageDir.exists()) {
-			if (!mediaStorageDir.mkdirs()) {
-				return null;
-			}
-		}
-
-		BufferedOutputStream bos = null;
-		FileOutputStream fos = null;
-		try {
-			String jpgFileName = System.currentTimeMillis() + "" + new Random().nextInt(1000000) + "_" + key + ".jpg";
-			fos = new FileOutputStream(mediaStorageDir + "/" + jpgFileName);
-			bos = new BufferedOutputStream(fos);
-			bos.write(data);
-			return mediaStorageDir.getAbsolutePath() + "/" + jpgFileName;
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (bos != null) {
-				try {
-					bos.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
-			if (fos != null) {
-				try {
-					fos.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
-		}
-		return null;
-	}
+//	/**
+//	 * 根据byte数组，生成文件
+//	 */
+//	public static String saveJPGFile(Context mContext, byte[] data, String key) {
+//		if (data == null)
+//			return null;
+//
+//		File mediaStorageDir = mContext.getExternalFilesDir(Constant.cacheImage);
+//
+//		if (!mediaStorageDir.exists()) {
+//			if (!mediaStorageDir.mkdirs()) {
+//				return null;
+//			}
+//		}
+//
+//		BufferedOutputStream bos = null;
+//		FileOutputStream fos = null;
+//		try {
+//			String jpgFileName = System.currentTimeMillis() + "" + new Random().nextInt(1000000) + "_" + key + ".jpg";
+//			fos = new FileOutputStream(mediaStorageDir + "/" + jpgFileName);
+//			bos = new BufferedOutputStream(fos);
+//			bos.write(data);
+//			return mediaStorageDir.getAbsolutePath() + "/" + jpgFileName;
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		} finally {
+//			if (bos != null) {
+//				try {
+//					bos.close();
+//				} catch (IOException e1) {
+//					e1.printStackTrace();
+//				}
+//			}
+//			if (fos != null) {
+//				try {
+//					fos.close();
+//				} catch (IOException e1) {
+//					e1.printStackTrace();
+//				}
+//			}
+//		}
+//		return null;
+//	}
 
 	public static void copyModels(Context context) {
 		File dstModelFile = new File(context.getExternalFilesDir(null), "model");
@@ -310,22 +308,22 @@ public class ConUtil {
 
 	}
 
-	/**
-	 * 照相机拍照后照片存储路径
-	 */
-	public static File getOutputMediaFile(Context mContext) {
-		File mediaStorageDir = mContext.getExternalFilesDir(Constant.cacheCampareImage);
-		if (!mediaStorageDir.exists()) {
-			if (!mediaStorageDir.mkdirs()) {
-				return null;
-			}
-		}
-		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-		File mediaFile;
-
-		mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_" + timeStamp + ".jpg");
-		return mediaFile;
-	}
+//	/**
+//	 * 照相机拍照后照片存储路径
+//	 */
+//	public static File getOutputMediaFile(Context mContext) {
+//		File mediaStorageDir = mContext.getExternalFilesDir(Constant.cacheCampareImage);
+//		if (!mediaStorageDir.exists()) {
+//			if (!mediaStorageDir.mkdirs()) {
+//				return null;
+//			}
+//		}
+//		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//		File mediaFile;
+//
+//		mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_" + timeStamp + ".jpg");
+//		return mediaFile;
+//	}
 
 	/**
 	 * 隐藏软键盘
@@ -394,42 +392,42 @@ public class ConUtil {
 		return newbBitmap;
 	}
 
-	/**
-	 * 保存bitmap至指定Picture文件夹
-	 */
-	public static String saveBitmap(Context mContext, Bitmap bitmaptosave) {
-		if (bitmaptosave == null)
-			return null;
-
-		File mediaStorageDir = mContext.getExternalFilesDir(Constant.cacheImage);
-
-		if (!mediaStorageDir.exists()) {
-			if (!mediaStorageDir.mkdirs()) {
-				return null;
-			}
-		}
-		// String bitmapFileName = System.currentTimeMillis() + ".jpg";
-		String bitmapFileName = System.currentTimeMillis() + "";
-		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream(mediaStorageDir + "/" + bitmapFileName);
-			boolean successful = bitmaptosave.compress(Bitmap.CompressFormat.JPEG, 75, fos);
-
-			if (successful)
-				return mediaStorageDir.getAbsolutePath() + "/" + bitmapFileName;
-			else
-				return null;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		} finally {
-			try {
-				fos.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+//	/**
+//	 * 保存bitmap至指定Picture文件夹
+//	 */
+//	public static String saveBitmap(Context mContext, Bitmap bitmaptosave) {
+//		if (bitmaptosave == null)
+//			return null;
+//
+//		File mediaStorageDir = mContext.getExternalFilesDir(Constant.cacheImage);
+//
+//		if (!mediaStorageDir.exists()) {
+//			if (!mediaStorageDir.mkdirs()) {
+//				return null;
+//			}
+//		}
+//		// String bitmapFileName = System.currentTimeMillis() + ".jpg";
+//		String bitmapFileName = System.currentTimeMillis() + "";
+//		FileOutputStream fos = null;
+//		try {
+//			fos = new FileOutputStream(mediaStorageDir + "/" + bitmapFileName);
+//			boolean successful = bitmaptosave.compress(Bitmap.CompressFormat.JPEG, 75, fos);
+//
+//			if (successful)
+//				return mediaStorageDir.getAbsolutePath() + "/" + bitmapFileName;
+//			else
+//				return null;
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//			return null;
+//		} finally {
+//			try {
+//				fos.close();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 
 	/**
 	 * 时间格式化(格式到秒)
