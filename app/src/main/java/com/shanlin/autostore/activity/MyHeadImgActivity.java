@@ -4,6 +4,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -41,9 +42,9 @@ public class MyHeadImgActivity extends BaseActivity {
         headChoose.findViewById(R.id.tv_head_pop_camera).setOnClickListener(this);
         headChoose.findViewById(R.id.tv_head_pop_book).setOnClickListener(this);
         headChoose.findViewById(R.id.tv_head_pop_concel).setOnClickListener(this);
-        popHeadChoose.setWidth(355);
-        popHeadChoose.setHeight(180);
         popHeadChoose.setContentView(headChoose);
+        popHeadChoose.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        popHeadChoose.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         popHeadChoose.setBackgroundDrawable(new ColorDrawable(0x00000000));
         popHeadChoose.setOutsideTouchable(false);
         popHeadChoose.setFocusable(false);
@@ -88,7 +89,9 @@ public class MyHeadImgActivity extends BaseActivity {
 
     private void showPopWindow() {
         if (!popHeadChoose.isShowing()) {
-            popHeadChoose.showAtLocation(getWindow().getDecorView(), Gravity.CENTER_HORIZONTAL,0,0);
+            popHeadChoose.showAtLocation(getWindow().getDecorView(), Gravity
+                    .CENTER_HORIZONTAL|Gravity.BOTTOM,
+                    0,20);
             CommonUtils.setBackgroundAlpha(this,0.5f);
         }
     }
