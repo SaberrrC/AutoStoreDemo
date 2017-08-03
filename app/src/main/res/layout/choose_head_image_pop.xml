@@ -1,15 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
-              android:background="#0000"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:background="@drawable/head_choose_pop_bg"
+              android:layout_width="355px"
+              android:layout_height="180px">
 
     <TextView
+        android:id="@+id/tv_head_pop_camera"
+        android:clickable="true"
         android:text="拍照"
         android:gravity="center"
         android:textSize="20px"
-        android:textColor="@color/red"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="56px"/>
+
+    <View
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="1px"></View>
+
+    <TextView
+        android:id="@+id/tv_head_pop_book"
+        android:clickable="true"
+        android:text="从相册选择"
+        android:gravity="center"
+        android:textSize="20px"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="56px"/>
+
+    <View
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="1px"></View>
+
+    <TextView
+        android:id="@+id/tv_head_pop_concel"
+        android:clickable="true"
+        android:text="取消"
+        android:gravity="center"
+        android:textSize="20px"
+        android:textColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="56px"/>
 
