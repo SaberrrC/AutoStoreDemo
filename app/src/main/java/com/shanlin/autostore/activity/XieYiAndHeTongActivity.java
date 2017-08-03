@@ -1,6 +1,7 @@
 package com.shanlin.autostore.activity;
 
 import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -30,13 +31,19 @@ public class XieYiAndHeTongActivity extends BaseActivity {
         } else {
             CommonUtils.initToolbar(this, "善林信用服务协议", R.color.blcak, OpenLeMaiBao.class);
         }
-        agreementText = (WebView) findViewById(R.id.web_view);
-        agreementText.loadUrl("https://m.baidu.com/?from=1000953f");
-        // agreementText.loadUrl("file:////android_asset/registrationAgreement.htm");
-        //自适应屏幕
-        agreementText.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        agreementText.getSettings().setLoadWithOverviewMode(true);
-
+        agreementText =  (WebView) findViewById(R.id.web_view);
+        agreementText.setHorizontalScrollBarEnabled(false);//水平不显示
+        agreementText.setVerticalScrollBarEnabled(false); //垂直不显示
+        WebSettings webSettings = agreementText.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        agreementText.getSettings().setUseWideViewPort(true);//设置是当前html界面自适应屏幕
+        agreementText.getSettings().setSupportZoom(true); //设置支持缩放
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setAllowFileAccess(true);
+        agreementText.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        agreementText.getSettings().setDefaultTextEncodingName("utf-8");
+        agreementText.setWebChromeClient(new WebChromeClient());
+        agreementText.loadUrl("file:////android_asset/ShnLinCreditAerviceAgreement.html");
     }
 
     @Override
