@@ -1,37 +1,37 @@
 package com.shanlin.autostore.activity;
 
-import android.view.View;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.TextView;
 
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.utils.CommonUtils;
+import com.shanlin.autostore.utils.MPermissionUtils;
+import com.shanlin.autostore.utils.StatusBarUtils;
 
 /**
  * Created by DELL on 2017/7/19 0019.
  */
-public class XieYiAndHeTongActivity extends BaseActivity {
+public class XieYiAndHeTongActivity extends AppCompatActivity {
 
-    private TextView title;
-    private WebView  agreementText;
-
-    @Override
-    public int initLayout() {
-        return R.layout.activity_xieyi_and_he_tong;
-    }
+    private WebView agreementText;
 
     @Override
-    public void initView() {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_xieyi_and_he_tong);
+        StatusBarUtils.setColor(this, Color.TRANSPARENT);
         int state = getIntent().getIntExtra("state", 0);
         if (state == 1) {
             CommonUtils.initToolbar(this, "乐买宝用户服务合同", R.color.blcak, OpenLeMaiBao.class);
         } else {
             CommonUtils.initToolbar(this, "善林信用服务协议", R.color.blcak, OpenLeMaiBao.class);
         }
-        agreementText =  (WebView) findViewById(R.id.web_view);
+        agreementText = (WebView) findViewById(R.id.web_view);
         agreementText.setHorizontalScrollBarEnabled(false);//水平不显示
         agreementText.setVerticalScrollBarEnabled(false); //垂直不显示
         WebSettings webSettings = agreementText.getSettings();
@@ -43,16 +43,13 @@ public class XieYiAndHeTongActivity extends BaseActivity {
         agreementText.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         agreementText.getSettings().setDefaultTextEncodingName("utf-8");
         agreementText.setWebChromeClient(new WebChromeClient());
-        agreementText.loadUrl("file:////android_asset/ShnLinCreditAerviceAgreement.html");
+        agreementText.loadUrl("file:////android_asset/ShnLinCreditAerviceAgreement.htm");
     }
 
-    @Override
-    public void initData() {
-
-    }
 
     @Override
-    public void onClick(View v) {
-
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        MPermissionUtils.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }
