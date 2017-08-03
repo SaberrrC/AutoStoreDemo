@@ -26,4 +26,18 @@ public class MemberUpdateSendBean {
     public MemberUpdateSendBean(String userDeviceId) {
         this.userDeviceId = userDeviceId;
     }
+
+    @Override
+    public String toString() {
+        return "MemberUpdateSendBean{" +
+                "gender='" + gender + '\'' +
+                ", idCard='" + idCard + '\'' +
+                ", imageBase64='" + imageBase64 + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", userDeviceId='" + userDeviceId + '\'' +
+                ", userName='" + userName + '\'' +
+                ", avatorBase64='" + avatorBase64 + '\'' +
+                '}';
+    }
 }
