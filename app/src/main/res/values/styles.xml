@@ -37,13 +37,6 @@
         <!--是否模糊-->
         <item name="android:backgroundDimEnabled">true</item>
     </style>
-    <!--自定义dialog 闸机打开 -->
-    <style name="MyDialogWithAnim" parent="MyDialogCheckVersion">
-        <style name="dialogWindowAnim" parent="android:Animation" mce_bogus="1">
-            <item name="android:windowEnterAnimation">@anim/animator</item>
-
-        </style>
-    </style>
 
     <declare-styleable name="ProgressView">
         <attr name="radius" format="integer"></attr>
