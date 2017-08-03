@@ -220,7 +220,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
         }
         final HttpService service = CommonUtils.doNet();
         //判断是普通登陆还是微信绑定
-        WxUserInfoBean wxUserInfoBean = (WxUserInfoBean) getIntent().getSerializableExtra(Constant.WX_INFO);
+        final WxUserInfoBean wxUserInfoBean = (WxUserInfoBean) getIntent().getSerializableExtra(Constant.WX_INFO);
         Call<LoginBean> loginBeanCall = null;
         if (wxUserInfoBean == null) {
             loginBeanCall = service.postNumCodeLogin(new NumberLoginBean(phone, msgCode));
@@ -249,6 +249,9 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                 SpUtils.saveString(PhoneNumLoginActivity.this, Constant.TOKEN, data.getData().getToken());
                 Intent intent = new Intent(PhoneNumLoginActivity.this, MainActivity.class);
                 intent.putExtra(Constant.FACE_VERIFY, data.getData().getFaceVerify());
+                if (wxUserInfoBean != null) {
+                    intent.putExtra(Constant.WX_INFO, wxUserInfoBean);
+                }
                 intent.putExtra(Constant.USER_INFO, data);
                 startActivity(intent);
                 killActivity(LoginActivity.class);

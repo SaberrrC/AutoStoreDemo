@@ -60,6 +60,7 @@ public class MainActivity extends BaseActivity {
     private static final int REQUEST_CODE_REGEST = 101;
     private static final int REQUEST_CODE_SCAN   = 102;
     private ActionBarDrawerToggle mDrawerToggle;
+    private static final String TAG = "wr";
     private DrawerLayout mDrawerLayout;
     private Toolbar      toolbar;
     private Dialog       mGateOpenDialog;
@@ -134,7 +135,6 @@ public class MainActivity extends BaseActivity {
         if (TextUtils.equals(faceVerify, Constant.FACE_VERIFY_NO)) {
             mTvIdentify.setVisibility(View.VISIBLE);
             showToFaceDialog();
-            return;
         }
     }
 
@@ -451,7 +451,7 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     * 扫完二维码后提示
+     * 扫完二维码开闸机
      */
     private void showGateOpenDialog() {
         mGateOpenDialog = new Dialog(this, R.style.MyDialogCheckVersion);
