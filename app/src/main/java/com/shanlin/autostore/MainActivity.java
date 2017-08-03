@@ -55,6 +55,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.HEAD;
 
 public class MainActivity extends BaseActivity {
 
@@ -172,11 +173,9 @@ public class MainActivity extends BaseActivity {
         getUserNumToday();
         //获取认证状态
         getUserAuthenStatus();
-
-        if (SpUtils.getBoolean(this, Constant_LeMaiBao.GET_BALENCE, false)) {
-            dialog.show();
-        }
     }
+
+    boolean flag;
 
     private void getUserAuthenStatus() {
         Call<UserVertifyStatusBean> call = service.getUserVertifyAuthenStatus(token);
@@ -184,15 +183,15 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onResponse(Call<UserVertifyStatusBean> call, Response<UserVertifyStatusBean> response) {
                 UserVertifyStatusBean body = response.body();
-                if (TextUtils.equals("200", body.getCode())) {
+                if (TextUtils.equals("200",body.getCode())) {
                     String status = body.getData().getVerifyStatus();
                     if (!Constant_LeMaiBao.AUTHEN_FINISHED.equals(status)) {
                         openLMB.setClickable(true);
                         CommonUtils.debugLog("----------top---------");
                         openLMB.setText("开通乐买宝");
+                        flag = true;
                     } else {
                         //获取用户信用额度
-                        SpUtils.saveBoolean(MainActivity.this, Constant_LeMaiBao.PASSWORD, true);
                         openLMB.setClickable(false);
                         getUserCreditBalenceInfo(service);
                     }
@@ -261,9 +260,13 @@ public class MainActivity extends BaseActivity {
                     CommonUtils.debugLog(body.toString() + "----------" + token);
                     creditBalance = body.getData().getCreditBalance();//可用额度
                     credit = body.getData().getCredit();//信用额度
-                    SpUtils.saveString(MainActivity.this, Constant_LeMaiBao.CREDIT, credit);
                     creditUsed = body.getData().getCreditUsed();//已用额度
                     openLMB.setText("¥" + (creditBalance == null ? "0.00" : creditBalance));
+
+                    if (flag && credit != null){
+                        dialog.show();
+                        flag = false;
+                    }
                 } else {
                     CommonUtils.showToast(MainActivity.this, body.getMessage());
                 }
@@ -369,7 +372,6 @@ public class MainActivity extends BaseActivity {
 
             case R.id.btn_diaolog_know:
                 dialog.dismiss();
-                SpUtils.saveBoolean(this, Constant_LeMaiBao.GET_BALENCE, false);
                 break;
 
             case R.id.iv_head_img:
@@ -573,12 +575,12 @@ public class MainActivity extends BaseActivity {
                     public void success(String code, LoginOutBean data, String msg) {
                         SpUtils.saveString(MainActivity.this, Constant.TOKEN, "");
                         SpUtils.saveString(MainActivity.this, Constant.USER_PHONE_LOGINED, "");
-                        //清空用户数据
-                        SpUtils.saveBoolean(MainActivity.this,Constant_LeMaiBao.GET_BALENCE,
-                                false);
-                        SpUtils.saveBoolean(MainActivity.this,Constant_LeMaiBao.AUTHEN,false);
-                        SpUtils.saveString(MainActivity.this,Constant_LeMaiBao.CREDIT,"0.00");
-                        SpUtils.saveBoolean(MainActivity.this,Constant_LeMaiBao.PASSWORD,false);
+//                        //清空用户数据
+//                        SpUtils.saveBoolean(MainActivity.this,Constant_LeMaiBao.GET_BALENCE,
+//                                false);
+//                        SpUtils.saveBoolean(MainActivity.this,Constant_LeMaiBao.AUTHEN,false);
+//                        SpUtils.saveString(MainActivity.this,Constant_LeMaiBao.CREDIT,"0.00");
+//                        SpUtils.saveBoolean(MainActivity.this,Constant_LeMaiBao.PASSWORD,false);
 
                         CommonUtils.toNextActivity(MainActivity.this, LoginActivity.class);
                         finish();

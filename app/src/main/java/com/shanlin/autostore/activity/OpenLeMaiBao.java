@@ -16,6 +16,7 @@ import com.shanlin.autostore.bean.paramsBean.RealNameAuthenBody;
 import com.shanlin.autostore.bean.resultBean.CreditBalanceCheckBean;
 import com.shanlin.autostore.bean.resultBean.PswSettingBean;
 import com.shanlin.autostore.bean.resultBean.RealNameAuthenBean;
+import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
@@ -45,6 +46,7 @@ public class OpenLeMaiBao extends BaseActivity {
     private EditText etPsw;
     private EditText etPswAgain;
     private String token;
+    private String status;
 
     @Override
     public int initLayout() {
@@ -84,7 +86,7 @@ public class OpenLeMaiBao extends BaseActivity {
         switch (v.getId()) {
 
             case R.id.btn_nextstep_and_confirm:
-                judgeEmpty();
+                getUserAuthenStatus();
                 break;
             case R.id.tv_xie_yi:
                 Intent intent1 = new Intent(this,XieYiAndHeTongActivity.class);
@@ -101,14 +103,13 @@ public class OpenLeMaiBao extends BaseActivity {
     }
 
     private void judgeEmpty() {
-        if (!SpUtils.getBoolean(OpenLeMaiBao.this,Constant_LeMaiBao.AUTHEN,false)) {
+        if (Constant_LeMaiBao.AUTHEN_NOT.equals(status)) {
             //第一步
             String name = etName.getText().toString().trim();
             String idNum = etIdNum.getText().toString().trim();
             //调用实名认证接口
             doRealNameAuthen(name, idNum);
-        } else if (SpUtils.getBoolean(OpenLeMaiBao.this,Constant_LeMaiBao.AUTHEN,false) && !SpUtils
-                .getBoolean(OpenLeMaiBao.this,Constant_LeMaiBao.PASSWORD,false)){
+        } else if (Constant_LeMaiBao.AUTHEN_REAL_NAME.equals(status)){
             //第二步
             changeUI(2);
             String psw = etPsw.getText().toString().trim();
@@ -116,6 +117,26 @@ public class OpenLeMaiBao extends BaseActivity {
             //调用密码认证接口
             doPswSetting(psw2);
         }
+    }
+
+    private void getUserAuthenStatus() {
+        Call<UserVertifyStatusBean> call = service.getUserVertifyAuthenStatus(token);
+        call.enqueue(new Callback<UserVertifyStatusBean>() {
+            @Override
+            public void onResponse(Call<UserVertifyStatusBean> call, Response<UserVertifyStatusBean> response) {
+                UserVertifyStatusBean body = response.body();
+                if (TextUtils.equals("200",body.getCode())) {
+                    status = body.getData().getVerifyStatus();
+                    CommonUtils.debugLog("open---------"+status);
+                    judgeEmpty();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserVertifyStatusBean> call, Throwable t) {
+                CommonUtils.debugLog(t.getMessage());
+            }
+        });
     }
 
     @Override
@@ -131,8 +152,6 @@ public class OpenLeMaiBao extends BaseActivity {
                 PswSettingBean body = response.body();
                 if (TextUtils.equals("200",body.getCode())) {
                     CommonUtils.showToast(OpenLeMaiBao.this,body.getMessage());
-                    SpUtils.saveBoolean(OpenLeMaiBao.this, Constant_LeMaiBao.PASSWORD,true);
-                    SpUtils.saveBoolean(OpenLeMaiBao.this,Constant_LeMaiBao.GET_BALENCE,true);
                     getBalenceInfo();
                 } else {
                     CommonUtils.showToast(OpenLeMaiBao.this,body.getMessage());
@@ -154,7 +173,7 @@ public class OpenLeMaiBao extends BaseActivity {
                 CreditBalanceCheckBean body = response.body();
                 if (TextUtils.equals("200",body.getCode())) {
                     String credit = body.getData().getCredit();
-                    SpUtils.saveString(OpenLeMaiBao.this,Constant_LeMaiBao.CREDIT,credit);
+                    CommonUtils.debugLog("openlmb---------"+credit);
                     finish();
                 }
             }
@@ -178,7 +197,6 @@ public class OpenLeMaiBao extends BaseActivity {
                 if (TextUtils.equals("200",body.getCode())) {
                     CommonUtils.showToast(OpenLeMaiBao.this,body.getMessage());
                     changeUI(2);
-                    SpUtils.saveBoolean(OpenLeMaiBao.this, Constant_LeMaiBao.AUTHEN,true);
                 } else {
                     CommonUtils.showToast(OpenLeMaiBao.this,body.getMessage());
                 }

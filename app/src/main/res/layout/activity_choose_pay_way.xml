@@ -94,13 +94,14 @@
             android:layout_width="81px"
             android:gravity="center"
             android:layout_height="wrap_content"
-            android:text="200.00元"
+            android:text="   "
             android:textColor="#FF999999"
             android:textSize="14px"/>
 
             <TextView
                 android:id="@+id/tv_not_enough"
                 android:text="余额不足"
+                android:visibility="invisible"
                 android:gravity="center"
                 android:textSize="12px"
                 android:textColor="#2000"

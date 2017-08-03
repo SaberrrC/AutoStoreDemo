@@ -28,7 +28,9 @@ import com.shanlin.autostore.bean.paramsBean.AliPayOrderBody;
 import com.shanlin.autostore.bean.paramsBean.LeMaiBaoPayBody;
 import com.shanlin.autostore.bean.paramsBean.WXPayBody;
 import com.shanlin.autostore.bean.resultBean.AliPayResultBean;
+import com.shanlin.autostore.bean.resultBean.CreditBalanceCheckBean;
 import com.shanlin.autostore.bean.resultBean.LeMaiBaoPayResultBean;
+import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
 import com.shanlin.autostore.bean.resultBean.WxChatBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
@@ -36,7 +38,6 @@ import com.shanlin.autostore.constants.WXConstant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.IpTools;
-import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.view.XNumberKeyboardView;
 import com.shanlin.autostore.view.gridpasswordview.GridPasswordView;
 import com.shanlin.autostore.zhifubao.OrderInfoUtil2_0;
@@ -85,13 +86,12 @@ public class ChoosePayWayActivity extends BaseActivity{
     private View way2;
     private View way3;
     private Intent intent;
-    private boolean pswResult;
-    private boolean balenceResult;
-    private String credit;
     private TextView moneyNotEnough;
     private TextView moneyCanGet;
     private TextView moneyCanUse;
-
+    private String status;
+    private String credit;
+//412823199202112412
     @Override
     public int initLayout() {
         return R.layout.activity_choose_pay_way;
@@ -288,10 +288,10 @@ public class ChoosePayWayActivity extends BaseActivity{
                 showInputPswPop();
                 break;
             case R.id.get_avaiable_balence:
-                if (!pswResult) {
+                if (!Constant_LeMaiBao.AUTHEN_FINISHED.equals(status)) {
                     //开通乐买宝
                     CommonUtils.toNextActivity(this,OpenLeMaiBao.class);
-                } else if (SpUtils.getBoolean(this,Constant_LeMaiBao.GET_BALENCE,false)) {
+                } else if (flag && credit != null) {
                     //可用额度领取
                     showGetAvailableBalenceDialog();
                 }
@@ -309,14 +309,66 @@ public class ChoosePayWayActivity extends BaseActivity{
                 break;
             case R.id.btn_diaolog_know:
                 availbleDialog.dismiss();
-                SpUtils.saveBoolean(this,Constant_LeMaiBao.GET_BALENCE,false);
-                judgeStatus();
+                flag = false;
+                judgeStatus("2");
                 break;
             case R.id.iv_disapper_keyboard:
                 if (popBottom.isShowing()) popBottom.dismiss();
                 break;
         }
     }
+
+    boolean flag;//是否有可领取额度
+
+    private void getUserAuthenStatus() {
+        Call<UserVertifyStatusBean> call = service.getUserVertifyAuthenStatus(token);
+        call.enqueue(new Callback<UserVertifyStatusBean>() {
+            @Override
+            public void onResponse(Call<UserVertifyStatusBean> call, Response<UserVertifyStatusBean> response) {
+                UserVertifyStatusBean body = response.body();
+                if (TextUtils.equals("200",body.getCode())) {
+                    status = body.getData().getVerifyStatus();
+                    if (!Constant_LeMaiBao.AUTHEN_FINISHED.equals(status)) {
+                        flag = true;
+                        judgeStatus(status);
+                    } else {
+                        //获取用户信用额度
+                        getUserCreditBalenceInfo(service);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserVertifyStatusBean> call, Throwable t) {
+                CommonUtils.debugLog(t.getMessage());
+            }
+        });
+    }
+
+    private void getUserCreditBalenceInfo(HttpService service) {
+        Call<CreditBalanceCheckBean> call = service.getUserCreditBalanceInfo(token);
+        call.enqueue(new Callback<CreditBalanceCheckBean>() {
+            @Override
+            public void onResponse(Call<CreditBalanceCheckBean> call, Response<CreditBalanceCheckBean> response) {
+                CreditBalanceCheckBean body = response.body();
+                if (TextUtils.equals("200", body.getCode())) {
+                    CommonUtils.debugLog(body.toString() + "----------" + token);
+                    creditBalance = body.getData().getCreditBalance();//可用额度
+                    credit = body.getData().getCredit();//信用额度
+                    judgeStatus("2");
+                } else {
+                    CommonUtils.showToast(ChoosePayWayActivity.this,body.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CreditBalanceCheckBean> call, Throwable t) {
+
+            }
+        });
+    }
+
+
 
     private void showGetAvailableBalenceDialog() {
         if (availbleDialog == null) {
@@ -344,15 +396,13 @@ public class ChoosePayWayActivity extends BaseActivity{
     @Override
     protected void onResume() {
         super.onResume();
-        creditBalance = intent.getStringExtra(Constant_LeMaiBao.CREDIT_BALANCE);
-        initSPData();
-        judgeStatus();
+        getUserAuthenStatus();
     }
 
 
-    private void judgeStatus() {
+    private void judgeStatus(String status) {
 
-        if (!pswResult) {
+        if (!Constant_LeMaiBao.AUTHEN_FINISHED.equals(status)) {
             availableBalence.setText("开通乐买宝");
             availableBalence.setClickable(true);
             moneyCanGet.setVisibility(View.INVISIBLE);
@@ -361,22 +411,23 @@ public class ChoosePayWayActivity extends BaseActivity{
             iconChoose.setImageResource(R.mipmap.icon_yellow);
         } else {
             iconChoose.setImageResource(R.mipmap.icon_yellow);
-            if (SpUtils.getBoolean(this,Constant_LeMaiBao.GET_BALENCE,false)) {
+            if (flag && credit != null) {
                 //有可领取额度
-                availableBalence.setText(credit+" 元");
+                availableBalence.setText(credit +" 元");
                 moneyCanGet.setVisibility(View.VISIBLE);
                 moneyNotEnough.setVisibility(View.INVISIBLE);
                 moneyCanUse.setVisibility(View.INVISIBLE);
                 availableBalence.setClickable(true);
             } else {
                 availableBalence.setClickable(false);
-                if (Double.parseDouble(creditBalance == null ? "0.00" : creditBalance) >= Double.parseDouble(totalMoney)){
-                    availableBalence.setText(creditBalance+" 元");
+                if (Double.parseDouble(creditBalance == null ? credit : creditBalance) >= Double
+                        .parseDouble(totalMoney)){
+                    availableBalence.setText((creditBalance == null ? credit : creditBalance)+" 元");
                     moneyCanUse.setVisibility(View.VISIBLE);
                     moneyCanGet.setVisibility(View.INVISIBLE);
                     moneyNotEnough.setVisibility(View.INVISIBLE);
                 } else {
-                    availableBalence.setText((creditBalance == null ? "0.00": creditBalance)+" 元");
+                    availableBalence.setText((creditBalance == null ? credit : creditBalance)+" 元");
                     iconChoose.setImageResource(R.mipmap.icon_gray);
                     moneyNotEnough.setVisibility(View.VISIBLE);
                     moneyCanUse.setVisibility(View.INVISIBLE);
@@ -386,11 +437,6 @@ public class ChoosePayWayActivity extends BaseActivity{
         }
     }
 
-    private void initSPData() {
-        credit = SpUtils.getString(this, Constant_LeMaiBao.CREDIT, "0.00");//授信额度
-        pswResult = SpUtils.getBoolean(this, Constant_LeMaiBao.PASSWORD, false);
-        balenceResult = SpUtils.getBoolean(this, Constant_LeMaiBao.GET_BALENCE, false);
-    }
 
     @Subscribe(threadMode= ThreadMode.MAIN)
     public void getWXPayResult(WxMessageEvent event){
