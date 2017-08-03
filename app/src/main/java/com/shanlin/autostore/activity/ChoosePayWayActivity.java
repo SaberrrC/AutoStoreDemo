@@ -63,7 +63,6 @@ public class ChoosePayWayActivity extends BaseActivity{
     private View dialogView;
     private TextView moneyNeedToPay;
     private GridPasswordView pswView;
-    private TextView availableBalence;
     private View availableDialogView;
     private AlertDialog availbleDialog;
     private ImageView iconChoose;
@@ -87,11 +86,10 @@ public class ChoosePayWayActivity extends BaseActivity{
     private View way3;
     private Intent intent;
     private TextView moneyNotEnough;
-    private TextView moneyCanGet;
     private TextView moneyCanUse;
     private String status;
     private String credit;
-//412823199202112412
+
     @Override
     public int initLayout() {
         return R.layout.activity_choose_pay_way;
@@ -104,7 +102,6 @@ public class ChoosePayWayActivity extends BaseActivity{
         availableDialogView.findViewById(R.id.btn_diaolog_know).setOnClickListener(this);
         availableBalance = ((TextView) findViewById(R.id.get_avaiable_balence));//显示可用余额
         moneyNotEnough = ((TextView) findViewById(R.id.tv_not_enough));//余额不足
-        moneyCanGet = ((TextView) findViewById(R.id.tv_can_get));//可领取额度
         moneyCanUse = ((TextView) findViewById(R.id.tv_can_use));//可用余额
         way1 = findViewById(R.id.ll_pay_way_1);
         way1.setOnClickListener(this);
@@ -113,8 +110,6 @@ public class ChoosePayWayActivity extends BaseActivity{
         way3 = findViewById(R.id.ll_pay_way_3);
         way3.setOnClickListener(this);
         iconChoose = ((ImageView) findViewById(R.id.iv_icon_choose));//圆形logo根据状态切换
-        availableBalence = (TextView)findViewById(R.id.get_avaiable_balence);//可用额度
-        availableBalence.setOnClickListener(this);
         totalAmount = (TextView)findViewById(R.id.tv_totla_amount_to_pay);//应付总额
         dialogView = LayoutInflater.from(this).inflate(R.layout.input_psw_dialog_layout, null);
         dialogView.findViewById(R.id.iv_close_dialog).setOnClickListener(this);
@@ -284,16 +279,12 @@ public class ChoosePayWayActivity extends BaseActivity{
         switch (v.getId()) {
 
             case R.id.ll_pay_way_1:
-                //买乐宝支付
-                showInputPswPop();
-                break;
-            case R.id.get_avaiable_balence:
                 if (!Constant_LeMaiBao.AUTHEN_FINISHED.equals(status)) {
                     //开通乐买宝
                     CommonUtils.toNextActivity(this,OpenLeMaiBao.class);
-                } else if (flag && credit != null) {
-                    //可用额度领取
-                    showGetAvailableBalenceDialog();
+                } else {
+                    //买乐宝支付
+                    showInputPswPop();
                 }
                 break;
             case R.id.ll_pay_way_2:
@@ -317,8 +308,6 @@ public class ChoosePayWayActivity extends BaseActivity{
                 break;
         }
     }
-
-    boolean flag;//是否有可领取额度
 
     private void getUserAuthenStatus() {
         Call<UserVertifyStatusBean> call = service.getUserVertifyAuthenStatus(token);
@@ -355,6 +344,10 @@ public class ChoosePayWayActivity extends BaseActivity{
                     CommonUtils.debugLog(body.toString() + "----------" + token);
                     creditBalance = body.getData().getCreditBalance();//可用额度
                     credit = body.getData().getCredit();//信用额度
+                    if (flag && credit != null) {
+                        //可用额度领取
+                        showGetAvailableBalenceDialog();
+                    }
                     judgeStatus("2");
                 } else {
                     CommonUtils.showToast(ChoosePayWayActivity.this,body.getMessage());
@@ -403,36 +396,22 @@ public class ChoosePayWayActivity extends BaseActivity{
     private void judgeStatus(String status) {
 
         if (!Constant_LeMaiBao.AUTHEN_FINISHED.equals(status)) {
-            availableBalence.setText("开通乐买宝");
-            availableBalence.setClickable(true);
-            moneyCanGet.setVisibility(View.INVISIBLE);
+            availableBalance.setText("领取额度");
             moneyNotEnough.setVisibility(View.INVISIBLE);
             moneyCanUse.setVisibility(View.INVISIBLE);
             iconChoose.setImageResource(R.mipmap.icon_yellow);
         } else {
             iconChoose.setImageResource(R.mipmap.icon_yellow);
-            if (flag && credit != null) {
-                //有可领取额度
-                availableBalence.setText(credit +" 元");
-                moneyCanGet.setVisibility(View.VISIBLE);
+            if (Double.parseDouble(creditBalance == null ? credit : creditBalance) >= Double
+                    .parseDouble(totalMoney)){
+                availableBalance.setText((creditBalance == null ? credit : creditBalance)+" 元");
+                moneyCanUse.setVisibility(View.VISIBLE);
                 moneyNotEnough.setVisibility(View.INVISIBLE);
-                moneyCanUse.setVisibility(View.INVISIBLE);
-                availableBalence.setClickable(true);
             } else {
-                availableBalence.setClickable(false);
-                if (Double.parseDouble(creditBalance == null ? credit : creditBalance) >= Double
-                        .parseDouble(totalMoney)){
-                    availableBalence.setText((creditBalance == null ? credit : creditBalance)+" 元");
-                    moneyCanUse.setVisibility(View.VISIBLE);
-                    moneyCanGet.setVisibility(View.INVISIBLE);
-                    moneyNotEnough.setVisibility(View.INVISIBLE);
-                } else {
-                    availableBalence.setText((creditBalance == null ? credit : creditBalance)+" 元");
-                    iconChoose.setImageResource(R.mipmap.icon_gray);
-                    moneyNotEnough.setVisibility(View.VISIBLE);
-                    moneyCanUse.setVisibility(View.INVISIBLE);
-                    moneyCanGet.setVisibility(View.INVISIBLE);
-                }
+                availableBalance.setText((creditBalance == null ? credit : creditBalance)+" 元");
+                iconChoose.setImageResource(R.mipmap.icon_gray);
+                moneyNotEnough.setVisibility(View.VISIBLE);
+                moneyCanUse.setVisibility(View.INVISIBLE);
             }
         }
     }

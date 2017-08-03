@@ -174,8 +174,6 @@ public class MainActivity extends BaseActivity {
         getUserAuthenStatus();
     }
 
-    boolean flag;
-
     private void getUserAuthenStatus() {
         Call<UserVertifyStatusBean> call = service.getUserVertifyAuthenStatus(token);
         call.enqueue(new Callback<UserVertifyStatusBean>() {
@@ -261,10 +259,8 @@ public class MainActivity extends BaseActivity {
                     credit = body.getData().getCredit();//信用额度
                     creditUsed = body.getData().getCreditUsed();//已用额度
                     openLMB.setText("¥" + (creditBalance == null ? "0.00" : creditBalance));
-
                     if (flag && credit != null){
                         dialog.show();
-                        flag = false;
                     }
                 } else {
                     CommonUtils.showToast(MainActivity.this, body.getMessage());
@@ -371,6 +367,7 @@ public class MainActivity extends BaseActivity {
 
             case R.id.btn_diaolog_know:
                 dialog.dismiss();
+                flag = false;
                 break;
 
             case R.id.iv_head_img:

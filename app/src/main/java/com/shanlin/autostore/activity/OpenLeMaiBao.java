@@ -107,6 +107,19 @@ public class OpenLeMaiBao extends BaseActivity {
             //第一步
             String name = etName.getText().toString().trim();
             String idNum = etIdNum.getText().toString().trim();
+            if (TextUtils.isEmpty(name)) {
+                CommonUtils.debugLog("姓名不能为空");
+                return;
+            }
+            if (TextUtils.isEmpty(idNum)) {
+                CommonUtils.debugLog("身份证号不能为空");
+                return;
+            }
+
+            if (idNum.length() < 18) {
+                CommonUtils.debugLog("身份证号码格式错误");
+                return;
+            }
             //调用实名认证接口
             doRealNameAuthen(name, idNum);
         } else if (Constant_LeMaiBao.AUTHEN_REAL_NAME.equals(status)){
@@ -114,6 +127,21 @@ public class OpenLeMaiBao extends BaseActivity {
             changeUI(2);
             String psw = etPsw.getText().toString().trim();
             String psw2 = etPswAgain.getText().toString().trim();
+            if (TextUtils.isEmpty(psw)) {
+                CommonUtils.debugLog("密码不能为空");
+                return;
+            }
+            if (psw.length() < 6) {
+                CommonUtils.debugLog("请输入六位数密码");
+                return;
+            }
+
+            if (!TextUtils.equals(psw,psw2)) {
+                CommonUtils.debugLog("密码不一致,请重新输入");
+                etPswAgain.setText("");
+                return;
+            }
+
             //调用密码认证接口
             doPswSetting(psw2);
         }
