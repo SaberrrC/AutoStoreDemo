@@ -63,7 +63,6 @@ import java.lang.reflect.Field;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.HEAD;
 
 /**
  * This activity opens the camera and does the actual scanning on a background
@@ -275,10 +274,11 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
                 if (TextUtils.equals("200", body.getCode())) {
                     Log.d(TAG, "------------------------*-----------------------" + response.body().toString());
                     String totalAmount = response.body().getData().getTotalAmount();//应付总金额
-                    com.shanlin.autostore.utils.CommonUtils.sendDataToNextActivity(CaptureActivity.this, ChoosePayWayActivity
-                            .class,
-                            aliArgs, new String[]{devicedID, orderNo, totalAmount, "2", token, creditBalence});
+                    com.shanlin.autostore.utils.CommonUtils.sendDataToNextActivity(CaptureActivity.this, ChoosePayWayActivity.class, aliArgs, new String[]{devicedID, orderNo, totalAmount, "2", token, creditBalence});
                     CaptureActivity.this.finish();
+                } else {
+                    ToastUtils.showToast("二维码无法识别");
+                    finish();
                 }
             }
 
