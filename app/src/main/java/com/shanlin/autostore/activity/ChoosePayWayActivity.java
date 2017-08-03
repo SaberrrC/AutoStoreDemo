@@ -13,7 +13,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -138,7 +137,7 @@ public class ChoosePayWayActivity extends BaseActivity{
         popTop.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                backgroundAlpha(1f);
+                CommonUtils.setBackgroundAlpha(ChoosePayWayActivity.this,1f);
                 popBottom.dismiss();
                 way2.setClickable(true);
                 way3.setClickable(true);
@@ -332,7 +331,7 @@ public class ChoosePayWayActivity extends BaseActivity{
         pswView.clearPassword();
         popTop.showAtLocation(getWindow().getDecorView(), Gravity.CENTER_HORIZONTAL,0,-300);
         showKeyBoard();
-        backgroundAlpha(0.5f);
+        CommonUtils.setBackgroundAlpha(this,0.5f);
         way2.setClickable(false);
         way3.setClickable(false);
     }
@@ -359,7 +358,9 @@ public class ChoosePayWayActivity extends BaseActivity{
             moneyCanGet.setVisibility(View.INVISIBLE);
             moneyNotEnough.setVisibility(View.INVISIBLE);
             moneyCanUse.setVisibility(View.INVISIBLE);
+            iconChoose.setImageResource(R.mipmap.icon_yellow);
         } else {
+            iconChoose.setImageResource(R.mipmap.icon_yellow);
             if (SpUtils.getBoolean(this,Constant_LeMaiBao.GET_BALENCE,false)) {
                 //有可领取额度
                 availableBalence.setText(credit+" 元");
@@ -376,6 +377,7 @@ public class ChoosePayWayActivity extends BaseActivity{
                     moneyNotEnough.setVisibility(View.INVISIBLE);
                 } else {
                     availableBalence.setText(creditBalance+" 元");
+                    iconChoose.setImageResource(R.mipmap.icon_gray);
                     moneyNotEnough.setVisibility(View.VISIBLE);
                     moneyCanUse.setVisibility(View.INVISIBLE);
                     moneyCanGet.setVisibility(View.INVISIBLE);
@@ -440,17 +442,7 @@ public class ChoosePayWayActivity extends BaseActivity{
             }
         });
     }
-    /**
-     * 设置添加屏幕的背景透明度
-     * @param bgAlpha
-     */
-    public void backgroundAlpha(float bgAlpha) {
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = bgAlpha; //0.0-1.0
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        getWindow().setAttributes(lp);
-        CommonUtils.debugLog("设置透明度");
-    }
+
 
 
 

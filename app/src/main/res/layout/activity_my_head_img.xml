@@ -8,6 +8,7 @@
     <include layout="@layout/toolbar_layout"></include>
 
     <ImageView
+        android:id="@+id/iv_head_img_large"
         android:layout_marginTop="76px"
         android:layout_gravity="center"
         android:src="@mipmap/head_img"

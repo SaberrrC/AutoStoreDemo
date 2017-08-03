@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.shanlin.autostore.activity.BuyRecordActivity;
 import com.shanlin.autostore.activity.LoginActivity;
+import com.shanlin.autostore.activity.MyHeadImgActivity;
 import com.shanlin.autostore.activity.MyLeMaiBaoActivity;
 import com.shanlin.autostore.activity.OpenLeMaiBao;
 import com.shanlin.autostore.activity.RefundMoneyActivity;
@@ -376,7 +377,7 @@ public class MainActivity extends BaseActivity {
 
             case R.id.iv_head_img:
                 //点击头像
-
+                CommonUtils.toNextActivity(this, MyHeadImgActivity.class);
                 break;
 
         }
@@ -596,7 +597,6 @@ public class MainActivity extends BaseActivity {
             super.onBackPressed();
         }
     }
-
 
     public void getRefundMoney() {
         CommonUtils.doNet().getRefundMoney(token).enqueue(new CustomCallBack<RefundMoneyBean>() {

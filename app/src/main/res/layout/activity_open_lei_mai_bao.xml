@@ -246,6 +246,8 @@
                 android:id="@+id/et_psw"
                 android:layout_width="match_parent"
                 android:layout_height="48.7px"
+                android:inputType="numberPassword"
+                android:maxLength="6"
                 android:background="@null"
                 android:gravity="center_vertical"
                 android:hint="设置支付密码，6位数字"
