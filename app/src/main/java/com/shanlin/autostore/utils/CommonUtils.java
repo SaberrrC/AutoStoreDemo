@@ -248,7 +248,7 @@ public class CommonUtils {
     public static boolean checkNet() {
         String networkTypeName = DeviceInfo.getNetworkTypeName();
         if (TextUtils.isEmpty(networkTypeName)) {//没网络
-            ToastUtils.showToast("无网络");
+            ToastUtils.showToast("网络错误");
             return false;
         }
         return true;

@@ -15,7 +15,7 @@
         android:layout_height="42.6px"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="490px"
-        android:background="@mipmap/login_btn_bg"
+        android:background="@drawable/select_bg_bt_phone_login"
         android:gravity="center"
         android:paddingBottom="5px"
         android:text="绑定"

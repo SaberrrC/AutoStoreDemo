@@ -67,7 +67,7 @@ public abstract class CustomCallBack<T extends BaseBean> implements Callback<T> 
             ERR_NETWORK_CODE = httpEx.code() + "";
         }
         if (!CommonUtils.checkNet()) {
-            error(ex, ERR_NETWORK_CODE, "无网络");
+            error(ex, ERR_NETWORK_CODE, "网络错误");
             return;
         }
         LogUtils.d(ERR_NETWORK_MSG);

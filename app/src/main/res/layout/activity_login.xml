@@ -28,10 +28,10 @@
         android:layout_below="@id/btn_login_by_face"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60px"
-        android:background="@drawable/shape_face_login_bg"
+        android:background="@drawable/select_bg_phone_bt"
         android:gravity="center"
         android:text="手机号登录"
-        android:textColor="#FFFCBF0D"
+        android:textColor="@drawable/select_bg_phone_tv_bt"
         android:textSize="16px"
         />
 

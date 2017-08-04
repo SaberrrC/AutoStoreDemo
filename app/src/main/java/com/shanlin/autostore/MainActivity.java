@@ -442,7 +442,6 @@ public class MainActivity extends BaseActivity {
                 Intent intent = new Intent(this, SaveFaceActivity.class);
                 intent.putExtra(Constant.SaveFaceActivity.IMAGE_BASE64, encode);//图片base64
                 intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_NO);
-                intent.putExtra(Constant.USER_INFO, getIntent().getSerializableExtra(Constant.USER_INFO));
                 startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -533,7 +532,6 @@ public class MainActivity extends BaseActivity {
             });
             AutoUtils.autoSize(viewWelcome);
             mWelcomeDialog1 = CommonUtils.getDialog(this, viewWelcome, R.style.MyDialogWithAnim, true);
-            return;
         }
         mWelcomeDialog1.show();
         mHandler.removeCallbacksAndMessages(null);

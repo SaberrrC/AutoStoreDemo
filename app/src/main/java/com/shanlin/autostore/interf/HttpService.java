@@ -24,6 +24,7 @@ import com.shanlin.autostore.bean.resultBean.LeMaiBaoPayResultBean;
 import com.shanlin.autostore.bean.resultBean.LoginOutBean;
 import com.shanlin.autostore.bean.resultBean.OrderDetailBean;
 import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
+import com.shanlin.autostore.bean.resultBean.PersonInfoBean;
 import com.shanlin.autostore.bean.resultBean.PswSettingBean;
 import com.shanlin.autostore.bean.resultBean.RealNameAuthenBean;
 import com.shanlin.autostore.bean.resultBean.RealOrderBean;
@@ -60,18 +61,19 @@ public interface HttpService {
 
     /**
      * 实名认证post -1082
+     *
      * @return
      */
     @POST("buybao/userverify")
-    Call<RealNameAuthenBean> goRealNameAuthen(@Header("token") String token,@Body
-            RealNameAuthenBody body);
+    Call<RealNameAuthenBean> goRealNameAuthen(@Header("token") String token, @Body RealNameAuthenBody body);
 
     /**
      * 密码设置-1083
+     *
      * @return
      */
     @POST("buybao/setpassword")
-    Call<PswSettingBean> goPswSetting (@Header("token") String token, @Body PswSettingBody body);
+    Call<PswSettingBean> goPswSetting(@Header("token") String token, @Body PswSettingBody body);
 
     /**
      * 二维码扫描 打开闸机
@@ -122,6 +124,7 @@ public interface HttpService {
 
     /**
      * 乐买宝实名认证接口 -1082
+     *
      * @param idcard
      * @param username
      * @return
@@ -132,6 +135,7 @@ public interface HttpService {
 
     /**
      * 获取用户乐买宝实名认证信息
+     *
      * @param token
      * @return
      */
@@ -140,6 +144,7 @@ public interface HttpService {
 
     /**
      * 获取用户信用和余额
+     *
      * @param token
      * @return
      */
@@ -148,15 +153,16 @@ public interface HttpService {
 
     /**
      * 更新临时订单成为正式订单-910
+     *
      * @return
      */
     @POST("order/confirm")
-    Call<RealOrderBean> updateTempToReal(@Header("token") String token, @Body
-            RealOrderBody body);
+    Call<RealOrderBean> updateTempToReal(@Header("token") String token, @Body RealOrderBody body);
 
 
     /**
      * 乐买宝支付接口-931
+     *
      * @param token
      * @param body
      * @return
@@ -166,6 +172,7 @@ public interface HttpService {
 
     /**
      * 修改个人信息
+     *
      * @param token
      * @param memberUpdateSendBean
      * @return
@@ -181,11 +188,11 @@ public interface HttpService {
 
     /**
      * 创建支付宝预订单
+     *
      * @return
      */
     @POST("ali/pay")
-    Call<AliPayResultBean> createAliPreOrder(@Header("token") String token, @Body AliPayOrderBody
-            body);
+    Call<AliPayResultBean> createAliPreOrder(@Header("token") String token, @Body AliPayOrderBody body);
 
     /**
      * 微信认证登录绑定手机号
@@ -195,20 +202,19 @@ public interface HttpService {
 
     /**
      * 获取每日到店用户
+     *
      * @param date
      * @param storeId
      * @return
      */
     @GET("store/statisc")
-    Call<UserNumEverydayBean> getUserNumEveryday(@Header("token") String token,@Query("date")
-            String date,@Query
-            ("storeId") String storeId);
+    Call<UserNumEverydayBean> getUserNumEveryday(@Header("token") String token, @Query("date") String date, @Query("storeId") String storeId);
 
     /**
      * 订单详情
      */
     @GET("order/details")
-    Call<OrderDetailBean> getOrderDetail(@Header("token") String token,@Query("orderNo") String orderNo);
+    Call<OrderDetailBean> getOrderDetail(@Header("token") String token, @Query("orderNo") String orderNo);
 
     /**
      * 退款金额
@@ -221,5 +227,9 @@ public interface HttpService {
      */
     @GET("memberlogout")
     Call<LoginOutBean> getLoginOut(@Header("token") String token);
+
+
+    @GET("member/info")
+    Call<PersonInfoBean> getPersonInfo(@Header("token") String token);
 
 }

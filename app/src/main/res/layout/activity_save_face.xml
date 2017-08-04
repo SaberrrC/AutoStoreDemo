@@ -38,7 +38,7 @@
             android:layout_below="@+id/iv_bg"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="125px"
-            android:background="@drawable/shape_save_face_bt_bg"
+            android:background="@drawable/select_bg_bt_save"
             android:gravity="center"
             android:text="提交"
             android:textColor="@color/white"

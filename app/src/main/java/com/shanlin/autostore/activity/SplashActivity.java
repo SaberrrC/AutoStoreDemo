@@ -9,13 +9,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.animation.LinearInterpolator;
 
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.WxMessageEvent;
 import com.shanlin.autostore.bean.resultBean.CheckUpdateBean;
-import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
+import com.shanlin.autostore.bean.resultBean.PersonInfoBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
@@ -74,11 +75,16 @@ public class SplashActivity extends Activity implements ValueAnimator.AnimatorUp
     private void checkToken() {
         String token = SpUtils.getString(this, Constant.TOKEN, "");
         HttpService httpService = CommonUtils.doNet();
-        Call<OrderHistoryBean> call = httpService.getOrderHistory(token, 1, 1);
-        call.enqueue(new CustomCallBack<OrderHistoryBean>() {
+        Call<PersonInfoBean> call = httpService.getPersonInfo(token);
+        call.enqueue(new CustomCallBack<PersonInfoBean>() {
             @Override
-            public void success(String code, OrderHistoryBean data, String msg) {
-                CommonUtils.toNextActivity(SplashActivity.this, MainActivity.class);
+            public void success(String code, PersonInfoBean data, String msg) {
+                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                if (TextUtils.isEmpty(data.getData().getDate().getFaceToken())) {
+                    intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_NO);
+                } else {
+                    intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_OK);
+                }
                 finish();
             }
 
