@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.alipay.sdk.app.PayTask;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
@@ -43,14 +42,11 @@ import com.shanlin.autostore.view.gridpasswordview.GridPasswordView;
 import com.shanlin.autostore.zhifubao.OrderInfoUtil2_0;
 import com.shanlin.autostore.zhifubao.PayKeys;
 import com.shanlin.autostore.zhifubao.PayResult;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -60,11 +56,11 @@ import retrofit2.Response;
  */
 public class ChoosePayWayActivity extends BaseActivity{
 
+//    private static final int REQUEST_CREDIT_CODE = 104;
     private View dialogView;
     private TextView moneyNeedToPay;
     private GridPasswordView pswView;
-    private View availableDialogView;
-    private AlertDialog availbleDialog;
+//    private AlertDialog availbleDialog;
     private ImageView iconChoose;
     private TextView totalAmount;
     private HttpService service;
@@ -89,6 +85,7 @@ public class ChoosePayWayActivity extends BaseActivity{
     private TextView moneyCanUse;
     private String status;
     private String credit;
+    private AlertDialog dialog;
 
     @Override
     public int initLayout() {
@@ -98,8 +95,6 @@ public class ChoosePayWayActivity extends BaseActivity{
     @Override
     public void initView() {
         CommonUtils.initToolbar(this,"选择支付方式",R.color.blcak, MainActivity.class);
-        availableDialogView = LayoutInflater.from(this).inflate(R.layout.get_available_balence_layout, null);
-        availableDialogView.findViewById(R.id.btn_diaolog_know).setOnClickListener(this);
         availableBalance = ((TextView) findViewById(R.id.get_avaiable_balence));//显示可用余额
         moneyNotEnough = ((TextView) findViewById(R.id.tv_not_enough));//余额不足
         moneyCanUse = ((TextView) findViewById(R.id.tv_can_use));//可用余额
@@ -179,6 +174,7 @@ public class ChoosePayWayActivity extends BaseActivity{
             }
         });
     }
+
 
     private void initPswView() {
         pswView = ((GridPasswordView) dialogView.findViewById(R.id.pswView));
@@ -299,8 +295,8 @@ public class ChoosePayWayActivity extends BaseActivity{
                 if (popTop.isShowing()) popTop.dismiss();
                 break;
             case R.id.btn_diaolog_know:
-                availbleDialog.dismiss();
-                flag = false;
+                dialog.dismiss();
+                MainActivity.state = false;
                 judgeStatus("2");
                 break;
             case R.id.iv_disapper_keyboard:
@@ -318,8 +314,8 @@ public class ChoosePayWayActivity extends BaseActivity{
                 if (TextUtils.equals("200",body.getCode())) {
                     status = body.getData().getVerifyStatus();
                     if (!Constant_LeMaiBao.AUTHEN_FINISHED.equals(status)) {
-                        flag = true;
                         judgeStatus(status);
+                        MainActivity.state = true;
                     } else {
                         //获取用户信用额度
                         getUserCreditBalenceInfo(service);
@@ -344,10 +340,7 @@ public class ChoosePayWayActivity extends BaseActivity{
                     CommonUtils.debugLog(body.toString() + "----------" + token);
                     creditBalance = body.getData().getCreditBalance();//可用额度
                     credit = body.getData().getCredit();//信用额度
-                    if (flag && credit != null) {
-                        //可用额度领取
-                        showGetAvailableBalenceDialog();
-                    }
+                    showBalanceDialog();
                     judgeStatus("2");
                 } else {
                     CommonUtils.showToast(ChoosePayWayActivity.this,body.getMessage());
@@ -359,16 +352,6 @@ public class ChoosePayWayActivity extends BaseActivity{
 
             }
         });
-    }
-
-
-
-    private void showGetAvailableBalenceDialog() {
-        if (availbleDialog == null) {
-            availbleDialog = CommonUtils.getDialog(this, availableDialogView,false);
-        } else {
-            availbleDialog.show();
-        }
     }
 
     private void showInputPswPop() {
@@ -385,11 +368,33 @@ public class ChoosePayWayActivity extends BaseActivity{
         popBottom.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM,0,0);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getUserAuthenStatus();
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
-        getUserAuthenStatus();
+
+    }
+
+    private void showBalanceDialog() {
+        if (MainActivity.state && credit != null) {
+            //可用额度领取
+            View view = LayoutInflater.from(ChoosePayWayActivity.this).inflate(R.layout
+                    .get_available_balence_layout, null);
+            view.findViewById(R.id.btn_diaolog_know).setOnClickListener(ChoosePayWayActivity.this);
+            TextView tvCredit = ((TextView) view.findViewById(R.id.tv_credit_num));
+            CommonUtils.debugLog("----------choose--------2");
+            dialog = new AlertDialog.Builder(ChoosePayWayActivity.this)
+                    .setView(view)
+                    .create();
+            tvCredit.setText(credit+"元可用额度");
+            dialog.setCancelable(false);
+            dialog.show();
+        }
     }
 
 
