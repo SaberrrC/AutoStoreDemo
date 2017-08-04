@@ -19,7 +19,6 @@ import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.google.gson.Gson;
 import com.shanlin.autostore.activity.BuyRecordActivity;
 import com.shanlin.autostore.activity.LoginActivity;
@@ -52,9 +51,7 @@ import com.shanlin.autostore.view.ProgressView;
 import com.shanlin.autostore.zhifubao.Base64;
 import com.shanlin.autostore.zxing.activity.CaptureActivity;
 import com.zhy.autolayout.utils.AutoUtils;
-
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,44 +59,44 @@ import retrofit2.Response;
 public class MainActivity extends BaseActivity {
 
     private static final int REQUEST_CODE_REGEST = 101;
-    private static final int REQUEST_CODE_SCAN   = 102;
+    private static final int REQUEST_CODE_SCAN = 102;
     private ActionBarDrawerToggle mDrawerToggle;
     private static final String TAG = "wr";
     private DrawerLayout mDrawerLayout;
-    private Toolbar      toolbar;
-    private Dialog       mGateOpenDialog;
-    private TextView     mBtnScan;
-    private AlertDialog  mToFaceDialog;
-    private byte[]       mLivenessImgBytes;
-    private TextView     mTvIdentify;
-    private AlertDialog  mLoginoutDialog;
-    private TextView     mBtBanlance;
-    private AlertDialog  mWelcomeDialog1;
+    private Toolbar toolbar;
+    private Dialog mGateOpenDialog;
+    private TextView mBtnScan;
+    private AlertDialog mToFaceDialog;
+    private byte[] mLivenessImgBytes;
+    private TextView mTvIdentify;
+    private AlertDialog mLoginoutDialog;
+    private TextView mBtBanlance;
+    private AlertDialog mWelcomeDialog1;
     private long lastTime = 0;
     private ProgressView pv;
-    private TextView     mUserNum;
-    private TextView     openLMB;
-    private HttpService  service;
-    private Gson         gson;
-    private LoginBean    mLoginBean;
-    private int          femaleCount;
-    private String       token;
-    private TextView     mTvRefundMoney;
-    private TextView     mTvPhoneNum;
-    private String       mUserPhone;
-    private String       mUserPhoneHide;
+    private TextView mUserNum;
+    private TextView openLMB;
+    private HttpService service;
+    private Gson gson;
+    private LoginBean mLoginBean;
+    private int femaleCount;
+    private String token;
+    private TextView mTvRefundMoney;
+    private TextView mTvPhoneNum;
+    private String mUserPhone;
+    private String mUserPhoneHide;
     private RefundMoneyBean refundMoneyBean = null;
     private String creditBalance;
-    private int    total;
-    private View   circle;
+    private int total;
+    private View circle;
     private java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
-    private int         maleCount;
-    private String      creditUsed;
-    private ImageView   headImage;
-    private String      credit;
-    private View        inflate;
+    private int maleCount;
+    private String creditUsed;
+    private ImageView headImage;
+    private String credit;
     private AlertDialog dialog;
     private boolean showToggen = true;
+    public static boolean state;
 
     @Override
     public int initLayout() {
@@ -191,12 +188,32 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        //获取认证状态
+        getUserAuthenStatus();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         //调用今日到店人数接口
         getUserNumToday();
-        //获取认证状态
-        getUserAuthenStatus();
+    }
+
+    private void showBalanceDialog() {
+        CommonUtils.debugLog("---------flag="+state);
+        if (state && credit != null){
+            View inflate = LayoutInflater.from(this).inflate(R.layout.get_available_balence_layout, null);
+            inflate.findViewById(R.id.btn_diaolog_know).setOnClickListener(this);
+            TextView tvCredit = ((TextView) inflate.findViewById(R.id.tv_credit_num));
+            dialog = new AlertDialog.Builder(MainActivity.this)
+                    .setView(inflate)
+                    .create();
+            tvCredit.setText(credit+"元可用额度");
+            dialog.setCancelable(false);
+            dialog.show();
+        }
     }
 
     private void getUserAuthenStatus() {
@@ -205,13 +222,13 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onResponse(Call<UserVertifyStatusBean> call, Response<UserVertifyStatusBean> response) {
                 UserVertifyStatusBean body = response.body();
-                if (TextUtils.equals("200",body.getCode())) {
+                if (TextUtils.equals("200", body.getCode())) {
                     String status = body.getData().getVerifyStatus();
                     if (!Constant_LeMaiBao.AUTHEN_FINISHED.equals(status)) {
                         openLMB.setClickable(true);
                         CommonUtils.debugLog("----------top---------");
                         openLMB.setText("开通乐买宝");
-                        flag = true;
+                        state = true;
                     } else {
                         //获取用户信用额度
                         openLMB.setClickable(false);
@@ -230,9 +247,6 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initData() {
         initToolBar();
-        inflate = LayoutInflater.from(this).inflate(R.layout.get_available_balence_layout, null);
-        inflate.findViewById(R.id.btn_diaolog_know).setOnClickListener(this);
-        dialog = CommonUtils.getDialog(this, inflate, false);
         mUserPhoneHide = mUserPhone.substring(0, 3) + "****" + mUserPhone.substring(7);
         mTvPhoneNum.setText(mUserPhoneHide);
         gson = new Gson();
@@ -282,9 +296,7 @@ public class MainActivity extends BaseActivity {
                     credit = body.getData().getCredit();//信用额度
                     creditUsed = body.getData().getCreditUsed();//已用额度
                     openLMB.setText("¥" + (creditBalance == null ? "0.00" : creditBalance));
-                    if (flag && credit != null){
-                        dialog.show();
-                    }
+                    showBalanceDialog();
                 } else {
                     CommonUtils.showToast(MainActivity.this, body.getMessage());
                 }
@@ -390,7 +402,7 @@ public class MainActivity extends BaseActivity {
 
             case R.id.btn_diaolog_know:
                 dialog.dismiss();
-                flag = false;
+                state = false;
                 break;
 
             case R.id.iv_head_img:
@@ -446,6 +458,7 @@ public class MainActivity extends BaseActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
         }
     }
 

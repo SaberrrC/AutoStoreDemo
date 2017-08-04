@@ -7,13 +7,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.paramsBean.PswSettingBody;
 import com.shanlin.autostore.bean.paramsBean.RealNameAuthenBody;
-import com.shanlin.autostore.bean.resultBean.CreditBalanceCheckBean;
 import com.shanlin.autostore.bean.resultBean.PswSettingBean;
 import com.shanlin.autostore.bean.resultBean.RealNameAuthenBean;
 import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
@@ -22,7 +20,6 @@ import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.SpUtils;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -109,16 +106,16 @@ public class OpenLeMaiBao extends BaseActivity {
             String name = etName.getText().toString().trim();
             String idNum = etIdNum.getText().toString().trim();
             if (TextUtils.isEmpty(name)) {
-                CommonUtils.debugLog("姓名不能为空");
+                CommonUtils.showToast(this,"姓名不能为空");
                 return;
             }
             if (TextUtils.isEmpty(idNum)) {
-                CommonUtils.debugLog("身份证号不能为空");
+                CommonUtils.showToast(this,"身份证号不能为空");
                 return;
             }
 
             if (idNum.length() < 18) {
-                CommonUtils.debugLog("身份证号码格式错误");
+                CommonUtils.showToast(this,"身份证号码格式错误");
                 return;
             }
             //调用实名认证接口
@@ -129,16 +126,16 @@ public class OpenLeMaiBao extends BaseActivity {
             String psw = etPsw.getText().toString().trim();
             String psw2 = etPswAgain.getText().toString().trim();
             if (TextUtils.isEmpty(psw)) {
-                CommonUtils.debugLog("密码不能为空");
+                CommonUtils.showToast(this,"密码不能为空");
                 return;
             }
             if (psw.length() < 6) {
-                CommonUtils.debugLog("请输入六位数密码");
+                CommonUtils.showToast(this,"请输入六位数密码");
                 return;
             }
 
-            if (!TextUtils.equals(psw, psw2)) {
-                CommonUtils.debugLog("密码不一致,请重新输入");
+            if (!TextUtils.equals(psw,psw2)) {
+                CommonUtils.showToast(this,"密码不一致,请重新输入");
                 etPswAgain.setText("");
                 return;
             }
@@ -168,20 +165,15 @@ public class OpenLeMaiBao extends BaseActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
     private void doPswSetting(String psw2) {
         Call<PswSettingBean> call = service.goPswSetting(token, new PswSettingBody(psw2));
         call.enqueue(new Callback<PswSettingBean>() {
             @Override
             public void onResponse(Call<PswSettingBean> call, Response<PswSettingBean> response) {
                 PswSettingBean body = response.body();
-                if (TextUtils.equals("200", body.getCode())) {
-                    CommonUtils.showToast(OpenLeMaiBao.this, body.getMessage());
-                    getBalenceInfo();
+                if (TextUtils.equals("200",body.getCode())) {
+                    CommonUtils.showToast(OpenLeMaiBao.this,body.getMessage());
+                    finish();
                 } else {
                     CommonUtils.showToast(OpenLeMaiBao.this, body.getMessage());
                 }
@@ -190,26 +182,6 @@ public class OpenLeMaiBao extends BaseActivity {
             @Override
             public void onFailure(Call<PswSettingBean> call, Throwable t) {
                 CommonUtils.debugLog(t.getMessage());
-            }
-        });
-    }
-
-    private void getBalenceInfo() {
-        Call<CreditBalanceCheckBean> userCreditBalanceInfo = service.getUserCreditBalanceInfo(token);
-        userCreditBalanceInfo.enqueue(new Callback<CreditBalanceCheckBean>() {
-            @Override
-            public void onResponse(Call<CreditBalanceCheckBean> call, Response<CreditBalanceCheckBean> response) {
-                CreditBalanceCheckBean body = response.body();
-                if (TextUtils.equals("200", body.getCode())) {
-                    String credit = body.getData().getCredit();
-                    CommonUtils.debugLog("openlmb---------" + credit);
-                    finish();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CreditBalanceCheckBean> call, Throwable t) {
-
             }
         });
     }

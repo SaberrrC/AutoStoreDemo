@@ -17,6 +17,7 @@
         />
 
     <TextView
+        android:id="@+id/tv_credit_num"
         android:layout_marginTop="11px"
         android:gravity="center"
         android:layout_width="wrap_content"

@@ -113,6 +113,7 @@
             android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".activity.ChoosePayWayActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
             <!--微信支付-->
