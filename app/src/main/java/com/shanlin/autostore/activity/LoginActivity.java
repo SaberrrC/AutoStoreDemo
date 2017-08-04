@@ -289,7 +289,7 @@ public class LoginActivity extends BaseActivity {
                 int sex = wxUserInfoBean.getSex();
                 String unionid = wxUserInfoBean.getUnionid();
                 String openid = wxUserInfoBean.getOpenid();
-                String nickname = wxUserInfoBean.getNickname();
+                final String nickname = wxUserInfoBean.getNickname();
                 WechatLoginSendBean sendBean = new WechatLoginSendBean();
                 sendBean.setType(TYPE_WX);
                 sendBean.setUnionid(unionid);
@@ -306,6 +306,8 @@ public class LoginActivity extends BaseActivity {
                             ToastUtils.showToast(msg);
                             return;
                         }
+                        SpUtils.saveString(LoginActivity.this, Constant.WX_NICKNAME, nickname);
+                        SpUtils.saveString(LoginActivity.this, Constant.WX_IMAGE_URL, wxUserInfoBean.getHeadimgurl());
                         if (TextUtils.equals(data.getData().getFaceVerify(), "0")) {
                             //没人脸认证 跳转手机号登陆界面
                             Intent intent = new Intent(LoginActivity.this, PhoneNumLoginActivity.class);

@@ -2,6 +2,7 @@ package com.shanlin.autostore;
 
 import android.animation.ValueAnimator;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Message;
@@ -16,9 +17,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.BounceInterpolator;
 import android.view.animation.LinearInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.google.gson.Gson;
 import com.shanlin.autostore.activity.BuyRecordActivity;
 import com.shanlin.autostore.activity.LoginActivity;
@@ -37,12 +42,14 @@ import com.shanlin.autostore.bean.resultBean.LoginOutBean;
 import com.shanlin.autostore.bean.resultBean.RefundMoneyBean;
 import com.shanlin.autostore.bean.resultBean.UserNumEverydayBean;
 import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
+import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.livenesslib.LivenessActivity;
 import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
+import com.shanlin.autostore.utils.LogUtils;
 import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
@@ -51,7 +58,9 @@ import com.shanlin.autostore.view.ProgressView;
 import com.shanlin.autostore.zhifubao.Base64;
 import com.shanlin.autostore.zxing.activity.CaptureActivity;
 import com.zhy.autolayout.utils.AutoUtils;
+
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,44 +68,45 @@ import retrofit2.Response;
 public class MainActivity extends BaseActivity {
 
     private static final int REQUEST_CODE_REGEST = 101;
-    private static final int REQUEST_CODE_SCAN = 102;
+    private static final int REQUEST_CODE_SCAN   = 102;
     private ActionBarDrawerToggle mDrawerToggle;
     private static final String TAG = "wr";
     private DrawerLayout mDrawerLayout;
-    private Toolbar toolbar;
-    private Dialog mGateOpenDialog;
-    private TextView mBtnScan;
-    private AlertDialog mToFaceDialog;
-    private byte[] mLivenessImgBytes;
-    private TextView mTvIdentify;
-    private AlertDialog mLoginoutDialog;
-    private TextView mBtBanlance;
-    private AlertDialog mWelcomeDialog1;
+    private Toolbar      toolbar;
+    private Dialog       mGateOpenDialog;
+    private TextView     mBtnScan;
+    private AlertDialog  mToFaceDialog;
+    private byte[]       mLivenessImgBytes;
+    private TextView     mTvIdentify;
+    private AlertDialog  mLoginoutDialog;
+    private TextView     mBtBanlance;
+    private AlertDialog  mWelcomeDialog1;
     private long lastTime = 0;
     private ProgressView pv;
-    private TextView mUserNum;
-    private TextView openLMB;
-    private HttpService service;
-    private Gson gson;
-    private LoginBean mLoginBean;
-    private int femaleCount;
-    private String token;
-    private TextView mTvRefundMoney;
-    private TextView mTvPhoneNum;
-    private String mUserPhone;
-    private String mUserPhoneHide;
+    private TextView     mUserNum;
+    private TextView     openLMB;
+    private HttpService  service;
+    private Gson         gson;
+    private LoginBean    mLoginBean;
+    private int          femaleCount;
+    private String       token;
+    private TextView     mTvRefundMoney;
+    private TextView     mTvPhoneNum;
+    private String       mUserPhone;
+    private String       mUserPhoneHide;
     private RefundMoneyBean refundMoneyBean = null;
     private String creditBalance;
-    private int total;
-    private View circle;
+    private int    total;
+    private View   circle;
     private java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
-    private int maleCount;
-    private String creditUsed;
-    private ImageView headImage;
-    private String credit;
+    private int         maleCount;
+    private String      creditUsed;
+    private ImageView   headImage;
+    private String      credit;
     private AlertDialog dialog;
     private boolean showToggen = true;
-    public static boolean state;
+    public static boolean        state;
+    private       WxUserInfoBean mWxUserInfoBean;
 
     @Override
     public int initLayout() {
@@ -128,19 +138,30 @@ public class MainActivity extends BaseActivity {
         Intent intent = getIntent();
         String faceVerify = intent.getStringExtra(Constant.FACE_VERIFY);
         mLoginBean = (LoginBean) intent.getSerializableExtra(Constant.USER_INFO);
+        mWxUserInfoBean = (WxUserInfoBean) intent.getSerializableExtra(Constant.WX_INFO);
         sendUserDeviceID();
         if (TextUtils.isEmpty(faceVerify)) {
             return;
         }
         if (TextUtils.equals(faceVerify, Constant.FACE_VERIFY_OK)) {
             mTvIdentify.setVisibility(View.GONE);
-            //            showWelcomeDialog();
+            // howWelcomeDialog();
             return;
         }
         if (TextUtils.equals(faceVerify, Constant.FACE_VERIFY_NO)) {
-            mTvIdentify.setVisibility(View.VISIBLE);
+            //            mTvIdentify.setVisibility(View.VISIBLE);
             showToFaceDialog();
         }
+    }
+
+    private void starttAnim() {
+        if (mTvIdentify.getVisibility() == View.GONE) {
+            return;
+        }
+        TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.00f, Animation.RELATIVE_TO_SELF, 0.00f, Animation.RELATIVE_TO_SELF, 0.00f, Animation.RELATIVE_TO_SELF, 0.00f);
+        animation.setDuration(500);
+        animation.setInterpolator(new BounceInterpolator());
+        mTvIdentify.setAnimation(animation);
     }
 
     private void sendUserDeviceID() {
@@ -199,18 +220,17 @@ public class MainActivity extends BaseActivity {
         super.onResume();
         //调用今日到店人数接口
         getUserNumToday();
+        starttAnim();
     }
 
     private void showBalanceDialog() {
-        CommonUtils.debugLog("---------flag="+state);
-        if (state && credit != null){
+        CommonUtils.debugLog("---------flag=" + state);
+        if (state && credit != null) {
             View inflate = LayoutInflater.from(this).inflate(R.layout.get_available_balence_layout, null);
             inflate.findViewById(R.id.btn_diaolog_know).setOnClickListener(this);
             TextView tvCredit = ((TextView) inflate.findViewById(R.id.tv_credit_num));
-            dialog = new AlertDialog.Builder(MainActivity.this)
-                    .setView(inflate)
-                    .create();
-            tvCredit.setText(credit+"元可用额度");
+            dialog = new AlertDialog.Builder(MainActivity.this).setView(inflate).create();
+            tvCredit.setText(credit + "元可用额度");
             dialog.setCancelable(false);
             dialog.show();
         }
@@ -249,6 +269,19 @@ public class MainActivity extends BaseActivity {
         initToolBar();
         mUserPhoneHide = mUserPhone.substring(0, 3) + "****" + mUserPhone.substring(7);
         mTvPhoneNum.setText(mUserPhoneHide);
+
+        String nickName = SpUtils.getString(this, Constant.WX_NICKNAME, "");
+        String imageUrl = SpUtils.getString(this, Constant.WX_IMAGE_URL, "");
+        LogUtils.d("headimgurl ====================   " + nickName + "     " + imageUrl);
+        if (!TextUtils.isEmpty(nickName)) {
+            mTvPhoneNum.setText(nickName);
+            mUserPhoneHide = nickName;
+        }
+        if (!TextUtils.isEmpty(imageUrl)) {
+//                        Glide.with(getApplicationContext()).load(headImage).into(headImage);
+//            Glide.with(this).load(headImage).bitmapTransform(new CropCircleTransformation(this)).crossFade(1000).into(headImage);
+        }
+
         gson = new Gson();
         service = CommonUtils.doNet();
         //获取退款金额
@@ -579,6 +612,13 @@ public class MainActivity extends BaseActivity {
         });
         AutoUtils.autoSize(viewToFace);
         mToFaceDialog = CommonUtils.getDialog(this, viewToFace, R.style.MyDialogWithAnim, false);
+        mToFaceDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                mTvIdentify.setVisibility(View.VISIBLE);
+                starttAnim();
+            }
+        });
         mToFaceDialog.show();
     }
 

@@ -18,6 +18,7 @@
         android:gravity="center"
         android:paddingLeft="5px"
         android:paddingRight="5px"
+        android:visibility="gone"
         android:text="完善身份，智能购物"
         android:textColor="#99999999"
         android:textSize="12px"

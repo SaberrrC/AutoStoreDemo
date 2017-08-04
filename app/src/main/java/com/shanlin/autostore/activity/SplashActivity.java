@@ -85,6 +85,7 @@ public class SplashActivity extends Activity implements ValueAnimator.AnimatorUp
                 } else {
                     intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_OK);
                 }
+                startActivity(intent);
                 finish();
             }
 
