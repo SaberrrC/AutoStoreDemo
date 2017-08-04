@@ -66,7 +66,7 @@ public class SplashActivity extends Activity implements ValueAnimator.AnimatorUp
 
             @Override
             public void onPermissionDenied() {
-
+                checkToken();
             }
         });
     }
