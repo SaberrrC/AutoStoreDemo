@@ -11,6 +11,11 @@
 
     <include layout="@layout/toolbar_layout"/>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#F5F5F5"/>
+
     <com.zhy.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -19,17 +24,10 @@
         <ImageView
             android:id="@+id/iv_bg"
             android:layout_width="191px"
-            android:layout_height="125px"
+            android:layout_height="196px"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="123px"
-            android:background="@mipmap/gate_bg"/>
-
-        <ImageView
-            android:layout_width="80px"
-            android:layout_height="80px"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="145px"
-            android:background="@mipmap/success"/>
+            android:background="@mipmap/succeed_face"/>
 
         <TextView
             android:id="@+id/tv_save"
@@ -37,7 +35,7 @@
             android:layout_height="43px"
             android:layout_below="@+id/iv_bg"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="125px"
+            android:layout_marginTop="67px"
             android:background="@drawable/select_bg_bt_save"
             android:gravity="center"
             android:text="提交"

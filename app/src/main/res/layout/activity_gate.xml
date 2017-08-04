@@ -14,7 +14,7 @@
     <View
         android:id="@+id/stork"
         android:layout_width="match_parent"
-        android:layout_height="2px"
+        android:layout_height="1px"
         android:layout_below="@+id/tv_all"
         android:background="#FFF5F5F5"/>
 

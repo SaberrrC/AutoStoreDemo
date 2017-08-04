@@ -25,10 +25,14 @@
 
     </RelativeLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#F5F5F5"/>
+
     <com.zhy.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="190px"
-        android:layout_marginTop="3px"
         android:background="#fff">
 
         <TextView
@@ -77,9 +81,9 @@
 
         <com.zhy.autolayout.AutoRelativeLayout
             android:id="@+id/rl_wtk"
-            android:background="@color/white"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/white">
 
             <ImageView
                 android:id="@+id/iv_wtk"
@@ -87,16 +91,18 @@
                 android:layout_height="59px"
                 android:layout_centerInParent="true"
                 android:src="@mipmap/image_wtk"/>
+
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/iv_wtk"
                 android:layout_centerHorizontal="true"
-                android:text="无退款记录"
                 android:layout_marginTop="17px"
+                android:text="无退款记录"
                 android:textColor="#999999"
-                android:textSize="14px"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:textSize="14px"/>
         </com.zhy.autolayout.AutoRelativeLayout>
+
         <com.shanlin.autostore.view.PulltoRefreshRecyclerView
             android:id="@+id/pr_lists"
             android:layout_width="match_parent"

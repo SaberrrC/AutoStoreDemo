@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="@android:color/transparent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <SurfaceView
@@ -82,5 +82,12 @@
             android:textSize="18sp"/>
     </RelativeLayout>
 
-    <include layout="@layout/toolbar_layout"/>
+    <include
+        layout="@layout/toolbar_layout"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/toolbar"
+        android:background="#F5F5F5"/>
 </RelativeLayout>
