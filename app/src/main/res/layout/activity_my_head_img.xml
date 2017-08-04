@@ -9,22 +9,22 @@
 
     <ImageView
         android:id="@+id/iv_head_img_large"
-        android:layout_marginTop="76px"
+        android:layout_marginTop="76dp"
         android:layout_gravity="center"
         android:src="@mipmap/head_img"
-        android:layout_width="375px"
-        android:layout_height="375px"/>
+        android:layout_width="375dp"
+        android:layout_height="375dp"/>
 
     <Button
         android:id="@+id/btn_change_head_img"
         android:background="@null"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="36px"
+        android:layout_marginTop="36dp"
         android:layout_width="wrap_content"
-        android:layout_height="19px"
+        android:layout_height="19dp"
         android:text="更换头像"
         android:textColor="#FFFFFFFF"
-        android:textSize="16px"
+        android:textSize="16sp"
         />
 
 </LinearLayout>

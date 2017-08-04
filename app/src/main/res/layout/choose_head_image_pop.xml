@@ -10,10 +10,10 @@
         android:clickable="true"
         android:text="拍照"
         android:gravity="center"
-        android:textSize="20px"
+        android:textSize="20sp"
         android:textColor="@color/red"
         android:layout_width="match_parent"
-        android:layout_height="56px"/>
+        android:layout_height="56dp"/>
 
     <View
         android:background="@color/blcak"
@@ -25,10 +25,10 @@
         android:clickable="true"
         android:text="从相册选择"
         android:gravity="center"
-        android:textSize="20px"
+        android:textSize="20sp"
         android:textColor="#880094ff"
         android:layout_width="match_parent"
-        android:layout_height="56px"/>
+        android:layout_height="56dp"/>
 
     <View
         android:background="@color/blcak"
@@ -40,9 +40,9 @@
         android:clickable="true"
         android:text="取消"
         android:gravity="center"
-        android:textSize="20px"
+        android:textSize="20sp"
         android:textColor="#880094ff"
         android:layout_width="match_parent"
-        android:layout_height="56px"/>
+        android:layout_height="56dp"/>
 
 </LinearLayout>
