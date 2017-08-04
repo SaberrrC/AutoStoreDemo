@@ -26,7 +26,7 @@ public class AutoStoreApplication extends Application {
         JPushInterface.setDebugMode(true);    // 设置开启日志,发布时请关闭日志
         JPushInterface.init(this);            // 初始化 JPush
         CommonUtils.netWorkWarranty();
-        //        CrashHandler.getInstance().setCustomCrashHanler(app);
+//        CrashHandler.getInstance().setCustomCrashHanler(app);
     }
 
     public static AutoStoreApplication getApp() {

@@ -1,35 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
               android:background="#F5F5F5"
               android:fitsSystemWindows="true"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:orientation="vertical">
 
     <include layout="@layout/toolbar_layout"></include>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#F5F5F5"/>
+
     <RelativeLayout
-        android:layout_marginTop="4px"
         android:layout_width="match_parent"
         android:layout_height="371.3px"
         android:background="#FFFFFFFF">
 
         <ImageView
             android:id="@+id/iv_succeed"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="38px"
             android:layout_width="70px"
             android:layout_height="69.5px"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="38px"
             android:src="@mipmap/pay_succeed"
             />
 
         <TextView
             android:id="@+id/tv_pay_type"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/iv_succeed"
-            android:layout_marginTop="20.5px"
             android:layout_width="wrap_content"
             android:layout_height="25px"
+            android:layout_below="@id/iv_succeed"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20.5px"
             android:text="乐买宝为您付款成功"
             android:textColor="#FF333333"
             android:textSize="18px"
@@ -37,67 +41,67 @@
 
         <LinearLayout
             android:id="@+id/ll"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginTop="10px"
-            android:layout_below="@id/tv_pay_type"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_pay_type"
+            android:layout_marginTop="10px"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="25px"
-            android:text="付款金额："
-            android:textColor="#FF666666"
-            android:textSize="16px"
-            />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="25px"
+                android:text="付款金额："
+                android:textColor="#FF666666"
+                android:textSize="16px"
+                />
 
-        <TextView
-            android:id="@+id/tv_pay_money"
-            android:layout_width="wrap_content"
-            android:layout_height="22px"
-            android:text="0.00"
-            android:textColor="#FF0000"
-            android:textSize="18px"
-            />
+            <TextView
+                android:id="@+id/tv_pay_money"
+                android:layout_width="wrap_content"
+                android:layout_height="22px"
+                android:text="0.00"
+                android:textColor="#FF0000"
+                android:textSize="18px"
+                />
         </LinearLayout>
 
         <TextView
             android:id="@+id/tv_pay_time"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="19px"
-            android:layout_below="@id/ll"
             android:layout_width="wrap_content"
             android:layout_height="17px"
+            android:layout_below="@id/ll"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="19px"
             android:text="2017-07-08  00:00:00"
             android:textColor="#FF999999"
             android:textSize="12px"
             />
 
         <LinearLayout
-            android:layout_marginTop="21px"
-            android:layout_below="@id/tv_pay_time"
-            android:orientation="horizontal"
-            android:background="@drawable/pay_succeed_ll_bg"
             android:layout_width="wrap_content"
-            android:paddingTop="20px"
+            android:layout_height="81px"
+            android:layout_below="@id/tv_pay_time"
             android:layout_centerInParent="true"
-            android:gravity="center"
             android:layout_marginBottom="45.3px"
+            android:layout_marginTop="21px"
+            android:background="@drawable/pay_succeed_ll_bg"
+            android:gravity="center"
+            android:orientation="horizontal"
             android:paddingBottom="20px"
             android:paddingLeft="30px"
             android:paddingRight="30px"
-            android:layout_height="81px">
+            android:paddingTop="20px">
 
             <ImageView
-                android:src="@mipmap/supermarket_image"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:src="@mipmap/supermarket_image"/>
 
             <TextView
-                android:text="邻家智能超市, 欢迎您下次光临"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:text="邻家智能超市, 欢迎您下次光临"/>
         </LinearLayout>
     </RelativeLayout>
 

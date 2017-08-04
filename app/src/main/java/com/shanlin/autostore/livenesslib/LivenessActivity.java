@@ -228,9 +228,13 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
          */
         @Override
         public void onPreviewFrame(final byte[] data, Camera camera) {
-            Size previewsize = camera.getParameters().getPreviewSize();
-            // 活体检测器检测
-            mDetector.doDetection(data, previewsize.width, previewsize.height, 360 - mICamera.getCameraAngle(LivenessActivity.this));
+            try {
+                Size previewsize = camera.getParameters().getPreviewSize();
+                // 活体检测器检测
+                mDetector.doDetection(data, previewsize.width, previewsize.height, 360 - mICamera.getCameraAngle(LivenessActivity.this));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

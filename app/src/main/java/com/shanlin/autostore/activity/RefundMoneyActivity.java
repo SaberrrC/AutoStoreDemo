@@ -128,6 +128,7 @@ public class RefundMoneyActivity extends BaseActivity implements FinalRecycleAda
         switch (v.getId()) {
             case R.id.tv_explain:
                 startActivity(new Intent(this, RefundExplainActivity.class));
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 break;
         }
     }
@@ -192,14 +193,6 @@ public class RefundMoneyActivity extends BaseActivity implements FinalRecycleAda
                 ToastUtils.showToast(msg);
             }
         });
-    }
-
-    private void toLoginActivity() {
-        mDatas.clear();
-        mFinalRecycleAdapter.notifyDataSetChanged();
-        Intent toLoginActivity = new Intent(this, LoginActivity.class);
-        startActivity(toLoginActivity);
-        finish();
     }
 
 }

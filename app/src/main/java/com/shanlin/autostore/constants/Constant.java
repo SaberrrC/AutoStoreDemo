@@ -11,9 +11,9 @@ public class Constant {
      * 测试地址：http://linstore-uat.shanlinjinrong.online:8080/linstore/v1/
      */
     //开发联调
-//    public static final String BASE_URL = "http://linstore-dev.shanlinjinrong.online:8080/linstore/v1/";
-//    测试地址
-     public static final String BASE_URL = "http://linstore-uat.shanlinjinrong.online:8080/linstore/v1/";
+//        public static final String BASE_URL = "http://linstore-dev.shanlinjinrong.online:8080/linstore/v1/";
+    //    测试地址
+    public static final String BASE_URL = "http://linstore-uat.shanlinjinrong.online:8080/linstore/v1/";
 
     public static final String TOKEN              = "TOKEN";
     public static final String USER_PHONE_LOGINED = "USER_PHONE_LOGINED";
@@ -27,6 +27,8 @@ public class Constant {
     public static final String ORDER_ITEM         = "ORDER_ITEM";
     public static final String REFUND_MONEY_BEAN  = "REFUND_MONEY_BEAN";//退款金额
     public static final String ON_BACK_PRESSED    = "ON_BACK_PRESSED";//按返回按钮
+    public static final String WX_NICKNAME        = "WX_NICKNAME";//微信昵称
+    public static final String WX_IMAGE_URL       = "WX_IMAGE_URL";//微信头像地址
 
     public static final String FACE_REGESTED_OK = "FACE_REGESTED_OK";
 

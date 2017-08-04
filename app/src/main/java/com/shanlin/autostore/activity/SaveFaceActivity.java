@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
-import com.shanlin.autostore.bean.LoginBean;
 import com.shanlin.autostore.bean.MemberUpdateBean;
 import com.shanlin.autostore.bean.paramsBean.MemberUpdateSendBean;
 import com.shanlin.autostore.constants.Constant;
@@ -30,7 +29,6 @@ public class SaveFaceActivity extends BaseActivity {
     private TextView  mTvSave;
     private Dialog    mSaveFaceDialog;
     private Dialog    mLoadingDialog;
-    private LoginBean mLoginBean;
 
     @Override
     public int initLayout() {
@@ -46,7 +44,6 @@ public class SaveFaceActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        mLoginBean = (LoginBean) getIntent().getSerializableExtra(Constant.USER_INFO);
     }
 
     @Override
@@ -64,13 +61,14 @@ public class SaveFaceActivity extends BaseActivity {
     }
 
     private void doMemberUpdate() {
-//        String userDeviceId = mLoginBean.getData().getUserDeviceId();
+        //        String userDeviceId = mLoginBean.getData().getUserDeviceId();
         String userDeviceId = SpUtils.getString(this, Constant.DEVICEID, "");
         String imageBase64 = getIntent().getStringExtra(Constant.SaveFaceActivity.IMAGE_BASE64);
+        String token = SpUtils.getString(this, Constant.TOKEN, "");
         HttpService httpService = CommonUtils.doNet();
         MemberUpdateSendBean memberUpdateSendBean = new MemberUpdateSendBean(userDeviceId);
         memberUpdateSendBean.imageBase64 = imageBase64;
-        Call<MemberUpdateBean> memberUpdateBeanCall = httpService.postMemberUpdate(mLoginBean.getData().getToken(), memberUpdateSendBean);
+        Call<MemberUpdateBean> memberUpdateBeanCall = httpService.postMemberUpdate(token, memberUpdateSendBean);
         mMemberUpdateBeanCustomCallBack.setJumpLogin(false);
         memberUpdateBeanCall.enqueue(mMemberUpdateBeanCustomCallBack);
     }

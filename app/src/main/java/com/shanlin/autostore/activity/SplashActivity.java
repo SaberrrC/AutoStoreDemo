@@ -9,13 +9,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.animation.LinearInterpolator;
 
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.WxMessageEvent;
 import com.shanlin.autostore.bean.resultBean.CheckUpdateBean;
-import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
+import com.shanlin.autostore.bean.resultBean.PersonInfoBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
@@ -29,6 +30,8 @@ import com.shanlin.autostore.utils.VersionManagementUtil;
 import org.greenrobot.eventbus.EventBus;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by DELL on 2017/7/16 0016.
@@ -66,7 +69,7 @@ public class SplashActivity extends Activity implements ValueAnimator.AnimatorUp
 
             @Override
             public void onPermissionDenied() {
-                checkToken();
+                MPermissionUtils.showTipsDialog(SplashActivity.this);
             }
         });
     }
@@ -74,21 +77,50 @@ public class SplashActivity extends Activity implements ValueAnimator.AnimatorUp
     private void checkToken() {
         String token = SpUtils.getString(this, Constant.TOKEN, "");
         HttpService httpService = CommonUtils.doNet();
-        Call<OrderHistoryBean> call = httpService.getOrderHistory(token, 1, 1);
-        call.enqueue(new CustomCallBack<OrderHistoryBean>() {
+        Call<PersonInfoBean> call = httpService.getPersonInfo(token);
+        //        mPersonInfoBeanCustomCallBack.setJumpLogin(false);
+        call.enqueue(new Callback<PersonInfoBean>() {
+
             @Override
-            public void success(String code, OrderHistoryBean data, String msg) {
-                CommonUtils.toNextActivity(SplashActivity.this, MainActivity.class);
-                finish();
+            public void onResponse(Call<PersonInfoBean> call, Response<PersonInfoBean> response) {
+                if (!response.isSuccessful()) {
+                    toLoginActivity();
+                    return;
+                }
+                if (response.body() == null) {
+                    toLoginActivity();
+                    return;
+                }
+                PersonInfoBean data = response.body();
+                if (data.getData() == null) {
+                    toLoginActivity();
+                    return;
+                }
+                toMainActivity(data);
             }
 
             @Override
-            public void error(Throwable ex, String code, String msg) {
-                CommonUtils.toNextActivity(SplashActivity.this, LoginActivity.class);
-                finish();
+            public void onFailure(Call<PersonInfoBean> call, Throwable ex) {
+                toLoginActivity();
             }
         });
 
+    }
+
+    private void toMainActivity(PersonInfoBean data) {
+        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+        if (TextUtils.isEmpty(data.getData().getDate().getFaceToken())) {
+            intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_NO);
+        } else {
+            intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_OK);
+        }
+        startActivity(intent);
+        finish();
+    }
+
+    private void toLoginActivity() {
+        CommonUtils.toNextActivity(SplashActivity.this, LoginActivity.class);
+        finish();
     }
 
     @Override
@@ -108,44 +140,46 @@ public class SplashActivity extends Activity implements ValueAnimator.AnimatorUp
     private void checkUpdate() {
         HttpService service = CommonUtils.doNet();
         Call<CheckUpdateBean> call = service.doGetCheckUpdate(2);
-        call.enqueue(new CustomCallBack<CheckUpdateBean>() {
-            @Override
-            public void success(String code, CheckUpdateBean data, String msg) {
-                if (data == null) {
+        mCheckUpdateBeanCustomCallBack.setJumpLogin(false);
+        call.enqueue(mCheckUpdateBeanCustomCallBack);
+    }
+
+    CustomCallBack<CheckUpdateBean> mCheckUpdateBeanCustomCallBack = new CustomCallBack<CheckUpdateBean>() {
+        @Override
+        public void success(String code, CheckUpdateBean data, String msg) {
+            if (data == null) {
+                checkToken();
+                return;
+            }
+            //成功
+            try {
+                //判断是否更新
+                // TODO: 2017-7-27 版本 0.1.1
+                String currentVersion = VersionManagementUtil.getVersion(SplashActivity.this);
+                String version = data.getVersion();
+                forceUpdate = data.getForceUpdate();
+                if (version == null) {
                     checkToken();
                     return;
                 }
-                //成功
-                try {
-                    //判断是否更新
-                    // TODO: 2017-7-27 版本 0.1.1
-                    String currentVersion = VersionManagementUtil.getVersion(SplashActivity.this);
-                    String version = data.getVersion();
-                    forceUpdate = data.getForceUpdate();
-                    if (version == null) {
-                        checkToken();
-                        return;
-                    }
-                    //比较版本，返回1需要更新
-                    if (VersionManagementUtil.VersionComparison(version, currentVersion) == 1) {
-                        //更新
-                        showUpdateDialog(data.getForceUpdate(), data.getDownloadUrl());
-                    } else {
-                        checkToken();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                //比较版本，返回1需要更新
+                if (VersionManagementUtil.VersionComparison(version, currentVersion) == 1) {
+                    //更新
+                    showUpdateDialog(data.getForceUpdate(), data.getDownloadUrl());
+                } else {
                     checkToken();
                 }
-            }
-
-            @Override
-            public void error(Throwable ex, String code, String msg) {
+            } catch (Exception e) {
+                e.printStackTrace();
                 checkToken();
             }
-        });
+        }
 
-    }
+        @Override
+        public void error(Throwable ex, String code, String msg) {
+            checkToken();
+        }
+    };
 
     private void upData(String url) {
         Intent intent = new Intent();
@@ -217,7 +251,7 @@ public class SplashActivity extends Activity implements ValueAnimator.AnimatorUp
     private void loadAnim() {
         ValueAnimator animator = ValueAnimator.ofInt(2, 0);
         animator.setInterpolator(new LinearInterpolator());
-        animator.setDuration(3000);
+        animator.setDuration(2000);
         animator.addUpdateListener(this);
         animator.start();
     }
