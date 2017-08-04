@@ -645,6 +645,8 @@ public class MainActivity extends BaseActivity {
                     public void success(String code, LoginOutBean data, String msg) {
                         SpUtils.saveString(MainActivity.this, Constant.TOKEN, "");
                         SpUtils.saveString(MainActivity.this, Constant.USER_PHONE_LOGINED, "");
+                        SpUtils.saveString(MainActivity.this, Constant.WX_IMAGE_URL, "");
+                        SpUtils.saveString(MainActivity.this, Constant.WX_NICKNAME, "");
                         CommonUtils.toNextActivity(MainActivity.this, LoginActivity.class);
                         finish();
                     }

@@ -48,7 +48,7 @@ public abstract class CustomCallBack<T extends BaseBean> implements Callback<T> 
         success(code, baseBean, msg);
     }
 
-    private boolean jumpLogin = true;
+    public boolean jumpLogin = true;
 
     public void setJumpLogin(boolean isjumpLogin) {
         jumpLogin = isjumpLogin;

@@ -11,7 +11,7 @@ public class Constant {
      * 测试地址：http://linstore-uat.shanlinjinrong.online:8080/linstore/v1/
      */
     //开发联调
-    //    public static final String BASE_URL = "http://linstore-dev.shanlinjinrong.online:8080/linstore/v1/";
+//        public static final String BASE_URL = "http://linstore-dev.shanlinjinrong.online:8080/linstore/v1/";
     //    测试地址
     public static final String BASE_URL = "http://linstore-uat.shanlinjinrong.online:8080/linstore/v1/";
 

@@ -2,6 +2,8 @@ package com.shanlin.autostore.bean.resultBean;
 
 import com.shanlin.autostore.base.BaseBean;
 
+import java.io.Serializable;
+
 /**
  * Created by shanlin on 2017-8-4.
  */
@@ -39,7 +41,7 @@ public class PersonInfoBean extends BaseBean {
             this.date = date;
         }
 
-        public static class DateBean {
+        public static class DateBean implements Serializable{
 
             private int score;
             private int    creditLevel;

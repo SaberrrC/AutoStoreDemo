@@ -251,6 +251,8 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                 CommonUtils.checkAuthenStatus(PhoneNumLoginActivity.this, service, data.getData().getToken());
                 SpUtils.saveString(PhoneNumLoginActivity.this, Constant.USER_PHONE_LOGINED, data.getData().getMobile());
                 SpUtils.saveString(PhoneNumLoginActivity.this, Constant.TOKEN, data.getData().getToken());
+                SpUtils.saveString(PhoneNumLoginActivity.this, Constant.WX_NICKNAME, "");
+                SpUtils.saveString(PhoneNumLoginActivity.this, Constant.WX_IMAGE_URL, "");
                 Intent intent = new Intent(PhoneNumLoginActivity.this, MainActivity.class);
                 intent.putExtra(Constant.FACE_VERIFY, data.getData().getFaceVerify());
                 if (wxUserInfoBean != null) {
