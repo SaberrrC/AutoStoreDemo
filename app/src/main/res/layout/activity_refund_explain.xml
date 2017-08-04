@@ -4,10 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_refund_explain2"
     android:layout_width="match_parent"
-    android:orientation="vertical"
+    android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:layout_height="match_parent">
+    android:orientation="vertical">
+
     <include layout="@layout/toolbar_layout"/>
 
+    <TextView
+        android:id="@+id/tv_complain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="2px"
+        android:background="@color/white"
+        android:padding="10dp"
+        android:textSize="18sp"
+        android:textAllCaps="false"/>
 
 </com.zhy.autolayout.AutoLinearLayout>

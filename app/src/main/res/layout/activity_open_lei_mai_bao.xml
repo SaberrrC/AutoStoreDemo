@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:fitsSystemWindows="true"
               android:layout_height="match_parent"
               android:background="@color/white"
+              android:fitsSystemWindows="true"
               android:orientation="vertical">
 
     <include layout="@layout/toolbar_layout"></include>
@@ -218,12 +218,12 @@
                 android:id="@+id/et_id_num"
                 android:layout_width="wrap_content"
                 android:layout_height="48.7px"
-                android:maxLength="18"
                 android:layout_below="@id/et_name"
                 android:layout_toRightOf="@id/tv_id"
                 android:background="@null"
                 android:gravity="center_vertical"
                 android:hint="请输入身份证号码"
+                android:maxLength="18"
                 android:maxLines="1"
                 android:textColorHint="#FFD5D5D5"
                 android:textSize="14px"
@@ -246,11 +246,11 @@
                 android:id="@+id/et_psw"
                 android:layout_width="match_parent"
                 android:layout_height="48.7px"
-                android:inputType="numberPassword"
-                android:maxLength="6"
                 android:background="@null"
                 android:gravity="center_vertical"
                 android:hint="设置支付密码，6位数字"
+                android:inputType="numberPassword"
+                android:maxLength="6"
                 android:paddingLeft="20px"
                 android:textColorHint="#FFD5D5D5"
                 android:textSize="14px"
@@ -262,10 +262,10 @@
                 android:layout_height="48.7px"
                 android:layout_below="@id/et_psw"
                 android:background="@null"
-                android:inputType="numberPassword"
-                android:maxLength="6"
                 android:gravity="center_vertical"
                 android:hint="请确认支付密码"
+                android:inputType="numberPassword"
+                android:maxLength="6"
                 android:paddingLeft="20px"
                 android:textColorHint="#FFD5D5D5"
                 android:textSize="14px"
@@ -293,8 +293,8 @@
 
         <TextView
             android:id="@+id/tv_1"
-            android:layout_width="172px"
-            android:layout_height="18px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="点击下一步,表示您阅读并同意"
             android:textColor="@color/gray_595959"
             android:textSize="12px"
@@ -302,25 +302,44 @@
 
         <TextView
             android:id="@+id/tv_xie_yi"
-            android:layout_width="74px"
-            android:layout_height="18px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_toRightOf="@id/tv_1"
             android:clickable="true"
             android:text="《乐买宝用户"
-            android:textColor="#FF153F00"
+            android:textColor="#43A5D8"
             android:textSize="12px"
             />
 
-        <TextView
-            android:id="@+id/service_shou_quan"
-            android:layout_width="246px"
-            android:layout_height="18px"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@id/tv_1"
-            android:clickable="true"
-            android:gravity="center_horizontal"
-            android:text="服务合同》《善林信用服务及授权》"
-            android:textColor="#FF153F00"
-            android:textSize="12px"
-            />
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/service_shou_quan_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:gravity="center_horizontal"
+                android:text="服务合同》"
+                android:textColor="#43A5D8"
+                android:textSize="12px"
+                />
+            <TextView
+                android:id="@+id/service_shou_quan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_1"
+                android:clickable="true"
+                android:gravity="center_horizontal"
+                android:text="《善林信用服务及授权》"
+                android:textColor="#43A5D8"
+                android:textSize="12px"/>
+
+        </LinearLayout>
+
     </RelativeLayout>
 </LinearLayout>

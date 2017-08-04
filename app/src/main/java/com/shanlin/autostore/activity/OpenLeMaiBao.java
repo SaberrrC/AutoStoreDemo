@@ -30,20 +30,20 @@ import retrofit2.Response;
 
 public class OpenLeMaiBao extends BaseActivity {
 
-    private Button nextOrConfirm;
-    private View line2Step1;
-    private View line2Step2;
-    private View rlStep1;
-    private View rlStep2;
-    private ImageView ivStep2;
-    private View line1Step2;
+    private Button      nextOrConfirm;
+    private View        line2Step1;
+    private View        line2Step2;
+    private View        rlStep1;
+    private View        rlStep2;
+    private ImageView   ivStep2;
+    private View        line1Step2;
     private HttpService service;
-    private EditText etName;
-    private EditText etIdNum;
-    private EditText etPsw;
-    private EditText etPswAgain;
-    private String token;
-    private String status;
+    private EditText    etName;
+    private EditText    etIdNum;
+    private EditText    etPsw;
+    private EditText    etPswAgain;
+    private String      token;
+    private String      status;
 
     @Override
     public int initLayout() {
@@ -52,8 +52,9 @@ public class OpenLeMaiBao extends BaseActivity {
 
     @Override
     public void initView() {
-        CommonUtils.initToolbar(this,"开启乐买宝", R.color.blcak, MainActivity.class);
+        CommonUtils.initToolbar(this, "开启乐买宝", R.color.blcak, MainActivity.class);
         nextOrConfirm = ((Button) findViewById(R.id.btn_nextstep_and_confirm));
+        findViewById(R.id.service_shou_quan_bottom).setOnClickListener(this);
         findViewById(R.id.tv_xie_yi).setOnClickListener(this);//合同
         findViewById(R.id.service_shou_quan).setOnClickListener(this);//信用授权
         nextOrConfirm.setOnClickListener(this);
@@ -81,19 +82,19 @@ public class OpenLeMaiBao extends BaseActivity {
     public void onClick(View v) {
 
         switch (v.getId()) {
-
             case R.id.btn_nextstep_and_confirm:
                 getUserAuthenStatus();
                 break;
             case R.id.tv_xie_yi:
-                Intent intent1 = new Intent(this,XieYiAndHeTongActivity.class);
-                intent1.putExtra("state",1);
+            case R.id.service_shou_quan_bottom:
+                Intent intent1 = new Intent(this, XieYiAndHeTongActivity.class);
+                intent1.putExtra("state", 1);
                 startActivity(intent1);
                 break;
 
             case R.id.service_shou_quan:
-                Intent intent2 = new Intent(this,XieYiAndHeTongActivity.class);
-                intent2.putExtra("state",2);
+                Intent intent2 = new Intent(this, XieYiAndHeTongActivity.class);
+                intent2.putExtra("state", 2);
                 startActivity(intent2);
                 break;
         }
@@ -119,7 +120,7 @@ public class OpenLeMaiBao extends BaseActivity {
             }
             //调用实名认证接口
             doRealNameAuthen(name, idNum);
-        } else if (Constant_LeMaiBao.AUTHEN_REAL_NAME.equals(status)){
+        } else if (Constant_LeMaiBao.AUTHEN_REAL_NAME.equals(status)) {
             //第二步
             changeUI(2);
             String psw = etPsw.getText().toString().trim();
@@ -150,9 +151,9 @@ public class OpenLeMaiBao extends BaseActivity {
             @Override
             public void onResponse(Call<UserVertifyStatusBean> call, Response<UserVertifyStatusBean> response) {
                 UserVertifyStatusBean body = response.body();
-                if (TextUtils.equals("200",body.getCode())) {
+                if (TextUtils.equals("200", body.getCode())) {
                     status = body.getData().getVerifyStatus();
-                    CommonUtils.debugLog("open---------"+status);
+                    CommonUtils.debugLog("open---------" + status);
                     judgeEmpty();
                 }
             }
@@ -165,7 +166,7 @@ public class OpenLeMaiBao extends BaseActivity {
     }
 
     private void doPswSetting(String psw2) {
-        Call<PswSettingBean> call = service.goPswSetting(token,new PswSettingBody(psw2));
+        Call<PswSettingBean> call = service.goPswSetting(token, new PswSettingBody(psw2));
         call.enqueue(new Callback<PswSettingBean>() {
             @Override
             public void onResponse(Call<PswSettingBean> call, Response<PswSettingBean> response) {
@@ -174,31 +175,28 @@ public class OpenLeMaiBao extends BaseActivity {
                     CommonUtils.showToast(OpenLeMaiBao.this,body.getMessage());
                     finish();
                 } else {
-                    CommonUtils.showToast(OpenLeMaiBao.this,body.getMessage());
+                    CommonUtils.showToast(OpenLeMaiBao.this, body.getMessage());
                 }
             }
 
             @Override
             public void onFailure(Call<PswSettingBean> call, Throwable t) {
-                    CommonUtils.debugLog(t.getMessage());
+                CommonUtils.debugLog(t.getMessage());
             }
         });
     }
 
     private void doRealNameAuthen(String name, String idNum) {
-        Call<RealNameAuthenBean> call = service.goRealNameAuthen(token,new
-                RealNameAuthenBody
-                (idNum,
-                name));
+        Call<RealNameAuthenBean> call = service.goRealNameAuthen(token, new RealNameAuthenBody(idNum, name));
         call.enqueue(new Callback<RealNameAuthenBean>() {
             @Override
             public void onResponse(Call<RealNameAuthenBean> call, Response<RealNameAuthenBean> response) {
                 RealNameAuthenBean body = response.body();
-                if (TextUtils.equals("200",body.getCode())) {
-                    CommonUtils.showToast(OpenLeMaiBao.this,body.getMessage());
+                if (TextUtils.equals("200", body.getCode())) {
+                    CommonUtils.showToast(OpenLeMaiBao.this, body.getMessage());
                     changeUI(2);
                 } else {
-                    CommonUtils.showToast(OpenLeMaiBao.this,body.getMessage());
+                    CommonUtils.showToast(OpenLeMaiBao.this, body.getMessage());
                 }
             }
 
@@ -215,9 +213,7 @@ public class OpenLeMaiBao extends BaseActivity {
         rlStep2.setVisibility(step == 1 ? View.GONE : View.VISIBLE);
         ivStep2.setImageResource(step == 1 ? R.mipmap.step2 : R.mipmap.icon_step2);
         line2Step1.setBackgroundColor(step == 1 ? Color.parseColor("#d6d6d6") : Color.parseColor("#FCC70D"));
-        line1Step2.setBackgroundColor(step == 1 ? Color.parseColor("#d6d6d6") : Color.parseColor
-                ("#FCC70D"));
-        line2Step2.setBackgroundColor(step == 2 ? Color.parseColor("#FCC70D") : Color.parseColor
-                ("#d6d6d6"));
+        line1Step2.setBackgroundColor(step == 1 ? Color.parseColor("#d6d6d6") : Color.parseColor("#FCC70D"));
+        line2Step2.setBackgroundColor(step == 2 ? Color.parseColor("#FCC70D") : Color.parseColor("#d6d6d6"));
     }
 }

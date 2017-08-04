@@ -11,9 +11,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.view.animation.LinearInterpolator;
 
+import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.WxMessageEvent;
 import com.shanlin.autostore.bean.resultBean.CheckUpdateBean;
+import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
@@ -32,7 +34,7 @@ import retrofit2.Call;
  * Created by DELL on 2017/7/16 0016.
  */
 
-public class SplashActivity extends Activity {
+public class SplashActivity extends Activity implements ValueAnimator.AnimatorUpdateListener {
 
 
     private AlertDialog updateDialog;
@@ -45,6 +47,15 @@ public class SplashActivity extends Activity {
         StatusBarUtils.setColor(this, Color.TRANSPARENT);
         EventBus.getDefault().post(new WxMessageEvent());
         LogUtils.d("token  " + SpUtils.getString(this, Constant.TOKEN, ""));
+        loadAnim();
+    }
+
+    @Override
+    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+        int curValue = (int) valueAnimator.getAnimatedValue();
+        if (curValue != 0) {
+            return;
+        }
         CommonUtils.checkPermission(this, new MPermissionUtils.OnPermissionListener() {
             @Override
             public void onPermissionGranted() {
@@ -55,9 +66,29 @@ public class SplashActivity extends Activity {
 
             @Override
             public void onPermissionDenied() {
-
+                checkToken();
             }
         });
+    }
+
+    private void checkToken() {
+        String token = SpUtils.getString(this, Constant.TOKEN, "");
+        HttpService httpService = CommonUtils.doNet();
+        Call<OrderHistoryBean> call = httpService.getOrderHistory(token, 1, 1);
+        call.enqueue(new CustomCallBack<OrderHistoryBean>() {
+            @Override
+            public void success(String code, OrderHistoryBean data, String msg) {
+                CommonUtils.toNextActivity(SplashActivity.this, MainActivity.class);
+                finish();
+            }
+
+            @Override
+            public void error(Throwable ex, String code, String msg) {
+                CommonUtils.toNextActivity(SplashActivity.this, LoginActivity.class);
+                finish();
+            }
+        });
+
     }
 
     @Override
@@ -80,34 +111,37 @@ public class SplashActivity extends Activity {
         call.enqueue(new CustomCallBack<CheckUpdateBean>() {
             @Override
             public void success(String code, CheckUpdateBean data, String msg) {
+                if (data == null) {
+                    checkToken();
+                    return;
+                }
                 //成功
-                if (data != null) {
-                    try {
-                        //判断是否更新
-                        // TODO: 2017-7-27 版本 0.1.1
-                        String currentVersion = VersionManagementUtil.getVersion(SplashActivity.this);
-                        String version = data.getVersion();
-                        forceUpdate = data.getForceUpdate();
-                        if (version != null) {
-                            //比较版本，返回1需要更新
-                            if (VersionManagementUtil.VersionComparison(version, currentVersion) == 1) {
-                                //更新
-                                showUpdateDialog(data.getForceUpdate(), data.getDownloadUrl());
-                            } else {
-                                loadAnim();
-                            }
-                        } else
-                            loadAnim();
-                        //不更新
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                try {
+                    //判断是否更新
+                    // TODO: 2017-7-27 版本 0.1.1
+                    String currentVersion = VersionManagementUtil.getVersion(SplashActivity.this);
+                    String version = data.getVersion();
+                    forceUpdate = data.getForceUpdate();
+                    if (version == null) {
+                        checkToken();
+                        return;
                     }
+                    //比较版本，返回1需要更新
+                    if (VersionManagementUtil.VersionComparison(version, currentVersion) == 1) {
+                        //更新
+                        showUpdateDialog(data.getForceUpdate(), data.getDownloadUrl());
+                    } else {
+                        checkToken();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    checkToken();
                 }
             }
 
             @Override
             public void error(Throwable ex, String code, String msg) {
-                loadAnim();
+                checkToken();
             }
         });
 
@@ -149,7 +183,7 @@ public class SplashActivity extends Activity {
 
                     @Override
                     public void onPermissionDenied() {
-
+                        checkToken();
                     }
                 });
                 break;
@@ -166,7 +200,8 @@ public class SplashActivity extends Activity {
                 }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        loadAnim();
+                        updateDialog.dismiss();
+                        checkToken();
                     }
                 }).create();
                 updateDialog.setCancelable(false);
@@ -180,19 +215,10 @@ public class SplashActivity extends Activity {
      * splash页面等待时长动画
      */
     private void loadAnim() {
-        ValueAnimator animator = ValueAnimator.ofInt(3, 0);
+        ValueAnimator animator = ValueAnimator.ofInt(2, 0);
         animator.setInterpolator(new LinearInterpolator());
         animator.setDuration(3000);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                int value = (int) animation.getAnimatedValue();
-                if (value == 0) {
-                    CommonUtils.toNextActivity(SplashActivity.this, LoginActivity.class);
-                    finish();
-                }
-            }
-        });
+        animator.addUpdateListener(this);
         animator.start();
     }
 
