@@ -78,65 +78,50 @@ public class SplashActivity extends Activity implements ValueAnimator.AnimatorUp
         String token = SpUtils.getString(this, Constant.TOKEN, "");
         HttpService httpService = CommonUtils.doNet();
         Call<PersonInfoBean> call = httpService.getPersonInfo(token);
-//        mPersonInfoBeanCustomCallBack.setJumpLogin(false);
+        //        mPersonInfoBeanCustomCallBack.setJumpLogin(false);
         call.enqueue(new Callback<PersonInfoBean>() {
 
             @Override
             public void onResponse(Call<PersonInfoBean> call, Response<PersonInfoBean> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        PersonInfoBean data = response.body();
-                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                        if (data.getData() != null) {
-                            if (TextUtils.isEmpty(data.getData().getDate().getFaceToken())) {
-                                intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_NO);
-                            } else {
-                                intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_OK);
-                            }
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            CommonUtils.toNextActivity(SplashActivity.this, LoginActivity.class);
-                            finish();
-                        }
-                    } else {
-                        CommonUtils.toNextActivity(SplashActivity.this, LoginActivity.class);
-                        finish();
-                    }
-                } else {
-                    CommonUtils.toNextActivity(SplashActivity.this, LoginActivity.class);
-                    finish();
+                if (!response.isSuccessful()) {
+                    toLoginActivity();
+                    return;
                 }
+                if (response.body() == null) {
+                    toLoginActivity();
+                    return;
+                }
+                PersonInfoBean data = response.body();
+                if (data.getData() == null) {
+                    toLoginActivity();
+                    return;
+                }
+                toMainActivity(data);
             }
 
             @Override
             public void onFailure(Call<PersonInfoBean> call, Throwable ex) {
-                CommonUtils.toNextActivity(SplashActivity.this, LoginActivity.class);
-                finish();
+                toLoginActivity();
             }
         });
 
     }
 
-    private CustomCallBack<PersonInfoBean> mPersonInfoBeanCustomCallBack = new CustomCallBack<PersonInfoBean>() {
-        @Override
-        public void success(String code, PersonInfoBean data, String msg) {
-            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-            if (TextUtils.isEmpty(data.getData().getDate().getFaceToken())) {
-                intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_NO);
-            } else {
-                intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_OK);
-            }
-            startActivity(intent);
-            finish();
+    private void toMainActivity(PersonInfoBean data) {
+        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+        if (TextUtils.isEmpty(data.getData().getDate().getFaceToken())) {
+            intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_NO);
+        } else {
+            intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_OK);
         }
+        startActivity(intent);
+        finish();
+    }
 
-        @Override
-        public void error(Throwable ex, String code, String msg) {
-            CommonUtils.toNextActivity(SplashActivity.this, LoginActivity.class);
-            finish();
-        }
-    };
+    private void toLoginActivity() {
+        CommonUtils.toNextActivity(SplashActivity.this, LoginActivity.class);
+        finish();
+    }
 
     @Override
     protected void onDestroy() {

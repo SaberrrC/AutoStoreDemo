@@ -194,12 +194,4 @@ public class RefundMoneyActivity extends BaseActivity implements FinalRecycleAda
         });
     }
 
-    private void toLoginActivity() {
-        mDatas.clear();
-        mFinalRecycleAdapter.notifyDataSetChanged();
-        Intent toLoginActivity = new Intent(this, LoginActivity.class);
-        startActivity(toLoginActivity);
-        finish();
-    }
-
 }
