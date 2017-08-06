@@ -107,7 +107,7 @@ public class LoginActivity extends BaseActivity {
                 if (!CommonUtils.checkNet()) {
                     return;
                 }
-                if (!AutoStoreApplication.FACE) {
+                if (!AutoStoreApplication.FACE) {//face++联网认证
                     ToastUtils.showToast("网络错误");
                     return;
                 }
@@ -186,15 +186,11 @@ public class LoginActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         LogUtils.d("resultCode==" + resultCode);
-        if (requestCode == REQUEST_CODE_LOGIN) {
+        if (requestCode == REQUEST_CODE_LOGIN) {//人脸识别登陆
             if (TextUtils.equals(Constant.ON_BACK_PRESSED, data.getStringExtra(Constant.ON_BACK_PRESSED))) {
                 return;
             }
             try {
-                if (data == null) {
-                    ToastUtils.showToast("信息匹配失败，请选择其他方式登陆");
-                    return;
-                }
                 mLivenessImgBytes = data.getByteArrayExtra("image_best");
                 if (mLivenessImgBytes == null || mLivenessImgBytes.length == 0) {
                     ToastUtils.showToast("信息匹配失败，请选择其他方式登陆");
@@ -224,6 +220,9 @@ public class LoginActivity extends BaseActivity {
                             AutoStoreApplication.isLogin = true;
                             SpUtils.saveString(LoginActivity.this, Constant.TOKEN, data.getData().getToken());
                             SpUtils.saveString(LoginActivity.this, Constant.USER_PHONE_LOGINED, data.getData().getMobile());
+                            if (!TextUtils.isEmpty(data.getData().getAvetorUrl())) {
+                                SpUtils.saveString(LoginActivity.this,Constant.USER_HEAD_URL,data.getData().getAvetorUrl());
+                            }
                             //验证乐买宝实名是否认证
                             CommonUtils.checkAuthenStatus(LoginActivity.this, httpService, data.getData().getToken());
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -307,7 +306,7 @@ public class LoginActivity extends BaseActivity {
                             return;
                         }
                         SpUtils.saveString(LoginActivity.this, Constant.WX_NICKNAME, nickname);
-                        SpUtils.saveString(LoginActivity.this, Constant.WX_IMAGE_URL, wxUserInfoBean.getHeadimgurl());
+                        SpUtils.saveString(LoginActivity.this, Constant.USER_HEAD_URL, wxUserInfoBean.getHeadimgurl());
                         if (TextUtils.equals(data.getData().getFaceVerify(), "0")) {
                             //没人脸认证 跳转手机号登陆界面
                             Intent intent = new Intent(LoginActivity.this, PhoneNumLoginActivity.class);

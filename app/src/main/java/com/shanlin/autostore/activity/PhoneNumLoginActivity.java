@@ -226,7 +226,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
         Call<LoginBean> loginBeanCall = null;
         if (wxUserInfoBean == null) {
             loginBeanCall = service.postNumCodeLogin(new NumberLoginBean(phone, msgCode));
-        } else {
+        } else {//微信登录跳转过来
             WechatSaveMobileBody wechatSaveMobileBody = new WechatSaveMobileBody();
             wechatSaveMobileBody.setMobile(phone);
             wechatSaveMobileBody.setValidCode(msgCode);
@@ -237,8 +237,8 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
             wechatSaveMobileBody.setExtra(extraBean);
             loginBeanCall = service.postWechatSavemobile(wechatSaveMobileBody);
         }
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(mEtMsgCode.getWindowToken(),0);
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mEtMsgCode.getWindowToken(), 0);
         loginBeanCall.enqueue(new CustomCallBack<LoginBean>() {
             @Override
             public void success(String code, LoginBean data, String msg) {
@@ -251,12 +251,13 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                 CommonUtils.checkAuthenStatus(PhoneNumLoginActivity.this, service, data.getData().getToken());
                 SpUtils.saveString(PhoneNumLoginActivity.this, Constant.USER_PHONE_LOGINED, data.getData().getMobile());
                 SpUtils.saveString(PhoneNumLoginActivity.this, Constant.TOKEN, data.getData().getToken());
-                SpUtils.saveString(PhoneNumLoginActivity.this, Constant.WX_NICKNAME, "");
-                SpUtils.saveString(PhoneNumLoginActivity.this, Constant.WX_IMAGE_URL, "");
                 Intent intent = new Intent(PhoneNumLoginActivity.this, MainActivity.class);
                 intent.putExtra(Constant.FACE_VERIFY, data.getData().getFaceVerify());
                 if (wxUserInfoBean != null) {
-                    intent.putExtra(Constant.WX_INFO, wxUserInfoBean);
+                    SpUtils.saveString(PhoneNumLoginActivity.this, Constant.WX_NICKNAME, wxUserInfoBean.getNickname());
+                    SpUtils.saveString(PhoneNumLoginActivity.this, Constant.USER_HEAD_URL, wxUserInfoBean.getHeadimgurl());
+                } else if (!TextUtils.isEmpty(data.getData().getAvetorUrl())) {
+                    SpUtils.saveString(PhoneNumLoginActivity.this, Constant.USER_HEAD_URL, data.getData().getAvetorUrl());
                 }
                 intent.putExtra(Constant.USER_INFO, data);
                 startActivity(intent);
