@@ -108,6 +108,7 @@ public class SplashActivity extends Activity implements ValueAnimator.AnimatorUp
     }
 
     private void toMainActivity(PersonInfoBean data) {
+        SpUtils.saveString(this, Constant.USER_PHONE_LOGINED, data.getData().getDate().getMobile());
         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
         if (TextUtils.isEmpty(data.getData().getDate().getFaceToken())) {
             intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_NO);

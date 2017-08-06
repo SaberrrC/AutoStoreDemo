@@ -4,8 +4,11 @@ import android.animation.ValueAnimator;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Message;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -24,6 +27,9 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.gson.Gson;
 import com.shanlin.autostore.activity.BuyRecordActivity;
 import com.shanlin.autostore.activity.LoginActivity;
@@ -99,14 +105,13 @@ public class MainActivity extends BaseActivity {
     private int    total;
     private View   circle;
     private java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
-    private int         maleCount;
-    private String      creditUsed;
-    private ImageView   headImage;
-    private String      credit;
-    private AlertDialog dialog;
-    private boolean showToggen = true;
+    private       String         creditUsed;
+    private       ImageView      headImage;
+    private       String         credit;
+    private       AlertDialog    dialog;
     public static boolean        state;
     private       WxUserInfoBean mWxUserInfoBean;
+    private       int            maleCount;
 
     @Override
     public int initLayout() {
@@ -119,11 +124,11 @@ public class MainActivity extends BaseActivity {
         mDrawerLayout = ((DrawerLayout) findViewById(R.id.activity_main));
         mTvIdentify = (TextView) findViewById(R.id.identify_tip);
         headImage = (ImageView) findViewById(R.id.iv_head_img);//头像
+        mTvPhoneNum = (TextView) findViewById(R.id.textView);//用户手机号或者微信昵称
         headImage.setOnClickListener(this);
         mBtBanlance = (TextView) findViewById(R.id.btn_yu_e);
         mUserNum = (TextView) findViewById(R.id.user_num);
         pv = (ProgressView) findViewById(R.id.pv);
-        mTvPhoneNum = (TextView) findViewById(R.id.textView);
         mTvRefundMoney = (TextView) findViewById(R.id.tv_refund_money);//退款金额
         mBtBanlance.setOnClickListener(this);
         mTvIdentify.setOnClickListener(this);
@@ -267,21 +272,29 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initData() {
         initToolBar();
-        mUserPhoneHide = mUserPhone.substring(0, 3) + "****" + mUserPhone.substring(7);
-        mTvPhoneNum.setText(mUserPhoneHide);
-
+        //设置显示的用户名
         String nickName = SpUtils.getString(this, Constant.WX_NICKNAME, "");
-        String imageUrl = SpUtils.getString(this, Constant.WX_IMAGE_URL, "");
-        LogUtils.d("headimgurl ====================   " + nickName + "     " + imageUrl);
-        if (!TextUtils.isEmpty(nickName)) {
-            mTvPhoneNum.setText(nickName);
+        if (TextUtils.isEmpty(nickName)) {
+            mUserPhoneHide = mUserPhone.substring(0, 3) + "****" + mUserPhone.substring(7);
+        } else {
             mUserPhoneHide = nickName;
         }
+        mTvPhoneNum.setText(mUserPhoneHide);
+        //设置用户的头像
+        String imageUrl = SpUtils.getString(this, Constant.USER_HEAD_URL, "");
+        LogUtils.d("headimgurl ====================   " + nickName + "     " + imageUrl);
         if (!TextUtils.isEmpty(imageUrl)) {
-//                        Glide.with(getApplicationContext()).load(headImage).into(headImage);
-//            Glide.with(this).load(headImage).bitmapTransform(new CropCircleTransformation(this)).crossFade(1000).into(headImage);
+            Glide.with(getApplicationContext()).load(imageUrl).asBitmap().placeholder(R.mipmap.head_default).error(R.mipmap.head_default).diskCacheStrategy(DiskCacheStrategy.ALL) //设置缓存
+                    .into(new BitmapImageViewTarget(headImage) {
+                        @Override
+                        protected void setResource(Bitmap resource) {
+                            RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), resource);
+                            circularBitmapDrawable.setCircular(true);
+                            headImage.setImageResource(0);
+                            headImage.setBackgroundDrawable(circularBitmapDrawable);
+                        }
+                    });
         }
-
         gson = new Gson();
         service = CommonUtils.doNet();
         //获取退款金额
@@ -623,6 +636,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void showLoginoutDialog() {
+        cleanUserInfo();
         if (mLoginoutDialog != null) {
             mLoginoutDialog.show();
             return;
@@ -643,10 +657,6 @@ public class MainActivity extends BaseActivity {
                 CommonUtils.doNet().getLoginOut(token).enqueue(new CustomCallBack<LoginOutBean>() {
                     @Override
                     public void success(String code, LoginOutBean data, String msg) {
-                        SpUtils.saveString(MainActivity.this, Constant.TOKEN, "");
-                        SpUtils.saveString(MainActivity.this, Constant.USER_PHONE_LOGINED, "");
-                        SpUtils.saveString(MainActivity.this, Constant.WX_IMAGE_URL, "");
-                        SpUtils.saveString(MainActivity.this, Constant.WX_NICKNAME, "");
                         CommonUtils.toNextActivity(MainActivity.this, LoginActivity.class);
                         finish();
                     }
@@ -662,6 +672,13 @@ public class MainActivity extends BaseActivity {
         AutoUtils.autoSize(viewLoginout);
         mLoginoutDialog = CommonUtils.getDialog(this, viewLoginout, false);
         mLoginoutDialog.show();
+    }
+
+    private void cleanUserInfo() {
+        SpUtils.saveString(MainActivity.this, Constant.TOKEN, "");
+        SpUtils.saveString(MainActivity.this, Constant.USER_PHONE_LOGINED, "");
+        SpUtils.saveString(MainActivity.this, Constant.USER_HEAD_URL, "");
+        SpUtils.saveString(MainActivity.this, Constant.WX_NICKNAME, "");
     }
 
     @Override
