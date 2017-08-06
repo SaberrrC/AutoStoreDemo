@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.TextureView;
 import android.view.View;
 import android.view.animation.Animation;
@@ -177,23 +178,10 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         // 开始动画
         Animation animationIN = AnimationUtils.loadAnimation(LivenessActivity.this, R.anim.liveness_rightin);
         Animation animationOut = AnimationUtils.loadAnimation(LivenessActivity.this, R.anim.liveness_leftout);
-        headViewLinear.startAnimation(animationOut);
-        mIDetection.mAnimViews[0].setVisibility(View.VISIBLE);
-        mIDetection.mAnimViews[0].startAnimation(animationIN);
-        animationOut.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
+//        headViewLinear.startAnimation(animationOut);
+//        mIDetection.mAnimViews[0].setVisibility(View.VISIBLE);
+//        mIDetection.mAnimViews[0].startAnimation(animationIN);
 
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-//                timeOutRel.setVisibility(View.VISIBLE);
-            }
-        });
         // 开始活体检测
         mainHandler.post(mTimeoutRunnable);
         jsonObject = new JSONObject();
@@ -204,10 +192,19 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         public void run() {
             // 倒计时开始
             initDetecteSession();
-            if (mIDetection.mDetectionSteps != null)
+            if (mIDetection.mDetectionSteps != null) {
+                setHideText("请眨眼");
                 changeType(mIDetection.mDetectionSteps.get(0), 10);
+            }
         }
     };
+
+    private void setHideText(String text) {
+        if (TextUtils.isEmpty(text)) {
+            return;
+        }
+        promptText.setText(text);
+    }
 
     private void initDetecteSession() {
         if (mICamera.mCamera == null)
@@ -218,6 +215,7 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
 
         mCurStep = 0;
         mDetector.reset();
+        setHideText("请眨眼");
         mDetector.changeDetectionType(mIDetection.mDetectionSteps.get(0));
     }
 
@@ -251,8 +249,10 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
                 mProgressBar.setVisibility(View.VISIBLE);
                 getLivenessData();
 
-            } else
+            } else {
+                setHideText("请眨眼");
                 changeType(mIDetection.mDetectionSteps.get(mCurStep), 10);
+            }
 
             // 检测器返回值：如果不希望检测器检测则返回DetectionType.DONE，如果希望检测器检测动作则返回要检测的动作
             return mCurStep >= mIDetection.mDetectionSteps.size() ? DetectionType.DONE : mIDetection.mDetectionSteps.get(mCurStep);
@@ -289,19 +289,19 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
          */
         @Override
         public void onDetectionFailed(final DetectionFailedType type) {
-            int resourceID = R.string.liveness_detection_failed;
-            switch (type) {
-                case ACTIONBLEND:
-                    resourceID = R.string.liveness_detection_failed_action_blend;
-                    break;
-                case NOTVIDEO:
-                    resourceID = R.string.liveness_detection_failed_not_video;
-                    break;
-                case TIMEOUT:
-                    resourceID = R.string.liveness_detection_failed_timeout;
-                    break;
-            }
-            promptText.setText(resourceID);
+//            int resourceID = R.string.liveness_detection_failed;
+//            switch (type) {
+//                case ACTIONBLEND:
+//                    resourceID = R.string.liveness_detection_failed_action_blend;
+//                    break;
+//                case NOTVIDEO:
+//                    resourceID = R.string.liveness_detection_failed_not_video;
+//                    break;
+//                case TIMEOUT:
+//                    resourceID = R.string.liveness_detection_failed_timeout;
+//                    break;
+//            }
+//            promptText.setText(resourceID);
             mHasSurface = true;
             doPreview();
             // 添加活体检测回调 （本Activity继承了DetectionListener）
@@ -312,6 +312,7 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
             mIDetection.detectionTypeInit();
             mCurStep = 0;
             mDetector.reset();
+            setHideText("请眨眼");
             mDetector.changeDetectionType(mIDetection.mDetectionSteps.get(0));
             //        handleResult(resourceID);
         }
@@ -403,7 +404,7 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
 
             if (mFailFrame > 10) {
                 mFailFrame = 0;
-                promptText.setText(infoStr);
+                setHideText(infoStr);
             }
         }
     }
