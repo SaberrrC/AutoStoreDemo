@@ -76,10 +76,4 @@
 
     <string name="zxing_bar_name">ZxingLib</string>
 
-    <!--相册-->
-    <string name="album_view"></string>
-    <string name="image_view"></string>
-    <string name="add">确定</string>
-    <string name="selected">已选</string>
-    <string name="limit_exceeded">最多能选 %d 张</string>
 </resources>
