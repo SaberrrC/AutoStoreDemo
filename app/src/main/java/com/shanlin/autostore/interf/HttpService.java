@@ -229,6 +229,11 @@ public interface HttpService {
     Call<LoginOutBean> getLoginOut(@Header("token") String token);
 
 
+    /**
+     * 用户信息查询
+     * @param token
+     * @return
+     */
     @GET("member/info")
     Call<PersonInfoBean> getPersonInfo(@Header("token") String token);
 

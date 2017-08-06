@@ -1,1 +1,1 @@
-include ':app', ':library:wechatlib', ':takephoto_library'
+include ':app', ':library:wechatlib', 'library:imageselector'

@@ -27,6 +27,11 @@ public class MemberUpdateSendBean {
         this.userDeviceId = userDeviceId;
     }
 
+    public MemberUpdateSendBean(String avatorBase64, String userDeviceId) {
+        this.avatorBase64 = avatorBase64;
+        this.userDeviceId = userDeviceId;
+    }
+
     @Override
     public String toString() {
         return "MemberUpdateSendBean{" +

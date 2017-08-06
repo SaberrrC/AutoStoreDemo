@@ -14,7 +14,7 @@ public class Constant {
 //        public static final String BASE_URL = "http://linstore-dev.shanlinjinrong.online:8080/linstore/v1/";
     //    测试地址
     public static final String BASE_URL = "http://linstore-uat.shanlinjinrong.online:8080/linstore/v1/";
-
+    public static final String HEAD_IMG_URL = "head_url";
     public static final String TOKEN              = "TOKEN";
     public static final String USER_PHONE_LOGINED = "USER_PHONE_LOGINED";
     public static final String DEVICEID           = "deviceId";
