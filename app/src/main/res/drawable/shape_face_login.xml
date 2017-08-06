@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-       android:innerRadius="0dp"
-       android:shape="rectangle"
-       android:useLevel="false">
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <solid android:color="#ff0000" />
 
-    <solid android:color="@android:color/transparent"/>
-
-    <size
-        android:width="100dp"
-        android:height="100dp"/>
-
+    <solid
+        android:color="@color/transparent" />
     <stroke
         android:width="5dp"
-        android:color="#FFFFFF"/>
+        android:color="@android:color/white" />
+    <size android:width="15dp"
+          android:height="15dp" />
+
 </shape>
