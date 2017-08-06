@@ -3,11 +3,14 @@ package com.yancy.imageselector;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.FileProvider;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -16,7 +19,10 @@ import com.yancy.imageselector.utils.StatusBarUtils;
 import com.yancy.imageselector.utils.Utils;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * ImageSelectorActivity
@@ -121,17 +127,27 @@ public class ImageSelectorActivity extends FragmentActivity implements ImageSele
             file = new File(getCacheDir(), Utils.getImageName());
         }
 
-
         cropImagePath = file.getAbsolutePath();
         Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(Uri.fromFile(new File(imagePath)), "image/*");
+        if (Build.VERSION.SDK_INT >= 24) {
+            Uri photoURI = FileProvider.getUriForFile(this,
+                    "com.shanlin.autostore.fileprovider",new File(Environment
+                            .getExternalStorageDirectory(),imagePath));
+            intent.setDataAndType(photoURI, "image/*");
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, file.getAbsolutePath());
+            Log.d("wr", "===========1"+photoURI+"==============2"+Uri.fromFile(file)
+                    +"----------------3"+imagePath+"--------------"+file.getAbsolutePath());
+        } else {
+            intent.setDataAndType(Uri.fromFile(new File(imagePath)), "image/*");
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+            Log.d("wr", "我是低版本");
+        }
         intent.putExtra("crop", "true");
         intent.putExtra("aspectX", aspectX);
         intent.putExtra("aspectY", aspectY);
         intent.putExtra("outputX", outputX);
         intent.putExtra("outputY", outputY);
         intent.putExtra("return-data", false);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
         startActivityForResult(intent, ImageSelector.IMAGE_CROP_CODE);
     }
 
@@ -146,6 +162,26 @@ public class ImageSelectorActivity extends FragmentActivity implements ImageSele
             setResult(RESULT_OK, data);
             exit();
         }
+    }
+
+    private File createImageFile() {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DCIM), "Camera");
+        File image = null;
+        try {
+            image = File.createTempFile(
+                    imageFileName,  /* prefix */
+                    ".jpg",         /* suffix */
+                    storageDir      /* directory */
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return image;
     }
 
     @Override

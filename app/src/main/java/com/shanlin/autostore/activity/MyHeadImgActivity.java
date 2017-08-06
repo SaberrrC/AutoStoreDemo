@@ -54,6 +54,7 @@ public class MyHeadImgActivity extends BaseActivity {
     private Uri imgUrl;
     private HttpService service;
     private String token;
+    private String mCurrentPhotoPath;
 
     @Override
     public int initLayout() {
@@ -180,9 +181,11 @@ public class MyHeadImgActivity extends BaseActivity {
                 case REQUEST_CODE_TAKE_PICTURE:
                     if (data != null) {
                         Uri uri = data.getData();
-                        startActivityForResult(CameraUtil.cropPhoto(uri, imgUrl, 150, 150), REQ_CODE_CUT);
+                        startActivityForResult(CameraUtil.cropPhoto(this,uri, imgUrl, 150, 150),
+                                REQ_CODE_CUT);
                     } else {
-                        startActivityForResult(CameraUtil.cropPhoto(imgUrl, imgUrl, 150, 150), REQ_CODE_CUT);
+                        startActivityForResult(CameraUtil.cropPhoto(this,imgUrl, imgUrl, 150, 150),
+                                REQ_CODE_CUT);
                     }
                     break;
                 case REQ_CODE_CUT:
