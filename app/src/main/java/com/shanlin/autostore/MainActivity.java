@@ -229,7 +229,6 @@ public class MainActivity extends BaseActivity {
         super.onResume();
         //调用今日到店人数接口
         getUserNumToday();
-        starttAnim();
     }
 
     private void updateHeadImg() {
@@ -672,7 +671,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private void showLoginoutDialog() {
-        cleanUserInfo();
         if (mLoginoutDialog != null) {
             mLoginoutDialog.show();
             return;
@@ -690,6 +688,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 mLoginoutDialog.dismiss();
+                cleanUserInfo();
                 CommonUtils.doNet().getLoginOut(token).enqueue(new CustomCallBack<LoginOutBean>() {
                     @Override
                     public void success(String code, LoginOutBean data, String msg) {

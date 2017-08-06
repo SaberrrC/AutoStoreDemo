@@ -19,6 +19,17 @@
             android:layout_height="match_parent"/>
 
         <com.shanlin.autostore.livenesslib.view.AutoRatioImageview
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/liveness_layout_camera_mask"/>
+
+        <com.shanlin.autostore.livenesslib.FaceMask
+            android:id="@+id/liveness_layout_facemask"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+
+        <com.shanlin.autostore.livenesslib.view.AutoRatioImageview
             android:id="@+id/liveness_layout_head_mask"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,6 +41,33 @@
             android:layout_height="match_parent"
             android:layout_below="@id/liveness_layout_head_mask"
             android:background="#F6F5F4">
+
+            <include
+                android:id="@+id/activity_main_bottomTitle"
+                layout="@layout/bottom_title_layout"
+                android:layout_width="match_parent"
+                android:layout_height="40dip"
+                android:layout_alignParentBottom="true"/>
+
+            <include
+                android:id="@+id/liveness_layout_first_layout"
+                layout="@layout/liveness_detection_step"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/activity_main_bottomTitle"
+                android:layout_marginBottom="15dip"
+                android:layout_marginTop="15dip"
+                android:visibility="invisible"/>
+
+            <include
+                android:id="@+id/liveness_layout_second_layout"
+                layout="@layout/liveness_detection_step"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/activity_main_bottomTitle"
+                android:layout_marginBottom="15dip"
+                android:layout_marginTop="15dip"
+                android:visibility="gone"/>
 
             <LinearLayout
                 android:id="@+id/liveness_layout_bottom_tips_head"
@@ -47,13 +85,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dip"
                     android:text="@string/meglive_prompt"
-                    android:textColor="#F8773E"
+                    android:textColor="#00ACDF"
                     android:textSize="16dp"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="8dip"
                     android:src="@drawable/liveness_phoneimage"/>
             </LinearLayout>
 

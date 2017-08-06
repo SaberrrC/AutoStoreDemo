@@ -1,4 +1,3 @@
-
 package com.shanlin.autostore.livenesslib;
 
 import android.content.Context;
@@ -13,10 +12,10 @@ import com.megvii.livenessdetection.DetectionFrame;
 public class FaceMask extends View {
     public static final int Threshold = 30;
     Paint localPaint = null;
-    RectF mFaceRect = new RectF();
-    RectF mDrawRect = null;
-    private int normal_colour = 0xff00b4ff;
-    private int high_colour = 0xffff0000;
+    RectF mFaceRect  = new RectF();
+    RectF mDrawRect  = null;
+    private int     normal_colour    = 0xff00b4ff;
+    private int     high_colour      = 0xffff0000;
     private boolean isFraontalCamera = true;
 
     public FaceMask(Context context, AttributeSet atti) {
@@ -37,8 +36,7 @@ public class FaceMask extends View {
         postInvalidate();
     }
 
-    public void setFrontal(boolean isFrontal)
-    {
+    public void setFrontal(boolean isFrontal) {
         this.isFraontalCamera = isFrontal;
     }
 
@@ -48,13 +46,9 @@ public class FaceMask extends View {
         if (mFaceRect == null)
             return;
         if (isFraontalCamera) {
-            mDrawRect.set(getWidth() * (1 - mFaceRect.right), getHeight()
-                    * mFaceRect.top, getWidth() * (1 - mFaceRect.left),
-                    getHeight()
-                            * mFaceRect.bottom);
+            mDrawRect.set(getWidth() * (1 - mFaceRect.right), getHeight() * mFaceRect.top, getWidth() * (1 - mFaceRect.left), getHeight() * mFaceRect.bottom);
         } else {
-            mDrawRect.set(getWidth() * mFaceRect.left, getHeight() * mFaceRect.top, getWidth()
-                    * mFaceRect.right, getHeight() * mFaceRect.bottom);
+            mDrawRect.set(getWidth() * mFaceRect.left, getHeight() * mFaceRect.top, getWidth() * mFaceRect.right, getHeight() * mFaceRect.bottom);
         }
         canvas.drawRect(mDrawRect, localPaint);
     }

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.TextureView;
 import android.view.View;
 import android.view.animation.Animation;
@@ -50,7 +51,7 @@ import java.util.List;
 public class LivenessActivity extends Activity implements TextureView.SurfaceTextureListener {
 
     private TextureView       camerapreview;
-    private FaceMask          mFaceMask;// 画脸位置的类（调试时会用到）
+//    private FaceMask          mFaceMask;// 画脸位置的类（调试时会用到）
     private ProgressBar       mProgressBar;// 网络上传请求验证时出现的ProgressBar
     private LinearLayout      headViewLinear;// "请在光线充足的情况下进行检测"这个视图
     private LinearLayout      rootView;// 根视图
@@ -106,7 +107,7 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         title.setText("人脸识别");
         title.setTextColor(getResources().getColor(R.color.black));
         mIDetection = new IDetection(this, rootView);
-        mFaceMask = (FaceMask) findViewById(R.id.liveness_layout_facemask);
+//        mFaceMask = (FaceMask) findViewById(R.id.liveness_layout_facemask);
         mICamera = new ICamera();
         promptText = (TextView) findViewById(R.id.liveness_layout_promptText);
         camerapreview = (TextureView) findViewById(R.id.liveness_layout_textureview);
@@ -154,11 +155,11 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         if (mCamera != null) {
             Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
             Camera.getCameraInfo(1, cameraInfo);
-            mFaceMask.setFrontal(cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT);
+//            mFaceMask.setFrontal(cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT);
             // 获取到相机分辨率对应的显示大小，并把这个值复制给camerapreview
             RelativeLayout.LayoutParams layout_params = mICamera.getLayoutParam();
             camerapreview.setLayoutParams(layout_params);
-            mFaceMask.setLayoutParams(layout_params);
+//            mFaceMask.setLayoutParams(layout_params);
             // 初始化人脸质量检测管理类
             mFaceQualityManager = new FaceQualityManager(1 - 0.5f, 0.5f);
             mIDetection.mCurShowIndex = -1;
@@ -177,26 +178,12 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         // 开始动画
         Animation animationIN = AnimationUtils.loadAnimation(LivenessActivity.this, R.anim.liveness_rightin);
         Animation animationOut = AnimationUtils.loadAnimation(LivenessActivity.this, R.anim.liveness_leftout);
-        headViewLinear.startAnimation(animationOut);
-        mIDetection.mAnimViews[0].setVisibility(View.VISIBLE);
-        mIDetection.mAnimViews[0].startAnimation(animationIN);
-        animationOut.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
+//        headViewLinear.startAnimation(animationOut);
+//        mIDetection.mAnimViews[0].setVisibility(View.VISIBLE);
+//        mIDetection.mAnimViews[0].startAnimation(animationIN);
 
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-//                timeOutRel.setVisibility(View.VISIBLE);
-            }
-        });
         // 开始活体检测
         mainHandler.post(mTimeoutRunnable);
-
         jsonObject = new JSONObject();
     }
 
@@ -205,10 +192,19 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         public void run() {
             // 倒计时开始
             initDetecteSession();
-            if (mIDetection.mDetectionSteps != null)
+            if (mIDetection.mDetectionSteps != null) {
+                setHideText("请眨眼");
                 changeType(mIDetection.mDetectionSteps.get(0), 10);
+            }
         }
     };
+
+    private void setHideText(String text) {
+        if (TextUtils.isEmpty(text)) {
+            return;
+        }
+        promptText.setText(text);
+    }
 
     private void initDetecteSession() {
         if (mICamera.mCamera == null)
@@ -219,6 +215,7 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
 
         mCurStep = 0;
         mDetector.reset();
+        setHideText("请眨眼");
         mDetector.changeDetectionType(mIDetection.mDetectionSteps.get(0));
     }
 
@@ -246,14 +243,16 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         public DetectionType onDetectionSuccess(final DetectionFrame validFrame) {
             mIMediaPlayer.reset();
             mCurStep++;
-            mFaceMask.setFaceInfo(null);
+//            mFaceMask.setFaceInfo(null);
 
             if (mCurStep == mIDetection.mDetectionSteps.size()) {
                 mProgressBar.setVisibility(View.VISIBLE);
                 getLivenessData();
 
-            } else
+            } else {
+                setHideText("请眨眼");
                 changeType(mIDetection.mDetectionSteps.get(mCurStep), 10);
+            }
 
             // 检测器返回值：如果不希望检测器检测则返回DetectionType.DONE，如果希望检测器检测动作则返回要检测的动作
             return mCurStep >= mIDetection.mDetectionSteps.size() ? DetectionType.DONE : mIDetection.mDetectionSteps.get(mCurStep);
@@ -290,19 +289,19 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
          */
         @Override
         public void onDetectionFailed(final DetectionFailedType type) {
-            int resourceID = R.string.liveness_detection_failed;
-            switch (type) {
-                case ACTIONBLEND:
-                    resourceID = R.string.liveness_detection_failed_action_blend;
-                    break;
-                case NOTVIDEO:
-                    resourceID = R.string.liveness_detection_failed_not_video;
-                    break;
-                case TIMEOUT:
-                    resourceID = R.string.liveness_detection_failed_timeout;
-                    break;
-            }
-            promptText.setText(resourceID);
+//            int resourceID = R.string.liveness_detection_failed;
+//            switch (type) {
+//                case ACTIONBLEND:
+//                    resourceID = R.string.liveness_detection_failed_action_blend;
+//                    break;
+//                case NOTVIDEO:
+//                    resourceID = R.string.liveness_detection_failed_not_video;
+//                    break;
+//                case TIMEOUT:
+//                    resourceID = R.string.liveness_detection_failed_timeout;
+//                    break;
+//            }
+//            promptText.setText(resourceID);
             mHasSurface = true;
             doPreview();
             // 添加活体检测回调 （本Activity继承了DetectionListener）
@@ -313,6 +312,7 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
             mIDetection.detectionTypeInit();
             mCurStep = 0;
             mDetector.reset();
+            setHideText("请眨眼");
             mDetector.changeDetectionType(mIDetection.mDetectionSteps.get(0));
             //        handleResult(resourceID);
         }
@@ -335,7 +335,7 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
             //        }
             faceOcclusion(detectionFrame);
             //            handleNotPass(timeout);
-            mFaceMask.setFaceInfo(detectionFrame);
+//            mFaceMask.setFaceInfo(detectionFrame);
         }
     }
 
@@ -404,7 +404,7 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
 
             if (mFailFrame > 10) {
                 mFailFrame = 0;
-                promptText.setText(infoStr);
+                setHideText(infoStr);
             }
         }
     }
@@ -439,7 +439,7 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
     public void changeType(final Detector.DetectionType detectiontype, long timeout) {
         // 动画切换
         mIDetection.changeType(detectiontype, timeout);
-        mFaceMask.setFaceInfo(null);
+//        mFaceMask.setFaceInfo(null);
 
         // 语音播放
         if (mCurStep == 0) {
