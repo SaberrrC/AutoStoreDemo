@@ -45,6 +45,7 @@ import com.shanlin.autostore.bean.MemberUpdateBean;
 import com.shanlin.autostore.bean.paramsBean.MemberUpdateSendBean;
 import com.shanlin.autostore.bean.resultBean.CreditBalanceCheckBean;
 import com.shanlin.autostore.bean.resultBean.LoginOutBean;
+import com.shanlin.autostore.bean.resultBean.PersonInfoBean;
 import com.shanlin.autostore.bean.resultBean.RefundMoneyBean;
 import com.shanlin.autostore.bean.resultBean.UserNumEverydayBean;
 import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
@@ -75,6 +76,7 @@ public class MainActivity extends BaseActivity {
 
     private static final int REQUEST_CODE_REGEST = 101;
     private static final int REQUEST_CODE_SCAN   = 102;
+    private static final int HEAD_IMG_REQUEST_CODE = 108;
     private ActionBarDrawerToggle mDrawerToggle;
     private static final String TAG = "wr";
     private DrawerLayout mDrawerLayout;
@@ -112,6 +114,8 @@ public class MainActivity extends BaseActivity {
     public static boolean        state;
     private       WxUserInfoBean mWxUserInfoBean;
     private       int            maleCount;
+    private String nickName;
+    private String imageUrl;
 
     @Override
     public int initLayout() {
@@ -228,6 +232,24 @@ public class MainActivity extends BaseActivity {
         starttAnim();
     }
 
+    private void updateHeadImg() {
+        Call<PersonInfoBean> call = service.getPersonInfo(token);
+        call.enqueue(new CustomCallBack<PersonInfoBean>() {
+            @Override
+            public void success(String code, PersonInfoBean data, String msg) {
+                if (TextUtils.equals("200",code)) {
+                    String avetorUrl = data.getData().getDate().getAvetorUrl();//头像连接
+                    setHeadImg(avetorUrl);
+                }
+            }
+
+            @Override
+            public void error(Throwable ex, String code, String msg) {
+                CommonUtils.debugLog(msg);
+            }
+        });
+    }
+
     private void showBalanceDialog() {
         CommonUtils.debugLog("---------flag=" + state);
         if (state && credit != null) {
@@ -273,7 +295,7 @@ public class MainActivity extends BaseActivity {
     public void initData() {
         initToolBar();
         //设置显示的用户名
-        String nickName = SpUtils.getString(this, Constant.WX_NICKNAME, "");
+        nickName = SpUtils.getString(this, Constant.WX_NICKNAME, "");
         if (TextUtils.isEmpty(nickName)) {
             mUserPhoneHide = mUserPhone.substring(0, 3) + "****" + mUserPhone.substring(7);
         } else {
@@ -281,8 +303,16 @@ public class MainActivity extends BaseActivity {
         }
         mTvPhoneNum.setText(mUserPhoneHide);
         //设置用户的头像
-        String imageUrl = SpUtils.getString(this, Constant.USER_HEAD_URL, "");
+        imageUrl = SpUtils.getString(this, Constant.USER_HEAD_URL, "");
         LogUtils.d("headimgurl ====================   " + nickName + "     " + imageUrl);
+        setHeadImg(imageUrl);
+        gson = new Gson();
+        service = CommonUtils.doNet();
+        //获取退款金额
+        getRefundMoney();
+    }
+
+    private void setHeadImg(String imageUrl) {
         if (!TextUtils.isEmpty(imageUrl)) {
             Glide.with(getApplicationContext()).load(imageUrl).asBitmap().placeholder(R.mipmap.head_default).error(R.mipmap.head_default).diskCacheStrategy(DiskCacheStrategy.ALL) //设置缓存
                     .into(new BitmapImageViewTarget(headImage) {
@@ -295,10 +325,6 @@ public class MainActivity extends BaseActivity {
                         }
                     });
         }
-        gson = new Gson();
-        service = CommonUtils.doNet();
-        //获取退款金额
-        getRefundMoney();
     }
 
     private void getUserNumToday() {
@@ -453,7 +479,9 @@ public class MainActivity extends BaseActivity {
 
             case R.id.iv_head_img:
                 //点击头像
-                CommonUtils.toNextActivity(this, MyHeadImgActivity.class);
+                Intent headintent = new Intent(this,MyHeadImgActivity.class);
+                headintent.putExtra(Constant.HEAD_IMG_URL,imageUrl);
+                startActivityForResult(headintent,HEAD_IMG_REQUEST_CODE);
                 break;
 
         }
@@ -505,6 +533,14 @@ public class MainActivity extends BaseActivity {
                 e.printStackTrace();
             }
 
+        } else {
+            if (requestCode == HEAD_IMG_REQUEST_CODE) {
+
+                if (TextUtils.isEmpty(nickName)) {
+                    CommonUtils.debugLog(nickName + "------------");
+                    updateHeadImg();
+                }
+            }
         }
     }
 
