@@ -50,7 +50,7 @@ import java.util.List;
 public class LivenessActivity extends Activity implements TextureView.SurfaceTextureListener {
 
     private TextureView       camerapreview;
-    private FaceMask          mFaceMask;// 画脸位置的类（调试时会用到）
+//    private FaceMask          mFaceMask;// 画脸位置的类（调试时会用到）
     private ProgressBar       mProgressBar;// 网络上传请求验证时出现的ProgressBar
     private LinearLayout      headViewLinear;// "请在光线充足的情况下进行检测"这个视图
     private LinearLayout      rootView;// 根视图
@@ -106,7 +106,7 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         title.setText("人脸识别");
         title.setTextColor(getResources().getColor(R.color.black));
         mIDetection = new IDetection(this, rootView);
-        mFaceMask = (FaceMask) findViewById(R.id.liveness_layout_facemask);
+//        mFaceMask = (FaceMask) findViewById(R.id.liveness_layout_facemask);
         mICamera = new ICamera();
         promptText = (TextView) findViewById(R.id.liveness_layout_promptText);
         camerapreview = (TextureView) findViewById(R.id.liveness_layout_textureview);
@@ -154,11 +154,11 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         if (mCamera != null) {
             Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
             Camera.getCameraInfo(1, cameraInfo);
-            mFaceMask.setFrontal(cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT);
+//            mFaceMask.setFrontal(cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT);
             // 获取到相机分辨率对应的显示大小，并把这个值复制给camerapreview
             RelativeLayout.LayoutParams layout_params = mICamera.getLayoutParam();
             camerapreview.setLayoutParams(layout_params);
-            mFaceMask.setLayoutParams(layout_params);
+//            mFaceMask.setLayoutParams(layout_params);
             // 初始化人脸质量检测管理类
             mFaceQualityManager = new FaceQualityManager(1 - 0.5f, 0.5f);
             mIDetection.mCurShowIndex = -1;
@@ -196,7 +196,6 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         });
         // 开始活体检测
         mainHandler.post(mTimeoutRunnable);
-
         jsonObject = new JSONObject();
     }
 
@@ -246,7 +245,7 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         public DetectionType onDetectionSuccess(final DetectionFrame validFrame) {
             mIMediaPlayer.reset();
             mCurStep++;
-            mFaceMask.setFaceInfo(null);
+//            mFaceMask.setFaceInfo(null);
 
             if (mCurStep == mIDetection.mDetectionSteps.size()) {
                 mProgressBar.setVisibility(View.VISIBLE);
@@ -335,7 +334,7 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
             //        }
             faceOcclusion(detectionFrame);
             //            handleNotPass(timeout);
-            mFaceMask.setFaceInfo(detectionFrame);
+//            mFaceMask.setFaceInfo(detectionFrame);
         }
     }
 
@@ -439,7 +438,7 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
     public void changeType(final Detector.DetectionType detectiontype, long timeout) {
         // 动画切换
         mIDetection.changeType(detectiontype, timeout);
-        mFaceMask.setFaceInfo(null);
+//        mFaceMask.setFaceInfo(null);
 
         // 语音播放
         if (mCurStep == 0) {

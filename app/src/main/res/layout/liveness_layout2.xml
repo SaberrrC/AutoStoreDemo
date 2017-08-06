@@ -19,6 +19,17 @@
             android:layout_height="match_parent"/>
 
         <com.shanlin.autostore.livenesslib.view.AutoRatioImageview
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/liveness_layout_camera_mask"/>
+
+        <com.shanlin.autostore.livenesslib.FaceMask
+            android:id="@+id/liveness_layout_facemask"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+
+        <com.shanlin.autostore.livenesslib.view.AutoRatioImageview
             android:id="@+id/liveness_layout_head_mask"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

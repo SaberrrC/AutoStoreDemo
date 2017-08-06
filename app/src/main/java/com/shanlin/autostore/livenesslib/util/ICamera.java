@@ -27,6 +27,10 @@ public class ICamera {
 	public Camera mCamera;
 	public int cameraWidth;
 	public int cameraHeight;
+	/**
+	 * 1 前置
+	 * 0 后置
+	 */
 	private int cameraId = 1;//前置摄像头
 
 	public ICamera() {
