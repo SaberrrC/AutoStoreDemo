@@ -239,6 +239,7 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
 
         //扫描订单处理逻辑
         service = com.shanlin.autostore.utils.CommonUtils.doNet();
+        Log.d(TAG, "result=---------"+result);
         if (result.contains("orderNo")) {
             //订单号信息
             ZXingOrderBean zXingOrderBean = gson.fromJson(result, ZXingOrderBean.class);
@@ -247,7 +248,7 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
             generateRealOrder(zXingOrderBean.getOrderNo(), zXingOrderBean
                     .getDeviceId());
         } else {
-            com.shanlin.autostore.utils.CommonUtils.showToast(this,"无法识别此二维码");
+            com.shanlin.autostore.utils.CommonUtils.showToast(this,"扫描超时,请重试");
             finish();
         }
 
