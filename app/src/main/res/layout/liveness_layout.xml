@@ -25,7 +25,6 @@
             android:layout_centerHorizontal="true"
             android:src="@drawable/facelogin_bg"/>
 
-
         <LinearLayout
             android:id="@+id/liveness_layout_bottom_tips_head"
             android:layout_width="match_parent"
@@ -49,11 +48,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
                 android:layout_marginBottom="1dp"
+                android:layout_marginTop="20dp"
                 android:src="@drawable/liveness_phoneimage"/>
         </LinearLayout>
-
 
         <ProgressBar
             android:id="@+id/liveness_layout_progressbar"
