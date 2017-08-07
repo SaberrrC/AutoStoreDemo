@@ -221,7 +221,7 @@ public class LoginActivity extends BaseActivity {
                             SpUtils.saveString(LoginActivity.this, Constant.TOKEN, data.getData().getToken());
                             SpUtils.saveString(LoginActivity.this, Constant.USER_PHONE_LOGINED, data.getData().getMobile());
                             if (!TextUtils.isEmpty(data.getData().getAvetorUrl())) {
-                                SpUtils.saveString(LoginActivity.this,Constant.USER_HEAD_URL,data.getData().getAvetorUrl());
+                                SpUtils.saveString(LoginActivity.this, Constant.USER_HEAD_URL, data.getData().getAvetorUrl());
                             }
                             //验证乐买宝实名是否认证
                             CommonUtils.checkAuthenStatus(LoginActivity.this, httpService, data.getData().getToken());
@@ -272,7 +272,12 @@ public class LoginActivity extends BaseActivity {
 
     }
 
-
+    /**
+     * 微信登录
+     *
+     * @param access_token
+     * @param openid
+     */
     private void getUserinfo(String access_token, String openid) {
         final HttpService httpService = CommonUtils.doNet();
         Call<com.shanlin.autostore.bean.resultBean.WxUserInfoBean> call = httpService.getWxUserInfo("https://api.weixin.qq.com/sns/userinfo?access_token", access_token, openid);
@@ -306,7 +311,6 @@ public class LoginActivity extends BaseActivity {
                             return;
                         }
                         SpUtils.saveString(LoginActivity.this, Constant.WX_NICKNAME, nickname);
-                        SpUtils.saveString(LoginActivity.this, Constant.USER_HEAD_URL, wxUserInfoBean.getHeadimgurl());
                         if (TextUtils.equals(data.getData().getFaceVerify(), "0")) {
                             //没人脸认证 跳转手机号登陆界面
                             Intent intent = new Intent(LoginActivity.this, PhoneNumLoginActivity.class);
@@ -320,6 +324,11 @@ public class LoginActivity extends BaseActivity {
                             //已经验证 保存token和手机号 跳转到主页
                             AutoStoreApplication.isLogin = true;
                             SpUtils.saveString(LoginActivity.this, Constant.TOKEN, data.getData().getToken());
+                            if (TextUtils.isEmpty(data.getData().getAvetorUrl())) {
+                                SpUtils.saveString(LoginActivity.this, Constant.USER_HEAD_URL, wxUserInfoBean.getHeadimgurl());
+                            } else {
+                                SpUtils.saveString(LoginActivity.this, Constant.USER_HEAD_URL, data.getData().getAvetorUrl());
+                            }
                             SpUtils.saveString(LoginActivity.this, Constant.USER_PHONE_LOGINED, data.getData().getMobile());
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra(Constant.WX_INFO, wxUserInfoBean);

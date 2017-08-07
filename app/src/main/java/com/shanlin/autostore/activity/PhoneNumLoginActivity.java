@@ -258,9 +258,11 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                 intent.putExtra(Constant.FACE_VERIFY, data.getData().getFaceVerify());
                 if (wxUserInfoBean != null) {
                     SpUtils.saveString(PhoneNumLoginActivity.this, Constant.WX_NICKNAME, wxUserInfoBean.getNickname());
-                    SpUtils.saveString(PhoneNumLoginActivity.this, Constant.USER_HEAD_URL, wxUserInfoBean.getHeadimgurl());
-                } else if (!TextUtils.isEmpty(data.getData().getAvetorUrl())) {
+                }
+                if (!TextUtils.isEmpty(data.getData().getAvetorUrl())) {
                     SpUtils.saveString(PhoneNumLoginActivity.this, Constant.USER_HEAD_URL, data.getData().getAvetorUrl());
+                } else if (wxUserInfoBean != null){
+                    SpUtils.saveString(PhoneNumLoginActivity.this, Constant.USER_HEAD_URL, wxUserInfoBean.getHeadimgurl());
                 }
                 intent.putExtra(Constant.USER_INFO, data);
                 startActivity(intent);
