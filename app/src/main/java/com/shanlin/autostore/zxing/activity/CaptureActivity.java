@@ -247,7 +247,7 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
             generateRealOrder(zXingOrderBean.getOrderNo(), zXingOrderBean
                     .getDeviceId());
         } else {
-            com.shanlin.autostore.utils.CommonUtils.showToast(this,"无法识别此二维码");
+            com.shanlin.autostore.utils.CommonUtils.showToast(this,"扫描超时,请重试");
             finish();
         }
 
