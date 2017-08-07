@@ -84,13 +84,13 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:layout_marginLeft="40px"
+            android:layout_marginLeft="20px"
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
         <TextView
             android:layout_centerVertical="true"
             android:id="@+id/get_avaiable_balence"
-            android:layout_width="81px"
+            android:layout_width="101px"
             android:gravity="center"
             android:layout_height="wrap_content"
             android:text="   "
@@ -108,16 +108,16 @@
                 android:layout_width="81px"
                 android:layout_height="wrap_content"/>
 
-            <TextView
-                android:id="@+id/tv_can_use"
-                android:text="可用余额"
-                android:gravity="center"
-                android:textSize="12px"
-                android:textColor="#000"
-                android:visibility="invisible"
-                android:layout_below="@id/get_avaiable_balence"
-                android:layout_width="81px"
-                android:layout_height="wrap_content"/>
+            <!--<TextView-->
+                <!--android:id="@+id/tv_can_use"-->
+                <!--android:text="可用余额"-->
+                <!--android:gravity="center"-->
+                <!--android:textSize="12px"-->
+                <!--android:textColor="#000"-->
+                <!--android:visibility="invisible"-->
+                <!--android:layout_below="@id/get_avaiable_balence"-->
+                <!--android:layout_width="81px"-->
+                <!--android:layout_height="wrap_content"/>-->
         </RelativeLayout>
         <ImageView
             android:layout_marginRight="20px"
