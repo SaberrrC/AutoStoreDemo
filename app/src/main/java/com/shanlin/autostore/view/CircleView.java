@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
+import android.graphics.Region;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -56,12 +58,9 @@ public class CircleView extends View {
         super.onDraw(canvas);
 
         LogUtils.d("width   " + width + " + " + height);
-//        Rect rect = new Rect(0, 0, width, height);
-//        canvas.drawRect(rect, mPaint);
-//        mPaint.setColor(Color.TRANSPARENT);
-        //        canvas.drawCircle(width / 2, height / 2, 238, mPaint);
-
-        initPointsCircular(canvas);
+        Rect rect = new Rect(0, 0, width, height);
+        canvas.drawRect(rect, mPaint);
+        Region region = new Region();
 
     }
 

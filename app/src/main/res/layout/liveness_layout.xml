@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/liveness_layout_head_mask"/>
+            android:src="@drawable/facelogin_bg"/>
 
 
         <LinearLayout
