@@ -355,14 +355,14 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
                 if (faceInfo.eyeLeftOcclusion > 0.5 || faceInfo.eyeRightOcclusion > 0.5) {
                     if (mFailFrame > 10) {
                         mFailFrame = 0;
-                        promptText.setText(R.string.meglive_keep_eyes_open);
+//                        promptText.setText(R.string.meglive_keep_eyes_open);
                     }
                     return;
                 }
                 if (faceInfo.mouthOcclusion > 0.5) {
                     if (mFailFrame > 10) {
                         mFailFrame = 0;
-                        promptText.setText(R.string.meglive_keep_mouth_open);
+//                        promptText.setText(R.string.meglive_keep_mouth_open);
                     }
                     return;
                 }
