@@ -343,8 +343,6 @@ public class LoginActivity extends BaseActivity {
                         ToastUtils.showToast(msg);
                     }
                 });
-
-
             }
 
             @Override

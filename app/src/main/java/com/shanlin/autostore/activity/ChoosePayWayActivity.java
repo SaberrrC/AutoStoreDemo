@@ -56,11 +56,9 @@ import retrofit2.Response;
  */
 public class ChoosePayWayActivity extends BaseActivity{
 
-//    private static final int REQUEST_CREDIT_CODE = 104;
     private View dialogView;
     private TextView moneyNeedToPay;
     private GridPasswordView pswView;
-//    private AlertDialog availbleDialog;
     private ImageView iconChoose;
     private TextView totalAmount;
     private HttpService service;
@@ -82,7 +80,7 @@ public class ChoosePayWayActivity extends BaseActivity{
     private View way3;
     private Intent intent;
     private TextView moneyNotEnough;
-    private TextView moneyCanUse;
+//    private TextView moneyCanUse;
     private String status;
     private String credit;
     private AlertDialog dialog;
@@ -97,7 +95,7 @@ public class ChoosePayWayActivity extends BaseActivity{
         CommonUtils.initToolbar(this,"选择支付方式",R.color.blcak, MainActivity.class);
         availableBalance = ((TextView) findViewById(R.id.get_avaiable_balence));//显示可用余额
         moneyNotEnough = ((TextView) findViewById(R.id.tv_not_enough));//余额不足
-        moneyCanUse = ((TextView) findViewById(R.id.tv_can_use));//可用余额
+//        moneyCanUse = ((TextView) findViewById(R.id.tv_can_use));//可用余额
         way1 = findViewById(R.id.ll_pay_way_1);
         way1.setOnClickListener(this);
         way2 = findViewById(R.id.ll_pay_way_2);
@@ -403,20 +401,20 @@ public class ChoosePayWayActivity extends BaseActivity{
         if (!Constant_LeMaiBao.AUTHEN_FINISHED.equals(status)) {
             availableBalance.setText("领取额度");
             moneyNotEnough.setVisibility(View.INVISIBLE);
-            moneyCanUse.setVisibility(View.INVISIBLE);
+//            moneyCanUse.setVisibility(View.INVISIBLE);
             iconChoose.setImageResource(R.mipmap.icon_yellow);
         } else {
             iconChoose.setImageResource(R.mipmap.icon_yellow);
             if (Double.parseDouble(creditBalance == null ? credit : creditBalance) >= Double
                     .parseDouble(totalMoney)){
-                availableBalance.setText((creditBalance == null ? credit : creditBalance)+" 元");
-                moneyCanUse.setVisibility(View.VISIBLE);
+                availableBalance.setText((creditBalance == null ? credit : creditBalance)+" 元可用");
+//                moneyCanUse.setVisibility(View.VISIBLE);
                 moneyNotEnough.setVisibility(View.INVISIBLE);
             } else {
                 availableBalance.setText((creditBalance == null ? credit : creditBalance)+" 元");
                 iconChoose.setImageResource(R.mipmap.icon_gray);
                 moneyNotEnough.setVisibility(View.VISIBLE);
-                moneyCanUse.setVisibility(View.INVISIBLE);
+//                moneyCanUse.setVisibility(View.INVISIBLE);
             }
         }
     }
