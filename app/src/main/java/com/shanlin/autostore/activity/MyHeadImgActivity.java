@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.shanlin.autostore.BuildConfig;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
@@ -159,6 +158,7 @@ public class MyHeadImgActivity extends BaseActivity {
             case R.id.tv_head_pop_camera:
                 imgUrl = CameraUtil.getTempUri();
                 startActivityForResult(CameraUtil.takePicture(imgUrl), REQUEST_CODE_TAKE_PICTURE);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 break;
             default:
                 break;
@@ -211,6 +211,7 @@ public class MyHeadImgActivity extends BaseActivity {
                         startActivityForResult(CameraUtil.cropPhoto(this,imgUrl, imgUrl, 150, 150),
                                 REQ_CODE_CUT);
                     }
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
                     break;
                 case REQ_CODE_CUT:
                     Bitmap bitmap = CameraUtil.getBitmapByUri(this, imgUrl);

@@ -3,9 +3,7 @@ package com.shanlin.autostore.activity;
 import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +15,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.shanlin.autostore.R;
+import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.LogUtils;
 import com.shanlin.autostore.utils.MPermissionUtils;
@@ -26,15 +25,18 @@ import com.zhy.autolayout.utils.AutoUtils;
 /**
  * Created by DELL on 2017/7/19 0019.
  */
-public class XieYiAndHeTongActivity extends AppCompatActivity {
+public class XieYiAndHeTongActivity extends BaseActivity {
 
     private WebView agreementText;
     private Dialog mLoadingDialog;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_xieyi_and_he_tong);
+    public int initLayout() {
+        return R.layout.activity_xieyi_and_he_tong;
+    }
+
+    @Override
+    public void initView() {
         StatusBarUtils.setColor(this, Color.TRANSPARENT);
         agreementText = (WebView) findViewById(R.id.web_view);
         agreementText.setHorizontalScrollBarEnabled(false);//水平不显示
@@ -61,16 +63,20 @@ public class XieYiAndHeTongActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                dismissLoadingDialog();
+//                dismissLoadingDialog();
             }
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
                 LogUtils.d("onPageStarted------------" + System.currentTimeMillis());
-                showLoadingDialog();
+//                showLoadingDialog();
             }
         });
+    }
+
+    @Override
+    public void initData() {
 
     }
 
@@ -109,5 +115,10 @@ public class XieYiAndHeTongActivity extends AppCompatActivity {
         if (mLoadingDialog != null) {
             mLoadingDialog.dismiss();
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 }

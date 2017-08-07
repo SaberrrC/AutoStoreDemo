@@ -143,6 +143,7 @@ public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapt
                     Intent intent = new Intent(BuyRecordActivity.this, OrderDetailActivity.class);
                     intent.putExtra(Constant.ORDER_ITEM, bean);
                     startActivity(intent);
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 }
             });
             TextView tvItemTitle = (TextView) holder.getViewById(R.id.tv_item_title);//邻家无人值守便利店

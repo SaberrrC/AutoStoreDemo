@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
@@ -32,7 +32,7 @@ import retrofit2.Response;
 
 public class OpenLeMaiBao extends BaseActivity {
 
-    private Button      nextOrConfirm;
+    private TextView      nextOrConfirm;
     private View        line2Step1;
     private View        line2Step2;
     private View        rlStep1;
@@ -55,7 +55,7 @@ public class OpenLeMaiBao extends BaseActivity {
     @Override
     public void initView() {
         CommonUtils.initToolbar(this, "开启乐买宝", R.color.blcak, MainActivity.class);
-        nextOrConfirm = ((Button) findViewById(R.id.btn_nextstep_and_confirm));
+        nextOrConfirm = ((TextView) findViewById(R.id.btn_nextstep_and_confirm));
         findViewById(R.id.service_shou_quan_bottom).setOnClickListener(this);
         findViewById(R.id.tv_xie_yi).setOnClickListener(this);//合同
         findViewById(R.id.service_shou_quan).setOnClickListener(this);//信用授权
@@ -91,12 +91,14 @@ public class OpenLeMaiBao extends BaseActivity {
                 Intent intent1 = new Intent(this, XieYiAndHeTongActivity.class);
                 intent1.putExtra("state", 1);
                 startActivity(intent1);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 break;
 
             case R.id.service_shou_quan:
                 Intent intent2 = new Intent(this, XieYiAndHeTongActivity.class);
                 intent2.putExtra("state", 2);
                 startActivity(intent2);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 break;
         }
     }

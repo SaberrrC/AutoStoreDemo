@@ -131,6 +131,7 @@ public class GateActivity extends BaseActivity {
                                 Intent intent = new Intent(GateActivity.this, MainActivity.class);
                                 startActivity(intent);
                                 finish();
+                                overridePendingTransition(R.anim.left_in, R.anim.right_out);
                                 return;
                             }
                         }
@@ -144,6 +145,7 @@ public class GateActivity extends BaseActivity {
                 Intent intent = new Intent(GateActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 return;
             }
         });
@@ -196,6 +198,7 @@ public class GateActivity extends BaseActivity {
                             intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.GATE);
                             startActivity(intent);
                             finish();
+                            overridePendingTransition(R.anim.right_in, R.anim.left_out);
                             return;
                         }
                     }
