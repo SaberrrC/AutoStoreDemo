@@ -294,6 +294,12 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
         });
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+    }
+
     private void initCamera(SurfaceHolder surfaceHolder) {
         if (surfaceHolder == null) {
             throw new IllegalStateException("No SurfaceHolder provided");
