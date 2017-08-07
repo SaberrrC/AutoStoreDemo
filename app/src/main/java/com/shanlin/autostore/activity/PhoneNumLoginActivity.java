@@ -51,6 +51,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
     private View              iconAndTitle;
     private View              noVipTip;
     private boolean togon = false;//控制验证码edittext是否需要在第四位输入后进行操作
+//    private ProgressDialog progressDialog;
 
     @Override
     public int initLayout() {
@@ -109,6 +110,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
 
     @Override
     public void initData() {
+//        progressDialog = new ProgressDialog(this);
     }
 
     @Override
@@ -137,6 +139,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
         }
         mEtMsgCode.requestFocus();
         mBtnGetMsgCode.show(this, 60);
+//        progressDialog.show();
         deGetCodeFromNet();
     }
 
