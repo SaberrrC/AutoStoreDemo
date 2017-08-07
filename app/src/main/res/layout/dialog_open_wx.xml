@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="“邻家智能GO”想要打开“微信”"
-        android:textColor="#FF000000"
+        android:textColor="#99000000"
         android:textSize="18px"/>
 
     <View
@@ -44,7 +44,7 @@
             android:gravity="center"
             android:layout_height="47px"
             android:text="取消"
-            android:textColor="#FF000000"
+            android:textColor="#99000000"
             android:textSize="16px"
             />
 

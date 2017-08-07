@@ -28,6 +28,7 @@ import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.MPermissionUtils;
+import com.shanlin.autostore.utils.ProgressDialog;
 import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.StrUtils;
 import com.shanlin.autostore.utils.ToastUtils;
@@ -51,7 +52,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
     private View              iconAndTitle;
     private View              noVipTip;
     private boolean togon = false;//控制验证码edittext是否需要在第四位输入后进行操作
-//    private ProgressDialog progressDialog;
+    private ProgressDialog progressDialog;
 
     @Override
     public int initLayout() {
@@ -110,7 +111,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
 
     @Override
     public void initData() {
-//        progressDialog = new ProgressDialog(this);
+        progressDialog = new ProgressDialog(this);
     }
 
     @Override
@@ -139,7 +140,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
         }
         mEtMsgCode.requestFocus();
         mBtnGetMsgCode.show(this, 60);
-//        progressDialog.show();
+        progressDialog.show();
         deGetCodeFromNet();
     }
 
@@ -170,6 +171,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                     error(null, code, msg);
                     return;
                 }
+                progressDialog.dismiss();
                 ToastUtils.showToast(msg);
                 CommonUtils.checkPermission(PhoneNumLoginActivity.this, new MPermissionUtils.OnPermissionListener() {
                     @Override
@@ -189,8 +191,6 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                     public void onPermissionDenied() {
                     }
                 });
-
-
             }
 
             @Override

@@ -46,10 +46,8 @@
 
     <Button
         android:id="@+id/btn_diaolog_know"
-        android:layout_width="wrap_content"
-        android:layout_height="22px"
-        android:layout_marginBottom="16px"
-        android:layout_marginTop="12px"
+        android:layout_width="match_parent"
+        android:layout_height="50px"
         android:background="@null"
         android:text="知道了"
         android:textColor="#FFFCC70D"

@@ -20,6 +20,7 @@ import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.utils.CommonUtils;
+import com.shanlin.autostore.utils.ProgressDialog;
 import com.shanlin.autostore.utils.SpUtils;
 
 import retrofit2.Call;
@@ -46,6 +47,7 @@ public class OpenLeMaiBao extends BaseActivity {
     private EditText    etPswAgain;
     private String      token;
     private String      status;
+    private ProgressDialog progressDialog;
 
     @Override
     public int initLayout() {
@@ -77,6 +79,7 @@ public class OpenLeMaiBao extends BaseActivity {
     public void initData() {
         service = CommonUtils.doNet();
         token = SpUtils.getString(this, Constant.TOKEN, "");
+        progressDialog = new ProgressDialog(this);
     }
 
     @Override
@@ -119,6 +122,7 @@ public class OpenLeMaiBao extends BaseActivity {
                 CommonUtils.showToast(this,"身份证号码格式错误");
                 return;
             }
+            if (!progressDialog.isShowing()) progressDialog.show();
             //调用实名认证接口
             doRealNameAuthen(name, idNum);
         } else if (Constant_LeMaiBao.AUTHEN_REAL_NAME.equals(status)) {
@@ -140,7 +144,7 @@ public class OpenLeMaiBao extends BaseActivity {
                 etPswAgain.setText("");
                 return;
             }
-
+            if (!progressDialog.isShowing()) progressDialog.show();
             //调用密码认证接口
             doPswSetting(psw2);
         }
@@ -177,11 +181,10 @@ public class OpenLeMaiBao extends BaseActivity {
             public void onResponse(Call<PswSettingBean> call, Response<PswSettingBean> response) {
                 PswSettingBean body = response.body();
                 if (TextUtils.equals("200",body.getCode())) {
-                    CommonUtils.showToast(OpenLeMaiBao.this,body.getMessage());
                     finish();
-                } else {
-                    CommonUtils.showToast(OpenLeMaiBao.this, body.getMessage());
                 }
+                CommonUtils.showToast(OpenLeMaiBao.this, body.getMessage());
+                if (progressDialog.isShowing()) progressDialog.dismiss();
             }
 
             @Override
@@ -191,6 +194,7 @@ public class OpenLeMaiBao extends BaseActivity {
                 } else {
                     CommonUtils.showToast(OpenLeMaiBao.this,t.getMessage());
                 }
+                if (progressDialog.isShowing()) progressDialog.dismiss();
             }
         });
     }
@@ -202,11 +206,10 @@ public class OpenLeMaiBao extends BaseActivity {
             public void onResponse(Call<RealNameAuthenBean> call, Response<RealNameAuthenBean> response) {
                 RealNameAuthenBean body = response.body();
                 if (TextUtils.equals("200", body.getCode())) {
-                    CommonUtils.showToast(OpenLeMaiBao.this, body.getMessage());
                     changeUI(2);
-                } else {
-                    CommonUtils.showToast(OpenLeMaiBao.this, body.getMessage());
                 }
+                CommonUtils.showToast(OpenLeMaiBao.this, body.getMessage());
+                if (progressDialog.isShowing()) progressDialog.dismiss();
             }
 
             @Override
@@ -216,6 +219,7 @@ public class OpenLeMaiBao extends BaseActivity {
                 } else {
                     CommonUtils.showToast(OpenLeMaiBao.this,t.getMessage());
                 }
+                if (progressDialog.isShowing()) progressDialog.dismiss();
             }
         });
     }

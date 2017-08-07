@@ -39,6 +39,7 @@ import com.shanlin.autostore.constants.WXConstant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.IpTools;
+import com.shanlin.autostore.utils.ProgressDialog;
 import com.shanlin.autostore.view.XNumberKeyboardView;
 import com.shanlin.autostore.view.gridpasswordview.GridPasswordView;
 import com.shanlin.autostore.zhifubao.OrderInfoUtil2_0;
@@ -86,6 +87,7 @@ public class ChoosePayWayActivity extends BaseActivity{
     private String credit;
     private AlertDialog dialog;
     private TextView countDownTime;
+    private ProgressDialog progressDialog;
 
     @Override
     public int initLayout() {
@@ -133,12 +135,6 @@ public class ChoosePayWayActivity extends BaseActivity{
                 }
             }
         });
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        finish();
     }
 
     private void initPopwindow() {
@@ -214,6 +210,7 @@ public class ChoosePayWayActivity extends BaseActivity{
                 popTop.dismiss();
                 popBottom.dismiss();
                 //调用乐买宝支付接口
+                progressDialog.show();
                 leMaiBaoPay(psw);
             }
         });
@@ -232,9 +229,11 @@ public class ChoosePayWayActivity extends BaseActivity{
                     LeMaiBaoPayResultBean.DataBean data = body.getData();
                     String payStatus = data.getPayStatus();
                     if ("3".equals(payStatus)) {
+                        progressDialog.dismiss();
                         CommonUtils.showToast(ChoosePayWayActivity.this,"支付密码错误,请重新输入!");
                         showInputPswPop();
                     } else if ("1".equals(payStatus)){
+                        progressDialog.dismiss();
                         CommonUtils.showToast(ChoosePayWayActivity.this,"支付成功!");
                         CommonUtils.sendDataToNextActivity(ChoosePayWayActivity.this,
                                 PayResultActivity.class,keys,new String[]{data.getPayAmount(),
@@ -242,13 +241,14 @@ public class ChoosePayWayActivity extends BaseActivity{
                         finish();
                     }
                 } else {
+                    progressDialog.dismiss();
                     CommonUtils.showToast(ChoosePayWayActivity.this,body.getMessage());
                 }
             }
 
             @Override
             public void onFailure(Call<LeMaiBaoPayResultBean> call, Throwable t) {
-
+                    progressDialog.dismiss();
             }
         });
     }
@@ -265,6 +265,7 @@ public class ChoosePayWayActivity extends BaseActivity{
         totalAmount.setText("¥"+ (totalMoney == null ? "0.00" : totalMoney));
         moneyNeedToPay.setText("¥"+ (totalMoney == null ? "0.00" : totalMoney));
         service = CommonUtils.doNet();
+        progressDialog = new ProgressDialog(this);
     }
 
     private void doAliPay(String deviceId, String orderNo, String totalMoney, String storeId,

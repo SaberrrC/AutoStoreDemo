@@ -110,7 +110,7 @@ public class MainActivity extends BaseActivity {
     private       String         creditUsed;
     private       ImageView      headImage;
     private       String         credit;
-    private       AlertDialog    dialog;
+    private       Dialog    dialog;
     public static boolean        state;
     private       WxUserInfoBean mWxUserInfoBean;
     private       int            maleCount;
@@ -255,9 +255,10 @@ public class MainActivity extends BaseActivity {
             View inflate = LayoutInflater.from(this).inflate(R.layout.get_available_balence_layout, null);
             inflate.findViewById(R.id.btn_diaolog_know).setOnClickListener(this);
             TextView tvCredit = ((TextView) inflate.findViewById(R.id.tv_credit_num));
-            dialog = new AlertDialog.Builder(MainActivity.this).setView(inflate).create();
+            dialog = new Dialog (MainActivity.this);
+            dialog.setContentView(inflate);
+            dialog.setCanceledOnTouchOutside(false);
             tvCredit.setText(credit + "元可用额度");
-            dialog.setCancelable(false);
             dialog.show();
         }
     }

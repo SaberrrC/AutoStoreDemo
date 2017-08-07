@@ -53,7 +53,7 @@ import retrofit2.Response;
 public class LoginActivity extends BaseActivity {
     public static final int    REQUEST_CODE_LOGIN = 100;
     public static final String TYPE_WX            = "1";
-    private AlertDialog  WxLoginDialog;
+    private Dialog  WxLoginDialog;
     private View         dialogOpenWX;
     //微信登录
     private SendAuth.Req req;
@@ -86,7 +86,9 @@ public class LoginActivity extends BaseActivity {
         dialogOpenWX = LayoutInflater.from(this).inflate(R.layout.dialog_open_wx, null);
         dialogOpenWX.findViewById(R.id.tv_open).setOnClickListener(this);
         dialogOpenWX.findViewById(R.id.tv_concel).setOnClickListener(this);
-        WxLoginDialog = new AlertDialog.Builder(this).setView(dialogOpenWX).create();
+        WxLoginDialog = new Dialog(this, R.style.MyDialogWithAnim);
+        WxLoginDialog.setContentView(dialogOpenWX);
+        WxLoginDialog.setCanceledOnTouchOutside(false);
         //人脸识别
         initLiveness();
     }
