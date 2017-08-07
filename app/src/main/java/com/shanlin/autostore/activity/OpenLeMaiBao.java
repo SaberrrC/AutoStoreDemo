@@ -181,6 +181,7 @@ public class OpenLeMaiBao extends BaseActivity {
                 if (TextUtils.equals("200",body.getCode())) {
                     CommonUtils.showToast(OpenLeMaiBao.this,body.getMessage());
                     finish();
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 } else {
                     CommonUtils.showToast(OpenLeMaiBao.this, body.getMessage());
                 }
