@@ -239,6 +239,7 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
 
         //扫描订单处理逻辑
         service = com.shanlin.autostore.utils.CommonUtils.doNet();
+        Log.d(TAG, "result=---------"+result);
         if (result.contains("orderNo")) {
             //订单号信息
             ZXingOrderBean zXingOrderBean = gson.fromJson(result, ZXingOrderBean.class);
