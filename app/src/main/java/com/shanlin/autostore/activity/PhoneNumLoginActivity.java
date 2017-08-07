@@ -268,6 +268,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                 startActivity(intent);
                 killActivity(LoginActivity.class);
                 finish();
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
 
             @Override

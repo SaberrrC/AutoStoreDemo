@@ -128,6 +128,7 @@ public class RefundMoneyActivity extends BaseActivity implements FinalRecycleAda
         switch (v.getId()) {
             case R.id.tv_explain:
                 startActivity(new Intent(this, RefundExplainActivity.class));
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 break;
         }
     }

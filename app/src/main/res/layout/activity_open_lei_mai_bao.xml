@@ -283,7 +283,7 @@
         </RelativeLayout>
     </FrameLayout>
 
-    <Button
+    <TextView
         android:id="@+id/btn_nextstep_and_confirm"
         android:layout_width="220px"
         android:layout_height="43px"
@@ -291,6 +291,7 @@
         android:layout_marginTop="34.6px"
         android:background="@drawable/select_bg_bt_save"
         android:text="下一步"
+        android:gravity="center"
         android:textColor="@color/white"
         android:textSize="16px"/>
 
@@ -298,7 +299,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8px"
+        android:layout_marginTop="10px"
         android:gravity="center_horizontal">
 
         <TextView
@@ -307,7 +308,7 @@
             android:layout_height="wrap_content"
             android:text="点击下一步,表示您阅读并同意"
             android:textColor="@color/gray_595959"
-            android:textSize="12px"
+            android:textSize="14px"
             />
 
         <TextView
@@ -318,7 +319,7 @@
             android:clickable="true"
             android:text="《乐买宝用户"
             android:textColor="#43A5D8"
-            android:textSize="12px"
+            android:textSize="14px"
             />
 
         <LinearLayout
@@ -336,7 +337,7 @@
                 android:gravity="center_horizontal"
                 android:text="服务合同》"
                 android:textColor="#43A5D8"
-                android:textSize="12px"
+                android:textSize="14px"
                 />
 
             <TextView
@@ -348,7 +349,7 @@
                 android:gravity="center_horizontal"
                 android:text="《善林信用服务及授权》"
                 android:textColor="#43A5D8"
-                android:textSize="12px"/>
+                android:textSize="14px"/>
 
         </LinearLayout>
 

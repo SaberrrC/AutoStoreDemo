@@ -125,6 +125,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initView() {
         StatusBarUtils.setColor(this, Color.WHITE);
+        setTransAnim(false);
         mDrawerLayout = ((DrawerLayout) findViewById(R.id.activity_main));
         mTvIdentify = (TextView) findViewById(R.id.identify_tip);
         headImage = (ImageView) findViewById(R.id.iv_head_img);//头像
@@ -317,7 +318,7 @@ public class MainActivity extends BaseActivity {
             //更新上传成功后的用户信息
             this.imageUrl = imageUrl;
             SpUtils.saveString(this,Constant.USER_HEAD_URL,imageUrl);
-            Glide.with(getApplicationContext()).load(imageUrl).asBitmap().placeholder(R.mipmap.head_default).error(R.mipmap.head_default).diskCacheStrategy(DiskCacheStrategy.ALL) //设置缓存
+            Glide.with(getApplicationContext()).load(imageUrl).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL) //设置缓存
                     .into(new BitmapImageViewTarget(headImage) {
                         @Override
                         protected void setResource(Bitmap resource) {
@@ -446,12 +447,14 @@ public class MainActivity extends BaseActivity {
             case R.id.btn_lemaibao:
                 if (!openLMB.isClickable()) {
                     CommonUtils.sendDataToNextActivity(this, MyLeMaiBaoActivity.class, creditKeys, new String[]{creditBalance, creditUsed});
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 }
                 break;
             case R.id.btn_open_le_mai_bao: //开通乐买宝
                 if (openLMB.isClickable()) {
                     CommonUtils.debugLog("-----------开通乐买宝");
                     CommonUtils.toNextActivity(this, OpenLeMaiBao.class);
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 }
                 break;
             case R.id.identify_tip://完善身份，智能购物
@@ -461,6 +464,7 @@ public class MainActivity extends BaseActivity {
                         Intent intent = new Intent(MainActivity.this, LivenessActivity.class);
                         intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.GATE);
                         startActivityForResult(intent, REQUEST_CODE_REGEST);
+                        overridePendingTransition(R.anim.right_in, R.anim.left_out);
                     }
 
                     @Override
@@ -473,6 +477,7 @@ public class MainActivity extends BaseActivity {
                 Intent refundMoneyIntent = new Intent(this, RefundMoneyActivity.class);
                 refundMoneyIntent.putExtra(Constant.REFUND_MONEY_BEAN, refundMoneyBean);
                 startActivity(refundMoneyIntent);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 break;
 
             case R.id.btn_diaolog_know:
@@ -498,6 +503,7 @@ public class MainActivity extends BaseActivity {
                 Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
                 intent.putExtra(Constant_LeMaiBao.CREDIT_BALANCE, creditBalance);
                 startActivityForResult(intent, REQUEST_CODE_SCAN);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
 
             @Override

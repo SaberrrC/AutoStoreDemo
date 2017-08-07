@@ -123,6 +123,12 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         mIDetection.viewsInit();
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+    }
+
     /**
      * 初始化数据
      */

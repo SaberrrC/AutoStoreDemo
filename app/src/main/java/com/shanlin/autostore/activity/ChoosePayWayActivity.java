@@ -304,6 +304,7 @@ public class ChoosePayWayActivity extends BaseActivity{
                 if (!Constant_LeMaiBao.AUTHEN_FINISHED.equals(status)) {
                     //开通乐买宝
                     CommonUtils.toNextActivity(this,OpenLeMaiBao.class);
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 } else {
                     //买乐宝支付
                     showInputPswPop();
@@ -454,6 +455,7 @@ public class ChoosePayWayActivity extends BaseActivity{
                     Constant_LeMaiBao.PAY_TIME},new String[]{message,totalMoney,CommonUtils
                     .getCurrentTime(true)});
             finish();
+            overridePendingTransition(R.anim.right_in, R.anim.left_out);
         }
     }
 

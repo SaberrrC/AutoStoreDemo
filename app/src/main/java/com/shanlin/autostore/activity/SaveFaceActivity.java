@@ -81,6 +81,7 @@ public class SaveFaceActivity extends BaseActivity {
             Intent intent = new Intent(SaveFaceActivity.this, MainActivity.class);
             intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.FACE_REGESTED_OK);
             startActivity(intent);
+            overridePendingTransition(R.anim.right_in, R.anim.left_out);
         }
 
         @Override

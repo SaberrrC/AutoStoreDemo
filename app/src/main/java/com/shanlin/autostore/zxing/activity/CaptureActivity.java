@@ -234,6 +234,7 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
             Intent intent = new Intent(this, GateActivity.class);
             intent.putExtra(Constant.QR_GARD, result);
             startActivity(intent);
+            overridePendingTransition(R.anim.right_in, R.anim.left_out);
             return;
         }
 
@@ -250,6 +251,7 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
         } else {
             com.shanlin.autostore.utils.CommonUtils.showToast(this,"扫描超时,请重试");
             finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         }
 
         bundle.putInt("width", mCropRect.width());
@@ -277,9 +279,11 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
                     String totalAmount = response.body().getData().getTotalAmount();//应付总金额
                     com.shanlin.autostore.utils.CommonUtils.sendDataToNextActivity(CaptureActivity.this, ChoosePayWayActivity.class, aliArgs, new String[]{devicedID, orderNo, totalAmount, "2", token, creditBalence});
                     CaptureActivity.this.finish();
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 } else {
                     ToastUtils.showToast("二维码无法识别");
                     finish();
+                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 }
             }
 
@@ -288,6 +292,12 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
                 Log.d(TAG, "------------------error=" + t.getMessage());
             }
         });
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.left_in, R.anim.right_out);
     }
 
     private void initCamera(SurfaceHolder surfaceHolder) {

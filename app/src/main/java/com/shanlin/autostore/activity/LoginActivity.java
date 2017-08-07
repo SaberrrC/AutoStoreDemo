@@ -79,6 +79,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void initView() {
         EventBus.getDefault().register(this);
+        setTransAnim(false);
         mLoginActivity = this;
         findViewById(R.id.btn_login_by_face).setOnClickListener(this);
         findViewById(R.id.btn_login_by_phone).setOnClickListener(this);
@@ -120,6 +121,7 @@ public class LoginActivity extends BaseActivity {
                         //CommonUtils.toNextActivity(LoginActivity.this, MainActivity.class);
                         Intent intent = new Intent(LoginActivity.this, LivenessActivity.class);
                         startActivityForResult(intent, REQUEST_CODE_LOGIN);
+                        overridePendingTransition(R.anim.right_in, R.anim.left_out);
                     }
 
                     @Override
@@ -130,6 +132,7 @@ public class LoginActivity extends BaseActivity {
                 break;
             case R.id.btn_login_by_phone://手机号登陆
                 CommonUtils.toNextActivity(this, PhoneNumLoginActivity.class);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 break;
             case R.id.btn_login_by_wx://微信登陆
                 if (!CommonUtils.checkNet()) {
@@ -232,6 +235,7 @@ public class LoginActivity extends BaseActivity {
                             intent.putExtra(Constant.USER_INFO, data);
                             startActivity(intent);
                             finish();
+                            overridePendingTransition(R.anim.right_in, R.anim.left_out);
                         }
                     }
 
@@ -321,6 +325,7 @@ public class LoginActivity extends BaseActivity {
                             intent.putExtra(Constant.WX_INFO, wxUserInfoBean);
                             // TODO: 2017-7-28 把微信消息传过去
                             startActivity(intent);
+                            overridePendingTransition(R.anim.right_in, R.anim.left_out);
                         }
                         if (TextUtils.equals(data.getData().getFaceVerify(), "1")) {
                             //已经验证 保存token和手机号 跳转到主页

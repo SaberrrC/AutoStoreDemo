@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.shanlin.autostore.R;
 import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
 
@@ -65,5 +66,19 @@ public abstract class BaseActivity extends SoftInputBaseActivity implements View
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         MPermissionUtils.onRequestPermissionsResult(requestCode, permissions, grantResults);
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    public boolean transAnim = true;
+
+    public void setTransAnim(boolean transAnim) {
+        this.transAnim = transAnim;
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        if (transAnim) {
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
+        }
     }
 }

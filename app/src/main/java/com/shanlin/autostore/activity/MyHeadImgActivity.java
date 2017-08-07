@@ -158,6 +158,7 @@ public class MyHeadImgActivity extends BaseActivity {
             case R.id.tv_head_pop_camera:
                 imgUrl = CameraUtil.getTempUri();
                 startActivityForResult(CameraUtil.takePicture(imgUrl), REQUEST_CODE_TAKE_PICTURE);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 break;
             default:
                 break;
@@ -210,6 +211,7 @@ public class MyHeadImgActivity extends BaseActivity {
                         startActivityForResult(CameraUtil.cropPhoto(this,imgUrl, imgUrl, 150, 150),
                                 REQ_CODE_CUT);
                     }
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
                     break;
                 case REQ_CODE_CUT:
                     Bitmap bitmap = CameraUtil.getBitmapByUri(this, imgUrl);
