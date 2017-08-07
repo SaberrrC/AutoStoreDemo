@@ -13,58 +13,63 @@
         android:layout_height="1px"
         android:background="#F5F5F5"/>
 
-    <Space
+    <!--<Space-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="5px"-->
+        <!--android:background="@color/main_bg"/>-->
+    
+    <ImageView
+        android:src="@mipmap/image_pay"
         android:layout_width="match_parent"
-        android:layout_height="5px"
-        android:background="@color/main_bg"/>
+        android:layout_height="127.4px"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@color/white"
-        android:gravity="center_horizontal"
-        android:paddingBottom="10px"
-        android:paddingTop="18px"
-        android:text="开启乐买宝,最高"
-        android:textColor="#FF333333"
-        android:textSize="16px"
-        />
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:background="@color/white"-->
+        <!--android:gravity="center_horizontal"-->
+        <!--android:paddingBottom="10px"-->
+        <!--android:paddingTop="18px"-->
+        <!--android:text="开启乐买宝,最高"-->
+        <!--android:textColor="#FF333333"-->
+        <!--android:textSize="16px"-->
+        <!--/>-->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:paddingBottom="19.5px">
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@color/white"-->
+        <!--android:gravity="center_horizontal"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:paddingBottom="19.5px">-->
 
-        <TextView
-            android:layout_width="41px"
-            android:layout_height="30px"
-            android:text="领取"
-            android:textColor="#FF151515"
-            android:textSize="20px"
-            />
+        <!--<TextView-->
+            <!--android:layout_width="41px"-->
+            <!--android:layout_height="30px"-->
+            <!--android:text="领取"-->
+            <!--android:textColor="#FF151515"-->
+            <!--android:textSize="20px"-->
+            <!--/>-->
 
-        <TextView
-            android:layout_width="58px"
-            android:layout_height="30px"
-            android:layout_marginLeft="5px"
-            android:text="500元"
-            android:textColor="#FF0000"
-            android:textSize="20px"
-            />
+        <!--<TextView-->
+            <!--android:layout_width="58px"-->
+            <!--android:layout_height="30px"-->
+            <!--android:layout_marginLeft="5px"-->
+            <!--android:text="500元"-->
+            <!--android:textColor="#FF0000"-->
+            <!--android:textSize="20px"-->
+            <!--/>-->
 
-        <TextView
-            android:layout_width="41px"
-            android:layout_height="30px"
-            android:layout_marginLeft="5px"
-            android:text="额度"
-            android:textColor="#FF151515"
-            android:textSize="20px"
-            />
-    </LinearLayout>
+        <!--<TextView-->
+            <!--android:layout_width="41px"-->
+            <!--android:layout_height="30px"-->
+            <!--android:layout_marginLeft="5px"-->
+            <!--android:text="额度"-->
+            <!--android:textColor="#FF151515"-->
+            <!--android:textSize="20px"-->
+            <!--/>-->
+    <!--</LinearLayout>-->
 
     <Space
         android:layout_width="match_parent"
@@ -284,7 +289,7 @@
         android:layout_height="43px"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="34.6px"
-        android:background="@mipmap/btn_next_step_bg"
+        android:background="@drawable/select_bg_bt_save"
         android:text="下一步"
         android:textColor="@color/white"
         android:textSize="16px"/>

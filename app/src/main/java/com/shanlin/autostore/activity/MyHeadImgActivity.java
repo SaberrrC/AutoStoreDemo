@@ -14,10 +14,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.shanlin.autostore.BuildConfig;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
@@ -31,6 +33,8 @@ import com.shanlin.autostore.utils.CameraUtil;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
+import com.shanlin.autostore.utils.ToastUtils;
+import com.theartofdev.edmodo.cropper.CropImage;
 import com.yancy.imageselector.ImageConfig;
 import com.yancy.imageselector.ImageSelector;
 import com.yancy.imageselector.ImageSelectorActivity;
@@ -140,7 +144,9 @@ public class MyHeadImgActivity extends BaseActivity {
         switch (v.getId()) {
 
             case R.id.btn_change_head_img:
-                showPopWindow();
+//                showPopWindow();
+                CropImage.activity()
+                        .start(this);
                 break;
             case R.id.tv_head_pop_concel:
                 if (popHeadChoose.isShowing()) {
@@ -177,6 +183,21 @@ public class MyHeadImgActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                Bitmap bitmap = CameraUtil.getBitmapByUri(this, resultUri);
+                imgLarge.setImageBitmap(bitmap);
+                sendImgToServer(bitmap);
+                return;
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+                ToastUtils.showToast("请重试");
+                return;
+            }
+        }
 
         if (resultCode == RESULT_OK) {
 
@@ -221,7 +242,7 @@ public class MyHeadImgActivity extends BaseActivity {
      * 上传头像到服务器
      */
     private void sendImgToServer(Bitmap bitmap) {
-
+        Toast.makeText(this, "正在上传用户头像信息，请稍等", Toast.LENGTH_LONG).show();
         String s = CommonUtils.bitmapToBase64(bitmap);
 
         Call<MemberUpdateBean> call = service.postMemberUpdate(token, new MemberUpdateSendBean(s, JPushInterface
@@ -229,6 +250,7 @@ public class MyHeadImgActivity extends BaseActivity {
         call.enqueue(new CustomCallBack<MemberUpdateBean>() {
             @Override
             public void success(String code, MemberUpdateBean data, String msg) {
+                Log.e("oye", "success: "+msg);
                 CommonUtils.debugLog(msg+"-------------");
                 setResult(RESULT_OK);
                 finish();
@@ -236,7 +258,7 @@ public class MyHeadImgActivity extends BaseActivity {
 
             @Override
             public void error(Throwable ex, String code, String msg) {
-
+                Log.e("oye", "error: ", ex);
             }
         });
     }

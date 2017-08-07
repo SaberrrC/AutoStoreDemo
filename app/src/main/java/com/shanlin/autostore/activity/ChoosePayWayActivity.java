@@ -1,5 +1,6 @@
 package com.shanlin.autostore.activity;
 
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -80,10 +82,10 @@ public class ChoosePayWayActivity extends BaseActivity{
     private View way3;
     private Intent intent;
     private TextView moneyNotEnough;
-//    private TextView moneyCanUse;
     private String status;
     private String credit;
     private AlertDialog dialog;
+    private TextView countDownTime;
 
     @Override
     public int initLayout() {
@@ -95,7 +97,6 @@ public class ChoosePayWayActivity extends BaseActivity{
         CommonUtils.initToolbar(this,"选择支付方式",R.color.blcak, MainActivity.class);
         availableBalance = ((TextView) findViewById(R.id.get_avaiable_balence));//显示可用余额
         moneyNotEnough = ((TextView) findViewById(R.id.tv_not_enough));//余额不足
-//        moneyCanUse = ((TextView) findViewById(R.id.tv_can_use));//可用余额
         way1 = findViewById(R.id.ll_pay_way_1);
         way1.setOnClickListener(this);
         way2 = findViewById(R.id.ll_pay_way_2);
@@ -104,6 +105,8 @@ public class ChoosePayWayActivity extends BaseActivity{
         way3.setOnClickListener(this);
         iconChoose = ((ImageView) findViewById(R.id.iv_icon_choose));//圆形logo根据状态切换
         totalAmount = (TextView)findViewById(R.id.tv_totla_amount_to_pay);//应付总额
+        countDownTime = (TextView)findViewById(R.id.tv_countdown_time);//应付总额
+//        intPayTiem();
         dialogView = LayoutInflater.from(this).inflate(R.layout.input_psw_dialog_layout, null);
         dialogView.findViewById(R.id.iv_close_dialog).setOnClickListener(this);
         moneyNeedToPay = ((TextView) dialogView.findViewById(R.id.money_need_to_pay));
@@ -112,6 +115,30 @@ public class ChoosePayWayActivity extends BaseActivity{
         initPopwindow();
         initKeyBoard();
         EventBus.getDefault().register(this);
+    }
+
+    private void intPayTiem() {
+        ValueAnimator animator = ValueAnimator.ofInt(180,0);
+        animator.setDuration(180000);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.start();
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int value = (int) animation.getAnimatedValue();
+                countDownTime.setText("剩余支付时间: "+value +"s");
+                if (value == 0) {
+                    finish();
+                    CommonUtils.showToast(ChoosePayWayActivity.this,"订单已失效,请重新下单");
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
     }
 
     private void initPopwindow() {
@@ -401,20 +428,17 @@ public class ChoosePayWayActivity extends BaseActivity{
         if (!Constant_LeMaiBao.AUTHEN_FINISHED.equals(status)) {
             availableBalance.setText("领取额度");
             moneyNotEnough.setVisibility(View.INVISIBLE);
-//            moneyCanUse.setVisibility(View.INVISIBLE);
             iconChoose.setImageResource(R.mipmap.icon_yellow);
         } else {
             iconChoose.setImageResource(R.mipmap.icon_yellow);
             if (Double.parseDouble(creditBalance == null ? credit : creditBalance) >= Double
                     .parseDouble(totalMoney)){
                 availableBalance.setText((creditBalance == null ? credit : creditBalance)+" 元可用");
-//                moneyCanUse.setVisibility(View.VISIBLE);
                 moneyNotEnough.setVisibility(View.INVISIBLE);
             } else {
                 availableBalance.setText((creditBalance == null ? credit : creditBalance)+" 元");
                 iconChoose.setImageResource(R.mipmap.icon_gray);
                 moneyNotEnough.setVisibility(View.VISIBLE);
-//                moneyCanUse.setVisibility(View.INVISIBLE);
             }
         }
     }
