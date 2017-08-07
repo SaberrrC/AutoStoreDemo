@@ -2,6 +2,7 @@ package com.shanlin.autostore.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.text.TextUtils;
@@ -29,6 +30,7 @@ import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CameraUtil;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.SpUtils;
+import com.shanlin.autostore.utils.StatusBarUtils;
 import com.yancy.imageselector.ImageConfig;
 import com.yancy.imageselector.ImageSelector;
 import com.yancy.imageselector.ImageSelectorActivity;
@@ -64,6 +66,7 @@ public class MyHeadImgActivity extends BaseActivity {
     @Override
     public void initView() {
         CommonUtils.initToolbar(this,"我的头像", R.color.blcak, MainActivity.class);
+        StatusBarUtils.setColor(this, Color.WHITE);
         ((Button) findViewById(R.id.btn_change_head_img)).setOnClickListener(this);
         imgLarge = (ImageView) findViewById(R.id.iv_head_img_large);
         initPop();

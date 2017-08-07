@@ -25,6 +25,7 @@ import com.shanlin.autostore.utils.LogUtils;
 import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
+import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.utils.VersionManagementUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -37,7 +38,7 @@ import retrofit2.Response;
  * Created by DELL on 2017/7/16 0016.
  */
 
-public class SplashActivity extends Activity implements ValueAnimator.AnimatorUpdateListener {
+public class SplashActivity extends Activity  {
 
     private AlertDialog updateDialog;
     private int         forceUpdate;
@@ -49,29 +50,35 @@ public class SplashActivity extends Activity implements ValueAnimator.AnimatorUp
         StatusBarUtils.setColor(this, Color.TRANSPARENT);
         EventBus.getDefault().post(new WxMessageEvent());
         LogUtils.d("token  " + SpUtils.getString(this, Constant.TOKEN, ""));
-        loadAnim();
+//        loadAnim();
+        ThreadUtils.runMainDelayed(new Runnable() {
+            @Override
+            public void run() {
+                CommonUtils.checkPermission(SplashActivity.this, new MPermissionUtils.OnPermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                        CommonUtils.getDevicedID();
+                        CommonUtils.netWorkWarranty();
+                        checkUpdate();
+                    }
+
+                    @Override
+                    public void onPermissionDenied() {
+                        MPermissionUtils.showTipsDialog(SplashActivity.this);
+                    }
+                });
+            }
+        }, 2000);
     }
 
-    @Override
-    public void onAnimationUpdate(ValueAnimator valueAnimator) {
-        int curValue = (int) valueAnimator.getAnimatedValue();
-        if (curValue != 0) {
-            return;
-        }
-        CommonUtils.checkPermission(this, new MPermissionUtils.OnPermissionListener() {
-            @Override
-            public void onPermissionGranted() {
-                CommonUtils.getDevicedID();
-                CommonUtils.netWorkWarranty();
-                checkUpdate();
-            }
-
-            @Override
-            public void onPermissionDenied() {
-                MPermissionUtils.showTipsDialog(SplashActivity.this);
-            }
-        });
-    }
+//    @Override
+//    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+//        int curValue = (int) valueAnimator.getAnimatedValue();
+//        if (curValue != 0) {
+//            return;
+//        }
+//
+//    }
 
     private void checkToken() {
         String token = SpUtils.getString(this, Constant.TOKEN, "");
@@ -133,8 +140,8 @@ public class SplashActivity extends Activity implements ValueAnimator.AnimatorUp
     @Override
     protected void onRestart() {
         super.onRestart();
-        if (forceUpdate != 1)
-            loadAnim();
+//        if (forceUpdate != 1)
+//            loadAnim();
     }
 
     private void checkUpdate() {
@@ -252,7 +259,7 @@ public class SplashActivity extends Activity implements ValueAnimator.AnimatorUp
         ValueAnimator animator = ValueAnimator.ofInt(2, 0);
         animator.setInterpolator(new LinearInterpolator());
         animator.setDuration(2000);
-        animator.addUpdateListener(this);
+//        animator.addUpdateListener(this);
         animator.start();
     }
 

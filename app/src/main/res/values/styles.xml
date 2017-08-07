@@ -37,7 +37,7 @@
         <!--是否模糊-->
         <item name="android:backgroundDimEnabled">true</item>
     </style>
-        <!--带动画的dialog-->
+    <!--带动画的dialog-->
     <style name="MyDialogWithAnim" parent="MyDialogCheckVersion">
         <item name="android:windowAnimationStyle">@style/ActionSheetDialogAnimation</item>
     </style>
@@ -46,6 +46,7 @@
         <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
         <item name="android:windowExitAnimation">@anim/dialog_exit</item>
     </style>
+
     <declare-styleable name="ProgressView">
         <attr name="radius" format="integer"></attr>
         <attr name="size_text" format="dimension|reference"></attr>
@@ -127,4 +128,7 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    <style name="SplashTheme" parent="SplashThemeFullScreen">
+        <item name="android:windowBackground">@mipmap/page_splash</item>
+    </style>
 </resources>
