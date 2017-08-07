@@ -39,7 +39,6 @@ import retrofit2.Response;
 
 public class SplashActivity extends Activity implements ValueAnimator.AnimatorUpdateListener {
 
-
     private AlertDialog updateDialog;
     private int         forceUpdate;
 

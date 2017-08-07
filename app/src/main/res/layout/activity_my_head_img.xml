@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:background="#000"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:background="#000"
+              android:fitsSystemWindows="true"
+              android:orientation="vertical">
 
     <include layout="@layout/toolbar_layout"></include>
 
     <ImageView
         android:id="@+id/iv_head_img_large"
-        android:layout_marginTop="76dp"
-        android:layout_gravity="center"
-        android:src="@mipmap/head_img"
         android:layout_width="375dp"
-        android:layout_height="375dp"/>
+        android:layout_height="375dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="76dp"
+        android:src="@mipmap/head_img"/>
 
     <Button
         android:id="@+id/btn_change_head_img"
-        android:background="@null"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="36dp"
         android:layout_width="wrap_content"
         android:layout_height="19dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="36dp"
+        android:background="@null"
         android:text="更换头像"
         android:textColor="#FFFFFFFF"
         android:textSize="16sp"
