@@ -6,15 +6,19 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
     <include layout="@layout/toolbar_layout"></include>
-
+    <View
+        android:background="#2000"
+        android:layout_width="match_parent"
+        android:layout_height="1px"></View>
     <TextView
-        android:layout_marginTop="5px"
+        android:visibility="invisible"
+        android:id="@+id/tv_countdown_time"
         android:gravity="right|center_vertical"
         android:paddingRight="20px"
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="50px"
-        android:text="支付时间：3:00:00"
+        android:text="支付时间：180s"
         android:textColor="#FF666666"
         android:textSize="14px"
         />

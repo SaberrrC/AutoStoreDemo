@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
@@ -20,6 +21,7 @@ import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.SpUtils;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -64,7 +66,6 @@ public class OpenLeMaiBao extends BaseActivity {
         line2Step2 = findViewById(R.id.line2_step2);
         rlStep1 = findViewById(R.id.rl_step1);
         rlStep2 = findViewById(R.id.rl_step2);
-
         //姓名和身份证,密码
         etName = ((EditText) findViewById(R.id.et_name));
         etIdNum = ((EditText) findViewById(R.id.et_id_num));
@@ -160,7 +161,11 @@ public class OpenLeMaiBao extends BaseActivity {
 
             @Override
             public void onFailure(Call<UserVertifyStatusBean> call, Throwable t) {
-                CommonUtils.debugLog(t.getMessage());
+                if (!CommonUtils.checkNet()) {
+                    CommonUtils.showToast(OpenLeMaiBao.this,"网络错误");
+                } else {
+                    CommonUtils.showToast(OpenLeMaiBao.this,t.getMessage());
+                }
             }
         });
     }
@@ -181,7 +186,11 @@ public class OpenLeMaiBao extends BaseActivity {
 
             @Override
             public void onFailure(Call<PswSettingBean> call, Throwable t) {
-                CommonUtils.debugLog(t.getMessage());
+                if (!CommonUtils.checkNet()) {
+                    CommonUtils.showToast(OpenLeMaiBao.this,"网络错误");
+                } else {
+                    CommonUtils.showToast(OpenLeMaiBao.this,t.getMessage());
+                }
             }
         });
     }
@@ -202,7 +211,11 @@ public class OpenLeMaiBao extends BaseActivity {
 
             @Override
             public void onFailure(Call<RealNameAuthenBean> call, Throwable t) {
-                CommonUtils.debugLog(t.getMessage());
+                if (!CommonUtils.checkNet()) {
+                    CommonUtils.showToast(OpenLeMaiBao.this,"网络错误");
+                } else {
+                    CommonUtils.showToast(OpenLeMaiBao.this,t.getMessage());
+                }
             }
         });
     }
