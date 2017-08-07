@@ -313,6 +313,9 @@ public class MainActivity extends BaseActivity {
 
     private void setHeadImg(String imageUrl) {
         if (!TextUtils.isEmpty(imageUrl)) {
+            //更新上传成功后的用户信息
+            this.imageUrl = imageUrl;
+            SpUtils.saveString(this,Constant.USER_HEAD_URL,imageUrl);
             Glide.with(getApplicationContext()).load(imageUrl).asBitmap().placeholder(R.mipmap.head_default).error(R.mipmap.head_default).diskCacheStrategy(DiskCacheStrategy.ALL) //设置缓存
                     .into(new BitmapImageViewTarget(headImage) {
                         @Override

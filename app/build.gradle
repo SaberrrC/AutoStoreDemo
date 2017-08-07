@@ -41,7 +41,7 @@ android {
 
     buildTypes {
         debug {
-            debuggable true
+//            debuggable true
             zipAlignEnabled false
             shrinkResources false
             minifyEnabled false
