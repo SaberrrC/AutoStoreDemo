@@ -26,6 +26,7 @@ import com.shanlin.autostore.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
 import com.shanlin.autostore.utils.ThreadUtils;
+import com.shanlin.autostore.utils.ToastUtils;
 import com.shanlin.autostore.utils.VersionManagementUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -38,10 +39,11 @@ import retrofit2.Response;
  * Created by DELL on 2017/7/16 0016.
  */
 
-public class SplashActivity extends Activity  {
+public class SplashActivity extends Activity {
 
     private AlertDialog updateDialog;
-    private int         forceUpdate;
+    private String      forceUpdate;
+    private static final int REQUEST_CODE_DOWN = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +52,7 @@ public class SplashActivity extends Activity  {
         StatusBarUtils.setColor(this, Color.TRANSPARENT);
         EventBus.getDefault().post(new WxMessageEvent());
         LogUtils.d("token  " + SpUtils.getString(this, Constant.TOKEN, ""));
-//        loadAnim();
+        //        loadAnim();
         ThreadUtils.runMainDelayed(new Runnable() {
             @Override
             public void run() {
@@ -75,14 +77,14 @@ public class SplashActivity extends Activity  {
         }, 2000);
     }
 
-//    @Override
-//    public void onAnimationUpdate(ValueAnimator valueAnimator) {
-//        int curValue = (int) valueAnimator.getAnimatedValue();
-//        if (curValue != 0) {
-//            return;
-//        }
-//
-//    }
+    //    @Override
+    //    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+    //        int curValue = (int) valueAnimator.getAnimatedValue();
+    //        if (curValue != 0) {
+    //            return;
+    //        }
+    //
+    //    }
 
     private void checkToken() {
         String token = SpUtils.getString(this, Constant.TOKEN, "");
@@ -144,8 +146,8 @@ public class SplashActivity extends Activity  {
     @Override
     protected void onRestart() {
         super.onRestart();
-//        if (forceUpdate != 1)
-//            loadAnim();
+        //        if (forceUpdate != 1)
+        //            loadAnim();
     }
 
     private void checkUpdate() {
@@ -162,13 +164,17 @@ public class SplashActivity extends Activity  {
                 checkToken();
                 return;
             }
+            if (data.getData() == null) {
+                checkToken();
+                return;
+            }
             //成功
             try {
                 //判断是否更新
                 // TODO: 2017-7-27 版本 0.1.1
                 String currentVersion = VersionManagementUtil.getVersion(SplashActivity.this);
-                String version = data.getVersion();
-                forceUpdate = data.getForceUpdate();
+                String version = data.getData().getVersion();
+                forceUpdate = data.getData().getForceUpdate();
                 if (version == null) {
                     checkToken();
                     return;
@@ -176,7 +182,7 @@ public class SplashActivity extends Activity  {
                 //比较版本，返回1需要更新
                 if (VersionManagementUtil.VersionComparison(version, currentVersion) == 1) {
                     //更新
-                    showUpdateDialog(data.getForceUpdate(), data.getDownloadUrl());
+                    showUpdateDialog(data.getData().getForceUpdate(), data.getData().getDownloadUrl());
                 } else {
                     checkToken();
                 }
@@ -196,19 +202,22 @@ public class SplashActivity extends Activity  {
         Intent intent = new Intent();
         intent.setAction("android.intent.action.VIEW");
         Uri content_url = Uri.parse(url);
+//        Uri content_url = Uri.parse("http://127.0.0.1:8080//app.apk");
         intent.setData(content_url);
         try {
-            startActivity(intent);
+            startActivityForResult(intent,REQUEST_CODE_DOWN);
         } catch (Exception e) {
             e.printStackTrace();
+            ToastUtils.showToast("更新失败");
+            checkToken();
         }
     }
 
-    private void showUpdateDialog(int forceUpdate, final String DownLoadUrl) {
+    private void showUpdateDialog(String forceUpdate, final String DownLoadUrl) {
         final AlertDialog.Builder adInfo = new AlertDialog.Builder(SplashActivity.this);
         switch (forceUpdate) {
             //强更
-            case 1:
+            case "1":
                 CommonUtils.checkPermission(SplashActivity.this, new MPermissionUtils.OnPermissionListener() {
                     @Override
                     public void onPermissionGranted() {
@@ -233,7 +242,7 @@ public class SplashActivity extends Activity  {
                 });
                 break;
             //非强更
-            case 0:
+            case "0":
                 adInfo.setTitle("版本更新");
                 adInfo.setMessage("发现新版本，请更新");
                 updateDialog = adInfo.setPositiveButton("更新", new DialogInterface.OnClickListener() {
@@ -263,7 +272,7 @@ public class SplashActivity extends Activity  {
         ValueAnimator animator = ValueAnimator.ofInt(2, 0);
         animator.setInterpolator(new LinearInterpolator());
         animator.setDuration(2000);
-//        animator.addUpdateListener(this);
+        //        animator.addUpdateListener(this);
         animator.start();
     }
 
