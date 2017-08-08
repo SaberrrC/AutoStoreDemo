@@ -86,7 +86,7 @@ public class MainActivity extends BaseActivity {
     private AlertDialog  mToFaceDialog;
     private byte[]       mLivenessImgBytes;
     private TextView     mTvIdentify;
-    private AlertDialog  mLoginoutDialog;
+    private Dialog  mLoginoutDialog;
     private TextView     mBtBanlance;
     private AlertDialog  mWelcomeDialog1;
     private long lastTime = 0;
@@ -685,7 +685,11 @@ public class MainActivity extends BaseActivity {
             mLoginoutDialog.show();
             return;
         }
-        View viewLoginout = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_loginout, null, false);
+        View viewLoginout = LayoutInflater.from(this).inflate(R.layout.layout_dialog_loginout, null);
+        mLoginoutDialog =new Dialog(this, R.style.MyDialogStyle);
+        mLoginoutDialog.setContentView(viewLoginout);
+        mLoginoutDialog.setCanceledOnTouchOutside(false);
+        mLoginoutDialog.show();
         TextView tvNum = (TextView) viewLoginout.findViewById(R.id.tv_num);
         tvNum.setText(mUserPhoneHide);
         viewLoginout.findViewById(R.id.tv_cancle).setOnClickListener(new View.OnClickListener() {
@@ -714,9 +718,6 @@ public class MainActivity extends BaseActivity {
                 });
             }
         });
-        AutoUtils.autoSize(viewLoginout);
-        mLoginoutDialog = CommonUtils.getDialog(this, viewLoginout, false);
-        mLoginoutDialog.show();
     }
 
     private void cleanUserInfo() {

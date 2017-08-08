@@ -145,6 +145,7 @@ public class ChoosePayWayActivity extends BaseActivity{
         popTop.setBackgroundDrawable(new ColorDrawable(0x00000000));
         popTop.setOutsideTouchable(false);
         popTop.setFocusable(false);
+        popTop.setAnimationStyle(R.style.popStyle);
         popTop.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
@@ -156,6 +157,7 @@ public class ChoosePayWayActivity extends BaseActivity{
         });
 
         popBottom = new PopupWindow(this);
+        popBottom.setAnimationStyle(R.style.popStyle);
         popBottom.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         popBottom.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         popBottom.setContentView(keyBoard);
@@ -166,6 +168,7 @@ public class ChoosePayWayActivity extends BaseActivity{
             @Override
             public void onDismiss() {
                 popTop.dismiss();
+                progressDialog.show();
             }
         });
     }
@@ -207,10 +210,9 @@ public class ChoosePayWayActivity extends BaseActivity{
 
             @Override
             public void onInputFinish(String psw) {
-                popTop.dismiss();
                 popBottom.dismiss();
+                popTop.dismiss();
                 //调用乐买宝支付接口
-                progressDialog.show();
                 leMaiBaoPay(psw);
             }
         });

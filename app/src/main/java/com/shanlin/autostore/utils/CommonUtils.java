@@ -2,6 +2,7 @@ package com.shanlin.autostore.utils;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -146,9 +147,10 @@ public class CommonUtils {
      * @param context
      * @param view
      */
-    public static AlertDialog getDialog(Context context, View view, boolean cancelable) {
-        AlertDialog dialog = new AlertDialog.Builder(context).setView(view).create();
-        dialog.setCancelable(cancelable);
+    public static Dialog getDialog(Context context, View view, boolean cancelable) {
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(view);
+        dialog.setCanceledOnTouchOutside(cancelable);
         return dialog;
     }
 

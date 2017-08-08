@@ -196,6 +196,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
             @Override
             public void error(Throwable ex, String code, String msg) {
                 mBtnGetMsgCode.reset();
+                progressDialog.dismiss();
                 ToastUtils.showToast(msg);
             }
         });

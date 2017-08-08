@@ -131,4 +131,9 @@
     <style name="SplashTheme" parent="SplashThemeFullScreen">
         <item name="android:windowBackground">@mipmap/page_splash</item>
     </style>
+    
+    <style name="popStyle">
+        <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/dialog_exit</item>
+    </style>
 </resources>
