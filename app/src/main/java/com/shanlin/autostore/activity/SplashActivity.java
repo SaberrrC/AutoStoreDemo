@@ -57,6 +57,10 @@ public class SplashActivity extends Activity  {
                 CommonUtils.checkPermission(SplashActivity.this, new MPermissionUtils.OnPermissionListener() {
                     @Override
                     public void onPermissionGranted() {
+                        if (!CommonUtils.checkNet()) {
+                            toLoginActivity();
+                            return;
+                        }
                         CommonUtils.getDevicedID();
                         CommonUtils.netWorkWarranty();
                         checkUpdate();
