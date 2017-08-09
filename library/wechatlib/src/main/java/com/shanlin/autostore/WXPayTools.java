@@ -1,7 +1,6 @@
 package com.shanlin.autostore;
 
 import android.content.Context;
-
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -13,7 +12,6 @@ import java.util.HashMap;
  */
 public class WXPayTools {
     private static String APP_ID="wxb51b89cba83263de";
-    private static String APP_SECRET="1e73ced172f384ef6305e2276d2a9b96";
     private static IWXAPI api;
 
     /**
