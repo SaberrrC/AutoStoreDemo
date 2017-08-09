@@ -56,14 +56,16 @@ public class CountDownTextView extends AppCompatTextView {
             switch (msg.what){
                 case 0:
                     setText(max+" 秒  ");
+                    isClickable = false;
                     break;
                 case 1:
                     setText("获取验证码");
                     isClickable = true;
-                    setClickable(isClickable);
-                    setTextColor(mContext.getResources().getColor(R.color.light_blue));
                     break;
             }
+            setClickable(isClickable);
+            setTextColor(isClickable ? mContext.getResources().getColor(R.color.light_blue) :
+                    mContext.getResources().getColor(R.color.gray_999999));
         }
     };
 

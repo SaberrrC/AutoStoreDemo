@@ -1,4 +1,4 @@
-package com.shanlin.autostore.zhifubao;
+package com.shanlin.autostore.utils;
 
 public final class Base64 {
 

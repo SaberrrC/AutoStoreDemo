@@ -17,15 +17,12 @@ import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.MemberUpdateBean;
 import com.shanlin.autostore.bean.paramsBean.MemberUpdateSendBean;
 import com.shanlin.autostore.constants.Constant;
-import com.shanlin.autostore.gallery.GlideLoader;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CameraUtil;
@@ -34,12 +31,6 @@ import com.shanlin.autostore.utils.SpUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
 import com.shanlin.autostore.utils.ToastUtils;
 import com.theartofdev.edmodo.cropper.CropImage;
-import com.yancy.imageselector.ImageConfig;
-import com.yancy.imageselector.ImageSelector;
-import com.yancy.imageselector.ImageSelectorActivity;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
 import retrofit2.Call;
@@ -54,12 +45,9 @@ public class MyHeadImgActivity extends BaseActivity {
     private static final int REQ_CODE_CUT = 1003;
     private PopupWindow popHeadChoose;
     private ImageView imgLarge;
-    private ImageConfig imageConfig;
-    private ArrayList<String> path = new ArrayList<>();
     private Uri imgUrl;
     private HttpService service;
     private String token;
-    private String mCurrentPhotoPath;
 
     @Override
     public int initLayout() {
@@ -77,7 +65,6 @@ public class MyHeadImgActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        initConfig();
         service = CommonUtils.doNet();
         token = SpUtils.getString(this, Constant.TOKEN, "");
         String imgUrl = getIntent().getStringExtra(Constant.HEAD_IMG_URL);
@@ -89,32 +76,32 @@ public class MyHeadImgActivity extends BaseActivity {
         }
     }
 
-    private void initConfig() {
-         imageConfig
-                =  new ImageConfig.Builder(
-                // GlideLoader 可用自己用的缓存库
-                new GlideLoader())
-                // 如果在 4.4 以上，则修改状态栏颜色 （默认黑色）
-                .steepToolBarColor(getResources().getColor(R.color.white))
-                // 标题的背景颜色 （默认黑色）
-                .titleBgColor(getResources().getColor(R.color.white))
-                // 提交按钮字体的颜色  （默认白色）
-                .titleSubmitTextColor(getResources().getColor(R.color.blcak))
-                // 标题颜色 （默认白色）
-                .titleTextColor(getResources().getColor(R.color.blcak))
-                // 开启多选   （默认为多选）  (单选 为 singleSelect)
-                .singleSelect()
-                .crop(500,500,500,500)
-                // 多选时的最大数量   （默认 9 张）
-                .mutiSelectMaxSize(1)
-                // 已选择的图片路径
-                .pathList(path)
-                // 拍照后存放的图片路径（默认 /temp/picture）
-                .filePath("/ImageSelector/Pictures")
-                // 开启拍照功能 （默认开启）
-                .showCamera()
-                .build();
-    }
+//    private void initConfig() {
+//         imageConfig
+//                =  new ImageConfig.Builder(
+//                // GlideLoader 可用自己用的缓存库
+//                new GlideLoader())
+//                // 如果在 4.4 以上，则修改状态栏颜色 （默认黑色）
+//                .steepToolBarColor(getResources().getColor(R.color.white))
+//                // 标题的背景颜色 （默认黑色）
+//                .titleBgColor(getResources().getColor(R.color.white))
+//                // 提交按钮字体的颜色  （默认白色）
+//                .titleSubmitTextColor(getResources().getColor(R.color.blcak))
+//                // 标题颜色 （默认白色）
+//                .titleTextColor(getResources().getColor(R.color.blcak))
+//                // 开启多选   （默认为多选）  (单选 为 singleSelect)
+//                .singleSelect()
+//                .crop(500,500,500,500)
+//                // 多选时的最大数量   （默认 9 张）
+//                .mutiSelectMaxSize(1)
+//                // 已选择的图片路径
+//                .pathList(path)
+//                // 拍照后存放的图片路径（默认 /temp/picture）
+//                .filePath("/ImageSelector/Pictures")
+//                // 开启拍照功能 （默认开启）
+//                .showCamera()
+//                .build();
+//    }
 
     private void initPop() {
         popHeadChoose = new PopupWindow(this);
@@ -153,7 +140,7 @@ public class MyHeadImgActivity extends BaseActivity {
                 }
                 break;
             case R.id.tv_head_pop_book:
-                ImageSelector.open(MyHeadImgActivity.this, imageConfig); // 开启图片选择器
+//                ImageSelector.open(MyHeadImgActivity.this, imageConfig); // 开启图片选择器
                 break;
             case R.id.tv_head_pop_camera:
                 imgUrl = CameraUtil.getTempUri();
@@ -199,44 +186,44 @@ public class MyHeadImgActivity extends BaseActivity {
             }
         }
 
-        if (resultCode == RESULT_OK) {
-
-            switch (requestCode) {
-                case REQUEST_CODE_TAKE_PICTURE:
-                    if (data != null) {
-                        Uri uri = data.getData();
-                        startActivityForResult(CameraUtil.cropPhoto(this,uri, imgUrl, 150, 150),
-                                REQ_CODE_CUT);
-                    } else {
-                        startActivityForResult(CameraUtil.cropPhoto(this,imgUrl, imgUrl, 150, 150),
-                                REQ_CODE_CUT);
-                    }
-                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                    break;
-                case REQ_CODE_CUT:
-                    Bitmap bitmap = CameraUtil.getBitmapByUri(this, imgUrl);
-                    imgLarge.setImageBitmap(bitmap);
-                    sendImgToServer(bitmap);
-                    break;
-                case ImageSelector.IMAGE_REQUEST_CODE:
-                    List<String> pathList = data.getStringArrayListExtra(ImageSelectorActivity.EXTRA_RESULT);
-                    for (String path : pathList) {
-                        Log.i("ImagePathList", path);
-
-                        Glide.with(this).load(path).asBitmap().into(new SimpleTarget<Bitmap>() {
-
-                            @Override
-                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                                imgLarge.setImageBitmap(resource);
-                                sendImgToServer(resource);
-                            }
-                        });
-                        disPopWindow();
-                    }
-
-                    break;
-            }
-        }
+//        if (resultCode == RESULT_OK) {
+//
+//            switch (requestCode) {
+//                case REQUEST_CODE_TAKE_PICTURE:
+//                    if (data != null) {
+//                        Uri uri = data.getData();
+//                        startActivityForResult(CameraUtil.cropPhoto(this,uri, imgUrl, 150, 150),
+//                                REQ_CODE_CUT);
+//                    } else {
+//                        startActivityForResult(CameraUtil.cropPhoto(this,imgUrl, imgUrl, 150, 150),
+//                                REQ_CODE_CUT);
+//                    }
+//                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
+//                    break;
+//                case REQ_CODE_CUT:
+//                    Bitmap bitmap = CameraUtil.getBitmapByUri(this, imgUrl);
+//                    imgLarge.setImageBitmap(bitmap);
+//                    sendImgToServer(bitmap);
+//                    break;
+//                case ImageSelector.IMAGE_REQUEST_CODE:
+//                    List<String> pathList = data.getStringArrayListExtra(ImageSelectorActivity.EXTRA_RESULT);
+//                    for (String path : pathList) {
+//                        Log.i("ImagePathList", path);
+//
+//                        Glide.with(this).load(path).asBitmap().into(new SimpleTarget<Bitmap>() {
+//
+//                            @Override
+//                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+//                                imgLarge.setImageBitmap(resource);
+//                                sendImgToServer(resource);
+//                            }
+//                        });
+//                        disPopWindow();
+//                    }
+//
+//                    break;
+//            }
+//        }
     }
 
     /**
