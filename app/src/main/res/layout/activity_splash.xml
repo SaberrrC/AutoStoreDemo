@@ -3,15 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:fitsSystemWindows="true"
     android:layout_width="match_parent"
-    android:background="@color/white"
     android:layout_height="match_parent">
-
-    <ImageView
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="192px"
-        android:src="@mipmap/splash_bg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
 
     <!--<TextView
         android:layout_marginTop="185px"
