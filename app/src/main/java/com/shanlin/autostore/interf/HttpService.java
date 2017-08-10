@@ -35,6 +35,8 @@ import com.shanlin.autostore.bean.resultBean.WxChatBean;
 import com.shanlin.autostore.bean.resultBean.WxTokenBean;
 import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
 
+import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -219,8 +221,15 @@ public interface HttpService {
     /**
      * 退款金额
      */
+    @Deprecated
     @GET("refund/query")
     Call<RefundMoneyBean> getRefundMoney(@Header("token") String token);
+
+    /**
+     * 退款金额
+     */
+    @GET("refund/query")
+    Flowable<RefundMoneyBean> getRefundMoney();
 
     /**
      * 会员登出

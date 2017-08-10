@@ -11,10 +11,11 @@ import com.shanlin.autostore.adapter.FinalRecycleAdapter;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.resultBean.RefundMoneyBean;
 import com.shanlin.autostore.constants.Constant;
-import com.shanlin.autostore.net.CustomCallBack;
+import com.shanlin.autostore.net.RetrofitHelper;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.DateUtils;
-import com.shanlin.autostore.utils.SpUtils;
+import com.shanlin.autostore.net.NetWorkUtil;
+import com.shanlin.autostore.net.SubscriberWrapper;
 import com.shanlin.autostore.utils.ThreadUtils;
 import com.shanlin.autostore.utils.ToastUtils;
 import com.shanlin.autostore.view.PulltoRefreshRecyclerView;
@@ -149,50 +150,65 @@ public class RefundMoneyActivity extends BaseActivity implements FinalRecycleAda
         }
     }
 
-    public void getRefundMoney() {
-        CommonUtils.doNet().getRefundMoney(SpUtils.getString(this, Constant.TOKEN, "")).enqueue(new CustomCallBack<RefundMoneyBean>() {
-            @Override
-            public void success(String code, RefundMoneyBean data, String msg) {
-                if (currentAction == REFRESH) {
-                    mDatas.clear();
-                }
-                List<RefundMoneyBean.DataBean> beanList = data.getData();
-                if (beanList == null || beanList.size() == 0) {
-                    mTvMoney.setText("¥0.00");
-                }
-                double sum = 0.00;
-                for (RefundMoneyBean.DataBean dataBean : beanList) {
-                    String balance = dataBean.getBalance();
-                    if (TextUtils.isEmpty(balance)) {
-                        continue;
-                    }
-                    double refundMoney = Double.parseDouble(balance);
-                    sum += refundMoney;
-                }
-                if (sum == 0.00) {
-                    mTvMoney.setText("¥0" + df.format(sum));
-                } else {
-                    mTvMoney.setText("¥" + df.format(sum));
-                }
-                mDatas.addAll(beanList);
-                mFinalRecycleAdapter.notifyDataSetChanged();
-                if (mDatas.size() > 0) {
-                    mRlWtk.setVisibility(View.GONE);
-                } else {
-                    mRlWtk.setVisibility(View.VISIBLE);
-                }
-            }
 
-            @Override
-            public void error(Throwable ex, String code, String msg) {
-                if (mDatas.size() > 0) {
-                    mRlWtk.setVisibility(View.GONE);
-                } else {
-                    mRlWtk.setVisibility(View.VISIBLE);
-                }
-                ToastUtils.showToast(msg);
-            }
-        });
+    public void getRefundMoney() {
+        RetrofitHelper.getInstance().provideApiService().getRefundMoney()
+                .compose(NetWorkUtil.<RefundMoneyBean>rxSchedulerHelper())
+                .subscribe(new SubscriberWrapper<>(new SubscriberWrapper.CallBackListener<RefundMoneyBean>() {
+                    @Override
+                    public void onSuccess(String code, RefundMoneyBean data, String msg) {
+                        if (currentAction == REFRESH) {
+                            mDatas.clear();
+                        }
+                        List<RefundMoneyBean.DataBean> beanList = data.getData();
+                        if (beanList == null || beanList.size() == 0) {
+                            mTvMoney.setText("¥0.00");
+                        }
+                        double sum = 0.00;
+                        for (RefundMoneyBean.DataBean dataBean : beanList) {
+                            String balance = dataBean.getBalance();
+                            if (TextUtils.isEmpty(balance)) {
+                                continue;
+                            }
+                            double refundMoney = Double.parseDouble(balance);
+                            sum += refundMoney;
+                        }
+                        if (sum == 0.00) {
+                            mTvMoney.setText("¥0" + df.format(sum));
+                        } else {
+                            mTvMoney.setText("¥" + df.format(sum));
+                        }
+                        mDatas.addAll(beanList);
+                        mFinalRecycleAdapter.notifyDataSetChanged();
+                        if (mDatas.size() > 0) {
+                            mRlWtk.setVisibility(View.GONE);
+                        } else {
+                            mRlWtk.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void onFailed(Throwable ex, String code, String msg) {
+                        if (mDatas.size() > 0) {
+                            mRlWtk.setVisibility(View.GONE);
+                        } else {
+                            mRlWtk.setVisibility(View.VISIBLE);
+                        }
+                        ToastUtils.showToast(msg);
+                    }
+                }));
+
+//        CommonUtils.doNet().getRefundMoney(SpUtils.getString(this, Constant.TOKEN, "")).enqueue(new CustomCallBack<RefundMoneyBean>() {
+//            @Override
+//            public void success(String code, RefundMoneyBean data, String msg) {
+//
+//            }
+//
+//            @Override
+//            public void error(Throwable ex, String code, String msg) {
+//
+//            }
+//        });
     }
 
 }

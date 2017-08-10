@@ -17,13 +17,9 @@
             android:layout_height="64dp"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="48dp"
-            android:background="@mipmap/head_icon_bg"
-            android:clickable="true"
-            android:paddingBottom="15.4dp"
-            android:paddingLeft="18dp"
-            android:paddingRight="18dp"
-            android:paddingTop="15dp"
-            android:src="@mipmap/head_default"/>
+            android:padding="1dp"
+            android:background="@mipmap/default_head"
+            android:clickable="true"/>
 
         <TextView
             android:id="@+id/textView"

@@ -1,5 +1,9 @@
 package com.shanlin.autostore.constants;
 
+import com.shanlin.autostore.AutoStoreApplication;
+
+import java.io.File;
+
 /**
  * Created by DELL on 2017/7/14 0014.
  */
@@ -31,6 +35,7 @@ public class Constant {
     public static final String USER_HEAD_URL      = "USER_HEAD_URL";//微信头像地址
 
     public static final String FACE_REGESTED_OK = "FACE_REGESTED_OK";
+    public static final String NETWORK_CACHE_PATH = AutoStoreApplication.getApp().getCacheDir().getAbsolutePath() + File.separator + "data";
 
     /**
      * 微信

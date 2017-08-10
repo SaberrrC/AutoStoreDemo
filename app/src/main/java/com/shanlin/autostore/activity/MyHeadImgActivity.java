@@ -23,6 +23,7 @@ import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.MemberUpdateBean;
 import com.shanlin.autostore.bean.paramsBean.MemberUpdateSendBean;
 import com.shanlin.autostore.constants.Constant;
+import com.shanlin.autostore.image.ImageLoader;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CameraUtil;
@@ -70,7 +71,8 @@ public class MyHeadImgActivity extends BaseActivity {
         String imgUrl = getIntent().getStringExtra(Constant.HEAD_IMG_URL);
         CommonUtils.debugLog(imgUrl+"myhead---------");
         if (!TextUtils.isEmpty(imgUrl)) {
-            Glide.with(this).load(imgUrl).into(imgLarge);
+//            Glide.with(this).load(imgUrl).into(imgLarge);
+            ImageLoader.getInstance().displayImage(this,imgUrl,imgLarge);
         } else {
             imgLarge.setImageResource(R.mipmap.imageselector_photo);
         }
@@ -186,44 +188,6 @@ public class MyHeadImgActivity extends BaseActivity {
             }
         }
 
-//        if (resultCode == RESULT_OK) {
-//
-//            switch (requestCode) {
-//                case REQUEST_CODE_TAKE_PICTURE:
-//                    if (data != null) {
-//                        Uri uri = data.getData();
-//                        startActivityForResult(CameraUtil.cropPhoto(this,uri, imgUrl, 150, 150),
-//                                REQ_CODE_CUT);
-//                    } else {
-//                        startActivityForResult(CameraUtil.cropPhoto(this,imgUrl, imgUrl, 150, 150),
-//                                REQ_CODE_CUT);
-//                    }
-//                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
-//                    break;
-//                case REQ_CODE_CUT:
-//                    Bitmap bitmap = CameraUtil.getBitmapByUri(this, imgUrl);
-//                    imgLarge.setImageBitmap(bitmap);
-//                    sendImgToServer(bitmap);
-//                    break;
-//                case ImageSelector.IMAGE_REQUEST_CODE:
-//                    List<String> pathList = data.getStringArrayListExtra(ImageSelectorActivity.EXTRA_RESULT);
-//                    for (String path : pathList) {
-//                        Log.i("ImagePathList", path);
-//
-//                        Glide.with(this).load(path).asBitmap().into(new SimpleTarget<Bitmap>() {
-//
-//                            @Override
-//                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-//                                imgLarge.setImageBitmap(resource);
-//                                sendImgToServer(resource);
-//                            }
-//                        });
-//                        disPopWindow();
-//                    }
-//
-//                    break;
-//            }
-//        }
     }
 
     /**
@@ -238,7 +202,6 @@ public class MyHeadImgActivity extends BaseActivity {
         call.enqueue(new CustomCallBack<MemberUpdateBean>() {
             @Override
             public void success(String code, MemberUpdateBean data, String msg) {
-                Log.e("oye", "success: "+msg);
                 CommonUtils.debugLog(msg+"-------------");
                 setResult(RESULT_OK);
                 finish();
@@ -246,7 +209,6 @@ public class MyHeadImgActivity extends BaseActivity {
 
             @Override
             public void error(Throwable ex, String code, String msg) {
-                Log.e("oye", "error: ", ex);
             }
         });
     }

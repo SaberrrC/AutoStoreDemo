@@ -50,6 +50,10 @@
             android:name="design_height"
             android:value="667"/>
 
+        <meta-data
+            android:name="com.shanlin.autostore.image.AppGlideModule"
+            android:value="GlideModule" />
+
         <!-- 文件存储 (适配 Android 7.0 应用之间共享文件) -->
         <provider
             android:name="android.support.v4.content.FileProvider"

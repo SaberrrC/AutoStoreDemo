@@ -52,6 +52,7 @@ import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
 import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
+import com.shanlin.autostore.image.ImageLoader;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.livenesslib.LivenessActivity;
 import com.shanlin.autostore.net.CustomCallBack;
@@ -318,16 +319,17 @@ public class MainActivity extends BaseActivity {
             //更新上传成功后的用户信息
             this.imageUrl = imageUrl;
             SpUtils.saveString(this,Constant.USER_HEAD_URL,imageUrl);
-            Glide.with(getApplicationContext()).load(imageUrl).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL) //设置缓存
-                    .into(new BitmapImageViewTarget(headImage) {
-                        @Override
-                        protected void setResource(Bitmap resource) {
-                            RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), resource);
-                            circularBitmapDrawable.setCircular(true);
-                            headImage.setImageResource(0);
-                            headImage.setBackgroundDrawable(circularBitmapDrawable);
-                        }
-                    });
+//            Glide.with(getApplicationContext()).load(imageUrl).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL) //设置缓存
+//                    .into(new BitmapImageViewTarget(headImage) {
+//                        @Override
+//                        protected void setResource(Bitmap resource) {
+//                            RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), resource);
+//                            circularBitmapDrawable.setCircular(true);
+//                            headImage.setImageResource(0);
+//                            headImage.setBackgroundDrawable(circularBitmapDrawable);
+//                        }
+//                    });
+            ImageLoader.getInstance().displayHeadImage(this,imageUrl,headImage);
         }
     }
 
