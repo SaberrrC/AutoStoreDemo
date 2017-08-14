@@ -9,7 +9,7 @@ import com.shanlin.autostore.adapter.FinalRecycleAdapter;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.resultBean.RecordBean;
 import com.shanlin.autostore.utils.CommonUtils;
-import com.shanlin.autostore.utils.ThreadUtils;
+import com.shanlin.android.autostore.common.utils.ThreadUtils;
 import com.shanlin.autostore.view.PulltoRefreshRecyclerView;
 
 import java.util.ArrayList;

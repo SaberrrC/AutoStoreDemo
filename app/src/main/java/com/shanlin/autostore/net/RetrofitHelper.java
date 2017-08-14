@@ -4,7 +4,7 @@ import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.BuildConfig;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
-import com.shanlin.autostore.utils.SpUtils;
+import com.shanlin.android.autostore.common.utils.SpUtils;
 
 import java.io.File;
 import java.io.IOException;

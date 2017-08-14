@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.utils.MPermissionUtils;
+import com.shanlin.android.autostore.common.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
 
 import java.util.ArrayList;

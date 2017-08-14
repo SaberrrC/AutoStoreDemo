@@ -1,4 +1,4 @@
-package com.shanlin.autostore.utils;
+package com.shanlin.android.autostore.common.utils;
 
 
 import android.os.Handler;

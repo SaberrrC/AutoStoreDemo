@@ -1,7 +1,9 @@
-package com.shanlin.autostore.utils;
+package com.shanlin.android.autostore.common.utils;
 
 import android.widget.Toast;
 
+import com.shanlin.android.autostore.App;
+import com.shanlin.android.autostore.common.utils.ThreadUtils;
 import com.shanlin.autostore.AutoStoreApplication;
 
 public class ToastUtils {
@@ -13,7 +15,7 @@ public class ToastUtils {
             @Override
             public void run() {
                 if (toast == null) {
-                    toast = Toast.makeText(AutoStoreApplication.getApp(), text, Toast.LENGTH_SHORT);
+                    toast = Toast.makeText(App.getInstance(), text, Toast.LENGTH_SHORT);
                 } else {
                     toast.setText(text);
                 }

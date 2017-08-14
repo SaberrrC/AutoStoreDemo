@@ -1,4 +1,4 @@
-package com.shanlin.autostore.image;
+package com.shanlin.android.autostore.common.image;
 
 import android.annotation.TargetApi;
 import android.app.ActivityManager;

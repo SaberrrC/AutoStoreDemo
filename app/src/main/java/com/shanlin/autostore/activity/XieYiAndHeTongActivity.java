@@ -18,7 +18,7 @@ import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.LogUtils;
-import com.shanlin.autostore.utils.MPermissionUtils;
+import com.shanlin.android.autostore.common.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
 import com.zhy.autolayout.utils.AutoUtils;
 

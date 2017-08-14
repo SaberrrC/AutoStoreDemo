@@ -18,8 +18,8 @@ import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
-import com.shanlin.autostore.utils.SpUtils;
-import com.shanlin.autostore.utils.ToastUtils;
+import com.shanlin.android.autostore.common.utils.SpUtils;
+import com.shanlin.android.autostore.common.utils.ToastUtils;
 import com.zhy.autolayout.utils.AutoUtils;
 
 import retrofit2.Call;

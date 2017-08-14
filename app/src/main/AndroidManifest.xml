@@ -36,7 +36,7 @@
     <uses-permission android:name="android.permission.READ_SMS"/>
 
     <application
-        android:name=".AutoStoreApplication"
+        android:name="com.shanlin.android.autostore.App"
         android:allowBackup="true"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
@@ -51,7 +51,7 @@
             android:value="667"/>
 
         <meta-data
-            android:name="com.shanlin.autostore.image.AppGlideModule"
+            android:name="com.shanlin.android.autostore.common.image.AppGlideModule"
             android:value="GlideModule" />
 
         <!-- 文件存储 (适配 Android 7.0 应用之间共享文件) -->
@@ -66,7 +66,7 @@
         </provider>
 
         <activity
-            android:name=".activity.SplashActivity"
+            android:name="com.shanlin.android.autostore.ui.act.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme"
             android:windowSoftInputMode="adjustPan">

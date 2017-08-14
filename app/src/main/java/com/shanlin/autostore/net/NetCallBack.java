@@ -3,7 +3,7 @@ package com.shanlin.autostore.net;
 import com.shanlin.autostore.bean.LoginBean;
 import com.shanlin.autostore.bean.resultBean.CodeBean;
 import com.shanlin.autostore.bean.resultBean.NumberLoginRsponseBean;
-import com.shanlin.autostore.utils.ToastUtils;
+import com.shanlin.android.autostore.common.utils.ToastUtils;
 
 /**
  * Created by shanlin on 2017-7-21.

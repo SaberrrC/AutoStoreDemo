@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'me.tatarka.retrolambda'
 File signPropertiesFile = rootProject.file(STORE_FILE)
 
 android {
@@ -26,6 +26,12 @@ android {
 
     }
 
+    //dagger2 和 butterknife冲突
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
+
+
     if (signPropertiesFile.exists()) {
         signingConfigs {
             sign {
@@ -37,6 +43,11 @@ android {
                 v2SigningEnabled false
             }
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     buildTypes {
@@ -101,6 +112,14 @@ dependencies {
     //rx
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxjava:2.1.2'
+
+    //dagger2
+    compile 'com.google.dagger:dagger:2.11'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
+
+    //findviewbyid
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.zhy:autolayout:1.4.5'

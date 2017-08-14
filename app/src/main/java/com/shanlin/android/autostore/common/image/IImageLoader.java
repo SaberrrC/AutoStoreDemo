@@ -1,8 +1,7 @@
-package com.shanlin.autostore.image;
+package com.shanlin.android.autostore.common.image;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.widget.ImageView;
 
 import java.io.File;

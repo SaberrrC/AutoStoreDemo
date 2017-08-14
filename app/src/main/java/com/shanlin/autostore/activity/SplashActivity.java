@@ -21,13 +21,12 @@ import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
-import com.shanlin.autostore.utils.LogUtils;
-import com.shanlin.autostore.utils.MPermissionUtils;
-import com.shanlin.autostore.utils.SpUtils;
+import com.shanlin.android.autostore.common.utils.MPermissionUtils;
+import com.shanlin.android.autostore.common.utils.SpUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
-import com.shanlin.autostore.utils.ThreadUtils;
-import com.shanlin.autostore.utils.ToastUtils;
-import com.shanlin.autostore.utils.VersionManagementUtil;
+import com.shanlin.android.autostore.common.utils.ThreadUtils;
+import com.shanlin.android.autostore.common.utils.ToastUtils;
+import com.shanlin.android.autostore.common.utils.VersionManagementUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -51,7 +50,6 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.activity_splash);
         StatusBarUtils.setColor(this, Color.TRANSPARENT);
         EventBus.getDefault().post(new WxMessageEvent());
-        LogUtils.d("token  " + SpUtils.getString(this, Constant.TOKEN, ""));
         //        loadAnim();
         ThreadUtils.runMainDelayed(new Runnable() {
             @Override

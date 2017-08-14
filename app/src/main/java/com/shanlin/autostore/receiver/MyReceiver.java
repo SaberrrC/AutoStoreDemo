@@ -12,7 +12,7 @@ import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.bean.event.OpenGardEvent;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.utils.CommonUtils;
-import com.shanlin.autostore.utils.SpUtils;
+import com.shanlin.android.autostore.common.utils.SpUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;

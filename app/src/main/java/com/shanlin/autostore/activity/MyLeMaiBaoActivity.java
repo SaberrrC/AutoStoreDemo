@@ -13,7 +13,7 @@ import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.resultBean.RecordBean;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.utils.CommonUtils;
-import com.shanlin.autostore.utils.ThreadUtils;
+import com.shanlin.android.autostore.common.utils.ThreadUtils;
 import com.shanlin.autostore.view.PulltoRefreshRecyclerView;
 import com.zhy.autolayout.AutoRelativeLayout;
 

@@ -20,6 +20,10 @@ import android.widget.Toast;
 
 import com.megvii.licensemanager.Manager;
 import com.megvii.livenessdetection.LivenessLicenseManager;
+import com.shanlin.android.autostore.common.utils.MPermissionUtils;
+import com.shanlin.android.autostore.common.utils.SpUtils;
+import com.shanlin.android.autostore.common.utils.ThreadUtils;
+import com.shanlin.android.autostore.common.utils.ToastUtils;
 import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
