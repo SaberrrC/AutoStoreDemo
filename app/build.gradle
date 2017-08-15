@@ -1,17 +1,17 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 File signPropertiesFile = rootProject.file(STORE_FILE)
-
+def config = rootProject.ext.android
 android {
-    compileSdkVersion rootProject.ext.android.compileSdkVersion
-    buildToolsVersion rootProject.ext.android.buildToolsVersion
+    compileSdkVersion config.compileSdkVersion
+    buildToolsVersion config.buildToolsVersion
 
     defaultConfig {
         applicationId "com.shanlin.autostore"
-        minSdkVersion 15
-        targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode rootProject.ext.android.versionCode
-        versionName rootProject.ext.android.versionName
+        minSdkVersion config.minSdkVersion
+        targetSdkVersion config.targetSdkVersion
+        versionCode config.versionCode
+        versionName config.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             //选择要添加的对应cpu类型的.so库。
@@ -52,7 +52,6 @@ android {
 
     buildTypes {
         debug {
-//            debuggable true
             zipAlignEnabled false
             shrinkResources false
             minifyEnabled false
@@ -62,9 +61,9 @@ android {
         }
         release {
             //是否zip对齐
-            //            zipAlignEnabled true
+            //zipAlignEnabled true
             //缩减resource文件
-            //            shrinkResources true
+            //shrinkResources true
             //混淆
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -88,7 +87,9 @@ android {
 
     lintOptions {
         abortOnError false
+        ignoreWarnings true
     }
+
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
@@ -102,44 +103,12 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-
-    compile 'com.squareup.retrofit2:retrofit:2.2.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
-    compile "com.squareup.retrofit2:adapter-rxjava2:2.2.0"
-
-    //rx
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'io.reactivex.rxjava2:rxjava:2.1.2'
-
-    //dagger2
-    compile 'com.google.dagger:dagger:2.11'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
-
-    //findviewbyid
-    compile 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-
-    compile 'com.google.code.gson:gson:2.8.1'
-    compile 'com.zhy:autolayout:1.4.5'
+    compile project(':autostoresdk')
     compile project(':library:wechatlib')
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     //jpush
     compile 'cn.jiguang.sdk:jpush:3.0.3'
     // 此处以JPush 3.0.3 版本为例。
     compile 'cn.jiguang.sdk:jcore:1.1.1'
-    // 此处以JCore 1.1.1 版本为例。
-    //自动获取短信验证码
-    compile 'tech.michaelx.authcode:authcode:1.0.0'
-    // 添加依赖
-    //    compile project(':library:livenesslib')
-    compile 'com.google.zxing:core:3.3.0'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    /*glide + okhttp3-integration*/
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
-    compile 'jp.wasabeef:glide-transformations:2.0.2'
-    // If you want to use the GPU Filters
-    compile 'com.darsh.multipleimageselect:multipleimageselect:1.0.4'
-    compile 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
 }
