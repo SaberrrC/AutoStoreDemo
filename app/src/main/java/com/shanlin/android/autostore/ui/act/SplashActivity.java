@@ -19,6 +19,7 @@ import com.shanlin.android.autostore.presenter.Contract.SplashActContract;
 import com.shanlin.android.autostore.presenter.SplashPresenter;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.WxMessageEvent;
+import com.shanlin.autostore.activity.LoginActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -134,7 +135,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
     }
 
     private void toLoginActivity() {
-//        CommonUtils.toNextActivity(mContext, LoginActivity.class);
+        CommonUtils.toNextActivity(mContext, LoginActivity.class);
         finish();
     }
 
