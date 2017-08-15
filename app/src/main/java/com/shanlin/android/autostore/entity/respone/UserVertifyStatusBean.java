@@ -1,13 +1,12 @@
-package com.shanlin.autostore.bean.resultBean;
+package com.shanlin.android.autostore.entity.respone;
 
-
-import com.shanlin.autostore.base.BaseBean;
+import com.shanlin.android.autostore.entity.BaseBean;
 
 /**
  * Created by DELL on 2017/7/27 0027.
  */
 
-public class UserVertifyStatusBean extends BaseBean {
+public class UserVertifyStatusBean extends BaseBean{
 
 
     /**

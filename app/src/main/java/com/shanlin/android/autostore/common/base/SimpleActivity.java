@@ -14,6 +14,7 @@ import com.shanlin.android.autostore.di.component.DaggerActivityComponent;
 import com.shanlin.android.autostore.di.module.ActivityModule;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.utils.StatusBarUtils;
+import com.zhy.autolayout.AutoLayoutActivity;
 
 import java.util.ArrayList;
 
@@ -24,7 +25,7 @@ import butterknife.Unbinder;
  * Created by cuieney on 15/08/2017.
  */
 
-public abstract class SimpleActivity extends AppCompatActivity {
+public abstract class SimpleActivity extends AutoLayoutActivity {
     protected Activity mContext;
     private Unbinder mUnBinder;
 

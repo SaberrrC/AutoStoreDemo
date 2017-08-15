@@ -17,7 +17,6 @@ import com.shanlin.android.autostore.entity.respone.CheckUpdateBean;
 import com.shanlin.android.autostore.entity.respone.PersonInfoBean;
 import com.shanlin.android.autostore.presenter.Contract.SplashActContract;
 import com.shanlin.android.autostore.presenter.SplashPresenter;
-import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.WxMessageEvent;
 

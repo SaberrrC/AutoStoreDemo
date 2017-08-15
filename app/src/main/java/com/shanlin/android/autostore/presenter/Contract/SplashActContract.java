@@ -21,7 +21,7 @@ public interface SplashActContract {
 
     }
 
-    interface Presenter extends BasePresenter<SplashActContract.View> {
+    interface Presenter extends BasePresenter<View> {
         void checkToken();
 
         void checkUpgrade(int type);
