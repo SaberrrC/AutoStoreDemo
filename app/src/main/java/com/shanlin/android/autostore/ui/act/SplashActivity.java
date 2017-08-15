@@ -1,5 +1,6 @@
 package com.shanlin.android.autostore.ui.act;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
@@ -20,7 +21,6 @@ import com.shanlin.android.autostore.presenter.Contract.SplashActContract;
 import com.shanlin.android.autostore.presenter.SplashPresenter;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.activity.LoginActivity;
 
 import org.greenrobot.eventbus.EventBus;
 

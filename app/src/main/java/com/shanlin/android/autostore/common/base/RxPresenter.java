@@ -3,6 +3,7 @@ package com.shanlin.android.autostore.common.base;
 import com.shanlin.android.autostore.common.net.Api;
 
 import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 
 import javax.inject.Inject;
 
@@ -41,7 +42,7 @@ public class RxPresenter<T extends BaseView> implements BasePresenter<T> {
 
     @Override
     public void attachView(T view) {
-        SoftReference<T> tSoftReference = new SoftReference<>(view);
+        WeakReference<T> tSoftReference = new WeakReference<>(view);
         this.mView = tSoftReference.get();
     }
 

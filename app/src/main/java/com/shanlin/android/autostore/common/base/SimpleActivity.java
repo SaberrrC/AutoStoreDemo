@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 
 import com.shanlin.android.autostore.App;
 import com.shanlin.android.autostore.common.utils.MPermissionUtils;
@@ -17,48 +18,26 @@ import com.zhy.autolayout.AutoLayoutActivity;
 
 import java.util.ArrayList;
 
-import javax.inject.Inject;
-
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-
 /**
- * Created by cuieney on 14/08/2017.
+ * Created by cuieney on 15/08/2017.
  */
 
-public abstract class BaseActivity<T extends BasePresenter> extends AutoLayoutActivity implements BaseView{
-    @Inject
-    protected T mPresenter;
+public abstract class SimpleActivity extends AutoLayoutActivity {
     protected Activity mContext;
     private Unbinder mUnBinder;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(initLayout());
         mUnBinder = ButterKnife.bind(this);
         mContext = this;
-        initInject();
         addActivity(this);
         StatusBarUtils.setColor(this, Color.TRANSPARENT);
-        if (mPresenter != null) {
-            mPresenter.attachView(this);
-        }
         initData();
-    }
-
-    protected abstract void initInject();
-
-
-    protected ActivityComponent getActivityComponent(){
-        return  DaggerActivityComponent.builder()
-                .appComponent(App.getInstance().getAppComponent())
-                .activityModule(getActivityModule())
-                .build();
-    }
-
-    protected ActivityModule getActivityModule(){
-        return new ActivityModule(this);
     }
 
     /**
@@ -79,8 +58,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends AutoLayoutAc
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mPresenter != null)
-            mPresenter.detachView();
         mUnBinder.unbind();
     }
 

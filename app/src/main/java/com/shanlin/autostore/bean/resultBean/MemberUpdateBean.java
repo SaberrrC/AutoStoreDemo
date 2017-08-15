@@ -1,4 +1,8 @@
-package com.shanlin.autostore.bean;
+package com.shanlin.autostore.bean.resultBean;
+
+/**
+ * Created by cuieney on 15/08/2017.
+ */
 
 import com.shanlin.autostore.base.BaseBean;
 

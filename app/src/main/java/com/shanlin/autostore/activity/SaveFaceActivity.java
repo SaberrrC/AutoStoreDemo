@@ -9,11 +9,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.shanlin.android.autostore.entity.body.MemberUpdateSendBean;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
-import com.shanlin.autostore.bean.MemberUpdateBean;
-import com.shanlin.autostore.bean.paramsBean.MemberUpdateSendBean;
+import com.shanlin.autostore.bean.resultBean.MemberUpdateBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
