@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+
 import static com.shanlin.autostore.R.id.tv_money;
 
 /**
@@ -29,25 +31,33 @@ import static com.shanlin.autostore.R.id.tv_money;
  */
 
 public class MyLeMaiBaoActivity extends BaseActivity implements FinalRecycleAdapter.OnViewAttachListener {
-    private TextView                  mTvAvailableAmount;
-    private TextView                  mTvMoney;
-    private TextView                  mTvUsed;
-    private TextView                  mTvBehalfRepayment;
-    private TextView                  mTvRepaid;
-    private PulltoRefreshRecyclerView mPulltoRefreshRecyclerView;
-    private RecyclerView              mRecyclerView;
-    private FinalRecycleAdapter       mFinalRecycleAdapter;
-    private              List<Object> mDatas                        = new ArrayList<>();
-    private static final int          REFRESH                       = 0;
-    private static final int          LOAD                          = 1;
-    private              int          currentAction                 = 0;//记录当前用户手势是下拉刷新还是上拉更多，默认下拉刷新
-    private              int          pageno                        = 1;
-    private static final int          CHOOSE_STATE_BEHALF_REPAYMENT = 0;//待还款
-    private static final int          CHOOSE_STATE_REPAID           = 1;//已还款
-    private              int          currentChooseState            = 0;
-    private ImageView          mIvNolist;
-    private TextView           mTvNolist;
-    private AutoRelativeLayout mFlNolist;
+
+    @BindView(R.id.tv_money)
+    TextView mTvMoney;
+    @BindView(R.id.tv_credit_used)
+    TextView mTvUsed;
+    @BindView(R.id.tv_behalf_repayment)
+    TextView mTvBehalfRepayment;
+    @BindView(R.id.tv_repaid)
+    TextView mTvRepaid;
+    @BindView(R.id.iv_nolist)
+    ImageView mIvNolist;
+    @BindView(R.id.tv_nolist)
+    TextView mTvNolist;
+    @BindView(R.id.fl_nolist)
+    AutoRelativeLayout mFlNolist;
+    @BindView(R.id.pr_lists)
+    PulltoRefreshRecyclerView mPulltoRefreshRecyclerView;
+    private RecyclerView mRecyclerView;
+    private FinalRecycleAdapter mFinalRecycleAdapter;
+    private List<Object> mDatas = new ArrayList<>();
+    private static final int REFRESH = 0;
+    private static final int LOAD = 1;
+    private int currentAction = 0;//记录当前用户手势是下拉刷新还是上拉更多，默认下拉刷新
+    private int pageno = 1;
+    private static final int CHOOSE_STATE_BEHALF_REPAYMENT = 0;//待还款
+    private static final int CHOOSE_STATE_REPAID = 1;//已还款
+    private int currentChooseState = 0;
 
     @Override
     public int initLayout() {
@@ -57,17 +67,17 @@ public class MyLeMaiBaoActivity extends BaseActivity implements FinalRecycleAdap
     @Override
     public void initView() {
         CommonUtils.initToolbar(this, "我的乐买宝", R.color.blcak, null);
-        mTvAvailableAmount = (TextView) findViewById(R.id.tv_credit_balence);
-        mTvMoney = (TextView) findViewById(tv_money);
-        mTvUsed = (TextView) findViewById(R.id.tv_credit_used);
-        mIvNolist = (ImageView) findViewById(R.id.iv_nolist);
-        mTvNolist = (TextView) findViewById(R.id.tv_nolist);
-        mTvBehalfRepayment = (TextView) findViewById(R.id.tv_behalf_repayment);
-        mTvRepaid = (TextView) findViewById(R.id.tv_repaid);
-        mFlNolist = (AutoRelativeLayout) findViewById(R.id.fl_nolist);
+//        mTvAvailableAmount = (TextView) findViewById(R.id.tv_credit_balence);
+//        mTvMoney = (TextView) findViewById(R.id.tv_money);
+//        mTvUsed = (TextView) findViewById(R.id.tv_credit_used);
+//        mIvNolist = (ImageView) findViewById(R.id.iv_nolist);
+//        mTvNolist = (TextView) findViewById(R.id.tv_nolist);
+//        mTvBehalfRepayment = (TextView) findViewById(R.id.tv_behalf_repayment);
+//        mTvRepaid = (TextView) findViewById(R.id.tv_repaid);
+//        mFlNolist = (AutoRelativeLayout) findViewById(R.id.fl_nolist);
         mTvBehalfRepayment.setOnClickListener(this);
         mTvRepaid.setOnClickListener(this);
-        mPulltoRefreshRecyclerView = (PulltoRefreshRecyclerView) findViewById(R.id.pr_lists);
+//        mPulltoRefreshRecyclerView = (PulltoRefreshRecyclerView) findViewById(R.id.pr_lists);
         mRecyclerView = mPulltoRefreshRecyclerView.getRecyclerView();
         Map<Class, Integer> map = new HashMap<>();
         map.put(RecordBean.class, R.layout.layout_item_lemaibao_list);

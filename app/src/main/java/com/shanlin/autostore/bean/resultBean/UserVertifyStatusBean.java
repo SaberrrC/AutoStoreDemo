@@ -1,10 +1,12 @@
 package com.shanlin.autostore.bean.resultBean;
 
+import com.shanlin.autostore.base.BaseBean;
+
 /**
  * Created by DELL on 2017/7/27 0027.
  */
 
-public class UserVertifyStatusBean {
+public class UserVertifyStatusBean extends BaseBean {
 
 
     /**

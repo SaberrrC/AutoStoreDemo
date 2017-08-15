@@ -252,7 +252,7 @@ public class PhoneNumLoginActivity extends BaseActivity implements TextView.OnEd
                 AutoStoreApplication.isLogin = true;
                 SpUtils.saveString(PhoneNumLoginActivity.this, Constant.TOKEN, data.getData().getToken());
                 //保存用户乐买宝认证信息
-                CommonUtils.checkAuthenStatus(PhoneNumLoginActivity.this, service, data.getData().getToken());
+//                CommonUtils.checkAuthenStatus(PhoneNumLoginActivity.this, service, data.getData().getToken());
                 SpUtils.saveString(PhoneNumLoginActivity.this, Constant.USER_PHONE_LOGINED, data.getData().getMobile());
                 SpUtils.saveString(PhoneNumLoginActivity.this, Constant.TOKEN, data.getData().getToken());
                 Intent intent = new Intent(PhoneNumLoginActivity.this, MainActivity.class);

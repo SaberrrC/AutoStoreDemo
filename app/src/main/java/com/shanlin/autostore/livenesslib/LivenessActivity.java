@@ -48,37 +48,52 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class LivenessActivity extends Activity implements TextureView.SurfaceTextureListener {
 
-    private TextureView       camerapreview;
-//    private FaceMask          mFaceMask;// 画脸位置的类（调试时会用到）
-    private ProgressBar       mProgressBar;// 网络上传请求验证时出现的ProgressBar
-    private LinearLayout      headViewLinear;// "请在光线充足的情况下进行检测"这个视图
-    private LinearLayout      rootView;// 根视图
-    private TextView          timeOutText;
-    private RelativeLayout    timeOutRel;
-    private CircleProgressBar mCircleProgressBar;
+    @BindView(R.id.liveness_layout_textureview)
+    TextureView camerapreview;
+    //    private FaceMask          mFaceMask;// 画脸位置的类（调试时会用到）
+    @BindView(R.id.liveness_layout_progressbar)
+    ProgressBar mProgressBar;// 网络上传请求验证时出现的ProgressBar
+    @BindView(R.id.liveness_layout_bottom_tips_head)
+    LinearLayout headViewLinear;// "请在光线充足的情况下进行检测"这个视图
+    @BindView(R.id.liveness_layout_rootRel)
+    LinearLayout rootView;// 根视图
+    @BindView(R.id.detection_step_timeout_garden)
+    TextView timeOutText;
+    @BindView(R.id.detection_step_timeoutRel)
+    RelativeLayout timeOutRel;
+    @BindView(R.id.toolbar)
+    Toolbar tb;
+    @BindView(R.id.toolbar_title)
+    TextView title;
+    @BindView(R.id.detection_step_timeout_progressBar)
+    CircleProgressBar mCircleProgressBar;
+    @BindView(R.id.liveness_layout_promptText)
+    TextView promptText;
 
     private Detector mDetector;// 活体检测器
-    private ICamera  mICamera;// 照相机工具类
-    private Handler  mainHandler;
+    private ICamera mICamera;// 照相机工具类
+    private Handler mainHandler;
     private HandlerThread mHandlerThread = new HandlerThread("videoEncoder");
-    private Handler      mHandler;
-    private JSONObject   jsonObject;
+    private Handler mHandler;
+    private JSONObject jsonObject;
     private IMediaPlayer mIMediaPlayer;// 多媒体工具类
-    private IDetection   mIDetection;
-    private DialogUtil   mDialogUtil;
-
-    private TextView           promptText;
-    private boolean            isHandleStart;// 是否开始检测
+    private IDetection mIDetection;
+    private DialogUtil mDialogUtil;
+    private boolean isHandleStart;// 是否开始检测
     private FaceQualityManager mFaceQualityManager;
-    private SensorUtil         sensorUtil;
+    private SensorUtil sensorUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.liveness_layout);
         StatusBarUtils.setColor(this, Color.TRANSPARENT);
+        ButterKnife.bind(this);
         init();
         initData();
     }
@@ -91,9 +106,9 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         mHandler = new Handler(mHandlerThread.getLooper());
         mIMediaPlayer = new IMediaPlayer(this);
         mDialogUtil = new DialogUtil(this);
-        rootView = (LinearLayout) findViewById(R.id.liveness_layout_rootRel);
-        Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
-        TextView title = (TextView) findViewById(R.id.toolbar_title);
+//        rootView = (LinearLayout) findViewById(R.id.liveness_layout_rootRel);
+//        tb = (Toolbar) findViewById(R.id.toolbar);
+//        title = (TextView) findViewById(R.id.toolbar_title);
         tb.setNavigationIcon(R.mipmap.nav_back);
         tb.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,17 +124,17 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         mIDetection = new IDetection(this, rootView);
 //        mFaceMask = (FaceMask) findViewById(R.id.liveness_layout_facemask);
         mICamera = new ICamera();
-        promptText = (TextView) findViewById(R.id.liveness_layout_promptText);
-        camerapreview = (TextureView) findViewById(R.id.liveness_layout_textureview);
+//        promptText = (TextView) findViewById(R.id.liveness_layout_promptText);
+//        camerapreview = (TextureView) findViewById(R.id.liveness_layout_textureview);
         openCamera();
         camerapreview.setSurfaceTextureListener(this);
-        mProgressBar = (ProgressBar) findViewById(R.id.liveness_layout_progressbar);
+//        mProgressBar = (ProgressBar) findViewById(R.id.liveness_layout_progressbar);
         mProgressBar.setVisibility(View.INVISIBLE);
-        headViewLinear = (LinearLayout) findViewById(R.id.liveness_layout_bottom_tips_head);
+//        headViewLinear = (LinearLayout) findViewById(R.id.liveness_layout_bottom_tips_head);
         headViewLinear.setVisibility(View.VISIBLE);
-        timeOutRel = (RelativeLayout) findViewById(R.id.detection_step_timeoutRel);
-        timeOutText = (TextView) findViewById(R.id.detection_step_timeout_garden);
-        mCircleProgressBar = (CircleProgressBar) findViewById(R.id.detection_step_timeout_progressBar);
+//        timeOutRel = (RelativeLayout) findViewById(R.id.detection_step_timeoutRel);
+//        timeOutText = (TextView) findViewById(R.id.detection_step_timeout_garden);
+//        mCircleProgressBar = (CircleProgressBar) findViewById(R.id.detection_step_timeout_progressBar);
         mIDetection.viewsInit();
     }
 

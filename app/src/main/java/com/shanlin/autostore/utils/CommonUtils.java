@@ -103,34 +103,34 @@ public class CommonUtils {
     }
 
 
-    /**
-     * 获取用户乐买宝认证信息
-     *
-     * @param context
-     * @param service
-     * @param token
-     */
-    public static void checkAuthenStatus(final Context context, HttpService service, String token) {
-        Call<UserVertifyStatusBean> call = service.getUserVertifyAuthenStatus(token);
-        call.enqueue(new Callback<UserVertifyStatusBean>() {
-            @Override
-            public void onResponse(Call<UserVertifyStatusBean> call, Response<UserVertifyStatusBean> response) {
-                UserVertifyStatusBean body = response.body();
-                if ("200".equals(body.getCode())) {
-                    String status = body.getData().getVerifyStatus();
-                    Log.d("wr", "-----------------authen_status=" + status);
-                    SpUtils.saveString(context, Constant_LeMaiBao.AUTHEN_STATE_KEY, status);
-                } else {
-                    //                    Toast.makeText(context, "未获取到认证数据", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserVertifyStatusBean> call, Throwable t) {
-                Toast.makeText(context, "获取信息失败", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//    /**
+//     * 获取用户乐买宝认证信息
+//     *
+//     * @param context
+//     * @param service
+//     * @param token
+//     */
+//    public static void checkAuthenStatus(final Context context, HttpService service, String token) {
+//        Call<UserVertifyStatusBean> call = service.getUserVertifyAuthenStatus(token);
+//        call.enqueue(new Callback<UserVertifyStatusBean>() {
+//            @Override
+//            public void onResponse(Call<UserVertifyStatusBean> call, Response<UserVertifyStatusBean> response) {
+//                UserVertifyStatusBean body = response.body();
+//                if ("200".equals(body.getCode())) {
+//                    String status = body.getData().getVerifyStatus();
+//                    Log.d("wr", "-----------------authen_status=" + status);
+//                    SpUtils.saveString(context, Constant_LeMaiBao.AUTHEN_STATE_KEY, status);
+//                } else {
+//                    //                    Toast.makeText(context, "未获取到认证数据", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<UserVertifyStatusBean> call, Throwable t) {
+//                Toast.makeText(context, "获取信息失败", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
     /**
      * 设置添加屏幕的背景透明度

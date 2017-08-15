@@ -137,7 +137,6 @@ public interface HttpService {
 
     /**
      * 获取用户乐买宝实名认证信息
-     *
      * @param token
      * @return
      */

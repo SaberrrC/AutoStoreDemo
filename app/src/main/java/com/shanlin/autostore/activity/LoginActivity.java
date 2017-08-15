@@ -229,7 +229,7 @@ public class LoginActivity extends BaseActivity {
                                 SpUtils.saveString(LoginActivity.this, Constant.USER_HEAD_URL, data.getData().getAvetorUrl());
                             }
                             //验证乐买宝实名是否认证
-                            CommonUtils.checkAuthenStatus(LoginActivity.this, httpService, data.getData().getToken());
+//                            CommonUtils.checkAuthenStatus(LoginActivity.this, httpService, data.getData().getToken());
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_OK);
                             intent.putExtra(Constant.USER_INFO, data);
