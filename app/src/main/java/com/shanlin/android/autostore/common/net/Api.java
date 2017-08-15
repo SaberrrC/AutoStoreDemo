@@ -11,16 +11,23 @@ import com.shanlin.android.autostore.entity.respone.CreditBalanceCheckBean;
 import com.shanlin.android.autostore.entity.respone.LoginBean;
 import com.shanlin.android.autostore.entity.respone.LogoutBean;
 import com.shanlin.android.autostore.entity.respone.MemberUpdateBean;
+import com.shanlin.android.autostore.entity.respone.CheckUpdateBean;
 import com.shanlin.android.autostore.entity.respone.PersonInfoBean;
 import com.shanlin.android.autostore.entity.respone.RefundMoneyBean;
 import com.shanlin.android.autostore.entity.respone.UserNumEverydayBean;
 import com.shanlin.android.autostore.entity.respone.UserVertifyStatusBean;
+import com.shanlin.android.autostore.entity.respone.WxUserInfoBean;
+import com.shanlin.autostore.bean.paramsBean.FaceLoginSendBean;
+import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;
+import com.shanlin.autostore.bean.resultBean.WxTokenBean;
 
 import io.reactivex.Flowable;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.GET;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 /**
  * Created by cuieney on 14/08/2017.
@@ -64,6 +71,32 @@ public interface Api {
     @GET("buybao/userverify/status")
     Flowable<UserVertifyStatusBean> getUserVertifyAuthenStatus(@Query("token") String token);
     /*
+     * 微信登录
+     */
+    Flowable<WxUserInfoBean> getWxUserInfo(@Url String url, @Query("access_token") String access_token, @Query("openid") String openid);
+
+
+    /**
+     * 微信登录取token
+     */
+    @GET
+    Flowable<WxTokenBean> getWxToken(@Url String url, @Query("appid") String appid, @Query("secret") String secret, @Query("code") String code, @Query("grant_type") String grant_type);
+
+
+    //微信认证登录
+    @POST("wechat/wechatlogin")
+    Flowable<LoginBean> postWxTokenLogin(@Body WechatLoginSendBean wechatLoginSendBean);
+
+
+    /**
+     * 登陆页面脸部识别登陆
+     */
+    @POST("member/facelogin")
+    Flowable<LoginBean> postFaceLogin(@Body FaceLoginSendBean faceLoginSendBean);
+
+
+
+    /**
      * 会员登出
      */
     @GET("memberlogout")

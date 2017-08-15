@@ -12,7 +12,7 @@ public class WxTokenBean {
     private String refresh_token;
     private String openid;
     private String scope;
-    private int expires;
+    private int    expires;
 
     public String getAccess_token() {
         return access_token;
