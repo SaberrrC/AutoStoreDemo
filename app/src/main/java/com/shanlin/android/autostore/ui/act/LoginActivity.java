@@ -21,7 +21,6 @@ import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.WxMessageEvent;
-import com.shanlin.autostore.activity.PhoneNumLoginActivity;
 import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;
 import com.shanlin.autostore.bean.resultBean.WxTokenBean;
 import com.shanlin.autostore.constants.Constant;
@@ -222,7 +221,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                 });
                 break;
             case R.id.btn_login_by_phone://手机号登陆
-                CommonUtils.toNextActivity(this, com.shanlin.autostore.activity.PhoneNumLoginActivity.class);
+                CommonUtils.toNextActivity(this, PhoneNumLoginActivity.class);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 break;
             case R.id.btn_login_by_wx://微信登陆
@@ -299,7 +298,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         SpUtils.saveString(LoginActivity.this, Constant.WX_NICKNAME, nickname);
         if (TextUtils.equals(data.getData().getFaceVerify(), "0")) {
             //没人脸认证 跳转手机号登陆界面
-            Intent intent = new Intent(LoginActivity.this, com.shanlin.autostore.activity.PhoneNumLoginActivity.class);
+            Intent intent = new Intent(LoginActivity.this, PhoneNumLoginActivity.class);
             intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_NO);
             intent.putExtra(Constant.USER_INFO, data);
             intent.putExtra(Constant.WX_INFO, wxUserInfoBean);
@@ -330,7 +329,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     public void onWxTokenLoginFailed(Throwable ex, String code, String msg, WxUserInfoBean userInfoBean) {
         dismissLoadingDialog();
         if (TextUtils.equals(code, "204")) {//新用户请绑定手机号注册
-            Intent intent = new Intent(LoginActivity.this, com.shanlin.autostore.activity.PhoneNumLoginActivity.class);
+            Intent intent = new Intent(LoginActivity.this, PhoneNumLoginActivity.class);
             intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_NO);
             intent.putExtra(Constant.WX_INFO, userInfoBean);
             startActivity(intent);
