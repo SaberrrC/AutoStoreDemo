@@ -5,6 +5,7 @@ import android.app.Activity;
 import com.shanlin.android.autostore.di.PerActivity;
 import com.shanlin.android.autostore.di.module.ActivityModule;
 import com.shanlin.android.autostore.ui.act.SplashActivity;
+import com.shanlin.autostore.activity.LoginActivity;
 
 import dagger.Component;
 
@@ -19,4 +20,5 @@ public interface ActivityComponent {
 
     void inject(SplashActivity activity);
 
+    void inject(LoginActivity loginActivity);
 }
