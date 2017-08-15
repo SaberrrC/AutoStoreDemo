@@ -8,12 +8,12 @@ import com.shanlin.android.autostore.common.base.RxPresenter;
 import com.shanlin.android.autostore.common.net.Api;
 import com.shanlin.android.autostore.common.net.NetWorkUtil;
 import com.shanlin.android.autostore.common.net.SubscriberWrapper;
+import com.shanlin.android.autostore.entity.respone.LoginBean;
+import com.shanlin.android.autostore.entity.respone.WxUserInfoBean;
 import com.shanlin.android.autostore.presenter.Contract.LoginActContract;
-import com.shanlin.autostore.bean.LoginBean;
 import com.shanlin.autostore.bean.paramsBean.FaceLoginSendBean;
 import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;
 import com.shanlin.autostore.bean.resultBean.WxTokenBean;
-import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
 import com.shanlin.autostore.constants.Constant;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -29,13 +29,13 @@ import javax.inject.Inject;
  * Created by dell、 on 2017/8/15.
  */
 
-public class LoginPresenterImpl extends RxPresenter<LoginActContract.View> implements LoginActContract.Presenter {
+public class LoginPresenter extends RxPresenter<LoginActContract.View> implements LoginActContract.Presenter {
 
     private IWXAPI api;
     public static final String TYPE_WX = "1";
 
     @Inject
-    public LoginPresenterImpl(Api apiService) {
+    public LoginPresenter(Api apiService) {
         super(apiService);
     }
 
@@ -45,7 +45,7 @@ public class LoginPresenterImpl extends RxPresenter<LoginActContract.View> imple
     }
 
     @Override
-    public void checkWxInstall(BaseActivity<LoginPresenterImpl> view) {
+    public void checkWxInstall(BaseActivity<LoginPresenter> view) {
         api = WXAPIFactory.createWXAPI(view, Constant.APP_ID, false);
         boolean isInstalled1 = api.isWXAppInstalled() && api.isWXAppSupportAPI();
         boolean isInstalled = isWeixinAvilible(view);
@@ -84,39 +84,41 @@ public class LoginPresenterImpl extends RxPresenter<LoginActContract.View> imple
 
     @Override
     public void getUserInfo(String access_token, String openid) {
-        apiService.getWxUserInfo("https://api.weixin.qq.com/sns/userinfo?access_token", access_token, openid).compose(NetWorkUtil.rxSchedulerHelper()).subscribe(new Subscriber<WxUserInfoBean>() {
-            @Override
-            public void onSubscribe(Subscription s) {
-                s.request(Integer.MAX_VALUE);
-            }
+        apiService.getWxUserInfo("https://api.weixin.qq.com/sns/userinfo?access_token", access_token, openid)
+                .compose(NetWorkUtil.rxSchedulerHelper())
+                .subscribe(new Subscriber<WxUserInfoBean>() {
+                    @Override
+                    public void onSubscribe(Subscription s) {
+                        s.request(Integer.MAX_VALUE);
+                    }
 
-            @Override
-            public void onNext(WxUserInfoBean wxUserInfoBean) {
-                int sex = wxUserInfoBean.getSex();
-                String unionid = wxUserInfoBean.getUnionid();
-                String openid = wxUserInfoBean.getOpenid();
-                String nickname = wxUserInfoBean.getNickname();
-                WechatLoginSendBean sendBean = new WechatLoginSendBean();
-                sendBean.setType(TYPE_WX);
-                sendBean.setUnionid(unionid);
-                WechatLoginSendBean.ExtraBean extraBean = new WechatLoginSendBean.ExtraBean();
-                extraBean.setSex(sex + "");
-                extraBean.setOpenid(openid);
-                extraBean.setNickname(nickname);
-                sendBean.setExtra(extraBean);
-                mView.onWxUserInfoSuccess(wxUserInfoBean, sendBean);
-            }
+                    @Override
+                    public void onNext(WxUserInfoBean wxUserInfoBean) {
+                        int sex = wxUserInfoBean.getSex();
+                        String unionid = wxUserInfoBean.getUnionid();
+                        String openid = wxUserInfoBean.getOpenid();
+                        String nickname = wxUserInfoBean.getNickname();
+                        WechatLoginSendBean sendBean = new WechatLoginSendBean();
+                        sendBean.setType(TYPE_WX);
+                        sendBean.setUnionid(unionid);
+                        WechatLoginSendBean.ExtraBean extraBean = new WechatLoginSendBean.ExtraBean();
+                        extraBean.setSex(sex + "");
+                        extraBean.setOpenid(openid);
+                        extraBean.setNickname(nickname);
+                        sendBean.setExtra(extraBean);
+                        mView.onWxUserInfoSuccess(wxUserInfoBean, sendBean);
+                    }
 
-            @Override
-            public void onError(Throwable t) {
-                mView.onWxUserInfoFailed(t);
-            }
+                    @Override
+                    public void onError(Throwable t) {
+                        mView.onWxUserInfoFailed(t);
+                    }
 
-            @Override
-            public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-            }
-        });
+                    }
+                });
     }
 
     /**
@@ -127,7 +129,9 @@ public class LoginPresenterImpl extends RxPresenter<LoginActContract.View> imple
      */
     @Override
     public void postWxTokenLogin(WxUserInfoBean userInfoBean, WechatLoginSendBean sendBean) {
-        apiService.postWxTokenLogin(sendBean).compose(NetWorkUtil.rxSchedulerHelper()).subscribe(new SubscriberWrapper<>(new SubscriberWrapper.CallBackListener<LoginBean>() {
+        apiService.postWxTokenLogin(sendBean)
+                .compose(NetWorkUtil.rxSchedulerHelper())
+                .subscribe(new SubscriberWrapper<LoginBean>(new SubscriberWrapper.CallBackListener<LoginBean>() {
 
             @Override
             public void onSuccess(String code, LoginBean data, String msg) {
@@ -157,7 +161,7 @@ public class LoginPresenterImpl extends RxPresenter<LoginActContract.View> imple
 
     }
 
-    private boolean isWeixinAvilible(BaseActivity<LoginPresenterImpl> view) {
+    private boolean isWeixinAvilible(BaseActivity<LoginPresenter> view) {
         final PackageManager packageManager = view.getPackageManager();
         //  获取packagemanager
         List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);

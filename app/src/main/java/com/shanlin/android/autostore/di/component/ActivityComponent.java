@@ -4,10 +4,11 @@ import android.app.Activity;
 
 import com.shanlin.android.autostore.di.PerActivity;
 import com.shanlin.android.autostore.di.module.ActivityModule;
+import com.shanlin.android.autostore.ui.act.LoginActivity;
 import com.shanlin.android.autostore.ui.act.MainActivity;
 import com.shanlin.android.autostore.ui.act.PhoneNumLoginActivity;
+import com.shanlin.android.autostore.ui.act.MyHeadImgActivity;
 import com.shanlin.android.autostore.ui.act.SplashActivity;
-import com.shanlin.autostore.activity.LoginActivity;
 
 import dagger.Component;
 
@@ -24,4 +25,5 @@ public interface ActivityComponent {
     void inject(SplashActivity activity);
     void inject(MainActivity activity);
     void inject(LoginActivity loginActivity);
+    void inject(MyHeadImgActivity activity);
 }

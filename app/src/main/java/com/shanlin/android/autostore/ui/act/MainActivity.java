@@ -2,17 +2,13 @@ package com.shanlin.android.autostore.ui.act;
 
 import android.animation.ValueAnimator;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -26,6 +22,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.shanlin.android.autostore.common.base.BaseActivity;
 import com.shanlin.android.autostore.common.image.ImageLoader;
+import com.shanlin.android.autostore.common.utils.CommonUtils;
 import com.shanlin.android.autostore.common.utils.MPermissionUtils;
 import com.shanlin.android.autostore.common.utils.SpUtils;
 import com.shanlin.android.autostore.common.utils.ToastUtils;
@@ -41,23 +38,15 @@ import com.shanlin.android.autostore.presenter.MainPresenter;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.activity.BuyRecordActivity;
 import com.shanlin.autostore.activity.LoginActivity;
-import com.shanlin.autostore.activity.MyHeadImgActivity;
 import com.shanlin.autostore.activity.MyLeMaiBaoActivity;
 import com.shanlin.autostore.activity.OpenLeMaiBao;
 import com.shanlin.autostore.activity.RefundMoneyActivity;
 import com.shanlin.autostore.activity.SaveFaceActivity;
 import com.shanlin.autostore.activity.VersionInfoActivity;
-import com.shanlin.autostore.bean.LoginBean;
-import com.shanlin.autostore.bean.resultBean.LoginOutBean;
-import com.shanlin.autostore.bean.resultBean.MemberUpdateBean;
-import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.livenesslib.LivenessActivity;
-import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.Base64;
-import com.shanlin.autostore.utils.CommonUtils;
-import com.shanlin.autostore.utils.LogUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
 import com.shanlin.autostore.view.ProgressView;
 import com.shanlin.autostore.zxing.activity.CaptureActivity;
@@ -66,13 +55,13 @@ import com.zhy.autolayout.utils.AutoUtils;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by cuieney on 15/08/2017.
  */
 
-public class MainActivity extends BaseActivity<MainPresenter> implements MainActContract.View, View.OnClickListener {
+public class MainActivity extends BaseActivity<MainPresenter> implements MainActContract.View {
 
     @BindView(R.id.toolbar_title)
     ImageView toolbarTitle;
@@ -177,7 +166,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
         setTransAnim(false);
 
         initIntend();
-        initListenter();
         initScanAnim();
         initToolBar();
         sendUserDeviceID();
@@ -242,88 +230,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
         }
     }
 
-    public void initListenter() {
-        headImage.setOnClickListener(this);
-        mBtBanlance.setOnClickListener(this);
-        mTvIdentify.setOnClickListener(this);
-        btnLemaibao.setOnClickListener(this);
-        openLMB.setOnClickListener(this);
-
-
-        location2.setOnClickListener(this);
-        location3.setOnClickListener(this);
-        location4.setOnClickListener(this);
-    }
-
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.location_2://侧滑 购买记录
-                Intent intent = new Intent(this, BuyRecordActivity.class);
-                Intent mainIntent = getIntent();
-                if (mainIntent != null) {
-                    intent.putExtra(Constant.USER_INFO, mainIntent.getSerializableExtra(Constant.USER_INFO));
-                }
-                startActivity(intent);
-                break;
-            case R.id.location_3:
-                CommonUtils.toNextActivity(this, VersionInfoActivity.class);
-                break;
-            case R.id.location_4://退出登陆
-                showLoginoutDialog();
-                break;
-            case R.id.btn_lemaibao:
-                if (!openLMB.isClickable()) {
-                    CommonUtils.sendDataToNextActivity(this, MyLeMaiBaoActivity.class, creditKeys, new String[]{creditBalance, creditUsed});
-                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                }
-                break;
-            case R.id.btn_open_le_mai_bao: //开通乐买宝
-                if (openLMB.isClickable()) {
-                    CommonUtils.debugLog("-----------开通乐买宝");
-                    CommonUtils.toNextActivity(this, OpenLeMaiBao.class);
-                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                }
-                break;
-            case R.id.identify_tip://完善身份，智能购物
-                CommonUtils.checkPermission(this, new MPermissionUtils.OnPermissionListener() {
-                    @Override
-                    public void onPermissionGranted() {
-                        Intent intent = new Intent(MainActivity.this, LivenessActivity.class);
-                        intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.GATE);
-                        startActivityForResult(intent, REQUEST_CODE_REGEST);
-                        overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                    }
-
-                    @Override
-                    public void onPermissionDenied() {
-                        MPermissionUtils.showTipsDialog(MainActivity.this);
-                    }
-                });
-                break;
-            case R.id.btn_yu_e://退款金额
-                Intent refundMoneyIntent = new Intent(this, RefundMoneyActivity.class);
-                refundMoneyIntent.putExtra(Constant.REFUND_MONEY_BEAN, refundMoneyBean);
-                startActivity(refundMoneyIntent);
-                overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                break;
-
-            case R.id.btn_diaolog_know:
-                dialog.dismiss();
-                state = false;
-                break;
-
-            case R.id.iv_head_img:
-                //点击头像
-                Intent headintent = new Intent(this, MyHeadImgActivity.class);
-                headintent.putExtra(Constant.HEAD_IMG_URL, imageUrl);
-                startActivityForResult(headintent, HEAD_IMG_REQUEST_CODE);
-                break;
-
-        }
-        mDrawerLayout.closeDrawer(Gravity.LEFT);
-    }
 
     @Override
     public void onLogoutSuccess(String code, LogoutBean data, String msg) {
@@ -433,14 +339,14 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
     protected void onStart() {
         super.onStart();
         //获取认证状态
-//        mPresenter.getUserVertifyAuthenStatus();
+        mPresenter.getUserVertifyAuthenStatus();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         //调用今日到店人数接口
-//        mPresenter.getUserNumEveryday(CommonUtils.getCurrentTime(false), "1");
+        mPresenter.getUserNumEveryday(CommonUtils.getCurrentTime(false), "1");
     }
 
     @Override
@@ -561,7 +467,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
         CommonUtils.debugLog("---------flag=" + state);
         if (state && credit != null) {
             View inflate = LayoutInflater.from(this).inflate(R.layout.get_available_balence_layout, null);
-            inflate.findViewById(R.id.btn_diaolog_know).setOnClickListener(this);
+            inflate.findViewById(R.id.btn_diaolog_know).setOnClickListener(view -> {
+                dialog.dismiss();
+                state = false;
+            });
             TextView tvCredit = ((TextView) inflate.findViewById(R.id.tv_credit_num));
             dialog = new Dialog(MainActivity.this);
             dialog.setContentView(inflate);
@@ -606,4 +515,67 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
         SpUtils.saveString(MainActivity.this, Constant.USER_HEAD_URL, "");
         SpUtils.saveString(MainActivity.this, Constant.WX_NICKNAME, "");
     }
+
+    @OnClick(R.id.location_2) void menuOpBuyRecord(){
+        Intent intent = new Intent(this, BuyRecordActivity.class);
+        Intent mainIntent = getIntent();
+        if (mainIntent != null) {
+            intent.putExtra(Constant.USER_INFO, mainIntent.getSerializableExtra(Constant.USER_INFO));
+        }
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.location_3) void toVersionInfo(){
+        CommonUtils.toNextActivity(this, VersionInfoActivity.class);
+    }
+
+    @OnClick(R.id.location_4) void logout(){
+        showLoginoutDialog();
+    }
+
+    @OnClick(R.id.btn_lemaibao) void toLemaibao(){
+        if (!openLMB.isClickable()) {
+            CommonUtils.sendDataToNextActivity(this, MyLeMaiBaoActivity.class, creditKeys, new String[]{creditBalance, creditUsed});
+            overridePendingTransition(R.anim.right_in, R.anim.left_out);
+        }
+    }
+
+    @OnClick(R.id.btn_open_le_mai_bao) void openLemaibao(){
+        if (openLMB.isClickable()) {
+            CommonUtils.debugLog("-----------开通乐买宝");
+            CommonUtils.toNextActivity(this, OpenLeMaiBao.class);
+            overridePendingTransition(R.anim.right_in, R.anim.left_out);
+        }
+    }
+
+    @OnClick(R.id.identify_tip) void identify(){
+        CommonUtils.checkPermission(this, new MPermissionUtils.OnPermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                Intent intent = new Intent(MainActivity.this, LivenessActivity.class);
+                intent.putExtra(Constant.MainActivityArgument.MAIN_ACTIVITY, Constant.MainActivityArgument.GATE);
+                startActivityForResult(intent, REQUEST_CODE_REGEST);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            }
+
+            @Override
+            public void onPermissionDenied() {
+                MPermissionUtils.showTipsDialog(MainActivity.this);
+            }
+        });
+    }
+
+    @OnClick(R.id.btn_yu_e) void refundAmount(){
+        Intent refundMoneyIntent = new Intent(this, RefundMoneyActivity.class);
+        refundMoneyIntent.putExtra(Constant.REFUND_MONEY_BEAN, refundMoneyBean);
+        startActivity(refundMoneyIntent);
+        overridePendingTransition(R.anim.right_in, R.anim.left_out);
+    }
+
+    @OnClick(R.id.iv_head_img) void headImgClick(){
+        Intent headintent = new Intent(this, MyHeadImgActivity.class);
+        headintent.putExtra(Constant.HEAD_IMG_URL, imageUrl);
+        startActivityForResult(headintent, HEAD_IMG_REQUEST_CODE);
+    }
+
 }

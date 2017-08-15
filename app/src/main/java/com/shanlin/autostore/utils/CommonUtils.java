@@ -20,11 +20,11 @@ import android.widget.Toast;
 
 import com.megvii.licensemanager.Manager;
 import com.megvii.livenessdetection.LivenessLicenseManager;
+import com.shanlin.android.autostore.App;
 import com.shanlin.android.autostore.common.utils.MPermissionUtils;
 import com.shanlin.android.autostore.common.utils.SpUtils;
 import com.shanlin.android.autostore.common.utils.ThreadUtils;
 import com.shanlin.android.autostore.common.utils.ToastUtils;
-import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
 import com.shanlin.autostore.constants.Constant;
@@ -131,6 +131,35 @@ public class CommonUtils {
 //            }
 //        });
 //    }
+    /**
+     * 获取用户乐买宝认证信息
+     *
+     * @param context
+     * @param service
+     * @param token
+     */
+    public static void checkAuthenStatus(final Context context, HttpService service, String token) {
+
+        Call<UserVertifyStatusBean> call = service.getUserVertifyAuthenStatus(token);
+        call.enqueue(new Callback<UserVertifyStatusBean>() {
+            @Override
+            public void onResponse(Call<UserVertifyStatusBean> call, Response<UserVertifyStatusBean> response) {
+                UserVertifyStatusBean body = response.body();
+                if ("200".equals(body.getCode())) {
+                    String status = body.getData().getVerifyStatus();
+                    Log.d("wr", "-----------------authen_status=" + status);
+                    SpUtils.saveString(context, Constant_LeMaiBao.AUTHEN_STATE_KEY, status);
+                } else {
+                    //                    Toast.makeText(context, "未获取到认证数据", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserVertifyStatusBean> call, Throwable t) {
+                Toast.makeText(context, "获取信息失败", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     /**
      * 设置添加屏幕的背景透明度
@@ -261,7 +290,7 @@ public class CommonUtils {
     }
 
     public static File getPackagedirectory() {
-        File dir = new File(Environment.getExternalStorageDirectory() + File.separator + AutoStoreApplication.getApp().getPackageName());
+        File dir = new File(Environment.getExternalStorageDirectory() + File.separator + App.getInstance().getPackageName());
         return dir;
     }
 
@@ -317,19 +346,19 @@ public class CommonUtils {
         ThreadUtils.runSub(new Runnable() {
             @Override
             public void run() {
-                String deviceId = JPushInterface.getRegistrationID(AutoStoreApplication.getApp());
+                String deviceId = JPushInterface.getRegistrationID(App.getInstance());
                 if (!TextUtils.isEmpty(deviceId)) {
-                    SpUtils.saveString(AutoStoreApplication.getApp(), Constant.DEVICEID, deviceId);
+                    SpUtils.saveString(App.getInstance(), Constant.DEVICEID, deviceId);
                     saveDevicedID(deviceId);
                 } else {
-                    deviceId = SpUtils.getString(AutoStoreApplication.getApp(), Constant.DEVICEID, "");
+                    deviceId = SpUtils.getString(App.getInstance(), Constant.DEVICEID, "");
                     if (!TextUtils.isEmpty(deviceId)) {
                         LogUtils.d(Constant.DEVICEID + "   " + deviceId);
                         return;
                     }
                     deviceId = getDIsKDevicedID();
                     if (!TextUtils.isEmpty(deviceId)) {
-                        SpUtils.saveString(AutoStoreApplication.getApp(), Constant.DEVICEID, deviceId);
+                        SpUtils.saveString(App.getInstance(), Constant.DEVICEID, deviceId);
                     }
                 }
                 LogUtils.d(Constant.DEVICEID + "   " + deviceId);
@@ -344,14 +373,14 @@ public class CommonUtils {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Manager manager = new Manager(AutoStoreApplication.getApp());
-                LivenessLicenseManager licenseManager = new LivenessLicenseManager(AutoStoreApplication.getApp());
+                Manager manager = new Manager(App.getInstance());
+                LivenessLicenseManager licenseManager = new LivenessLicenseManager(App.getInstance());
                 manager.registerLicenseManager(licenseManager);
-                manager.takeLicenseFromNetwork(ConUtil.getUUIDString(AutoStoreApplication.getApp()));
+                manager.takeLicenseFromNetwork(ConUtil.getUUIDString(App.getInstance()));
                 if (licenseManager.checkCachedLicense() > 0) {//成功
-                    AutoStoreApplication.FACE = true;
+                    App.FACE = true;
                 } else {//失败
-                    AutoStoreApplication.FACE = false;
+                    App.FACE = false;
                 }
             }
         }).start();

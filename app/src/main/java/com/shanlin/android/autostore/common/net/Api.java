@@ -70,7 +70,8 @@ public interface Api {
      */
     @GET("buybao/userverify/status")
     Flowable<UserVertifyStatusBean> getUserVertifyAuthenStatus(@Query("token") String token);
-    /*
+
+    /**
      * 微信登录
      */
     Flowable<WxUserInfoBean> getWxUserInfo(@Url String url, @Query("access_token") String access_token, @Query("openid") String openid);

@@ -3,10 +3,10 @@ package com.shanlin.android.autostore.common.net;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import com.shanlin.android.autostore.common.utils.CommonUtils;
 import com.shanlin.android.autostore.entity.BaseBean;
 import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.activity.LoginActivity;
-import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.LogUtils;
 import com.shanlin.android.autostore.common.utils.ToastUtils;
 

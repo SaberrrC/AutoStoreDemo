@@ -3,11 +3,11 @@ package com.shanlin.android.autostore.presenter.Contract;
 import com.shanlin.android.autostore.common.base.BaseActivity;
 import com.shanlin.android.autostore.common.base.BasePresenter;
 import com.shanlin.android.autostore.common.base.BaseView;
-import com.shanlin.android.autostore.presenter.LoginPresenterImpl;
-import com.shanlin.autostore.bean.LoginBean;
+import com.shanlin.android.autostore.entity.respone.LoginBean;
+import com.shanlin.android.autostore.entity.respone.WxUserInfoBean;
+import com.shanlin.android.autostore.presenter.LoginPresenter;
 import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;
 import com.shanlin.autostore.bean.resultBean.WxTokenBean;
-import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
 
 /**
  * Created by dell、 on 2017/8/15.
@@ -40,7 +40,7 @@ public interface LoginActContract {
     interface Presenter extends BasePresenter<View> {
         void getWxInfo();
 
-        void checkWxInstall(BaseActivity<LoginPresenterImpl> view);
+        void checkWxInstall(BaseActivity<LoginPresenter> view);
 
 
         void getResult(String code);
