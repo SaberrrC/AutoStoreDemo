@@ -12,6 +12,7 @@ android {
         targetSdkVersion config.targetSdkVersion
         versionCode config.versionCode
         versionName config.versionName
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             //选择要添加的对应cpu类型的.so库。
@@ -25,12 +26,6 @@ android {
         ]
 
     }
-
-    //dagger2 和 butterknife冲突
-    packagingOptions {
-        exclude 'META-INF/services/javax.annotation.processing.Processor'
-    }
-
 
     if (signPropertiesFile.exists()) {
         signingConfigs {
@@ -83,6 +78,7 @@ android {
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/notice.txt'
         exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
 
     lintOptions {
@@ -106,7 +102,6 @@ dependencies {
     compile project(':autostoresdk')
     compile project(':library:wechatlib')
     annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     //jpush
     compile 'cn.jiguang.sdk:jpush:3.0.3'
     // 此处以JPush 3.0.3 版本为例。

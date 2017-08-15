@@ -2,9 +2,9 @@ package com.shanlin.android.autostore.presenter.Contract;
 
 import com.shanlin.android.autostore.common.base.BasePresenter;
 import com.shanlin.android.autostore.common.base.BaseView;
-import com.shanlin.autostore.bean.LoginBean;
-import com.shanlin.autostore.bean.paramsBean.WechatSaveMobileBody;
-import com.shanlin.autostore.bean.resultBean.CodeBean;
+import com.shanlin.android.autostore.entity.body.WechatSaveMobileBody;
+import com.shanlin.android.autostore.entity.respone.CodeBean;
+import com.shanlin.android.autostore.entity.respone.LoginBean;
 
 /**
  * Created by dell、 on 2017/8/15.

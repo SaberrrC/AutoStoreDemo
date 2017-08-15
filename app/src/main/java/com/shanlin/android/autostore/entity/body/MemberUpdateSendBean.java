@@ -1,4 +1,4 @@
-package com.shanlin.autostore.bean.paramsBean;
+package com.shanlin.android.autostore.entity.body;
 
 /**
  * Created by shanlin on 2017-7-28.

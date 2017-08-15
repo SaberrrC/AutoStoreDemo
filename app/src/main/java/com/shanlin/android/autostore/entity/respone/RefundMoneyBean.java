@@ -1,4 +1,4 @@
-package com.shanlin.autostore.bean.resultBean;
+package com.shanlin.android.autostore.entity.respone;
 
 import com.shanlin.android.autostore.entity.BaseBean;
 
@@ -6,12 +6,10 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by saberrrc on 2017/7/30.
+ * Created by cuieney on 15/08/2017.
  */
 
 public class RefundMoneyBean extends BaseBean {
-
-
     /**
      * data : [{"amount":"1.00","balance":"1.00","content":"内容2321","createdTime":"1501206138000","paymentType":"1","title":"title"},{"amount":"1.00","balance":"2.00","content":"内容2321","createdTime":"1501206138000","paymentType":"1","title":"title"},{"amount":"11.00","balance":"2.00","content":"内容2321","createdTime":"1501206138000","paymentType":"1","title":"title"},{"amount":"1.00","balance":"2.00","content":"内容2321","createdTime":"1501206138000","paymentType":"1","title":"title"},{"amount":"1.00","balance":"2.00","content":"内容2321","createdTime":"1501206138000","paymentType":"1","title":"title"},{"amount":"1.00","balance":"2.00","content":"内容2321","createdTime":"1501206138000","paymentType":"1","title":"title"},{"amount":"1.00","balance":"2.00","content":"内容2321","createdTime":"1501206138000","paymentType":"1","title":"title"},{"amount":"1.00","balance":"2.00","content":"内容2321","createdTime":"1501206138000","paymentType":"1","title":"title"},{"amount":"1.00","balance":"2.00","content":"内容2321","createdTime":"1501206138000","paymentType":"1","title":"title"}]
      * version : 0.0.1
@@ -36,7 +34,7 @@ public class RefundMoneyBean extends BaseBean {
         this.data = data;
     }
 
-    public static class DataBean implements Serializable{
+    public static class DataBean implements Serializable {
         /**
          * amount : 1.00
          * balance : 1.00

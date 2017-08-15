@@ -1,5 +1,4 @@
-package com.shanlin.autostore.bean.resultBean;
-
+package com.shanlin.android.autostore.entity.respone;
 
 import com.shanlin.android.autostore.entity.BaseBean;
 
@@ -7,7 +6,7 @@ import com.shanlin.android.autostore.entity.BaseBean;
  * Created by DELL on 2017/7/27 0027.
  */
 
-public class CreditBalanceCheckBean extends BaseBean {
+public class CreditBalanceCheckBean extends BaseBean{
 
 
     /**

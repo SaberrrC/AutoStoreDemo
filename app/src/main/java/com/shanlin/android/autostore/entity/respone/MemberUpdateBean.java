@@ -1,6 +1,7 @@
-package com.shanlin.autostore.bean;
+package com.shanlin.android.autostore.entity.respone;
 
-import com.shanlin.autostore.base.BaseBean;
+
+import com.shanlin.android.autostore.entity.BaseBean;
 
 /**
  * Created by shanlin on 2017-7-28.

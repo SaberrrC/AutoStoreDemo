@@ -1,6 +1,6 @@
 package com.shanlin.autostore.bean.resultBean;
 
-import com.shanlin.autostore.base.BaseBean;
+import com.shanlin.android.autostore.entity.BaseBean;
 
 import java.io.Serializable;
 
@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @detail:
  */
 
-public class CheckUpdateBean  extends BaseBean{
+public class CheckUpdateBean  extends BaseBean {
     /**
      * data : {"id":2,"version":"2","minVersion":"1.0.1","forceUpdate":"0","downloadUrl":"0","type":"2"}
      * version : 0.0.1

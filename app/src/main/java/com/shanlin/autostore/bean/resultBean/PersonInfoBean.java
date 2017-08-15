@@ -1,6 +1,6 @@
 package com.shanlin.autostore.bean.resultBean;
 
-import com.shanlin.autostore.base.BaseBean;
+import com.shanlin.android.autostore.entity.BaseBean;
 
 import java.io.Serializable;
 

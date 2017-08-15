@@ -1,12 +1,16 @@
 package com.shanlin.autostore.bean.resultBean;
 
+/**
+ * Created by cuieney on 15/08/2017.
+ */
+
 import com.shanlin.android.autostore.entity.BaseBean;
 
 /**
- * Created by saberrrc on 2017/7/30.
+ * Created by shanlin on 2017-7-28.
  */
 
-public class LoginOutBean extends BaseBean {
+public class MemberUpdateBean extends BaseBean {
 
     /**
      * version : 0.0.1

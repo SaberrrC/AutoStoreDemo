@@ -1,4 +1,4 @@
-package com.shanlin.autostore.bean.paramsBean;
+package com.shanlin.android.autostore.entity.body;
 
 import com.shanlin.android.autostore.entity.BaseBean;
 

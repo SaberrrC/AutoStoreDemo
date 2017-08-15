@@ -1,6 +1,6 @@
 package com.shanlin.autostore.bean.resultBean;
 
-import com.shanlin.autostore.base.BaseBean;
+import com.shanlin.android.autostore.entity.BaseBean;
 
 /**
  * Created by shanlin on 2017-7-21.

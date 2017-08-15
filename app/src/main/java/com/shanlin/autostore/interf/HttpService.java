@@ -1,12 +1,11 @@
 package com.shanlin.autostore.interf;
 
+import com.shanlin.android.autostore.entity.body.MemberUpdateSendBean;
 import com.shanlin.autostore.bean.LoginBean;
-import com.shanlin.autostore.bean.MemberUpdateBean;
 import com.shanlin.autostore.bean.paramsBean.AliPayOrderBody;
 import com.shanlin.autostore.bean.paramsBean.CodeSendBean;
 import com.shanlin.autostore.bean.paramsBean.FaceLoginSendBean;
 import com.shanlin.autostore.bean.paramsBean.LeMaiBaoPayBody;
-import com.shanlin.autostore.bean.paramsBean.MemberUpdateSendBean;
 import com.shanlin.autostore.bean.paramsBean.NumberLoginBean;
 import com.shanlin.autostore.bean.paramsBean.OpenGardBody;
 import com.shanlin.autostore.bean.paramsBean.PswSettingBody;
@@ -22,6 +21,7 @@ import com.shanlin.autostore.bean.resultBean.CodeBean;
 import com.shanlin.autostore.bean.resultBean.CreditBalanceCheckBean;
 import com.shanlin.autostore.bean.resultBean.LeMaiBaoPayResultBean;
 import com.shanlin.autostore.bean.resultBean.LoginOutBean;
+import com.shanlin.autostore.bean.resultBean.MemberUpdateBean;
 import com.shanlin.autostore.bean.resultBean.OrderDetailBean;
 import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
 import com.shanlin.autostore.bean.resultBean.PersonInfoBean;
@@ -36,7 +36,6 @@ import com.shanlin.autostore.bean.resultBean.WxTokenBean;
 import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
 
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;

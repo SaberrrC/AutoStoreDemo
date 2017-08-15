@@ -1,17 +1,22 @@
 package com.shanlin.android.autostore.common.net;
 
 
+import com.shanlin.android.autostore.entity.body.CodeSendBean;
+import com.shanlin.android.autostore.entity.body.MemberUpdateSendBean;
+import com.shanlin.android.autostore.entity.body.NumberLoginBean;
+import com.shanlin.android.autostore.entity.body.WechatSaveMobileBody;
 import com.shanlin.android.autostore.entity.respone.CheckUpdateBean;
+import com.shanlin.android.autostore.entity.respone.CodeBean;
+import com.shanlin.android.autostore.entity.respone.CreditBalanceCheckBean;
+import com.shanlin.android.autostore.entity.respone.LoginBean;
+import com.shanlin.android.autostore.entity.respone.LogoutBean;
+import com.shanlin.android.autostore.entity.respone.MemberUpdateBean;
 import com.shanlin.android.autostore.entity.respone.PersonInfoBean;
-import com.shanlin.autostore.bean.LoginBean;
-import com.shanlin.autostore.bean.paramsBean.CodeSendBean;
-import com.shanlin.autostore.bean.paramsBean.NumberLoginBean;
-import com.shanlin.autostore.bean.paramsBean.WechatSaveMobileBody;
-import com.shanlin.autostore.bean.resultBean.CodeBean;
-import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
+import com.shanlin.android.autostore.entity.respone.RefundMoneyBean;
+import com.shanlin.android.autostore.entity.respone.UserNumEverydayBean;
+import com.shanlin.android.autostore.entity.respone.UserVertifyStatusBean;
 
 import io.reactivex.Flowable;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -58,5 +63,54 @@ public interface Api {
      */
     @GET("buybao/userverify/status")
     Flowable<UserVertifyStatusBean> getUserVertifyAuthenStatus(@Query("token") String token);
+    /*
+     * 会员登出
+     */
+    @GET("memberlogout")
+    Flowable<LogoutBean> logout();
+
+    /**
+     * 退款金额
+     */
+    @GET("refund/query")
+    Flowable<RefundMoneyBean> getRefundMoney();
+
+    /**
+     * 获取每日到店用户
+     *
+     * @param date
+     * @param storeId
+     * @return
+     */
+    @GET("store/statisc")
+    Flowable<UserNumEverydayBean> getUserNumEveryday(@Query("date") String date, @Query("storeId") String storeId);
+
+
+    /**
+     * 获取用户信用和余额
+     *
+     * @return
+     */
+    @GET("buybao/info")
+    Flowable<CreditBalanceCheckBean> getUserCreditBalanceInfo();
+
+
+    /**
+     * 获取用户乐买宝实名认证信息
+     *
+     * @return
+     */
+    @GET("buybao/userverify/status")
+    Flowable<UserVertifyStatusBean> getUserVertifyAuthenStatus();
+
+
+    /**
+     * 修改个人信息
+     *
+     * @param memberUpdateSendBean
+     * @return
+     */
+    @POST("member/update")
+    Flowable<MemberUpdateBean> postMemberUpdate(@Body MemberUpdateSendBean memberUpdateSendBean);
 
 }
