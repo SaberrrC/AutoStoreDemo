@@ -25,7 +25,6 @@ import com.shanlin.android.autostore.entity.respone.WxUserInfoBean;
 import com.shanlin.android.autostore.presenter.Contract.PhoneLoginActContract;
 import com.shanlin.android.autostore.presenter.PhoneLoginPresenter;
 import com.shanlin.autostore.AutoStoreApplication;
-import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.activity.LoginActivity;
 import com.shanlin.autostore.constants.Constant;
