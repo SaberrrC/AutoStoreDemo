@@ -51,6 +51,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class LivenessActivity extends Activity implements TextureView.SurfaceTextureListener {
 
@@ -88,11 +89,13 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
     private boolean isHandleStart;// 是否开始检测
     private FaceQualityManager mFaceQualityManager;
     private SensorUtil sensorUtil;
+    private Unbinder unBinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.liveness_layout);
+        setContentView(R.layout.liveness_layout2);
+        unBinder = ButterKnife.bind(this);
         StatusBarUtils.setColor(this, Color.TRANSPARENT);
         init();
         initData();
@@ -483,6 +486,9 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (unBinder != null) {
+            unBinder.unbind();
+        }
         mainHandler.removeCallbacksAndMessages(null);
         mICamera.closeCamera();
         mIMediaPlayer.close();
