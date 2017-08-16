@@ -10,13 +10,10 @@ import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.TextureView;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -41,61 +38,37 @@ import com.shanlin.autostore.livenesslib.util.IDetection;
 import com.shanlin.autostore.livenesslib.util.IMediaPlayer;
 import com.shanlin.autostore.livenesslib.util.Screen;
 import com.shanlin.autostore.livenesslib.util.SensorUtil;
-import com.shanlin.autostore.livenesslib.view.CircleProgressBar;
 import com.shanlin.autostore.utils.StatusBarUtils;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-
 public class LivenessActivity extends Activity implements TextureView.SurfaceTextureListener {
 
-    @BindView(R.id.liveness_layout_textureview)
-    TextureView camerapreview;
-    //    private FaceMask          mFaceMask;// 画脸位置的类（调试时会用到）
-    @BindView(R.id.liveness_layout_progressbar)
-    ProgressBar mProgressBar;// 网络上传请求验证时出现的ProgressBar
-    @BindView(R.id.liveness_layout_bottom_tips_head)
-    LinearLayout headViewLinear;// "请在光线充足的情况下进行检测"这个视图
-    @BindView(R.id.liveness_layout_rootRel)
-    LinearLayout rootView;// 根视图
-    @BindView(R.id.detection_step_timeout_garden)
-    TextView timeOutText;
-    @BindView(R.id.detection_step_timeoutRel)
-    RelativeLayout timeOutRel;
-    @BindView(R.id.toolbar)
-    Toolbar tb;
-    @BindView(R.id.toolbar_title)
-    TextView title;
-    @BindView(R.id.detection_step_timeout_progressBar)
-    CircleProgressBar mCircleProgressBar;
-    @BindView(R.id.liveness_layout_promptText)
-    TextView promptText;
-
-    private Detector mDetector;// 活体检测器
-    private ICamera mICamera;// 照相机工具类
-    private Handler mainHandler;
-    private HandlerThread mHandlerThread = new HandlerThread("videoEncoder");
-    private Handler mHandler;
-    private JSONObject jsonObject;
-    private IMediaPlayer mIMediaPlayer;// 多媒体工具类
-    private IDetection mIDetection;
-    private DialogUtil mDialogUtil;
-    private boolean isHandleStart;// 是否开始检测
+    private TextureView        camerapreview;
+    private ProgressBar        mProgressBar;// 网络上传请求验证时出现的ProgressBar
+    private LinearLayout       headViewLinear;// "请在光线充足的情况下进行检测"这个视图
+    private LinearLayout       rootView;// 根视图
+    private Detector           mDetector;// 活体检测器
+    private ICamera            mICamera;// 照相机工具类
+    private Handler            mainHandler;
+    private Handler            mHandler;
+    private JSONObject         jsonObject;
+    private IMediaPlayer       mIMediaPlayer;// 多媒体工具类
+    private IDetection         mIDetection;
+    private DialogUtil         mDialogUtil;
+    private TextView           promptText;
+    private boolean            isHandleStart;// 是否开始检测
     private FaceQualityManager mFaceQualityManager;
-    private SensorUtil sensorUtil;
-    private Unbinder unBinder;
+    private SensorUtil         sensorUtil;
+
+    private HandlerThread mHandlerThread = new HandlerThread("videoEncoder");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.liveness_layout2);
-        unBinder = ButterKnife.bind(this);
+        setContentView(R.layout.liveness_layout);
         StatusBarUtils.setColor(this, Color.TRANSPARENT);
         init();
         initData();
@@ -109,6 +82,9 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         mHandler = new Handler(mHandlerThread.getLooper());
         mIMediaPlayer = new IMediaPlayer(this);
         mDialogUtil = new DialogUtil(this);
+        rootView = (LinearLayout) findViewById(R.id.liveness_layout_rootRel);
+        Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
+        TextView title = (TextView) findViewById(R.id.toolbar_title);
         tb.setNavigationIcon(R.mipmap.nav_back);
         tb.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,9 +99,13 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         title.setTextColor(getResources().getColor(R.color.black));
         mIDetection = new IDetection(this, rootView);
         mICamera = new ICamera();
+        promptText = (TextView) findViewById(R.id.liveness_layout_promptText);
+        camerapreview = (TextureView) findViewById(R.id.liveness_layout_textureview);
         openCamera();
         camerapreview.setSurfaceTextureListener(this);
+        mProgressBar = (ProgressBar) findViewById(R.id.liveness_layout_progressbar);
         mProgressBar.setVisibility(View.INVISIBLE);
+        headViewLinear = (LinearLayout) findViewById(R.id.liveness_layout_bottom_tips_head);
         headViewLinear.setVisibility(View.VISIBLE);
         mIDetection.viewsInit();
     }
@@ -147,7 +127,6 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         if (!initSuccess) {
             mDialogUtil.showDialog(getString(R.string.meglive_detect_initfailed));
         }
-
         // 初始化动画
         new Thread(new Runnable() {
             @Override
@@ -161,18 +140,16 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
     protected void onResume() {
         super.onResume();
         isHandleStart = false;
-        // 打开照相机
     }
+
     private void openCamera() {
         Camera mCamera = mICamera.openCamera(LivenessActivity.this);
         if (mCamera != null) {
             Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
             Camera.getCameraInfo(1, cameraInfo);
-//            mFaceMask.setFrontal(cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT);
             // 获取到相机分辨率对应的显示大小，并把这个值复制给camerapreview
             RelativeLayout.LayoutParams layout_params = mICamera.getLayoutParam();
             camerapreview.setLayoutParams(layout_params);
-//            mFaceMask.setLayoutParams(layout_params);
             // 初始化人脸质量检测管理类
             mFaceQualityManager = new FaceQualityManager(1 - 0.5f, 0.5f);
             mIDetection.mCurShowIndex = -1;
@@ -188,7 +165,6 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         if (isHandleStart)
             return;
         isHandleStart = true;
-        // 开始活体检测
         mainHandler.post(mTimeoutRunnable);
         jsonObject = new JSONObject();
     }
@@ -215,10 +191,8 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
     private void initDetecteSession() {
         if (mICamera.mCamera == null)
             return;
-
         mProgressBar.setVisibility(View.INVISIBLE);
         mIDetection.detectionTypeInit();
-
         mCurStep = 0;
         mDetector.reset();
         setHideText("请眨眼");
@@ -249,16 +223,13 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         public DetectionType onDetectionSuccess(final DetectionFrame validFrame) {
             mIMediaPlayer.reset();
             mCurStep++;
-
             if (mCurStep == mIDetection.mDetectionSteps.size()) {
                 mProgressBar.setVisibility(View.VISIBLE);
                 getLivenessData();
-
             } else {
                 setHideText("请眨眼");
                 changeType(mIDetection.mDetectionSteps.get(mCurStep), 10);
             }
-
             // 检测器返回值：如果不希望检测器检测则返回DetectionType.DONE，如果希望检测器检测动作则返回要检测的动作
             return mCurStep >= mIDetection.mDetectionSteps.size() ? DetectionType.DONE : mIDetection.mDetectionSteps.get(mCurStep);
         }
@@ -277,12 +248,9 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
                             intent.putExtra("image_best", imageBestData);
                             setResult(RESULT_OK, intent);
                             finish();
-                            //                        handleResult(R.string.verify_success);
-
                         } else if (key.equals("image_env")) {
                             byte[] imageEnvData = data;// 这是一张全景图
                         } else {
-                            // 其余为其他图片，根据需求自取
                         }
                     }
                 }
@@ -386,23 +354,6 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         }
     }
 
-    /**
-     * 跳转Activity传递信息
-     */
-    private void handleResult(final int resID) {
-        String resultString = getResources().getString(resID);
-        try {
-            jsonObject.put("result", resultString);
-            jsonObject.put("resultcode", resID);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Intent intent = new Intent();
-        intent.putExtra("result", jsonObject.toString());
-        setResult(RESULT_OK, intent);
-        finish();
-    }
-
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();
@@ -425,18 +376,6 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         }
     }
 
-    public void handleNotPass(final long remainTime) {
-        if (remainTime > 0) {
-            mainHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    timeOutText.setText(remainTime / 1000 + "");
-                    mCircleProgressBar.setProgress((int) (remainTime / 100));
-                }
-            });
-        }
-    }
-
     private boolean mHasSurface = false;
 
     /**
@@ -447,7 +386,6 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
         mHasSurface = true;
         doPreview();
-
         // 添加活体检测回调 （本Activity继承了DetectionListener）
         mDetector.setDetectionListener(new MyDetectionListener());
         // 添加相机预览回调（本Activity继承了PreviewCallback）
@@ -474,7 +412,6 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
     private void doPreview() {
         if (!mHasSurface)
             return;
-
         mICamera.startPreview(camerapreview.getSurfaceTexture());
     }
 
@@ -486,9 +423,6 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (unBinder != null) {
-            unBinder.unbind();
-        }
         mainHandler.removeCallbacksAndMessages(null);
         mICamera.closeCamera();
         mIMediaPlayer.close();
