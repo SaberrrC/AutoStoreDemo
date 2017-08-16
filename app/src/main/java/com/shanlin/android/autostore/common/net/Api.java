@@ -146,4 +146,5 @@ public interface Api {
     @POST("member/update")
     Flowable<MemberUpdateBean> postMemberUpdate(@Body MemberUpdateSendBean memberUpdateSendBean);
 
+
 }

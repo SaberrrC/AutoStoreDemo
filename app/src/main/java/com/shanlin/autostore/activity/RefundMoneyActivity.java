@@ -48,10 +48,10 @@ public class RefundMoneyActivity extends BaseActivity implements FinalRecycleAda
     @Override
     public void initView() {
         CommonUtils.initToolbar(this, "退款金额", R.color.black, null);
-        findViewById(R.id.tv_explain).setOnClickListener(this);
-        mTvMoney = (TextView) findViewById(R.id.tv_money);
-        mRlWtk = (AutoRelativeLayout) findViewById(R.id.rl_wtk);
-        mPulltoRefreshRecyclerView = (PulltoRefreshRecyclerView) findViewById(R.id.pr_lists);
+//        findViewById(R.id.tv_explain).setOnClickListener(this);
+//        mTvMoney = (TextView) findViewById(R.id.tv_money);
+//        mRlWtk = (AutoRelativeLayout) findViewById(R.id.rl_wtk);
+//        mPulltoRefreshRecyclerView = (PulltoRefreshRecyclerView) findViewById(R.id.pr_lists);
         mRecyclerView = mPulltoRefreshRecyclerView.getRecyclerView();
         Map<Class, Integer> map = new HashMap<>();
         map.put(RefundMoneyBean.DataBean.class, R.layout.layout_item_refund);

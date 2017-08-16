@@ -1,4 +1,4 @@
-package com.shanlin.android.autostore;
+package com.shanlin.android.autostore.ui.act;
 
 import android.app.Activity;
 import android.content.Intent;
