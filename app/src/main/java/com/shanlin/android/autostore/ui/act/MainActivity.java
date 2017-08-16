@@ -44,7 +44,6 @@ import com.shanlin.autostore.activity.SaveFaceActivity;
 import com.shanlin.autostore.activity.VersionInfoActivity;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
-import com.shanlin.android.autostore.LivenessActivity;
 import com.shanlin.autostore.utils.Base64;
 import com.shanlin.autostore.utils.StatusBarUtils;
 import com.shanlin.autostore.view.ProgressView;
