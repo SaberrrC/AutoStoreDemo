@@ -10,6 +10,7 @@ import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
+import com.shanlin.android.autostore.App;
 import com.shanlin.autostore.AutoStoreApplication;
 
 import java.io.BufferedReader;
@@ -169,7 +170,7 @@ public class DeviceInfo {
      * @Description:获取网络类型
      */
     public static String getNetworkTypeName() {
-        ConnectivityManager connManager = (ConnectivityManager) AutoStoreApplication.getApp().getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connManager = (ConnectivityManager) App.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkinfo = connManager.getActiveNetworkInfo();
         if (networkinfo == null)
             return null;

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.shanlin.android.autostore.App;
 import com.shanlin.android.autostore.common.base.BaseActivity;
 import com.shanlin.android.autostore.common.utils.MPermissionUtils;
 import com.shanlin.android.autostore.common.utils.SpUtils;
@@ -200,7 +201,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                 if (!CommonUtils.checkNet()) {
                     return;
                 }
-                if (!AutoStoreApplication.FACE) {//face++联网认证
+                if (!App.FACE) {//face++联网认证
                     ToastUtils.showToast("网络错误");
                     return;
                 }
