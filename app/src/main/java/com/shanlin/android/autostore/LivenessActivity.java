@@ -44,6 +44,8 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import static com.shanlin.autostore.R.layout.liveness_layout;
+
 public class LivenessActivity extends Activity implements TextureView.SurfaceTextureListener {
 
     private TextureView        camerapreview;
@@ -68,7 +70,7 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.liveness_layout);
+        setContentView(liveness_layout);
         StatusBarUtils.setColor(this, Color.TRANSPARENT);
         init();
         initData();

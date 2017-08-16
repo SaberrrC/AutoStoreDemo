@@ -1,4 +1,4 @@
-package com.shanlin.autostore.activity;
+package com.shanlin.android.autostore.ui.act;
 
 
 import android.content.Intent;
@@ -9,20 +9,17 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import com.shanlin.autostore.AutoStoreApplication;
-import com.shanlin.autostore.R;
-import com.shanlin.autostore.adapter.FinalRecycleAdapter;
-import com.shanlin.autostore.base.BaseActivity;
-import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
-import com.shanlin.autostore.constants.Constant;
-import com.shanlin.autostore.interf.HttpService;
-import com.shanlin.autostore.net.CustomCallBack;
-import com.shanlin.autostore.utils.CommonUtils;
-import com.shanlin.autostore.utils.DateUtils;
-import com.shanlin.autostore.utils.LogUtils;
+import com.shanlin.android.autostore.common.base.BaseActivity;
 import com.shanlin.android.autostore.common.utils.SpUtils;
 import com.shanlin.android.autostore.common.utils.ThreadUtils;
 import com.shanlin.android.autostore.common.utils.ToastUtils;
+import com.shanlin.android.autostore.presenter.BuyRecordPresenter;
+import com.shanlin.android.autostore.presenter.Contract.BuyRecordActContract;
+import com.shanlin.autostore.R;
+import com.shanlin.autostore.adapter.FinalRecycleAdapter;
+import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
+import com.shanlin.autostore.constants.Constant;
+import com.shanlin.autostore.utils.DateUtils;
 import com.shanlin.autostore.view.PulltoRefreshRecyclerView;
 import com.zhy.autolayout.AutoRelativeLayout;
 
@@ -32,30 +29,38 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import retrofit2.Call;
+import butterknife.BindView;
 
 /**
  * Created by DELL on 2017/7/17 0017.
  */
 
-public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapter.OnViewAttachListener {
+public class BuyRecordActivity extends BaseActivity<BuyRecordPresenter> implements BuyRecordActContract.View, FinalRecycleAdapter.OnViewAttachListener {
 
-    public static final int PAGE_SIZE = 20;
-
-    private Toolbar                   toolbar;
-    private TextView                  title;
-    private PulltoRefreshRecyclerView mPulltoRefreshRecyclerView;
-    private RecyclerView              mRecyclerView;
-    private List<Object> mDatas = new ArrayList<>();
+    @BindView(R.id.toolbar_title)
+    TextView                  title;
+    @BindView(R.id.toolbar)
+    Toolbar                   toolbar;
+    @BindView(R.id.fl_nolist)
+    AutoRelativeLayout        mFlNoList;
+    @BindView(R.id.pr_lists)
+    PulltoRefreshRecyclerView mPulltoRefreshRecyclerView;
+    private RecyclerView        mRecyclerView;
     private FinalRecycleAdapter mFinalRecycleAdapter;
-    private static int REFRESH       = 0;
-    private static int LOAD          = 1;
-    private        int currentAction = 0;//记录当前用户手势是下拉刷新还是上拉更多，默认下拉刷新
-    private        int pageno        = 1;
-    private        int currentPage   = 0;
-    private        int totalPage     = 0;
-    private AutoRelativeLayout mFlNoList;
+    private             List<Object> mDatas        = new ArrayList<>();
+    public static final int          PAGE_SIZE     = 20;
+    private static      int          REFRESH       = 0;
+    private static      int          LOAD          = 1;
+    private             int          currentAction = 0;//记录当前用户手势是下拉刷新还是上拉更多，默认下拉刷新
+    private             int          pageno        = 1;
+    private             int          currentPage   = 0;
+    private             int          totalPage     = 0;
+    private String mToken;
 
+    @Override
+    protected void initInject() {
+        getActivityComponent().inject(this);
+    }
 
     @Override
     public int initLayout() {
@@ -63,10 +68,7 @@ public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapt
     }
 
     @Override
-    public void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        title = ((TextView) findViewById(R.id.toolbar_title));
-        mFlNoList = (AutoRelativeLayout) findViewById(R.id.fl_nolist);
+    public void initData() {
         title.setText("购买记录");
         title.setTextColor(Color.BLACK);
         toolbar.setNavigationIcon(R.mipmap.nav_back);
@@ -76,12 +78,12 @@ public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapt
                 finish();
             }
         });
-        mPulltoRefreshRecyclerView = (PulltoRefreshRecyclerView) findViewById(R.id.pr_lists);
         mRecyclerView = mPulltoRefreshRecyclerView.getRecyclerView();
         Map<Class, Integer> map = new HashMap<>();
         //OrderHistoryBean.DataBean.ListBean
         map.put(OrderHistoryBean.DataBean.ListBean.class, R.layout.buy_record_lv_item);
-        getOrderData(pageno, PAGE_SIZE);
+        mToken = SpUtils.getString(this, Constant.TOKEN, "");
+        mPresenter.getOrderData(mToken, pageno, PAGE_SIZE);
         mFinalRecycleAdapter = new FinalRecycleAdapter(mDatas, map, this);
         mRecyclerView.setAdapter(mFinalRecycleAdapter);
         mPulltoRefreshRecyclerView.setRefreshLoadMoreListener(MyRefreshLoadMoreListener);
@@ -93,13 +95,12 @@ public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapt
     private PulltoRefreshRecyclerView.RefreshLoadMoreListener MyRefreshLoadMoreListener = new PulltoRefreshRecyclerView.RefreshLoadMoreListener() {
         @Override
         public void onRefresh() {
-            //            // TODO: 2017-5-31
             currentAction = REFRESH;
             pageno = 1;
             ThreadUtils.runMainDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    getOrderData(pageno, PAGE_SIZE);
+                    mPresenter.getOrderData(mToken, pageno, PAGE_SIZE);
                     mPulltoRefreshRecyclerView.stopRefresh();
                 }
             }, 500);
@@ -114,24 +115,15 @@ public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapt
                     currentAction = LOAD;
                     if (currentPage < totalPage) {
                         pageno++;
-                        getOrderData(pageno, PAGE_SIZE);
+                        mPresenter.getOrderData(mToken, pageno, PAGE_SIZE);
                     } else {
-                        ToastUtils.showToast("没有更多数据！");
+                        ToastUtils.showToast("没有更多数据");
                     }
-                    //拿到数据了
                     mPulltoRefreshRecyclerView.setLoadMoreCompleted();
                 }
             }, 500);
         }
     };
-
-    @Override
-    public void initData() {
-    }
-
-    @Override
-    public void onClick(View v) {
-    }
 
     @Override
     public void onBindViewHolder(FinalRecycleAdapter.ViewHolder holder, int position, Object itemData) {
@@ -157,52 +149,45 @@ public class BuyRecordActivity extends BaseActivity implements FinalRecycleAdapt
             tvItemMoney.setText(bean.getPayAmount() + "");
             tvItemPayWay.setText(bean.getPaymentType());
         }
-
     }
 
-    public void getOrderData(int pageNumber, int pageSize) {
-        HttpService httpService = CommonUtils.doNet();
-        Call<OrderHistoryBean> call = httpService.getOrderHistory(SpUtils.getString(this, Constant.TOKEN, ""), pageNumber, pageSize);
-        call.enqueue(new CustomCallBack<OrderHistoryBean>() {
-            @Override
-            public void success(String code, OrderHistoryBean data, String msg) {
-                List<OrderHistoryBean.DataBean.ListBean> list = data.getData().getList();
-                totalPage = data.getData().getPages();//总页数
-                currentPage = data.getData().getPageNum();//当前页码
-                if (currentAction == REFRESH) {
-                    mDatas.clear();
-                }
-                if (list != null && list.size() > 0) {
-                    mDatas.addAll(list);
-                }
-                if (mDatas.size() < 1) {
-                    mFlNoList.setVisibility(View.VISIBLE);
-                    mFinalRecycleAdapter.notifyDataSetChanged();
-                    mPulltoRefreshRecyclerView.setPullLoadMoreEnable(false);
-                    return;
-                }
-                mPulltoRefreshRecyclerView.setPullLoadMoreEnable(true);
-                mFlNoList.setVisibility(View.GONE);
-                mFinalRecycleAdapter.notifyDataSetChanged();
-                LogUtils.d("size  " + list.size() + "  " + mDatas.size());
-            }
+    @Override
+    public void ongetOrderDataSuccess(String code, OrderHistoryBean data, String msg) {
+        List<OrderHistoryBean.DataBean.ListBean> list = data.getData().getList();
+        totalPage = data.getData().getPages();//总页数
+        currentPage = data.getData().getPageNum();//当前页码
+        if (currentAction == REFRESH) {
+            mDatas.clear();
+        }
+        if (list != null && list.size() > 0) {
+            mDatas.addAll(list);
+        }
+        if (mDatas.size() < 1) {
+            mFlNoList.setVisibility(View.VISIBLE);
+            mFinalRecycleAdapter.notifyDataSetChanged();
+            mPulltoRefreshRecyclerView.setPullLoadMoreEnable(false);
+            return;
+        }
+        mPulltoRefreshRecyclerView.setPullLoadMoreEnable(true);
+        mFlNoList.setVisibility(View.GONE);
+        mFinalRecycleAdapter.notifyDataSetChanged();
+    }
 
-            @Override
-            public void error(Throwable ex, String code, String msg) {
-                ToastUtils.showToast(msg);
-                if (TextUtils.equals(code, "401")) {//token未认证
-                    AutoStoreApplication.isLogin = false;
-                    toLoginActivity();
-                }
-            }
-        });
+    @Override
+    public void ongetOrderDataFailed(Throwable ex, String code, String msg) {
+        if (TextUtils.equals(code, "401")) {//token未认证
+            ToastUtils.showToast("用户已在别处登录，请重新登录");
+            toLoginActivity();
+            return;
+        }
+        ToastUtils.showToast(msg);
     }
 
     private void toLoginActivity() {
         mDatas.clear();
         mFinalRecycleAdapter.notifyDataSetChanged();
         mFlNoList.setVisibility(View.VISIBLE);
-        Intent toLoginActivity = new Intent(this, LoginActivity.class);
+        Intent toLoginActivity = new Intent(this, com.shanlin.autostore.activity.LoginActivity.class);
         startActivity(toLoginActivity);
         finish();
     }

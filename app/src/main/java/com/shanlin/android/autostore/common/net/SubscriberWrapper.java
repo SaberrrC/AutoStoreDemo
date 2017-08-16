@@ -4,11 +4,11 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.shanlin.android.autostore.common.utils.CommonUtils;
+import com.shanlin.android.autostore.common.utils.ToastUtils;
 import com.shanlin.android.autostore.entity.BaseBean;
 import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.activity.LoginActivity;
 import com.shanlin.autostore.utils.LogUtils;
-import com.shanlin.android.autostore.common.utils.ToastUtils;
 
 import org.reactivestreams.Subscription;
 
@@ -22,12 +22,20 @@ import retrofit2.HttpException;
 
 public class SubscriberWrapper<T extends BaseBean> implements FlowableSubscriber<T> {
 
-    public static final String ERR_NETWORK_MSG  = "网络异常，请重试";
-    public static       String ERR_NETWORK_CODE = "0";
+    public static final String  ERR_NETWORK_MSG  = "网络异常，请重试";
+    public static final String  TOKEN_ERROR      = "用户已在别处登录，请重新登录";
+    public static       String  ERR_NETWORK_CODE = "0";
+    public              boolean jumpLogin        = true;
 
     private CallBackListener<T> callBackListener;
+
     public SubscriberWrapper(CallBackListener<T> callBackListener) {
         this.callBackListener = callBackListener;
+    }
+
+    public SubscriberWrapper(CallBackListener<T> callBackListener, boolean jumpLogin) {
+        this.callBackListener = callBackListener;
+        this.jumpLogin = jumpLogin;
     }
 
     @Override
@@ -37,10 +45,12 @@ public class SubscriberWrapper<T extends BaseBean> implements FlowableSubscriber
         if (TextUtils.equals(code, "401")) {//token失效
             AutoStoreApplication.isLogin = false;
             if (!jumpLogin) {
+                callBackListener.onSuccess(code, t, msg);
+                return;
+            } else {
+                toLoginActivity();
                 return;
             }
-            toLoginActivity();
-            return;
         }
         if (!TextUtils.equals(code, "200")) {
             callBackListener.onFailed(null, code, msg);
@@ -49,18 +59,15 @@ public class SubscriberWrapper<T extends BaseBean> implements FlowableSubscriber
         callBackListener.onSuccess(code, t, msg);
     }
 
-    public boolean jumpLogin = true;
-
     public void setJumpLogin(boolean isjumpLogin) {
         jumpLogin = isjumpLogin;
     }
-
 
     private String key;
     private String value;
 
     private void toLoginActivity() {
-        ToastUtils.showToast("用户已在别处登录，请从新登录");
+        ToastUtils.showToast(TOKEN_ERROR);
         Intent toLoginActivity = new Intent(AutoStoreApplication.getApp(), LoginActivity.class);
         if (TextUtils.isEmpty(key) && TextUtils.isEmpty(value)) {
             toLoginActivity.putExtra(key, value);
@@ -68,7 +75,6 @@ public class SubscriberWrapper<T extends BaseBean> implements FlowableSubscriber
         toLoginActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         AutoStoreApplication.getApp().startActivity(toLoginActivity);
     }
-
 
 
     @Override
@@ -99,9 +105,9 @@ public class SubscriberWrapper<T extends BaseBean> implements FlowableSubscriber
     }
 
     public interface CallBackListener<T> {
-          void onSuccess(String code, T data, String msg);
+        void onSuccess(String code, T data, String msg);
 
-          void onFailed(Throwable ex, String code, String msg);
+        void onFailed(Throwable ex, String code, String msg);
     }
 }
 

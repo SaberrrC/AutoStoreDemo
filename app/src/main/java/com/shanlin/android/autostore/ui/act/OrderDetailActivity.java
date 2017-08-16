@@ -1,26 +1,26 @@
-package com.shanlin.autostore.activity;
+package com.shanlin.android.autostore.ui.act;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.TextView;
 
+import com.shanlin.android.autostore.common.base.BaseActivity;
+import com.shanlin.android.autostore.common.utils.SpUtils;
+import com.shanlin.android.autostore.common.utils.ThreadUtils;
+import com.shanlin.android.autostore.common.utils.ToastUtils;
+import com.shanlin.android.autostore.presenter.Contract.OrderDetailActContract;
+import com.shanlin.android.autostore.presenter.OrderDetailPresenter;
 import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.adapter.FinalRecycleAdapter;
-import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.orderdetail.OrderDetailBodyHeadBean;
-import com.shanlin.autostore.bean.orderdetail.OrderDetailFootBean;
 import com.shanlin.autostore.bean.resultBean.OrderDetailBean;
 import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.DateUtils;
-import com.shanlin.android.autostore.common.utils.SpUtils;
-import com.shanlin.android.autostore.common.utils.ThreadUtils;
-import com.shanlin.android.autostore.common.utils.ToastUtils;
 import com.shanlin.autostore.view.PulltoRefreshRecyclerView;
 
 import java.util.ArrayList;
@@ -29,41 +29,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
 
-public class OrderDetailActivity extends BaseActivity implements FinalRecycleAdapter.OnViewAttachListener {
-    private PulltoRefreshRecyclerView mPulltoRefreshRecyclerView;
-    private RecyclerView              mRecyclerView;
-    private List<Object> mDatas = new ArrayList<>();
-    private FinalRecycleAdapter mRecycleAdapter;
-    private OrderDetailBodyHeadBean mBodyHeadBean = new OrderDetailBodyHeadBean();
-    private OrderDetailFootBean     mFootBean     = new OrderDetailFootBean();
+
+public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> implements FinalRecycleAdapter.OnViewAttachListener,OrderDetailActContract.View {
+
+    @BindView(R.id.recyclerview_order)
+    PulltoRefreshRecyclerView mPulltoRefreshRecyclerView;
+    private RecyclerView                       mRecyclerView;
+    private FinalRecycleAdapter                mRecycleAdapter;
     private OrderHistoryBean.DataBean.ListBean mBean;
-    private static int REFRESH = 0;
-    public OrderDetailBean data;
+    private OrderDetailBean                    data;
+    private List<Object>            mDatas        = new ArrayList<>();
+    private OrderDetailBodyHeadBean mBodyHeadBean = new OrderDetailBodyHeadBean();
+    private String mToken;
+
+    @Override
+    protected void initInject() {
+        getActivityComponent().inject(this);
+    }
 
     @Override
     public int initLayout() {
         return R.layout.activity_order_detail;
-    }
-
-    @Override
-    public void initView() {
-        CommonUtils.initToolbar(this, "购物详情", R.color.black, null);
-        mPulltoRefreshRecyclerView = (PulltoRefreshRecyclerView) findViewById(R.id.recyclerview_order);
-        mRecyclerView = mPulltoRefreshRecyclerView.getRecyclerView();
-        mBean = (OrderHistoryBean.DataBean.ListBean) getIntent().getSerializableExtra(Constant.ORDER_ITEM);
-        Map<Class, Integer> map = new HashMap<>();
-        map.put(OrderHistoryBean.DataBean.ListBean.class, R.layout.item_order_detail_head);
-        map.put(OrderDetailBodyHeadBean.class, R.layout.item_order_detail_body);
-        map.put(OrderDetailBean.DataBean.ItemsBean.class, R.layout.item_order_detail_body_item);
-        map.put(OrderDetailBean.class, R.layout.item_order_detail_foot);
-        getOrderDetail();
-        mRecycleAdapter = new FinalRecycleAdapter(mDatas, map, this);
-        mRecyclerView.setAdapter(mRecycleAdapter);
-        //禁止加载更多
-        mPulltoRefreshRecyclerView.setPullLoadMoreEnable(false);
-        mPulltoRefreshRecyclerView.setRefreshLoadMoreListener(MyRefreshLoadMoreListener);
-
     }
 
     /**
@@ -72,7 +60,6 @@ public class OrderDetailActivity extends BaseActivity implements FinalRecycleAda
     private PulltoRefreshRecyclerView.RefreshLoadMoreListener MyRefreshLoadMoreListener = new PulltoRefreshRecyclerView.RefreshLoadMoreListener() {
         @Override
         public void onRefresh() {
-            //            // TODO: 2017-5-31
             ThreadUtils.runMainDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -89,12 +76,21 @@ public class OrderDetailActivity extends BaseActivity implements FinalRecycleAda
 
     @Override
     public void initData() {
-
-    }
-
-    @Override
-    public void onClick(View view) {
-
+        CommonUtils.initToolbar(this, "购物详情", R.color.black, null);
+        mRecyclerView = mPulltoRefreshRecyclerView.getRecyclerView();
+        mBean = (OrderHistoryBean.DataBean.ListBean) getIntent().getSerializableExtra(Constant.ORDER_ITEM);
+        Map<Class, Integer> map = new HashMap<>();
+        map.put(OrderHistoryBean.DataBean.ListBean.class, R.layout.item_order_detail_head);
+        map.put(OrderDetailBodyHeadBean.class, R.layout.item_order_detail_body);
+        map.put(OrderDetailBean.DataBean.ItemsBean.class, R.layout.item_order_detail_body_item);
+        map.put(OrderDetailBean.class, R.layout.item_order_detail_foot);
+        mToken = SpUtils.getString(this, Constant.TOKEN, "");
+        mPresenter.getOrderDetail(mToken,mBean);
+        mRecycleAdapter = new FinalRecycleAdapter(mDatas, map, this);
+        mRecyclerView.setAdapter(mRecycleAdapter);
+        //禁止加载更多
+        mPulltoRefreshRecyclerView.setPullLoadMoreEnable(false);
+        mPulltoRefreshRecyclerView.setRefreshLoadMoreListener(MyRefreshLoadMoreListener);
     }
 
     @Override
@@ -115,8 +111,6 @@ public class OrderDetailActivity extends BaseActivity implements FinalRecycleAda
             sumOfConsumption.setText(bean.getPayAmount() + "");
             stateOfConsumption.setText(bean.getPaymentType());
             tvOrderNum.setText("订单号：" + bean.getOrderNo());
-        }
-        if (itemData instanceof OrderDetailBodyHeadBean) {
         }
         if (itemData instanceof OrderDetailBean.DataBean.ItemsBean) {
             OrderDetailBean.DataBean.ItemsBean bean = (OrderDetailBean.DataBean.ItemsBean) itemData;
@@ -139,7 +133,7 @@ public class OrderDetailActivity extends BaseActivity implements FinalRecycleAda
     }
 
     public void getOrderDetail() {
-        CommonUtils.doNet().getOrderDetail(SpUtils.getString(this, Constant.TOKEN, ""), mBean.getOrderNo()).enqueue(new CustomCallBack<OrderDetailBean>() {
+        CommonUtils.doNet().getOrderDetail(mToken, mBean.getOrderNo()).enqueue(new CustomCallBack<OrderDetailBean>() {
             @Override
             public void success(String code, OrderDetailBean data, String msg) {
                 List<OrderDetailBean.DataBean.ItemsBean> items = data.getData().getItems();
@@ -172,13 +166,42 @@ public class OrderDetailActivity extends BaseActivity implements FinalRecycleAda
         });
     }
 
+    @Override
+    public void ongetOrderDetailSuccess(String code, OrderDetailBean data, String msg) {
+        List<OrderDetailBean.DataBean.ItemsBean> items = data.getData().getItems();
+        mDatas.clear();
+        OrderDetailActivity.this.data = data;
+        if (items != null && items.size() > 0) {
+            mDatas.add(mBean);
+            mDatas.add(mBodyHeadBean);
+            mDatas.addAll(items);
+            mDatas.add(data);
+        } else {
+            mDatas.add(mBean);
+            mDatas.add(mBodyHeadBean);
+            mDatas.add(data);
+            ToastUtils.showToast("无订单列表");
+        }
+        mRecycleAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void ongetOrderDetailFailed(Throwable ex, String code, String msg) {
+        if (TextUtils.equals(code, "401")) {//token未认证
+            ToastUtils.showToast("用户已在别处登录，请重新登录");
+            toLoginActivity();
+            return;
+        }
+        ToastUtils.showToast(msg);
+    }
+
     private void toLoginActivity() {
         mDatas.clear();
         mDatas.add(mBean);
         mDatas.add(mBodyHeadBean);
         mDatas.add(data);
         mRecycleAdapter.notifyDataSetChanged();
-        Intent toLoginActivity = new Intent(this, LoginActivity.class);
+        Intent toLoginActivity = new Intent(this, com.shanlin.autostore.activity.LoginActivity.class);
         startActivity(toLoginActivity);
         finish();
     }

@@ -18,11 +18,14 @@ import com.shanlin.android.autostore.entity.respone.UserVertifyStatusBean;
 import com.shanlin.android.autostore.entity.respone.WxUserInfoBean;
 import com.shanlin.autostore.bean.paramsBean.FaceLoginSendBean;
 import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;
+import com.shanlin.autostore.bean.resultBean.OrderDetailBean;
+import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
 import com.shanlin.autostore.bean.resultBean.WxTokenBean;
 
 import io.reactivex.Flowable;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
@@ -145,5 +148,19 @@ public interface Api {
      */
     @POST("member/update")
     Flowable<MemberUpdateBean> postMemberUpdate(@Body MemberUpdateSendBean memberUpdateSendBean);
+
+    /**
+     * 查询订单历史记录
+     */
+    @GET("order/history")
+    Flowable<OrderHistoryBean> getOrderHistory(@Header("token") String token, @Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
+
+
+    /**
+     * 订单详情
+     */
+    @GET("order/details")
+    Flowable<OrderDetailBean> getOrderDetail(@Header("token") String token, @Query("orderNo") String orderNo);
+
 
 }

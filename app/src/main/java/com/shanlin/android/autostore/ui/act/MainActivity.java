@@ -36,7 +36,6 @@ import com.shanlin.android.autostore.entity.respone.UserVertifyStatusBean;
 import com.shanlin.android.autostore.presenter.Contract.MainActContract;
 import com.shanlin.android.autostore.presenter.MainPresenter;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.activity.BuyRecordActivity;
 import com.shanlin.autostore.activity.MyLeMaiBaoActivity;
 import com.shanlin.autostore.activity.OpenLeMaiBao;
 import com.shanlin.autostore.activity.RefundMoneyActivity;

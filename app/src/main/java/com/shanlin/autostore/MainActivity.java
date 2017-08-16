@@ -30,7 +30,7 @@ import com.shanlin.android.autostore.common.utils.MPermissionUtils;
 import com.shanlin.android.autostore.common.utils.SpUtils;
 import com.shanlin.android.autostore.common.utils.ToastUtils;
 import com.shanlin.android.autostore.entity.body.MemberUpdateSendBean;
-import com.shanlin.autostore.activity.BuyRecordActivity;
+import com.shanlin.android.autostore.ui.act.BuyRecordActivity;
 import com.shanlin.autostore.activity.LoginActivity;
 import com.shanlin.autostore.activity.MyHeadImgActivity;
 import com.shanlin.autostore.activity.MyLeMaiBaoActivity;

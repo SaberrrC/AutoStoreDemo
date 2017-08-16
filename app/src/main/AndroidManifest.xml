@@ -89,7 +89,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".activity.BuyRecordActivity"
+            android:name="com.shanlin.android.autostore.ui.act.BuyRecordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
@@ -152,7 +152,7 @@
             android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
-            android:name=".activity.OrderDetailActivity"
+            android:name="com.shanlin.android.autostore.ui.act.OrderDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
         </activity>
