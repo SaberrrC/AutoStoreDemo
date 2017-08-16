@@ -21,14 +21,9 @@ import android.widget.Toast;
 import com.megvii.licensemanager.Manager;
 import com.megvii.livenessdetection.LivenessLicenseManager;
 import com.shanlin.android.autostore.App;
-import com.shanlin.android.autostore.common.net.Api;
-import com.shanlin.android.autostore.common.net.NetWorkUtil;
-import com.shanlin.android.autostore.common.net.SubscriberWrapper;
 import com.shanlin.android.autostore.common.utils.env.DeviceInfo;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
 import com.shanlin.autostore.constants.Constant;
-import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.livenesslib.util.ConUtil;
 import com.shanlin.autostore.net.LoggingInterceptor;
@@ -44,9 +39,6 @@ import java.util.Date;
 
 import cn.jpush.android.api.JPushInterface;
 import okhttp3.OkHttpClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

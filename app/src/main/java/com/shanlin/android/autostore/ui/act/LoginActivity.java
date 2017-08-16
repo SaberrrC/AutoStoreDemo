@@ -11,6 +11,7 @@ import android.view.WindowManager;
 
 import com.shanlin.android.autostore.App;
 import com.shanlin.android.autostore.common.base.BaseActivity;
+import com.shanlin.android.autostore.common.utils.CommonUtils;
 import com.shanlin.android.autostore.common.utils.MPermissionUtils;
 import com.shanlin.android.autostore.common.utils.SpUtils;
 import com.shanlin.android.autostore.common.utils.ToastUtils;
@@ -26,7 +27,6 @@ import com.shanlin.autostore.bean.resultBean.WxTokenBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.livenesslib.LivenessActivity;
 import com.shanlin.autostore.utils.Base64;
-import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.LogUtils;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
