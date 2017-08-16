@@ -117,7 +117,7 @@ public class PhoneNumLoginActivity extends BaseActivity<PhoneLoginPresenter> imp
     }
 
     @OnClick({R.id.btn_get_msgcode,R.id.btn_bind_or_login})
-    public void OnClick(Button v){
+    public void OnClick(View v){
 
         switch (v.getId()) {
             case R.id.btn_get_msgcode:
