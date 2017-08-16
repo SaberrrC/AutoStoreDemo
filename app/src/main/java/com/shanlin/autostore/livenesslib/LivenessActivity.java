@@ -92,9 +92,8 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.liveness_layout2);
+        setContentView(R.layout.liveness_layout);
         StatusBarUtils.setColor(this, Color.TRANSPARENT);
-        ButterKnife.bind(this);
         init();
         initData();
     }
@@ -107,9 +106,6 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         mHandler = new Handler(mHandlerThread.getLooper());
         mIMediaPlayer = new IMediaPlayer(this);
         mDialogUtil = new DialogUtil(this);
-//        rootView = (LinearLayout) findViewById(R.id.liveness_layout_rootRel);
-//        tb = (Toolbar) findViewById(R.id.toolbar);
-//        title = (TextView) findViewById(R.id.toolbar_title);
         tb.setNavigationIcon(R.mipmap.nav_back);
         tb.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,19 +119,11 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         title.setText("人脸识别");
         title.setTextColor(getResources().getColor(R.color.black));
         mIDetection = new IDetection(this, rootView);
-//        mFaceMask = (FaceMask) findViewById(R.id.liveness_layout_facemask);
         mICamera = new ICamera();
-//        promptText = (TextView) findViewById(R.id.liveness_layout_promptText);
-//        camerapreview = (TextureView) findViewById(R.id.liveness_layout_textureview);
         openCamera();
         camerapreview.setSurfaceTextureListener(this);
-//        mProgressBar = (ProgressBar) findViewById(R.id.liveness_layout_progressbar);
         mProgressBar.setVisibility(View.INVISIBLE);
-//        headViewLinear = (LinearLayout) findViewById(R.id.liveness_layout_bottom_tips_head);
         headViewLinear.setVisibility(View.VISIBLE);
-//        timeOutRel = (RelativeLayout) findViewById(R.id.detection_step_timeoutRel);
-//        timeOutText = (TextView) findViewById(R.id.detection_step_timeout_garden);
-//        mCircleProgressBar = (CircleProgressBar) findViewById(R.id.detection_step_timeout_progressBar);
         mIDetection.viewsInit();
     }
 
@@ -197,13 +185,6 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         if (isHandleStart)
             return;
         isHandleStart = true;
-        // 开始动画
-        Animation animationIN = AnimationUtils.loadAnimation(LivenessActivity.this, R.anim.liveness_rightin);
-        Animation animationOut = AnimationUtils.loadAnimation(LivenessActivity.this, R.anim.liveness_leftout);
-//        headViewLinear.startAnimation(animationOut);
-//        mIDetection.mAnimViews[0].setVisibility(View.VISIBLE);
-//        mIDetection.mAnimViews[0].startAnimation(animationIN);
-
         // 开始活体检测
         mainHandler.post(mTimeoutRunnable);
         jsonObject = new JSONObject();
@@ -265,7 +246,6 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         public DetectionType onDetectionSuccess(final DetectionFrame validFrame) {
             mIMediaPlayer.reset();
             mCurStep++;
-//            mFaceMask.setFaceInfo(null);
 
             if (mCurStep == mIDetection.mDetectionSteps.size()) {
                 mProgressBar.setVisibility(View.VISIBLE);
@@ -311,19 +291,6 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
          */
         @Override
         public void onDetectionFailed(final DetectionFailedType type) {
-//            int resourceID = R.string.liveness_detection_failed;
-//            switch (type) {
-//                case ACTIONBLEND:
-//                    resourceID = R.string.liveness_detection_failed_action_blend;
-//                    break;
-//                case NOTVIDEO:
-//                    resourceID = R.string.liveness_detection_failed_not_video;
-//                    break;
-//                case TIMEOUT:
-//                    resourceID = R.string.liveness_detection_failed_timeout;
-//                    break;
-//            }
-//            promptText.setText(resourceID);
             mHasSurface = true;
             doPreview();
             // 添加活体检测回调 （本Activity继承了DetectionListener）
@@ -336,7 +303,6 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
             mDetector.reset();
             setHideText("请眨眼");
             mDetector.changeDetectionType(mIDetection.mDetectionSteps.get(0));
-            //        handleResult(resourceID);
         }
 
 
@@ -345,19 +311,7 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
          */
         @Override
         public void onFrameDetected(long timeout, DetectionFrame detectionFrame) {
-            //        if (sensorUtil.isVertical()) {
-            //            faceOcclusion(detectionFrame);
-            //            handleNotPass(timeout);
-            //            mFaceMask.setFaceInfo(detectionFrame);
-            //        } else {
-            //            if (sensorUtil.Y == 0)
-            //                promptText.setText(R.string.meglive_getpermission_motion);
-            //            else
-            //                promptText.setText(R.string.meglive_phone_vertical);
-            //        }
             faceOcclusion(detectionFrame);
-            //            handleNotPass(timeout);
-//            mFaceMask.setFaceInfo(detectionFrame);
         }
     }
 
@@ -377,14 +331,12 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
                 if (faceInfo.eyeLeftOcclusion > 0.5 || faceInfo.eyeRightOcclusion > 0.5) {
                     if (mFailFrame > 10) {
                         mFailFrame = 0;
-//                        promptText.setText(R.string.meglive_keep_eyes_open);
                     }
                     return;
                 }
                 if (faceInfo.mouthOcclusion > 0.5) {
                     if (mFailFrame > 10) {
                         mFailFrame = 0;
-//                        promptText.setText(R.string.meglive_keep_mouth_open);
                     }
                     return;
                 }
@@ -461,8 +413,6 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
     public void changeType(final Detector.DetectionType detectiontype, long timeout) {
         // 动画切换
         mIDetection.changeType(detectiontype, timeout);
-//        mFaceMask.setFaceInfo(null);
-
         // 语音播放
         if (mCurStep == 0) {
             mIMediaPlayer.doPlay(mIMediaPlayer.getSoundRes(detectiontype));
@@ -528,9 +478,6 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
     @Override
     protected void onPause() {
         super.onPause();
-
-
-        //        finish();
     }
 
     @Override

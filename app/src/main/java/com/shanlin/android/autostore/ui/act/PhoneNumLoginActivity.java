@@ -31,7 +31,6 @@ import com.shanlin.autostore.utils.ProgressDialog;
 import com.shanlin.autostore.utils.StrUtils;
 import com.shanlin.autostore.view.CountDownTextView;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import tech.michaelx.authcode.AuthCode;
 import tech.michaelx.authcode.CodeConfig;
@@ -72,7 +71,6 @@ public class PhoneNumLoginActivity extends BaseActivity<PhoneLoginPresenter> imp
 
     @Override
     public void initData() {
-        ButterKnife.bind(this);
         progressDialog = new ProgressDialog(this);
         mBtnGetMsgCode.setClickable(true);
         mEtMsgCode.setOnEditorActionListener(this);
