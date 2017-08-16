@@ -19,7 +19,6 @@ import com.shanlin.android.autostore.entity.respone.WxUserInfoBean;
 import com.shanlin.android.autostore.presenter.Contract.LoginActContract;
 import com.shanlin.android.autostore.presenter.LoginPresenter;
 import com.shanlin.autostore.AutoStoreApplication;
-import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.WxMessageEvent;
 import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;

@@ -92,7 +92,7 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.liveness_layout);
+        setContentView(R.layout.liveness_layout2);
         StatusBarUtils.setColor(this, Color.TRANSPARENT);
         ButterKnife.bind(this);
         init();
