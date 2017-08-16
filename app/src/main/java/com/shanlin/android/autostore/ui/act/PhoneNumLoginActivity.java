@@ -12,7 +12,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.shanlin.android.autostore.common.base.BaseActivity;
 import com.shanlin.android.autostore.common.utils.CommonUtils;
 import com.shanlin.android.autostore.common.utils.MPermissionUtils;
@@ -31,7 +30,6 @@ import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.utils.ProgressDialog;
 import com.shanlin.autostore.utils.StrUtils;
 import com.shanlin.autostore.view.CountDownTextView;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
