@@ -8,6 +8,7 @@ import com.shanlin.android.autostore.entity.respone.WxUserInfoBean;
 import com.shanlin.android.autostore.presenter.LoginPresenter;
 import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;
 import com.shanlin.autostore.bean.resultBean.WxTokenBean;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
 
 /**
  * Created by dell、 on 2017/8/15.
@@ -40,7 +41,7 @@ public interface LoginActContract {
     interface Presenter extends BasePresenter<View> {
         void getWxInfo();
 
-        void checkWxInstall(BaseActivity<LoginPresenter> view);
+        void checkWxInstall(BaseActivity<LoginPresenter> view, IWXAPI api);
 
 
         void getResult(String code);

@@ -11,7 +11,6 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
 import com.shanlin.android.autostore.App;
-import com.shanlin.autostore.AutoStoreApplication;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -32,7 +31,7 @@ public class DeviceInfo {
      */
 
     public static String getSimOperatorName() {
-        TelephonyManager telManager = (TelephonyManager) AutoStoreApplication.getApp().getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager telManager = (TelephonyManager) App.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
         String imsi = telManager.getSubscriberId();
 
         if (imsi != null) {
@@ -64,8 +63,8 @@ public class DeviceInfo {
      */
     public static String getIMEI() {
         String deviceId = "";
-        if (AutoStoreApplication.getApp().checkCallingOrSelfPermission(permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
-            TelephonyManager telManager = (TelephonyManager) AutoStoreApplication.getApp().getSystemService(Context.TELEPHONY_SERVICE);
+        if (App.getInstance().checkCallingOrSelfPermission(permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+            TelephonyManager telManager = (TelephonyManager) App.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
             deviceId = telManager.getDeviceId();
         }
         return deviceId;
@@ -140,7 +139,7 @@ public class DeviceInfo {
      * @Description:获取 国家代码
      */
     public static String getCountoryCode() {
-        TelephonyManager tm = (TelephonyManager) AutoStoreApplication.getApp().getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager tm = (TelephonyManager) App.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
         return tm.getSimCountryIso();
     }
 
@@ -150,7 +149,7 @@ public class DeviceInfo {
      * @Description:获取本机语言类型
      */
     public static String getLanguage() {
-        String countoryLanguage = AutoStoreApplication.getApp().getResources().getConfiguration().locale.getCountry();
+        String countoryLanguage = App.getInstance().getResources().getConfiguration().locale.getCountry();
         return countoryLanguage;
     }
 
@@ -160,7 +159,7 @@ public class DeviceInfo {
      * @Description:获取网络类型
      */
     public static int getNetworkType() {
-        TelephonyManager tm = (TelephonyManager) AutoStoreApplication.getApp().getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager tm = (TelephonyManager) App.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
         return tm.getNetworkType();
     }
 
@@ -194,7 +193,7 @@ public class DeviceInfo {
      * @Description:移动网路运营商名字
      */
     public static String getNetworkOperatorName() {
-        TelephonyManager tm = (TelephonyManager) AutoStoreApplication.getApp().getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager tm = (TelephonyManager) App.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
         return tm.getNetworkOperatorName();
     }
 
@@ -207,7 +206,7 @@ public class DeviceInfo {
     public static int[] getDesity() {
         int[] desitys = new int[2];
         DisplayMetrics dm = new DisplayMetrics();
-        WindowManager windowManager = (WindowManager) AutoStoreApplication.getApp().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager windowManager = (WindowManager) App.getInstance().getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(dm);
         int desity = (int) dm.density;
         @SuppressWarnings("unused") int desityDPI = dm.densityDpi;
@@ -222,7 +221,7 @@ public class DeviceInfo {
      * @Description:取得SIM 卡的序列号
      */
     public static String getSimNumber() {
-        TelephonyManager telManager = (TelephonyManager) AutoStoreApplication.getApp().getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager telManager = (TelephonyManager) App.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
         return telManager.getSubscriberId();
     }
 
@@ -233,7 +232,7 @@ public class DeviceInfo {
      * @Title: getDeviceId
      */
     public static String getDeviceId() {
-        TelephonyManager tm = (TelephonyManager) AutoStoreApplication.getApp().getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager tm = (TelephonyManager) App.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
         if (null == tm.getDeviceId()) {
             return getSimNumber();
         }
@@ -243,7 +242,7 @@ public class DeviceInfo {
     public static int[] getDisplayResolution() {
         int[] resolution = new int[2];
         DisplayMetrics dm = new DisplayMetrics();
-        WindowManager windowManager = (WindowManager) AutoStoreApplication.getApp().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager windowManager = (WindowManager) App.getInstance().getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(dm);
         int width = dm.widthPixels;
         int height = dm.heightPixels;
@@ -267,7 +266,7 @@ public class DeviceInfo {
      * @Description:获取本手机号
      */
     public static String getPhoneNumber() {
-        TelephonyManager tm = (TelephonyManager) AutoStoreApplication.getApp().getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager tm = (TelephonyManager) App.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
         return tm.getLine1Number();
     }
 

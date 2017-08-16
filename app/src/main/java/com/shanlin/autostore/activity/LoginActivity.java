@@ -62,7 +62,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @Override
     protected void initInject() {
-//        getActivityComponent().inject(this);
+        //        getActivityComponent().inject(this);
     }
 
     @Override
@@ -121,7 +121,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                 String delta = data.getStringExtra("delta");
                 String encode = Base64.encode(mLivenessImgBytes);
                 String deviceId = SpUtils.getString(LoginActivity.this, Constant.DEVICEID, "");
-                mPresenter.postFaceLogin(encode,deviceId);
+                mPresenter.postFaceLogin(encode, deviceId);
 
             } catch (Exception e) {
                 dismissLoadingDialog();
@@ -156,6 +156,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     }
 
     private void showLoadingDialog() {
+        if (mLoadingDialog != null) {
+            mLoadingDialog.show();
+            return;
+        }
         mLoadingDialog = new Dialog(this, R.style.MyDialogCheckVersion);
         //点击其他地方消失
         mLoadingDialog.setCanceledOnTouchOutside(false);
@@ -228,7 +232,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                 if (!CommonUtils.checkNet()) {
                     return;
                 }
-                mPresenter.checkWxInstall(this);
+                mPresenter.checkWxInstall(this, api);
                 break;
             case R.id.tv_concel:
                 dismissWxLoginDialog();
@@ -285,7 +289,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     /**
      * 微信token登录服务器
-     *  @param code
+     *
+     * @param code
      * @param data
      * @param msg
      * @param wxUserInfoBean
@@ -349,6 +354,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     /**
      * 人脸登录
+     *
      * @param code
      * @param data
      * @param msg
@@ -376,7 +382,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                 SpUtils.saveString(LoginActivity.this, Constant.USER_HEAD_URL, data.getData().getAvetorUrl());
             }
             //验证乐买宝实名是否认证
-//            CommonUtils.checkAuthenStatus(LoginActivity.this, httpService, data.getData().getToken());
+            //            CommonUtils.checkAuthenStatus(LoginActivity.this, httpService, data.getData().getToken());
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_OK);
             intent.putExtra(Constant.USER_INFO, data);

@@ -31,13 +31,13 @@ import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.LogUtils;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhy.autolayout.utils.AutoUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -75,6 +75,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     public void initData() {
         EventBus.getDefault().register(this);
         setTransAnim(false);
+        api = WXAPIFactory.createWXAPI(this, Constant.APP_ID, false);
     }
 
     private void showWxLoginDialog() {
@@ -90,7 +91,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
             if (!CommonUtils.checkNet()) {
                 return;
             }
-            mPresenter.checkWxInstall(this);
+            mPresenter.checkWxInstall(this, api);
         });
         WxLoginDialog.setContentView(dialogOpenWX);
         WxLoginDialog.setCanceledOnTouchOutside(false);
@@ -317,7 +318,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                 SpUtils.saveString(LoginActivity.this, Constant.USER_HEAD_URL, data.getData().getAvetorUrl());
             }
             SpUtils.saveString(LoginActivity.this, Constant.USER_PHONE_LOGINED, data.getData().getMobile());
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            Intent intent = new Intent(LoginActivity.this, com.shanlin.android.autostore.ui.act.MainActivity .class);
             intent.putExtra(Constant.WX_INFO, wxUserInfoBean);
             intent.putExtra(Constant.FACE_VERIFY, Constant.FACE_VERIFY_OK);
             intent.putExtra(Constant.USER_INFO, data);

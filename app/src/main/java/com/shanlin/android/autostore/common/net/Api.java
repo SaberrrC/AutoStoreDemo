@@ -11,7 +11,6 @@ import com.shanlin.android.autostore.entity.respone.CreditBalanceCheckBean;
 import com.shanlin.android.autostore.entity.respone.LoginBean;
 import com.shanlin.android.autostore.entity.respone.LogoutBean;
 import com.shanlin.android.autostore.entity.respone.MemberUpdateBean;
-import com.shanlin.android.autostore.entity.respone.CheckUpdateBean;
 import com.shanlin.android.autostore.entity.respone.PersonInfoBean;
 import com.shanlin.android.autostore.entity.respone.RefundMoneyBean;
 import com.shanlin.android.autostore.entity.respone.UserNumEverydayBean;
@@ -25,7 +24,6 @@ import io.reactivex.Flowable;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.GET;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 
@@ -74,6 +72,7 @@ public interface Api {
     /**
      * 微信登录
      */
+    @GET
     Flowable<WxUserInfoBean> getWxUserInfo(@Url String url, @Query("access_token") String access_token, @Query("openid") String openid);
 
 

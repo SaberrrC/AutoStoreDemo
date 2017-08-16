@@ -16,7 +16,6 @@ import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;
 import com.shanlin.autostore.bean.resultBean.WxTokenBean;
 import com.shanlin.autostore.constants.Constant;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -31,7 +30,6 @@ import javax.inject.Inject;
 
 public class LoginPresenter extends RxPresenter<LoginActContract.View> implements LoginActContract.Presenter {
 
-    private IWXAPI api;
     public static final String TYPE_WX = "1";
 
     @Inject
@@ -45,8 +43,7 @@ public class LoginPresenter extends RxPresenter<LoginActContract.View> implement
     }
 
     @Override
-    public void checkWxInstall(BaseActivity<LoginPresenter> view) {
-        api = WXAPIFactory.createWXAPI(view, Constant.APP_ID, false);
+    public void checkWxInstall(BaseActivity<LoginPresenter> view, IWXAPI api) {
         boolean isInstalled1 = api.isWXAppInstalled() && api.isWXAppSupportAPI();
         boolean isInstalled = isWeixinAvilible(view);
         mView.onWxInstallCheckSuccess(isInstalled);
