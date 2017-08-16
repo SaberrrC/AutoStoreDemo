@@ -51,7 +51,7 @@ import com.shanlin.autostore.bean.resultBean.WxUserInfoBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
-import com.shanlin.autostore.livenesslib.LivenessActivity;
+import com.shanlin.android.autostore.LivenessActivity;
 import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.Base64;
 import com.shanlin.autostore.utils.CommonUtils;

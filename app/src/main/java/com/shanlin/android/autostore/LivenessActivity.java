@@ -1,4 +1,4 @@
-package com.shanlin.autostore.livenesslib;
+package com.shanlin.android.autostore;
 
 import android.app.Activity;
 import android.content.Intent;

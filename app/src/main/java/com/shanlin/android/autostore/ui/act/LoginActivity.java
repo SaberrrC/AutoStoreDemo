@@ -25,7 +25,7 @@ import com.shanlin.autostore.WxMessageEvent;
 import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;
 import com.shanlin.autostore.bean.resultBean.WxTokenBean;
 import com.shanlin.autostore.constants.Constant;
-import com.shanlin.autostore.livenesslib.LivenessActivity;
+import com.shanlin.android.autostore.LivenessActivity;
 import com.shanlin.autostore.utils.Base64;
 import com.shanlin.autostore.utils.LogUtils;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;

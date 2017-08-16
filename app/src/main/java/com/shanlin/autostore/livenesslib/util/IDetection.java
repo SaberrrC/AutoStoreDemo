@@ -44,28 +44,9 @@ public class IDetection {
 
     public void viewsInit() {
         mAnimViews = new View[1];
-//        mAnimViews[0] = (rootView.findViewById(R.id.liveness_layout_first_layout));
-//        mAnimViews[1] = (rootView.findViewById(R.id.liveness_layout_second_layout));
-//        for (View tmpView : mAnimViews) {
-//            tmpView.setVisibility(View.INVISIBLE);
-//        }
     }
 
     public void changeType(final Detector.DetectionType detectiontype, long timeout) {
-//        Animation animationIN = AnimationUtils.loadAnimation(mContext, R.anim.liveness_rightin);
-//        Animation animationOut = AnimationUtils.loadAnimation(mContext, R.anim.liveness_leftout);
-//
-//        if (mCurShowIndex != -1) {// 已经存在layout 需要移除之
-//            mAnimViews[mCurShowIndex].setVisibility(View.INVISIBLE);
-//            mAnimViews[mCurShowIndex].setAnimation(animationOut);
-//        } else {
-//            mAnimViews[0].setVisibility(View.INVISIBLE);
-//            mAnimViews[0].startAnimation(animationOut);
-//        }
-//        mCurShowIndex = mCurShowIndex == -1 ? 0 : (mCurShowIndex == 0 ? 1 : 0);
-//        initAnim(detectiontype, mAnimViews[mCurShowIndex]);
-//        mAnimViews[mCurShowIndex].setVisibility(View.VISIBLE);
-//        mAnimViews[mCurShowIndex].startAnimation(animationIN);
     }
 
     TextView detectionNameText;
@@ -154,7 +135,6 @@ public class IDetection {
         tmpTypes.add(Detector.DetectionType.MOUTH);// 张嘴
         tmpTypes.add(Detector.DetectionType.POS_PITCH);// 缓慢点头
         tmpTypes.add(Detector.DetectionType.POS_YAW);// 左右摇头
-        //		Collections.shuffle(tmpTypes);// 打乱顺序
         mDetectionSteps = new ArrayList<DetectionType>(num);
         for (int i = 0; i < num; i++) {
             mDetectionSteps.add(tmpTypes.get(i));
