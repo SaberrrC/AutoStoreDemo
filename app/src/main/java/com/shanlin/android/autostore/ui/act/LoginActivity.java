@@ -82,8 +82,15 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
             return;
         }
         View dialogOpenWX = LayoutInflater.from(this).inflate(R.layout.dialog_open_wx, null);
-        ButterKnife.bind(this, dialogOpenWX);
         WxLoginDialog = new Dialog(this, R.style.MyDialogWithAnim);
+        dialogOpenWX.findViewById(R.id.tv_concel).setOnClickListener(view -> dismissWxLoginDialog());
+        dialogOpenWX.findViewById(R.id.tv_open).setOnClickListener(view -> {
+            dismissWxLoginDialog();
+            if (!CommonUtils.checkNet()) {
+                return;
+            }
+            mPresenter.checkWxInstall(this);
+        });
         WxLoginDialog.setContentView(dialogOpenWX);
         WxLoginDialog.setCanceledOnTouchOutside(false);
         WxLoginDialog.show();
@@ -185,7 +192,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         }
     }
 
-    @OnClick({R.id.btn_login_by_face, R.id.btn_login_by_phone, R.id.btn_login_by_wx, R.id.tv_concel, R.id.tv_open})
+    @OnClick({R.id.btn_login_by_face, R.id.btn_login_by_phone, R.id.btn_login_by_wx})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_login_by_face://使用人脸识别快速登录
@@ -222,16 +229,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                     return;
                 }
                 showWxLoginDialog();
-                break;
-            case R.id.tv_open:
-                dismissWxLoginDialog();
-                if (!CommonUtils.checkNet()) {
-                    return;
-                }
-                mPresenter.checkWxInstall(this);
-                break;
-            case R.id.tv_concel:
-                dismissWxLoginDialog();
                 break;
         }
     }

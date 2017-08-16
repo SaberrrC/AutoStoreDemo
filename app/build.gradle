@@ -12,7 +12,6 @@ android {
         targetSdkVersion config.targetSdkVersion
         versionCode config.versionCode
         versionName config.versionName
-        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             //选择要添加的对应cpu类型的.so库。
@@ -102,6 +101,7 @@ dependencies {
     compile project(':autostoresdk')
     compile project(':library:wechatlib')
     annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     //jpush
     compile 'cn.jiguang.sdk:jpush:3.0.3'
     // 此处以JPush 3.0.3 版本为例。
