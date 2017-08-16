@@ -8,6 +8,7 @@ import com.shanlin.android.autostore.ui.act.LoginActivity;
 import com.shanlin.android.autostore.ui.act.MainActivity;
 import com.shanlin.android.autostore.ui.act.MyHeadImgActivity;
 import com.shanlin.android.autostore.ui.act.PhoneNumLoginActivity;
+import com.shanlin.android.autostore.ui.act.RefundMoneyActivity;
 import com.shanlin.android.autostore.ui.act.SplashActivity;
 import com.shanlin.android.autostore.ui.act.BuyRecordActivity;
 import com.shanlin.android.autostore.ui.act.OrderDetailActivity;
@@ -30,4 +31,5 @@ public interface ActivityComponent {
     void inject(MyHeadImgActivity activity);
     void inject(OrderDetailActivity buyRecordActivity);
     void inject(BuyRecordActivity buyRecordActivity);
+    void inject(RefundMoneyActivity activity);
 }
