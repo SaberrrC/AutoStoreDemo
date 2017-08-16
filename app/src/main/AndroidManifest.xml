@@ -76,6 +76,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name="com.shanlin.autostore.MainActivity"
+                  android:screenOrientation="portrait"
+                  android:windowSoftInputMode="adjustPan"
+            />
         <activity
             android:name="com.shanlin.android.autostore.ui.act.PhoneNumLoginActivity"
             android:screenOrientation="portrait"
