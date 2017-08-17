@@ -191,13 +191,13 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-            if (holder == null) {
-                Log.e(TAG, "*** WARNING *** surfaceCreated() gave us a null surface!");
-            }
-            if (!isHasSurface) {
-                isHasSurface = true;
-                initCamera(holder);
-            }
+        if (holder == null) {
+            Log.e(TAG, "*** WARNING *** surfaceCreated() gave us a null surface!");
+        }
+        if (!isHasSurface) {
+            isHasSurface = true;
+            initCamera(holder);
+        }
     }
 
     @Override

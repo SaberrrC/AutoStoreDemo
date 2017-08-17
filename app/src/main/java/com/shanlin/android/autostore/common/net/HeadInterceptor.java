@@ -25,6 +25,7 @@ public class HeadInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
+
         request = request.newBuilder()
                 .addHeader("token", SpUtils.getString(context, Constant.TOKEN, ""))
                 .build();

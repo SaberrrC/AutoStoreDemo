@@ -25,9 +25,11 @@ import com.google.gson.Gson;
 import com.google.zxing.Result;
 import com.shanlin.android.autostore.App;
 import com.shanlin.android.autostore.common.base.BaseActivity;
+import com.shanlin.android.autostore.common.utils.LogUtil;
 import com.shanlin.android.autostore.common.utils.SpUtils;
 import com.shanlin.android.autostore.common.utils.ToastUtils;
 import com.shanlin.android.autostore.common.zxing.camera.CameraManager;
+import com.shanlin.android.autostore.common.zxing.decode.DecodeThread;
 import com.shanlin.android.autostore.common.zxing.utils.BeepManager;
 import com.shanlin.android.autostore.common.zxing.utils.CaptureActivityHandler;
 import com.shanlin.android.autostore.common.zxing.utils.CommonUtils;
@@ -62,7 +64,6 @@ public class CaptureActivity extends BaseActivity<CapturePresenter> implements C
 
     @Inject
     CameraManager cameraManager;
-    @Inject
     CaptureActivityHandler handler;
     @Inject
     InactivityTimer inactivityTimer;
@@ -103,13 +104,14 @@ public class CaptureActivity extends BaseActivity<CapturePresenter> implements C
     public void initData() {
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        setContentView(R.layout.activity_capture);
         StatusBarUtils.setColor(this, Color.WHITE);
         CommonUtils.initToolbar(this, "扫一扫", R.color.black, null);
 
+        inactivityTimer = new InactivityTimer(this);
+        beepManager = new BeepManager(this);
         scanLineAnim();
-
         creditBalence = getIntent().getStringExtra(Constant_LeMaiBao.CREDIT_BALANCE);
+
     }
 
     private void scanLineAnim() {
@@ -169,10 +171,17 @@ public class CaptureActivity extends BaseActivity<CapturePresenter> implements C
         }
         try {
             cameraManager.openDriver(surfaceHolder);
+
+            if (handler == null) {
+                handler = new CaptureActivityHandler(this, cameraManager, DecodeThread.ALL_MODE);
+            }
+
             initCrop();
         } catch (IOException ioe) {
+            LogUtil.e(ioe.getMessage());
             displayFrameworkBugMessageAndExit();
         } catch (RuntimeException e) {
+            LogUtil.e(e.getMessage());
             displayFrameworkBugMessageAndExit();
         }
     }
@@ -256,7 +265,6 @@ public class CaptureActivity extends BaseActivity<CapturePresenter> implements C
 
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-
     }
 
     @Override
@@ -321,5 +329,11 @@ public class CaptureActivity extends BaseActivity<CapturePresenter> implements C
             e.printStackTrace();
         }
         return 0;
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.left_in, R.anim.right_out);
     }
 }
