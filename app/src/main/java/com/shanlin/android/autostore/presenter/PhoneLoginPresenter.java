@@ -5,6 +5,7 @@ import com.shanlin.android.autostore.App;
 import com.shanlin.android.autostore.common.base.RxPresenter;
 import com.shanlin.android.autostore.common.net.Api;
 import com.shanlin.android.autostore.common.net.NetWorkUtil;
+import com.shanlin.android.autostore.common.net.SubscriberWrapper;
 import com.shanlin.android.autostore.common.utils.SpUtils;
 import com.shanlin.android.autostore.entity.body.CodeSendBean;
 import com.shanlin.android.autostore.entity.body.NumberLoginBean;
@@ -14,7 +15,6 @@ import com.shanlin.android.autostore.entity.respone.LoginBean;
 import com.shanlin.android.autostore.entity.respone.UserVertifyStatusBean;
 import com.shanlin.android.autostore.presenter.Contract.PhoneLoginActContract;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
-import com.shanlin.autostore.net.SubscriberWrapper;
 
 import javax.inject.Inject;
 
