@@ -89,7 +89,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".activity.VersionInfoActivity"
+            android:name="com.shanlin.android.autostore.ui.act.VersionInfoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <!--人脸识别界面-->
@@ -117,7 +117,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".activity.ChoosePayWayActivity"
+            android:name="com.shanlin.android.autostore.ui.act.ChoosePayWayActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
@@ -134,16 +134,16 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".activity.PayResultActivity"
+            android:name="com.shanlin.android.autostore.ui.act.PayResultActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".activity.GateActivity"
+            android:name="com.shanlin.android.autostore.ui.act.GateActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
-            android:name=".activity.SaveFaceActivity"
+            android:name="com.shanlin.android.autostore.ui.act.SaveFaceActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
         </activity>

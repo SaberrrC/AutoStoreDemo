@@ -11,7 +11,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.shanlin.autostore.MainActivity;
+import com.shanlin.android.autostore.common.utils.SpUtils;
+import com.shanlin.android.autostore.common.utils.ThreadUtils;
+import com.shanlin.android.autostore.common.utils.ToastUtils;
+import com.shanlin.android.autostore.ui.act.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.OpenGardQRBean;
@@ -23,9 +26,6 @@ import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.LogUtils;
-import com.shanlin.android.autostore.common.utils.SpUtils;
-import com.shanlin.android.autostore.common.utils.ThreadUtils;
-import com.shanlin.android.autostore.common.utils.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

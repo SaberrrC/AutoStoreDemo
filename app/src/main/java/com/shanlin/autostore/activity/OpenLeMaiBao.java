@@ -8,7 +8,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.shanlin.autostore.MainActivity;
+import com.shanlin.android.autostore.common.utils.SpUtils;
+import com.shanlin.android.autostore.ui.act.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
 import com.shanlin.autostore.bean.paramsBean.PswSettingBody;
@@ -21,7 +22,6 @@ import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.ProgressDialog;
-import com.shanlin.android.autostore.common.utils.SpUtils;
 
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
-import com.shanlin.autostore.MainActivity;
+import com.shanlin.android.autostore.ui.act.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.WXPayTools;
 import com.shanlin.autostore.WxMessageEvent;
@@ -43,6 +43,7 @@ import com.shanlin.autostore.utils.IpTools;
 import com.shanlin.autostore.utils.ProgressDialog;
 import com.shanlin.autostore.view.XNumberKeyboardView;
 import com.shanlin.autostore.view.gridpasswordview.GridPasswordView;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -109,6 +110,7 @@ public class ChoosePayWayActivity extends BaseActivity{
         totalAmount = (TextView)findViewById(R.id.tv_totla_amount_to_pay);//应付总额
         countDownTime = (TextView)findViewById(R.id.tv_countdown_time);//应付总额
 //        intPayTiem();
+
         dialogView = LayoutInflater.from(this).inflate(R.layout.input_psw_dialog_layout, null);
         dialogView.findViewById(R.id.iv_close_dialog).setOnClickListener(this);
         moneyNeedToPay = ((TextView) dialogView.findViewById(R.id.money_need_to_pay));

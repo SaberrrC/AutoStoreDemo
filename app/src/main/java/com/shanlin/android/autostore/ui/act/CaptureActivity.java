@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.google.zxing.Result;
 import com.shanlin.android.autostore.App;
 import com.shanlin.android.autostore.common.base.BaseActivity;
+import com.shanlin.android.autostore.common.constants.Constant;
 import com.shanlin.android.autostore.common.utils.LogUtil;
 import com.shanlin.android.autostore.common.utils.SpUtils;
 import com.shanlin.android.autostore.common.utils.ToastUtils;
@@ -42,10 +43,7 @@ import com.shanlin.android.autostore.entity.respone.RealOrderBean;
 import com.shanlin.android.autostore.presenter.CapturePresenter;
 import com.shanlin.android.autostore.presenter.Contract.CaptureContract;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.activity.ChoosePayWayActivity;
-import com.shanlin.autostore.activity.GateActivity;
 import com.shanlin.autostore.bean.paramsBean.ZXingOrderBean;
-import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.utils.StrUtils;
 

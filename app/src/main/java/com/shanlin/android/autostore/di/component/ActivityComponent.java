@@ -4,21 +4,24 @@ import android.app.Activity;
 
 import com.shanlin.android.autostore.di.PerActivity;
 import com.shanlin.android.autostore.di.module.ActivityModule;
-import com.shanlin.android.autostore.ui.act.CaptureActivity;
+import com.shanlin.android.autostore.ui.act.BuyRecordActivity;
+import com.shanlin.android.autostore.ui.act.ChoosePayWayActivity;
+import com.shanlin.android.autostore.ui.act.GateActivity;
 import com.shanlin.android.autostore.ui.act.LoginActivity;
 import com.shanlin.android.autostore.ui.act.MainActivity;
 import com.shanlin.android.autostore.ui.act.MyHeadImgActivity;
 import com.shanlin.android.autostore.ui.act.OpenLMBActivity;
+import com.shanlin.android.autostore.ui.act.OrderDetailActivity;
 import com.shanlin.android.autostore.ui.act.PhoneNumLoginActivity;
 import com.shanlin.android.autostore.ui.act.RefundMoneyActivity;
+import com.shanlin.android.autostore.ui.act.SaveFaceActivity;
 import com.shanlin.android.autostore.ui.act.SplashActivity;
-import com.shanlin.android.autostore.ui.act.BuyRecordActivity;
-import com.shanlin.android.autostore.ui.act.OrderDetailActivity;
 
 import dagger.Component;
 
 /**
  * Created by cuieney on 14/08/2017.
+ *
  */
 
 @PerActivity
@@ -35,4 +38,7 @@ public interface ActivityComponent {
     void inject(BuyRecordActivity buyRecordActivity);
     void inject(RefundMoneyActivity activity);
     void inject(OpenLMBActivity activity);
+    void inject(SaveFaceActivity saveFaceActivity);
+    void inject(GateActivity activity);
+    void inject(ChoosePayWayActivity activity);
 }
