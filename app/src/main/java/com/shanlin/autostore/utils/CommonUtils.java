@@ -30,7 +30,7 @@ import com.shanlin.autostore.bean.resultBean.UserVertifyStatusBean;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
-import com.shanlin.autostore.livenesslib.util.ConUtil;
+import com.shanlin.android.autostore.common.livenesslib.util.ConUtil;
 import com.shanlin.autostore.net.LoggingInterceptor;
 import com.shanlin.autostore.utils.env.DeviceInfo;
 

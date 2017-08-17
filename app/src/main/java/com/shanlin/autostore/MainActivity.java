@@ -58,7 +58,7 @@ import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.LogUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
 import com.shanlin.autostore.view.ProgressView;
-import com.shanlin.autostore.zxing.activity.CaptureActivity;
+import com.shanlin.android.autostore.common.zxing.activity.CaptureActivity;
 import com.zhy.autolayout.utils.AutoUtils;
 
 import java.util.List;

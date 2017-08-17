@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <com.shanlin.autostore.livenesslib.view.AutoRatioImageview
+        <com.shanlin.android.autostore.common.livenesslib.view.AutoRatioImageview
             android:id="@+id/liveness_layout_head_mask"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

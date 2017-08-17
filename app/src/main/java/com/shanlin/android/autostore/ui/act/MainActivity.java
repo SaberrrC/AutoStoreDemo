@@ -45,7 +45,6 @@ import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.utils.Base64;
 import com.shanlin.autostore.utils.StatusBarUtils;
 import com.shanlin.autostore.view.ProgressView;
-import com.shanlin.autostore.zxing.activity.CaptureActivity;
 import com.zhy.autolayout.utils.AutoUtils;
 
 import java.util.List;

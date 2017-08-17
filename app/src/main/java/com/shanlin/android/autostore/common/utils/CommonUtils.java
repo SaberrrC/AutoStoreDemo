@@ -25,7 +25,7 @@ import com.shanlin.android.autostore.common.utils.env.DeviceInfo;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
-import com.shanlin.autostore.livenesslib.util.ConUtil;
+import com.shanlin.android.autostore.common.livenesslib.util.ConUtil;
 import com.shanlin.autostore.net.LoggingInterceptor;
 import com.shanlin.autostore.utils.LogUtils;
 

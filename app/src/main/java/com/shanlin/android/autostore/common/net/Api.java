@@ -4,6 +4,7 @@ package com.shanlin.android.autostore.common.net;
 import com.shanlin.android.autostore.entity.body.CodeSendBean;
 import com.shanlin.android.autostore.entity.body.MemberUpdateSendBean;
 import com.shanlin.android.autostore.entity.body.NumberLoginBean;
+import com.shanlin.android.autostore.entity.body.RealOrderBody;
 import com.shanlin.android.autostore.entity.body.WechatSaveMobileBody;
 import com.shanlin.android.autostore.entity.respone.CheckUpdateBean;
 import com.shanlin.android.autostore.entity.respone.CodeBean;
@@ -12,6 +13,7 @@ import com.shanlin.android.autostore.entity.respone.LoginBean;
 import com.shanlin.android.autostore.entity.respone.LogoutBean;
 import com.shanlin.android.autostore.entity.respone.MemberUpdateBean;
 import com.shanlin.android.autostore.entity.respone.PersonInfoBean;
+import com.shanlin.android.autostore.entity.respone.RealOrderBean;
 import com.shanlin.android.autostore.entity.respone.RefundMoneyBean;
 import com.shanlin.android.autostore.entity.respone.UserNumEverydayBean;
 import com.shanlin.android.autostore.entity.respone.UserVertifyStatusBean;
@@ -23,6 +25,7 @@ import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
 import com.shanlin.autostore.bean.resultBean.WxTokenBean;
 
 import io.reactivex.Flowable;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -163,5 +166,12 @@ public interface Api {
     @GET("order/details")
     Flowable<OrderDetailBean> getOrderDetail(@Header("token") String token, @Query("orderNo") String orderNo);
 
+    /**
+     * 更新临时订单成为正式订单-910
+     *
+     * @return
+     */
+    @POST("order/confirm")
+    Flowable<RealOrderBean> updateTempToReal(@Body RealOrderBody body);
 
 }

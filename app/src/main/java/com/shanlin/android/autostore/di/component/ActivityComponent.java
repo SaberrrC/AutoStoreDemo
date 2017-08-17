@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.shanlin.android.autostore.di.PerActivity;
 import com.shanlin.android.autostore.di.module.ActivityModule;
+import com.shanlin.android.autostore.ui.act.CaptureActivity;
 import com.shanlin.android.autostore.ui.act.LoginActivity;
 import com.shanlin.android.autostore.ui.act.MainActivity;
 import com.shanlin.android.autostore.ui.act.MyHeadImgActivity;
