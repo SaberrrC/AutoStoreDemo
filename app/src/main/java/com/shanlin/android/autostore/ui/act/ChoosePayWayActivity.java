@@ -2,6 +2,7 @@ package com.shanlin.android.autostore.ui.act;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -81,7 +82,7 @@ public class ChoosePayWayActivity extends BaseActivity<PayWayPresenter> implemen
 
     //dialog
     private View dialogView;
-    private AlertDialog dialog;
+    private Dialog dialog;
     private TextView moneyNeedToPay;
     private GridPasswordView pswView;
     private ProgressDialog progressDialog;
@@ -309,11 +310,10 @@ public class ChoosePayWayActivity extends BaseActivity<PayWayPresenter> implemen
             });
             TextView tvCredit = ((TextView) view.findViewById(R.id.tv_credit_num));
             CommonUtils.debugLog("----------choose--------2");
-            dialog = new AlertDialog.Builder(ChoosePayWayActivity.this)
-                    .setView(view)
-                    .create();
+            dialog = new Dialog(ChoosePayWayActivity.this, R.style.MyDialogCheckVersion);
+                    dialog.setContentView(view);
             tvCredit.setText(credit + "元可用额度");
-            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
             dialog.show();
         }
     }

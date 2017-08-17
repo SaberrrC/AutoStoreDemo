@@ -74,11 +74,6 @@ public class MyLMBActivity extends SimpleActivity {
 
         MyLMBAdapter mAdapter = new MyLMBAdapter(mContext);
         mRecyclerView.setAdapter(mAdapter);
-//        Map<Class, Integer> map = new HashMap<>();
-//        map.put(RecordBean.class, R.layout.layout_item_lemaibao_list);
-//
-//        mFinalRecycleAdapter = new FinalRecycleAdapter(mDatas, map, this);
-//        mRecyclerView.setAdapter(mFinalRecycleAdapter);
         mPulltoRefreshRecyclerView.setRefreshLoadMoreListener(MyRefreshLoadMoreListener);
         initCheck();
     }

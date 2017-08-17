@@ -90,7 +90,6 @@ public class OpenLMBActivity extends BaseActivity<OpenLMBPresenter> implements O
         switch (v.getId()) {
 
             case R.id.btn_nextstep_and_confirm:
-//                mPresenter.getUserAuthenStatus();
                 isClick = true;
                 judgeEmpty();
                 break;
