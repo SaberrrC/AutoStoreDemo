@@ -4,13 +4,17 @@ import android.animation.ValueAnimator;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Message;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.LinearInterpolator;
@@ -38,8 +42,6 @@ import com.shanlin.android.autostore.presenter.MainPresenter;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.activity.MyLeMaiBaoActivity;
 import com.shanlin.autostore.activity.OpenLeMaiBao;
-import com.shanlin.autostore.activity.SaveFaceActivity;
-import com.shanlin.autostore.activity.VersionInfoActivity;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.utils.Base64;
@@ -144,6 +146,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
     private static final int REQUEST_CODE_REGEST = 101;
     private static final int REQUEST_CODE_SCAN = 102;
     private static final int HEAD_IMG_REQUEST_CODE = 108;
+    private Dialog mGateOpenDialog;
+    private AlertDialog mWelcomeDialog1;
 
     @Override
     protected void initInject() {
@@ -224,7 +228,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
             showToFaceDialog();
         }
     }
-
 
     @Override
     public void onLogoutSuccess(String code, LogoutBean data, String msg) {
@@ -573,4 +576,91 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
         startActivityForResult(headintent, HEAD_IMG_REQUEST_CODE);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        String argument = intent.getStringExtra(Constant.MainActivityArgument.MAIN_ACTIVITY);
+        if (TextUtils.equals(Constant.MainActivityArgument.GATE, argument)) {
+            showGateOpenDialog();
+            return;
+        }
+        if (TextUtils.equals(argument, Constant.FACE_VERIFY_OK)) {
+            showWelcomeDialog();
+            return;
+        }
+        if (TextUtils.equals(argument, Constant.FACE_REGESTED_OK)) {//从录入人脸页面跳转
+            showWelcomeDialog();
+            mTvIdentify.setVisibility(View.GONE);
+            return;
+        }
+    }
+    /**
+     * 扫完二维码开闸机
+     */
+    private void showGateOpenDialog() {
+        if (mGateOpenDialog == null) {
+            mGateOpenDialog = new Dialog(this, R.style.MyDialogWithAnim);
+            //点击其他地方消失
+            mGateOpenDialog.setCanceledOnTouchOutside(true);
+            //填充对话框的布局
+            View viewGateOpen = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_gateopen, null, false);
+            viewGateOpen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mGateOpenDialog.dismiss();
+                }
+            });
+            AutoUtils.autoSize(viewGateOpen);
+            //初始化控件
+            //将布局设置给Dialog
+            mGateOpenDialog.setContentView(viewGateOpen);
+            //获取当前Activity所在的窗体
+            Window dialogWindow = mGateOpenDialog.getWindow();
+            //设置Dialog从窗体中间弹出
+            dialogWindow.setGravity(Gravity.CENTER);
+            //获得窗体的属性
+            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+            //        lp.y = 20;//设置Dialog距离底部的距离
+            //       将属性设置给窗体
+            dialogWindow.setAttributes(lp);
+        }
+        mGateOpenDialog.show();//显示对话框
+        mHandler.removeCallbacksAndMessages(null);
+        mHandler.sendEmptyMessageDelayed(1, 10000);
+    }
+
+    private android.os.Handler mHandler = new android.os.Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1://闸机欢迎dialog
+                    mGateOpenDialog.dismiss();
+                    break;
+                case 2://录入人脸成功后跳转至主页面
+                    mWelcomeDialog1.dismiss();
+                    break;
+            }
+        }
+    };
+
+    /**
+     * 刷脸登陆成功 录入人脸成功后跳转至主页面
+     */
+    private void showWelcomeDialog() {
+        if (mWelcomeDialog1 == null) {
+            View viewWelcome = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_welcome, null, false);
+            viewWelcome.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mWelcomeDialog1.dismiss();
+                }
+            });
+            AutoUtils.autoSize(viewWelcome);
+            mWelcomeDialog1 = com.shanlin.autostore.utils.CommonUtils.getDialog(this, viewWelcome, R.style.MyDialogWithAnim, true);
+        }
+        mWelcomeDialog1.show();
+        mHandler.removeCallbacksAndMessages(null);
+        mHandler.sendEmptyMessageDelayed(2, 3000);
+    }
 }

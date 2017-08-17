@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<com.zhy.autolayout.AutoLinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F5F5"
-    android:backgroundTint="@color/white"
     android:fitsSystemWindows="true"
     android:gravity="center_horizontal"
     android:orientation="vertical">
@@ -26,12 +25,12 @@
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="64px"
-        android:layout_height="22px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/logo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="18px"
-        android:text="邻家APP"
+        android:text="邻家智能Go"
         android:textColor="#FF333333"
         android:textSize="16px"
         />
@@ -39,7 +38,7 @@
     <TextView
         android:id="@+id/version"
         android:layout_width="wrap_content"
-        android:layout_height="20px"
+        android:layout_height="wrap_content"
         android:layout_below="@id/name"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="6px"
@@ -48,4 +47,4 @@
         android:textSize="14px"
         />
 
-</LinearLayout>
+</com.zhy.autolayout.AutoLinearLayout>

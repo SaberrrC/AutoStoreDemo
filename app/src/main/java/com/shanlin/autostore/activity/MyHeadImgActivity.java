@@ -15,20 +15,20 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
-import com.shanlin.autostore.MainActivity;
+import com.shanlin.android.autostore.common.image.ImageLoader;
+import com.shanlin.android.autostore.common.utils.SpUtils;
+import com.shanlin.android.autostore.common.utils.ToastUtils;
+import com.shanlin.android.autostore.entity.body.MemberUpdateSendBean;
+import com.shanlin.android.autostore.ui.act.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.base.BaseActivity;
-import com.shanlin.android.autostore.entity.body.MemberUpdateSendBean;
 import com.shanlin.autostore.bean.resultBean.MemberUpdateBean;
 import com.shanlin.autostore.constants.Constant;
-import com.shanlin.android.autostore.common.image.ImageLoader;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CameraUtil;
 import com.shanlin.autostore.utils.CommonUtils;
-import com.shanlin.android.autostore.common.utils.SpUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
-import com.shanlin.android.autostore.common.utils.ToastUtils;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import cn.jpush.android.api.JPushInterface;

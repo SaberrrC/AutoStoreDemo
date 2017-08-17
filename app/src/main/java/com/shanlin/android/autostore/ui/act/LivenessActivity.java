@@ -112,6 +112,8 @@ public class LivenessActivity extends Activity implements TextureView.SurfaceTex
         mIDetection.viewsInit();
     }
 
+    public boolean isIn = true;
+
     @Override
     public void finish() {
         super.finish();

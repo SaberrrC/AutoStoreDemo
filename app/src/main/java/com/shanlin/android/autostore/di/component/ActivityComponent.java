@@ -4,15 +4,15 @@ import android.app.Activity;
 
 import com.shanlin.android.autostore.di.PerActivity;
 import com.shanlin.android.autostore.di.module.ActivityModule;
-import com.shanlin.android.autostore.ui.act.CaptureActivity;
+import com.shanlin.android.autostore.ui.act.BuyRecordActivity;
 import com.shanlin.android.autostore.ui.act.LoginActivity;
 import com.shanlin.android.autostore.ui.act.MainActivity;
 import com.shanlin.android.autostore.ui.act.MyHeadImgActivity;
+import com.shanlin.android.autostore.ui.act.OrderDetailActivity;
 import com.shanlin.android.autostore.ui.act.PhoneNumLoginActivity;
 import com.shanlin.android.autostore.ui.act.RefundMoneyActivity;
+import com.shanlin.android.autostore.ui.act.SaveFaceActivity;
 import com.shanlin.android.autostore.ui.act.SplashActivity;
-import com.shanlin.android.autostore.ui.act.BuyRecordActivity;
-import com.shanlin.android.autostore.ui.act.OrderDetailActivity;
 
 import dagger.Component;
 
@@ -33,4 +33,5 @@ public interface ActivityComponent {
     void inject(OrderDetailActivity buyRecordActivity);
     void inject(BuyRecordActivity buyRecordActivity);
     void inject(RefundMoneyActivity activity);
+    void inject(SaveFaceActivity saveFaceActivity);
 }
