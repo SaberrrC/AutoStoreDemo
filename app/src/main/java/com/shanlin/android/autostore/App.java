@@ -3,6 +3,7 @@ package com.shanlin.android.autostore;
 import android.app.Application;
 
 import com.shanlin.android.autostore.common.utils.CommonUtils;
+import com.shanlin.android.autostore.common.utils.CrashHandler;
 import com.shanlin.android.autostore.common.utils.LogUtil;
 import com.shanlin.android.autostore.di.component.AppComponent;
 import com.shanlin.android.autostore.di.component.DaggerAppComponent;

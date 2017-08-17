@@ -110,6 +110,7 @@ public class ChoosePayWayActivity extends BaseActivity{
         totalAmount = (TextView)findViewById(R.id.tv_totla_amount_to_pay);//应付总额
         countDownTime = (TextView)findViewById(R.id.tv_countdown_time);//应付总额
 //        intPayTiem();
+
         dialogView = LayoutInflater.from(this).inflate(R.layout.input_psw_dialog_layout, null);
         dialogView.findViewById(R.id.iv_close_dialog).setOnClickListener(this);
         moneyNeedToPay = ((TextView) dialogView.findViewById(R.id.money_need_to_pay));

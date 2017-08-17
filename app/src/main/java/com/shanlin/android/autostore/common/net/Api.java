@@ -1,14 +1,21 @@
 package com.shanlin.android.autostore.common.net;
 
 
+import com.shanlin.android.autostore.entity.body.AliPayOrderBody;
 import com.shanlin.android.autostore.entity.body.CodeSendBean;
+import com.shanlin.android.autostore.entity.body.LeMaiBaoPayBody;
 import com.shanlin.android.autostore.entity.body.MemberUpdateSendBean;
 import com.shanlin.android.autostore.entity.body.NumberLoginBean;
+import com.shanlin.android.autostore.entity.body.OpenGardBody;
 import com.shanlin.android.autostore.entity.body.RealOrderBody;
+import com.shanlin.android.autostore.entity.body.WXPayBody;
 import com.shanlin.android.autostore.entity.body.WechatSaveMobileBody;
+import com.shanlin.android.autostore.entity.respone.AliPayResultBean;
+import com.shanlin.android.autostore.entity.respone.CaptureBean;
 import com.shanlin.android.autostore.entity.respone.CheckUpdateBean;
 import com.shanlin.android.autostore.entity.respone.CodeBean;
 import com.shanlin.android.autostore.entity.respone.CreditBalanceCheckBean;
+import com.shanlin.android.autostore.entity.respone.LeMaiBaoPayResultBean;
 import com.shanlin.android.autostore.entity.respone.LoginBean;
 import com.shanlin.android.autostore.entity.respone.LogoutBean;
 import com.shanlin.android.autostore.entity.respone.MemberUpdateBean;
@@ -17,6 +24,7 @@ import com.shanlin.android.autostore.entity.respone.RealOrderBean;
 import com.shanlin.android.autostore.entity.respone.RefundMoneyBean;
 import com.shanlin.android.autostore.entity.respone.UserNumEverydayBean;
 import com.shanlin.android.autostore.entity.respone.UserVertifyStatusBean;
+import com.shanlin.android.autostore.entity.respone.WxChatBean;
 import com.shanlin.android.autostore.entity.respone.WxUserInfoBean;
 import com.shanlin.autostore.bean.paramsBean.FaceLoginSendBean;
 import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;
@@ -25,8 +33,10 @@ import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
 import com.shanlin.autostore.bean.resultBean.WxTokenBean;
 
 import io.reactivex.Flowable;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
@@ -172,5 +182,38 @@ public interface Api {
      */
     @POST("order/confirm")
     Flowable<RealOrderBean> updateTempToReal(@Body RealOrderBody body);
+
+
+    /**
+     * 二维码扫描 打开闸机
+     */
+    @POST("device/open")
+    Flowable<CaptureBean> postGardOpen(@Body OpenGardBody openGardBody);
+
+
+    /**
+     * 乐买宝支付接口-931
+     *
+     * @param body
+     * @return
+     */
+    @POST("buybao/pay")
+    Flowable<LeMaiBaoPayResultBean> lemaibaoPay(@Body LeMaiBaoPayBody body);
+
+
+    /**
+     * 创建支付宝预订单
+     *
+     * @return
+     */
+    @POST("ali/pay")
+    Flowable<AliPayResultBean> createAliPreOrder(@Body AliPayOrderBody body);
+
+
+    /**
+     * 微信订单接口
+     */
+    @POST("wx/pay")
+    Flowable<WxChatBean> postWxRequest(@Body WXPayBody body);
 
 }
