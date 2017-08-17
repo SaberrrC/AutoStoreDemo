@@ -5,10 +5,14 @@ package com.shanlin.android.autostore.common.base;
  */
 
 import android.content.Context;
+import android.support.annotation.IdRes;
+import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,7 +24,7 @@ public abstract class BaseRecycerViewAdapter<T,V extends RecyclerView.ViewHolder
     public List<T> list;
     public LayoutInflater inflater;
 
-    public BaseRecycerViewAdapter(Context context, List<T> list) {
+    public BaseRecycerViewAdapter(Context context) {
         this.context = context;
         this.list = new ArrayList<>();
         this.addAll(list);
@@ -29,11 +33,6 @@ public abstract class BaseRecycerViewAdapter<T,V extends RecyclerView.ViewHolder
 
     public void setOnItemClickListener(OnItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
-    }
-
-
-    public BaseRecycerViewAdapter(Context context) {
-        this(context,null);
     }
 
     @Override
@@ -64,6 +63,10 @@ public abstract class BaseRecycerViewAdapter<T,V extends RecyclerView.ViewHolder
         notifyDataSetChanged();
     }
 
+    protected View getItemView(@LayoutRes int layoutResId, ViewGroup parent) {
+        return inflater.inflate(layoutResId, parent, false);
+    }
+
     @Override
     public int getItemCount() {
         return list.size();
@@ -72,4 +75,32 @@ public abstract class BaseRecycerViewAdapter<T,V extends RecyclerView.ViewHolder
     public interface OnItemClickListener {
         void onItemClick(int position, View view, RecyclerView.ViewHolder vh);
     }
+
+
+    public static class BaseHolder extends RecyclerView.ViewHolder{
+        private final SparseArray<View> views;
+
+        public BaseHolder(View itemView) {
+            super(itemView);
+            this.views = new SparseArray<>();
+        }
+
+        public <T extends View> T getView(@IdRes int viewId) {
+            View view = views.get(viewId);
+            if (view == null) {
+                view = itemView.findViewById(viewId);
+                views.put(viewId, view);
+            }
+            return (T) view;
+        }
+
+        public BaseHolder setText(@IdRes int viewId, CharSequence value) {
+            TextView view = getView(viewId);
+            view.setText(value);
+            return this;
+        }
+
+    }
 }
+
+

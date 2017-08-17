@@ -13,6 +13,7 @@ import com.shanlin.android.autostore.common.utils.ToastUtils;
 import com.shanlin.android.autostore.entity.respone.RefundMoneyBean;
 import com.shanlin.android.autostore.presenter.Contract.RefundMoneyActContract;
 import com.shanlin.android.autostore.presenter.RefundMoneyPresenter;
+import com.shanlin.android.autostore.ui.adapter.RefundMoneyAdapter;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.adapter.FinalRecycleAdapter;
 import com.shanlin.autostore.utils.DateUtils;
@@ -31,7 +32,7 @@ import butterknife.OnClick;
  * Created by dell、 on 2017/8/16.
  */
 
-public class RefundMoneyActivity extends BaseActivity<RefundMoneyPresenter> implements RefundMoneyActContract.View, FinalRecycleAdapter.OnViewAttachListener {
+public class RefundMoneyActivity extends BaseActivity<RefundMoneyPresenter> implements RefundMoneyActContract.View {
 
     @BindView(R.id.tv_money)
     TextView mTvMoney;
@@ -40,13 +41,12 @@ public class RefundMoneyActivity extends BaseActivity<RefundMoneyPresenter> impl
     @BindView(R.id.pr_lists)
     PulltoRefreshRecyclerView mPulltoRefreshRecyclerView;
     private RecyclerView mRecyclerView;
-    private List<Object> mDatas = new ArrayList<>();
-    private FinalRecycleAdapter mFinalRecycleAdapter;
     private static int REFRESH       = 0;
     private static int LOAD          = 1;
     private        int currentAction = 0;//记录当前用户手势是下拉刷新还是上拉更多，默认下拉刷新
     private        int pageno        = 1;
     private DecimalFormat df = new java.text.DecimalFormat("#.00");
+    private RefundMoneyAdapter refundMoneyAdapter;
 
     @Override
     protected void initInject() {
@@ -62,12 +62,14 @@ public class RefundMoneyActivity extends BaseActivity<RefundMoneyPresenter> impl
     public void initData() {
         CommonUtils.initToolbar(this, "退款金额", R.color.black, null);
         mRecyclerView = mPulltoRefreshRecyclerView.getRecyclerView();
-        Map<Class, Integer> map = new HashMap<>();
-        map.put(RefundMoneyBean.DataBean.class, R.layout.layout_item_refund);
         RefundMoneyBean refundMoneyBean = (RefundMoneyBean) getIntent().getSerializableExtra(Constant.REFUND_MONEY_BEAN);
+
+        refundMoneyAdapter = new RefundMoneyAdapter(mContext);
+        mRecyclerView.setAdapter(refundMoneyAdapter);
+
+
+
         setMoneyText(refundMoneyBean);
-        mFinalRecycleAdapter = new FinalRecycleAdapter(mDatas, map, this);
-        mRecyclerView.setAdapter(mFinalRecycleAdapter);
         mPulltoRefreshRecyclerView.setRefreshLoadMoreListener(MyRefreshLoadMoreListener);
     }
 
@@ -123,13 +125,13 @@ public class RefundMoneyActivity extends BaseActivity<RefundMoneyPresenter> impl
         } else {
             mTvMoney.setText("¥" + df.format(sum));
         }
-        mDatas.addAll(beanList);
+        refundMoneyAdapter.addAll(beanList);
     }
 
     @Override
     public void onGetInfoSuccess(String code, RefundMoneyBean data, String msg) {
         if (currentAction == REFRESH) {
-            mDatas.clear();
+            refundMoneyAdapter.clear();
         }
         List<RefundMoneyBean.DataBean> beanList = data.getData();
         if (beanList == null || beanList.size() == 0) {
@@ -149,9 +151,10 @@ public class RefundMoneyActivity extends BaseActivity<RefundMoneyPresenter> impl
         } else {
             mTvMoney.setText("¥" + df.format(sum));
         }
-        mDatas.addAll(beanList);
-        mFinalRecycleAdapter.notifyDataSetChanged();
-        if (mDatas.size() > 0) {
+
+        refundMoneyAdapter.addAll(beanList);
+
+        if (refundMoneyAdapter.list.size() > 0) {
             mRlWtk.setVisibility(View.GONE);
         } else {
             mRlWtk.setVisibility(View.VISIBLE);
@@ -160,7 +163,7 @@ public class RefundMoneyActivity extends BaseActivity<RefundMoneyPresenter> impl
 
     @Override
     public void onGetInfoFailed(Throwable ex, String code, String msg) {
-        if (mDatas.size() > 0) {
+        if (refundMoneyAdapter.list.size() > 0) {
             mRlWtk.setVisibility(View.GONE);
         } else {
             mRlWtk.setVisibility(View.VISIBLE);
@@ -178,18 +181,4 @@ public class RefundMoneyActivity extends BaseActivity<RefundMoneyPresenter> impl
         }
     }
 
-    @Override
-    public void onBindViewHolder(FinalRecycleAdapter.ViewHolder holder, int position, Object itemData) {
-        if (itemData instanceof RefundMoneyBean.DataBean) {
-            RefundMoneyBean.DataBean bean = (RefundMoneyBean.DataBean) itemData;
-            TextView tvBanlance = (TextView) holder.getViewById(R.id.tv_banlance);//余额
-            TextView tvMoney = (TextView) holder.getViewById(R.id.tv_money);//+500.00元
-            TextView tvTime = (TextView) holder.getViewById(R.id.tv_time);//日期
-            tvBanlance.setText("余额：¥" + bean.getBalance());
-            tvMoney.setText("+" + bean.getAmount());
-            long timeLong = Long.parseLong(bean.getCreatedTime());
-            String time = DateUtils.getDateStringWithFormate(new Date(timeLong), null);
-            tvTime.setText(time);
-        }
-    }
 }
