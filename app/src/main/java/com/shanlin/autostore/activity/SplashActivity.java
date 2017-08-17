@@ -12,6 +12,12 @@ import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.animation.LinearInterpolator;
 
+import com.shanlin.android.autostore.common.utils.MPermissionUtils;
+import com.shanlin.android.autostore.common.utils.SpUtils;
+import com.shanlin.android.autostore.common.utils.ThreadUtils;
+import com.shanlin.android.autostore.common.utils.ToastUtils;
+import com.shanlin.android.autostore.common.utils.VersionManagementUtil;
+import com.shanlin.android.autostore.ui.act.LoginActivity;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.WxMessageEvent;
@@ -21,12 +27,7 @@ import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
-import com.shanlin.android.autostore.common.utils.MPermissionUtils;
-import com.shanlin.android.autostore.common.utils.SpUtils;
 import com.shanlin.autostore.utils.StatusBarUtils;
-import com.shanlin.android.autostore.common.utils.ThreadUtils;
-import com.shanlin.android.autostore.common.utils.ToastUtils;
-import com.shanlin.android.autostore.common.utils.VersionManagementUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -74,15 +75,6 @@ public class SplashActivity extends Activity {
             }
         }, 2000);
     }
-
-    //    @Override
-    //    public void onAnimationUpdate(ValueAnimator valueAnimator) {
-    //        int curValue = (int) valueAnimator.getAnimatedValue();
-    //        if (curValue != 0) {
-    //            return;
-    //        }
-    //
-    //    }
 
     private void checkToken() {
         String token = SpUtils.getString(this, Constant.TOKEN, "");

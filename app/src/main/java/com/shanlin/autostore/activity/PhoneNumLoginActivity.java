@@ -13,6 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.shanlin.android.autostore.common.utils.MPermissionUtils;
+import com.shanlin.android.autostore.common.utils.SpUtils;
+import com.shanlin.android.autostore.common.utils.ToastUtils;
+import com.shanlin.android.autostore.ui.act.LoginActivity;
 import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.MainActivity;
 import com.shanlin.autostore.R;
@@ -27,11 +31,8 @@ import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
-import com.shanlin.android.autostore.common.utils.MPermissionUtils;
 import com.shanlin.autostore.utils.ProgressDialog;
-import com.shanlin.android.autostore.common.utils.SpUtils;
 import com.shanlin.autostore.utils.StrUtils;
-import com.shanlin.android.autostore.common.utils.ToastUtils;
 import com.shanlin.autostore.view.CountDownTextView;
 
 import retrofit2.Call;

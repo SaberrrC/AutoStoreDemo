@@ -165,7 +165,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         mDatas.add(mBodyHeadBean);
         mDatas.add(data);
         mRecycleAdapter.notifyDataSetChanged();
-        Intent toLoginActivity = new Intent(this, com.shanlin.autostore.activity.LoginActivity.class);
+        Intent toLoginActivity = new Intent(this, LoginActivity.class);
         startActivity(toLoginActivity);
         finish();
     }

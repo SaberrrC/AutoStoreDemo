@@ -34,6 +34,5 @@ public class OrderDetailPresenter extends RxPresenter<OrderDetailActContract.Vie
                 mView.ongetOrderDetailFailed(ex, code, msg);
             }
         }, false));
-
     }
 }

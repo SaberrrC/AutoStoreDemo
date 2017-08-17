@@ -3,11 +3,11 @@ package com.shanlin.android.autostore.common.net;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import com.shanlin.android.autostore.App;
 import com.shanlin.android.autostore.common.utils.CommonUtils;
 import com.shanlin.android.autostore.common.utils.ToastUtils;
 import com.shanlin.android.autostore.entity.BaseBean;
-import com.shanlin.autostore.AutoStoreApplication;
-import com.shanlin.autostore.activity.LoginActivity;
+import com.shanlin.android.autostore.ui.act.LoginActivity;
 import com.shanlin.autostore.utils.LogUtils;
 
 import org.reactivestreams.Subscription;
@@ -43,7 +43,7 @@ public class SubscriberWrapper<T extends BaseBean> implements FlowableSubscriber
         String code = t.getCode();
         String msg = t.getMessage();
         if (TextUtils.equals(code, "401")) {//token失效
-            AutoStoreApplication.isLogin = false;
+            App.isLogin = false;
             if (!jumpLogin) {
                 callBackListener.onSuccess(code, t, msg);
                 return;
@@ -68,12 +68,12 @@ public class SubscriberWrapper<T extends BaseBean> implements FlowableSubscriber
 
     private void toLoginActivity() {
         ToastUtils.showToast(TOKEN_ERROR);
-        Intent toLoginActivity = new Intent(AutoStoreApplication.getApp(), LoginActivity.class);
+        Intent toLoginActivity = new Intent(App.getInstance(), LoginActivity.class);
         if (TextUtils.isEmpty(key) && TextUtils.isEmpty(value)) {
             toLoginActivity.putExtra(key, value);
         }
         toLoginActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        AutoStoreApplication.getApp().startActivity(toLoginActivity);
+        App.getInstance().startActivity(toLoginActivity);
     }
 
 

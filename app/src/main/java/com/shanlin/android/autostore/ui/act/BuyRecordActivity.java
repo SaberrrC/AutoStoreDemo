@@ -187,7 +187,7 @@ public class BuyRecordActivity extends BaseActivity<BuyRecordPresenter> implemen
         mDatas.clear();
         mFinalRecycleAdapter.notifyDataSetChanged();
         mFlNoList.setVisibility(View.VISIBLE);
-        Intent toLoginActivity = new Intent(this, com.shanlin.autostore.activity.LoginActivity.class);
+        Intent toLoginActivity = new Intent(this, LoginActivity.class);
         startActivity(toLoginActivity);
         finish();
     }
