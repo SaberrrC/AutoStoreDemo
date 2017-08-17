@@ -57,22 +57,22 @@ public class OpenLeMaiBao extends BaseActivity {
     @Override
     public void initView() {
         CommonUtils.initToolbar(this, "开启乐买宝", R.color.blcak, MainActivity.class);
-        nextOrConfirm = ((TextView) findViewById(R.id.btn_nextstep_and_confirm));
-        findViewById(R.id.service_shou_quan_bottom).setOnClickListener(this);
-        findViewById(R.id.tv_xie_yi).setOnClickListener(this);//合同
-        findViewById(R.id.service_shou_quan).setOnClickListener(this);//信用授权
-        nextOrConfirm.setOnClickListener(this);
-        ivStep2 = ((ImageView) findViewById(R.id.iv_step2));
-        line2Step1 = findViewById(R.id.line2_step1);
-        line1Step2 = findViewById(R.id.line1_step2);
-        line2Step2 = findViewById(R.id.line2_step2);
-        rlStep1 = findViewById(R.id.rl_step1);
-        rlStep2 = findViewById(R.id.rl_step2);
+//        nextOrConfirm = ((TextView) findViewById(R.id.btn_nextstep_and_confirm));
+//        findViewById(R.id.service_shou_quan_bottom).setOnClickListener(this);
+//        findViewById(R.id.tv_xie_yi).setOnClickListener(this);//合同
+//        findViewById(R.id.service_shou_quan).setOnClickListener(this);//信用授权
+//        nextOrConfirm.setOnClickListener(this);
+//        ivStep2 = ((ImageView) findViewById(R.id.iv_step2));
+//        line2Step1 = findViewById(R.id.line2_step1);
+//        line1Step2 = findViewById(R.id.line1_step2);
+//        line2Step2 = findViewById(R.id.line2_step2);
+//        rlStep1 = findViewById(R.id.rl_step1);
+//        rlStep2 = findViewById(R.id.rl_step2);
         //姓名和身份证,密码
-        etName = ((EditText) findViewById(R.id.et_name));
-        etIdNum = ((EditText) findViewById(R.id.et_id_num));
-        etPsw = ((EditText) findViewById(R.id.et_psw));
-        etPswAgain = ((EditText) findViewById(R.id.et_psw_again));
+//        etName = ((EditText) findViewById(R.id.et_name));
+//        etIdNum = ((EditText) findViewById(R.id.et_id_num));
+//        etPsw = ((EditText) findViewById(R.id.et_psw));
+//        etPswAgain = ((EditText) findViewById(R.id.et_psw_again));
     }
 
     @Override

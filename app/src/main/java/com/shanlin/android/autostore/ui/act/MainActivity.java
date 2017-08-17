@@ -144,6 +144,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
     private static final int REQUEST_CODE_REGEST = 101;
     private static final int REQUEST_CODE_SCAN = 102;
     private static final int HEAD_IMG_REQUEST_CODE = 108;
+    private String status;
 
     @Override
     protected void initInject() {
@@ -311,7 +312,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
 
     @Override
     public void onGetUserVertifyAuthenStatusSuccess(String code, UserVertifyStatusBean data, String msg) {
-        String status = data.getData().getVerifyStatus();
+        status = data.getData().getVerifyStatus();
         if (!Constant_LeMaiBao.AUTHEN_FINISHED.equals(status)) {
             openLMB.setClickable(true);
             CommonUtils.debugLog("----------top---------");
@@ -460,14 +461,14 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
 
     private void showBalanceDialog() {
         CommonUtils.debugLog("---------flag=" + state);
-        if (state && credit != null) {
+        if (true && credit != null) {
             View inflate = LayoutInflater.from(this).inflate(R.layout.get_available_balence_layout, null);
             inflate.findViewById(R.id.btn_diaolog_know).setOnClickListener(view -> {
                 dialog.dismiss();
                 state = false;
             });
             TextView tvCredit = ((TextView) inflate.findViewById(R.id.tv_credit_num));
-            dialog = new Dialog(MainActivity.this);
+            dialog = new Dialog(MainActivity.this,R.style.MyDialogCheckVersion);
             dialog.setContentView(inflate);
             dialog.setCanceledOnTouchOutside(false);
             tvCredit.setText(credit + "元可用额度");
@@ -490,7 +491,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
             return;
         }
         View viewLoginout = LayoutInflater.from(this).inflate(R.layout.layout_dialog_loginout, null);
-        mLoginoutDialog = new Dialog(this, R.style.MyDialogStyle);
+        mLoginoutDialog = new Dialog(this, R.style.MyDialogWithAnim);
         mLoginoutDialog.setContentView(viewLoginout);
         mLoginoutDialog.setCanceledOnTouchOutside(false);
         mLoginoutDialog.show();
@@ -530,7 +531,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
 
     @OnClick(R.id.btn_lemaibao) void toLemaibao(){
         if (!openLMB.isClickable()) {
-            CommonUtils.sendDataToNextActivity(this, MyLeMaiBaoActivity.class, creditKeys, new String[]{creditBalance, creditUsed});
+            CommonUtils.sendDataToNextActivity(this, MyLMBActivity.class, creditKeys, new String[]{creditBalance, creditUsed});
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
         }
     }
@@ -538,7 +539,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
     @OnClick(R.id.btn_open_le_mai_bao) void openLemaibao(){
         if (openLMB.isClickable()) {
             CommonUtils.debugLog("-----------开通乐买宝");
-            CommonUtils.toNextActivity(this, OpenLeMaiBao.class);
+            CommonUtils.sendDataToNextActivity(this,OpenLMBActivity.class,new String[]{Constant_LeMaiBao.AUTHEN_STATUS},new String[]{status});
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
         }
     }

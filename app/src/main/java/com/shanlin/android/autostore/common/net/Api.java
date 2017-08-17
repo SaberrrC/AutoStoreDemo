@@ -4,6 +4,8 @@ package com.shanlin.android.autostore.common.net;
 import com.shanlin.android.autostore.entity.body.CodeSendBean;
 import com.shanlin.android.autostore.entity.body.MemberUpdateSendBean;
 import com.shanlin.android.autostore.entity.body.NumberLoginBean;
+import com.shanlin.android.autostore.entity.body.PswSettingBody;
+import com.shanlin.android.autostore.entity.body.RealNameAuthenBody;
 import com.shanlin.android.autostore.entity.body.RealOrderBody;
 import com.shanlin.android.autostore.entity.body.WechatSaveMobileBody;
 import com.shanlin.android.autostore.entity.respone.CheckUpdateBean;
@@ -13,6 +15,8 @@ import com.shanlin.android.autostore.entity.respone.LoginBean;
 import com.shanlin.android.autostore.entity.respone.LogoutBean;
 import com.shanlin.android.autostore.entity.respone.MemberUpdateBean;
 import com.shanlin.android.autostore.entity.respone.PersonInfoBean;
+import com.shanlin.android.autostore.entity.respone.PswSettingBean;
+import com.shanlin.android.autostore.entity.respone.RealNameAuthenBean;
 import com.shanlin.android.autostore.entity.respone.RealOrderBean;
 import com.shanlin.android.autostore.entity.respone.RefundMoneyBean;
 import com.shanlin.android.autostore.entity.respone.UserNumEverydayBean;
@@ -172,5 +176,21 @@ public interface Api {
      */
     @POST("order/confirm")
     Flowable<RealOrderBean> updateTempToReal(@Body RealOrderBody body);
+
+    /**
+     * 实名认证post -1082
+     *
+     * @return
+     */
+    @POST("buybao/userverify")
+    Flowable<RealNameAuthenBean> goRealNameAuthen(@Body RealNameAuthenBody body);
+
+    /**
+     * 密码设置-1083
+     *
+     * @return
+     */
+    @POST("buybao/setpassword")
+    Flowable<PswSettingBean> goPswSetting(@Body PswSettingBody body);
 
 }

@@ -15,6 +15,7 @@ public class Constant_LeMaiBao {
      * 实名认证结果
      */
     public static final String AUTHEN = "AUTHEN";
+    public static final String AUTHEN_STATUS = "STATUS";
     public static final String PASSWORD = "PASSWORD";
     public static final String GET_BALENCE = "creditMoney";//是否有可领取额度
     public static final String CREDIT = "credit";//授信额度

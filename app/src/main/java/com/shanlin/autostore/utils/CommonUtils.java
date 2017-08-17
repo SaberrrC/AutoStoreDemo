@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -272,7 +273,7 @@ public class CommonUtils {
      * @param str
      * @param desActivity
      */
-    public static void initToolbar(final Activity activity, String str, int colorRes, final Class desActivity) {
+    public static void initToolbar(final Activity activity, String str, int colorRes, @Nullable final Class desActivity) {
         Toolbar tb = (Toolbar) activity.findViewById(R.id.toolbar);
         TextView title = (TextView) activity.findViewById(R.id.toolbar_title);
         tb.setNavigationIcon(R.mipmap.nav_back);
@@ -281,8 +282,9 @@ public class CommonUtils {
             public void onClick(View v) {
                 if (desActivity != null) {
                     CommonUtils.toNextActivity(activity, desActivity);
+                } else {
+                    activity.finish();
                 }
-                activity.finish();
             }
         });
         title.setText(str);
