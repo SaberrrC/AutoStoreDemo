@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
+
 import com.shanlin.android.autostore.common.base.BaseActivity;
 import com.shanlin.android.autostore.common.constants.Constant;
 import com.shanlin.android.autostore.common.utils.CommonUtils;
@@ -15,16 +16,12 @@ import com.shanlin.android.autostore.presenter.Contract.RefundMoneyActContract;
 import com.shanlin.android.autostore.presenter.RefundMoneyPresenter;
 import com.shanlin.android.autostore.ui.adapter.RefundMoneyAdapter;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.adapter.FinalRecycleAdapter;
-import com.shanlin.autostore.utils.DateUtils;
 import com.shanlin.autostore.view.PulltoRefreshRecyclerView;
 import com.zhy.autolayout.AutoRelativeLayout;
+
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -35,17 +32,17 @@ import butterknife.OnClick;
 public class RefundMoneyActivity extends BaseActivity<RefundMoneyPresenter> implements RefundMoneyActContract.View {
 
     @BindView(R.id.tv_money)
-    TextView mTvMoney;
+    TextView                  mTvMoney;
     @BindView(R.id.rl_wtk)
-    AutoRelativeLayout mRlWtk;
+    AutoRelativeLayout        mRlWtk;
     @BindView(R.id.pr_lists)
     PulltoRefreshRecyclerView mPulltoRefreshRecyclerView;
     private RecyclerView mRecyclerView;
-    private static int REFRESH       = 0;
-    private static int LOAD          = 1;
-    private        int currentAction = 0;//记录当前用户手势是下拉刷新还是上拉更多，默认下拉刷新
-    private        int pageno        = 1;
-    private DecimalFormat df = new java.text.DecimalFormat("#.00");
+    private static int           REFRESH       = 0;
+    private static int           LOAD          = 1;
+    private        int           currentAction = 0;//记录当前用户手势是下拉刷新还是上拉更多，默认下拉刷新
+    private        int           pageno        = 1;
+    private        DecimalFormat df            = new java.text.DecimalFormat("#.00");
     private RefundMoneyAdapter refundMoneyAdapter;
 
     @Override
@@ -63,12 +60,8 @@ public class RefundMoneyActivity extends BaseActivity<RefundMoneyPresenter> impl
         CommonUtils.initToolbar(this, "退款金额", R.color.black, null);
         mRecyclerView = mPulltoRefreshRecyclerView.getRecyclerView();
         RefundMoneyBean refundMoneyBean = (RefundMoneyBean) getIntent().getSerializableExtra(Constant.REFUND_MONEY_BEAN);
-
         refundMoneyAdapter = new RefundMoneyAdapter(mContext);
         mRecyclerView.setAdapter(refundMoneyAdapter);
-
-
-
         setMoneyText(refundMoneyBean);
         mPulltoRefreshRecyclerView.setRefreshLoadMoreListener(MyRefreshLoadMoreListener);
     }
@@ -111,20 +104,7 @@ public class RefundMoneyActivity extends BaseActivity<RefundMoneyPresenter> impl
             mTvMoney.setText("¥0.00");
             return;
         }
-        double sum = 0.00;
-        for (RefundMoneyBean.DataBean dataBean : beanList) {
-            String balance = dataBean.getBalance();
-            if (TextUtils.isEmpty(balance)) {
-                continue;
-            }
-            double refundMoney = Double.parseDouble(balance);
-            sum += refundMoney;
-        }
-        if (sum == 0.00) {
-            mTvMoney.setText("¥0" + df.format(sum));
-        } else {
-            mTvMoney.setText("¥" + df.format(sum));
-        }
+        setMoneyText(beanList);
         refundMoneyAdapter.addAll(beanList);
     }
 
@@ -136,7 +116,18 @@ public class RefundMoneyActivity extends BaseActivity<RefundMoneyPresenter> impl
         List<RefundMoneyBean.DataBean> beanList = data.getData();
         if (beanList == null || beanList.size() == 0) {
             mTvMoney.setText("¥0.00");
+        } else {
+            setMoneyText(beanList);
+            refundMoneyAdapter.addAll(beanList);
         }
+        if (refundMoneyAdapter.list.size() > 0) {
+            mRlWtk.setVisibility(View.GONE);
+        } else {
+            mRlWtk.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setMoneyText(List<RefundMoneyBean.DataBean> beanList) {
         double sum = 0.00;
         for (RefundMoneyBean.DataBean dataBean : beanList) {
             String balance = dataBean.getBalance();
@@ -150,14 +141,6 @@ public class RefundMoneyActivity extends BaseActivity<RefundMoneyPresenter> impl
             mTvMoney.setText("¥0" + df.format(sum));
         } else {
             mTvMoney.setText("¥" + df.format(sum));
-        }
-
-        refundMoneyAdapter.addAll(beanList);
-
-        if (refundMoneyAdapter.list.size() > 0) {
-            mRlWtk.setVisibility(View.GONE);
-        } else {
-            mRlWtk.setVisibility(View.VISIBLE);
         }
     }
 

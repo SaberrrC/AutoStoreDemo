@@ -11,7 +11,7 @@ import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
 public interface BuyRecordActContract {
     interface View extends BaseView {
 
-        void ongetOrderDataSuccess(String code, OrderHistoryBean data, String msg);
+        void onGetOrderDataSuccess(String code, OrderHistoryBean data, String msg);
 
         void ongetOrderDataFailed(Throwable ex, String code, String msg);
     }
