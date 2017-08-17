@@ -21,8 +21,8 @@ public class BuyRecordPresenter extends RxPresenter<BuyRecordActContract.View> i
     }
 
     @Override
-    public void getOrderData(String token, int pageno, int pageSize) {
-        apiService.getOrderHistory(token, pageno, pageSize).compose(NetWorkUtil.rxSchedulerHelper()).subscribe(new SubscriberWrapper<>(new SubscriberWrapper.CallBackListener<OrderHistoryBean>() {
+    public void getOrderData(int pageno, int pageSize) {
+        apiService.getOrderHistory(pageno, pageSize).compose(NetWorkUtil.rxSchedulerHelper()).subscribe(new SubscriberWrapper<>(new SubscriberWrapper.CallBackListener<OrderHistoryBean>() {
             @Override
             public void onSuccess(String code, OrderHistoryBean data, String msg) {
                 mView.ongetOrderDataSuccess(code, data, msg);

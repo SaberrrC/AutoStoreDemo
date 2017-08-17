@@ -83,7 +83,7 @@ public class BuyRecordActivity extends BaseActivity<BuyRecordPresenter> implemen
         //OrderHistoryBean.DataBean.ListBean
         map.put(OrderHistoryBean.DataBean.ListBean.class, R.layout.buy_record_lv_item);
         mToken = SpUtils.getString(this, Constant.TOKEN, "");
-        mPresenter.getOrderData(mToken, pageno, PAGE_SIZE);
+        mPresenter.getOrderData(pageno, PAGE_SIZE);
         mFinalRecycleAdapter = new FinalRecycleAdapter(mDatas, map, this);
         mRecyclerView.setAdapter(mFinalRecycleAdapter);
         mPulltoRefreshRecyclerView.setRefreshLoadMoreListener(MyRefreshLoadMoreListener);
@@ -100,7 +100,7 @@ public class BuyRecordActivity extends BaseActivity<BuyRecordPresenter> implemen
             ThreadUtils.runMainDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    mPresenter.getOrderData(mToken, pageno, PAGE_SIZE);
+                    mPresenter.getOrderData(pageno, PAGE_SIZE);
                     mPulltoRefreshRecyclerView.stopRefresh();
                 }
             }, 500);
@@ -115,7 +115,7 @@ public class BuyRecordActivity extends BaseActivity<BuyRecordPresenter> implemen
                     currentAction = LOAD;
                     if (currentPage < totalPage) {
                         pageno++;
-                        mPresenter.getOrderData(mToken, pageno, PAGE_SIZE);
+                        mPresenter.getOrderData(pageno, PAGE_SIZE);
                     } else {
                         ToastUtils.showToast("没有更多数据");
                     }

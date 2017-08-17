@@ -18,6 +18,6 @@ public interface BuyRecordActContract {
 
     interface Presenter extends BasePresenter<BuyRecordActContract.View> {
 
-        void getOrderData(String token, int pageno, int pageSize);
+        void getOrderData(int pageno, int pageSize);
     }
 }

@@ -22,8 +22,8 @@ public class OrderDetailPresenter extends RxPresenter<OrderDetailActContract.Vie
     }
 
     @Override
-    public void getOrderDetail(String token, OrderHistoryBean.DataBean.ListBean mBean) {
-        apiService.getOrderDetail(token, mBean.getOrderNo()).compose(NetWorkUtil.rxSchedulerHelper()).subscribe(new SubscriberWrapper<>(new SubscriberWrapper.CallBackListener<OrderDetailBean>() {
+    public void getOrderDetail(OrderHistoryBean.DataBean.ListBean mBean) {
+        apiService.getOrderDetail(mBean.getOrderNo()).compose(NetWorkUtil.rxSchedulerHelper()).subscribe(new SubscriberWrapper<>(new SubscriberWrapper.CallBackListener<OrderDetailBean>() {
             @Override
             public void onSuccess(String code, OrderDetailBean data, String msg) {
                 mView.ongetOrderDetailSuccess(code, data, msg);

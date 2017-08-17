@@ -17,6 +17,6 @@ public interface OrderDetailActContract {
     }
 
     interface Presenter extends BasePresenter<OrderDetailActContract.View> {
-        void getOrderDetail(String token, OrderHistoryBean.DataBean.ListBean bean);
+        void getOrderDetail(OrderHistoryBean.DataBean.ListBean bean);
     }
 }

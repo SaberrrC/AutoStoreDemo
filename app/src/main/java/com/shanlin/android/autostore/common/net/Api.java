@@ -25,10 +25,8 @@ import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
 import com.shanlin.autostore.bean.resultBean.WxTokenBean;
 
 import io.reactivex.Flowable;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
@@ -40,6 +38,7 @@ import retrofit2.http.Url;
 public interface Api {
     /**
      * 用户信息查询
+     *
      * @return
      */
     @GET("member/info")
@@ -69,6 +68,7 @@ public interface Api {
 
     /**
      * 获取用户乐买宝实名认证信息
+     *
      * @param token
      * @return
      */
@@ -99,7 +99,6 @@ public interface Api {
      */
     @POST("member/facelogin")
     Flowable<LoginBean> postFaceLogin(@Body FaceLoginSendBean faceLoginSendBean);
-
 
 
     /**
@@ -157,14 +156,14 @@ public interface Api {
      * 查询订单历史记录
      */
     @GET("order/history")
-    Flowable<OrderHistoryBean> getOrderHistory(@Header("token") String token, @Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
+    Flowable<OrderHistoryBean> getOrderHistory(@Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
 
 
     /**
      * 订单详情
      */
     @GET("order/details")
-    Flowable<OrderDetailBean> getOrderDetail(@Header("token") String token, @Query("orderNo") String orderNo);
+    Flowable<OrderDetailBean> getOrderDetail(@Query("orderNo") String orderNo);
 
     /**
      * 更新临时订单成为正式订单-910

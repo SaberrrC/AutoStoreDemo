@@ -11,14 +11,12 @@ import com.shanlin.android.autostore.common.utils.ThreadUtils;
 import com.shanlin.android.autostore.common.utils.ToastUtils;
 import com.shanlin.android.autostore.presenter.Contract.OrderDetailActContract;
 import com.shanlin.android.autostore.presenter.OrderDetailPresenter;
-import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.adapter.FinalRecycleAdapter;
 import com.shanlin.autostore.bean.orderdetail.OrderDetailBodyHeadBean;
 import com.shanlin.autostore.bean.resultBean.OrderDetailBean;
 import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
 import com.shanlin.autostore.constants.Constant;
-import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.DateUtils;
 import com.shanlin.autostore.view.PulltoRefreshRecyclerView;
@@ -63,7 +61,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
             ThreadUtils.runMainDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    getOrderDetail();
+                    mPresenter.getOrderDetail(mBean);
                     mPulltoRefreshRecyclerView.stopRefresh();
                 }
             }, 500);
@@ -85,7 +83,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
         map.put(OrderDetailBean.DataBean.ItemsBean.class, R.layout.item_order_detail_body_item);
         map.put(OrderDetailBean.class, R.layout.item_order_detail_foot);
         mToken = SpUtils.getString(this, Constant.TOKEN, "");
-        mPresenter.getOrderDetail(mToken,mBean);
+        mPresenter.getOrderDetail(mBean);
         mRecycleAdapter = new FinalRecycleAdapter(mDatas, map, this);
         mRecyclerView.setAdapter(mRecycleAdapter);
         //禁止加载更多
@@ -130,40 +128,6 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
             tvAllPrice.setText("合计：¥" + bean.getData().getTotalAmount());
             tvAllGet.setText("¥" + bean.getData().getPayAmount());
         }
-    }
-
-    public void getOrderDetail() {
-        CommonUtils.doNet().getOrderDetail(mToken, mBean.getOrderNo()).enqueue(new CustomCallBack<OrderDetailBean>() {
-            @Override
-            public void success(String code, OrderDetailBean data, String msg) {
-                List<OrderDetailBean.DataBean.ItemsBean> items = data.getData().getItems();
-                mDatas.clear();
-                OrderDetailActivity.this.data = data;
-                if (items != null && items.size() > 0) {
-                    mDatas.add(mBean);
-                    mDatas.add(mBodyHeadBean);
-                    mDatas.addAll(items);
-                    mDatas.add(data);
-                } else {
-                    mDatas.add(mBean);
-                    mDatas.add(mBodyHeadBean);
-                    mDatas.add(data);
-                    ToastUtils.showToast("无订单列表");
-                }
-                mRecycleAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void error(Throwable ex, String code, String msg) {
-                if (TextUtils.equals(code, "401")) {//token未认证
-                    if (AutoStoreApplication.isLogin) {
-                        AutoStoreApplication.isLogin = false;
-                        toLoginActivity();
-                    }
-                }
-                ToastUtils.showToast(msg);
-            }
-        });
     }
 
     @Override
