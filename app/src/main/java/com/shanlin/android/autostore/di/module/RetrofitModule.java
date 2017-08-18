@@ -5,12 +5,9 @@ import com.shanlin.android.autostore.App;
 import com.shanlin.android.autostore.common.constants.Constant;
 import com.shanlin.android.autostore.common.net.Api;
 import com.shanlin.android.autostore.common.net.CacheInterceptor;
-import com.shanlin.android.autostore.common.net.CountingRequestBody;
 import com.shanlin.android.autostore.common.net.HeadInterceptor;
-import com.shanlin.android.autostore.common.net.UpLoadProgressInterceptor;
-import com.shanlin.android.autostore.common.net.callback.UploadHeadImgListener;
 import com.shanlin.android.autostore.common.utils.LogUtil;
-import com.shanlin.autostore.BuildConfig;
+import com.shanlin.autostore.net.LoggingInterceptor;
 
 import java.io.File;
 import java.security.KeyManagementException;
@@ -59,6 +56,8 @@ public class RetrofitModule {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(message -> LogUtil.e(message));
         interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
         builder.addInterceptor(interceptor);
+
+        builder.addInterceptor(new LoggingInterceptor());//使用自定义的Log拦截器
 
         //设置缓存
         builder.addNetworkInterceptor(cacheInterceptor);

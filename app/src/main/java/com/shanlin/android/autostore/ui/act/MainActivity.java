@@ -581,6 +581,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
         Intent headintent = new Intent(this, MyHeadImgActivity.class);
         headintent.putExtra(Constant.HEAD_IMG_URL, imageUrl);
         startActivityForResult(headintent, HEAD_IMG_REQUEST_CODE);
+        overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
 
     @Override
