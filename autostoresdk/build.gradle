@@ -38,6 +38,9 @@ dependencies {
     //findviewbyid
     compile 'com.jakewharton:butterknife:8.8.1'
 
+    //log
+    compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
+
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.zhy:autolayout:1.4.5'
 

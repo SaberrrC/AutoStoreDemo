@@ -6,6 +6,8 @@ import com.shanlin.android.autostore.common.constants.Constant;
 import com.shanlin.android.autostore.common.net.Api;
 import com.shanlin.android.autostore.common.net.CacheInterceptor;
 import com.shanlin.android.autostore.common.net.HeadInterceptor;
+import com.shanlin.android.autostore.common.utils.LogUtil;
+import com.shanlin.autostore.BuildConfig;
 
 import java.io.File;
 import java.security.KeyManagementException;
@@ -25,6 +27,7 @@ import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -50,6 +53,9 @@ public class RetrofitModule {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         //设置统一的请求头部参数
         builder.addInterceptor(headInterceptor);
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(message -> LogUtil.e(message));
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+        builder.addInterceptor(interceptor);
 
         //设置缓存
         builder.addNetworkInterceptor(cacheInterceptor);
@@ -140,7 +146,7 @@ public class RetrofitModule {
     }
 
     @Provides
-    public Api providesApi(Retrofit retrofit){
+    public Api providesApi(Retrofit retrofit) {
         return retrofit.create(Api.class);
     }
 }
