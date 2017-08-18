@@ -5,16 +5,16 @@ import android.content.pm.PackageManager;
 
 import com.shanlin.android.autostore.common.base.BaseActivity;
 import com.shanlin.android.autostore.common.base.RxPresenter;
+import com.shanlin.android.autostore.common.constants.Constant;
 import com.shanlin.android.autostore.common.net.Api;
 import com.shanlin.android.autostore.common.net.NetWorkUtil;
 import com.shanlin.android.autostore.common.net.SubscriberWrapper;
+import com.shanlin.android.autostore.entity.body.FaceLoginSendBean;
+import com.shanlin.android.autostore.entity.body.WechatLoginSendBean;
 import com.shanlin.android.autostore.entity.respone.LoginBean;
+import com.shanlin.android.autostore.entity.respone.WxTokenBean;
 import com.shanlin.android.autostore.entity.respone.WxUserInfoBean;
 import com.shanlin.android.autostore.presenter.Contract.LoginActContract;
-import com.shanlin.autostore.bean.paramsBean.FaceLoginSendBean;
-import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;
-import com.shanlin.autostore.bean.resultBean.WxTokenBean;
-import com.shanlin.autostore.constants.Constant;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 
 import org.reactivestreams.Subscriber;

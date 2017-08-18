@@ -2,7 +2,7 @@ package com.shanlin.android.autostore.presenter.Contract;
 
 import com.shanlin.android.autostore.common.base.BasePresenter;
 import com.shanlin.android.autostore.common.base.BaseView;
-import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
+import com.shanlin.android.autostore.entity.respone.OrderHistoryBean;
 
 /**
  * Created by dell、 on 2017/8/16.

@@ -16,7 +16,7 @@ import com.shanlin.android.autostore.presenter.Contract.RefundMoneyActContract;
 import com.shanlin.android.autostore.presenter.RefundMoneyPresenter;
 import com.shanlin.android.autostore.ui.adapter.RefundMoneyAdapter;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.view.PulltoRefreshRecyclerView;
+import com.shanlin.android.autostore.ui.view.PulltoRefreshRecyclerView;
 import com.zhy.autolayout.AutoRelativeLayout;
 
 import java.text.DecimalFormat;

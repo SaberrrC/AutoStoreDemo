@@ -1,15 +1,12 @@
 package com.shanlin.android.autostore.ui.act;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.shanlin.android.autostore.common.base.SimpleActivity;
 import com.shanlin.android.autostore.common.utils.CommonUtils;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.constants.Constant_LeMaiBao;
+import com.shanlin.android.autostore.common.constants.Constant_LeMaiBao;
 
 import butterknife.BindView;
 

@@ -12,7 +12,7 @@ import com.shanlin.android.autostore.di.component.ActivityComponent;
 import com.shanlin.android.autostore.di.component.DaggerActivityComponent;
 import com.shanlin.android.autostore.di.module.ActivityModule;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.utils.StatusBarUtils;
+import com.shanlin.android.autostore.common.utils.StatusBarUtils;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 import java.util.ArrayList;

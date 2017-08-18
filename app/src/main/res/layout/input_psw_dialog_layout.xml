@@ -49,7 +49,7 @@
         android:textSize="28sp"
         />
 
-    <com.shanlin.autostore.view.gridpasswordview.GridPasswordView
+    <com.shanlin.android.autostore.ui.view.gridpasswordview.GridPasswordView
         android:id="@+id/pswView"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/money_need_to_pay"

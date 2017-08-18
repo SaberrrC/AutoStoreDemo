@@ -1,28 +1,18 @@
 package com.shanlin.android.autostore.ui.act;
 
-import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.shanlin.android.autostore.common.base.SimpleActivity;
+import com.shanlin.android.autostore.common.utils.CommonUtils;
 import com.shanlin.android.autostore.common.utils.MPermissionUtils;
+import com.shanlin.android.autostore.common.utils.StatusBarUtils;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.activity.OpenLeMaiBao;
-import com.shanlin.autostore.base.BaseActivity;
-import com.shanlin.autostore.utils.CommonUtils;
-import com.shanlin.autostore.utils.LogUtils;
-import com.shanlin.autostore.utils.StatusBarUtils;
-import com.zhy.autolayout.utils.AutoUtils;
 
 import butterknife.BindView;
 
@@ -65,7 +55,6 @@ public class XieYiAndHeTongActivity extends SimpleActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                LogUtils.d("onPageStarted------------" + System.currentTimeMillis());
             }
         });
     }

@@ -21,13 +21,10 @@ import android.widget.Toast;
 import com.megvii.licensemanager.Manager;
 import com.megvii.livenessdetection.LivenessLicenseManager;
 import com.shanlin.android.autostore.App;
+import com.shanlin.android.autostore.common.constants.Constant;
+import com.shanlin.android.autostore.common.livenesslib.util.ConUtil;
 import com.shanlin.android.autostore.common.utils.env.DeviceInfo;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.constants.Constant;
-import com.shanlin.autostore.interf.HttpService;
-import com.shanlin.android.autostore.common.livenesslib.util.ConUtil;
-import com.shanlin.autostore.net.LoggingInterceptor;
-import com.shanlin.autostore.utils.LogUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -38,9 +35,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import cn.jpush.android.api.JPushInterface;
-import okhttp3.OkHttpClient;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by DELL on 2017/7/14 0014.
@@ -150,19 +144,6 @@ public class CommonUtils {
         context.startActivity(intent);
     }
 
-    /**
-     * 网络连接工具,get,post通用
-     *
-     * @return
-     */
-    public static HttpService doNet() {
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.addInterceptor(new LoggingInterceptor());//使用自定义的Log拦截器
-        OkHttpClient client = builder.build();
-        Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(Constant.BASE_URL).client(client).build();
-        HttpService service = retrofit.create(HttpService.class);
-        return service;
-    }
 
     /**
      * 获取当前系统时间
@@ -286,7 +267,6 @@ public class CommonUtils {
                 } else {
                     deviceId = SpUtils.getString(App.getInstance(), Constant.DEVICEID, "");
                     if (!TextUtils.isEmpty(deviceId)) {
-                        LogUtils.d(Constant.DEVICEID + "   " + deviceId);
                         return;
                     }
                     deviceId = getDIsKDevicedID();
@@ -294,7 +274,6 @@ public class CommonUtils {
                         SpUtils.saveString(App.getInstance(), Constant.DEVICEID, deviceId);
                     }
                 }
-                LogUtils.d(Constant.DEVICEID + "   " + deviceId);
             }
         });
     }

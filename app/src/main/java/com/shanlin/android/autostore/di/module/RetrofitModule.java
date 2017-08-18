@@ -7,7 +7,7 @@ import com.shanlin.android.autostore.common.net.Api;
 import com.shanlin.android.autostore.common.net.CacheInterceptor;
 import com.shanlin.android.autostore.common.net.HeadInterceptor;
 import com.shanlin.android.autostore.common.utils.LogUtil;
-import com.shanlin.autostore.net.LoggingInterceptor;
+import com.shanlin.android.autostore.common.net.LoggingInterceptor;
 
 import java.io.File;
 import java.security.KeyManagementException;

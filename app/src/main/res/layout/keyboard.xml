@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="1px"></View>
 
-    <com.shanlin.autostore.view.XNumberKeyboardView
+    <com.shanlin.android.autostore.ui.view.XNumberKeyboardView
         android:id="@+id/view_keyboard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

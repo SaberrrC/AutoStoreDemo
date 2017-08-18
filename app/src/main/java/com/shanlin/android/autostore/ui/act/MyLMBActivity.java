@@ -8,19 +8,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.shanlin.android.autostore.common.base.SimpleActivity;
+import com.shanlin.android.autostore.common.constants.Constant_LeMaiBao;
 import com.shanlin.android.autostore.common.utils.CommonUtils;
 import com.shanlin.android.autostore.common.utils.ThreadUtils;
 import com.shanlin.android.autostore.ui.adapter.MyLMBAdapter;
+import com.shanlin.android.autostore.ui.view.PulltoRefreshRecyclerView;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.bean.resultBean.RecordBean;
-import com.shanlin.autostore.constants.Constant_LeMaiBao;
-import com.shanlin.autostore.view.PulltoRefreshRecyclerView;
 import com.zhy.autolayout.AutoRelativeLayout;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -32,19 +29,19 @@ import butterknife.OnClick;
 public class MyLMBActivity extends SimpleActivity {
 
     @BindView(R.id.tv_money)
-    TextView mTvMoney;
+    TextView                  mTvMoney;
     @BindView(R.id.tv_credit_used)
-    TextView mTvUsed;
+    TextView                  mTvUsed;
     @BindView(R.id.tv_behalf_repayment)
-    TextView mTvBehalfRepayment;
+    TextView                  mTvBehalfRepayment;
     @BindView(R.id.tv_repaid)
-    TextView mTvRepaid;
+    TextView                  mTvRepaid;
     @BindView(R.id.iv_nolist)
-    ImageView mIvNolist;
+    ImageView                 mIvNolist;
     @BindView(R.id.tv_nolist)
-    TextView mTvNolist;
+    TextView                  mTvNolist;
     @BindView(R.id.fl_nolist)
-    AutoRelativeLayout mFlNolist;
+    AutoRelativeLayout        mFlNolist;
     @BindView(R.id.pr_lists)
     PulltoRefreshRecyclerView mPulltoRefreshRecyclerView;
     private RecyclerView mRecyclerView;

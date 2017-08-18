@@ -6,20 +6,20 @@ import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.shanlin.android.autostore.common.base.BaseActivity;
+import com.shanlin.android.autostore.common.constants.Constant;
+import com.shanlin.android.autostore.common.utils.CommonUtils;
+import com.shanlin.android.autostore.common.utils.DateUtils;
 import com.shanlin.android.autostore.common.utils.SpUtils;
 import com.shanlin.android.autostore.common.utils.ThreadUtils;
 import com.shanlin.android.autostore.common.utils.ToastUtils;
+import com.shanlin.android.autostore.entity.orderdetail.OrderDetailBodyHeadBean;
+import com.shanlin.android.autostore.entity.respone.OrderDetailBean;
+import com.shanlin.android.autostore.entity.respone.OrderHistoryBean;
 import com.shanlin.android.autostore.presenter.Contract.OrderDetailActContract;
 import com.shanlin.android.autostore.presenter.OrderDetailPresenter;
+import com.shanlin.android.autostore.ui.adapter.FinalRecycleAdapter;
+import com.shanlin.android.autostore.ui.view.PulltoRefreshRecyclerView;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.adapter.FinalRecycleAdapter;
-import com.shanlin.autostore.bean.orderdetail.OrderDetailBodyHeadBean;
-import com.shanlin.autostore.bean.resultBean.OrderDetailBean;
-import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
-import com.shanlin.autostore.constants.Constant;
-import com.shanlin.autostore.utils.CommonUtils;
-import com.shanlin.autostore.utils.DateUtils;
-import com.shanlin.autostore.view.PulltoRefreshRecyclerView;
 
 import java.util.ArrayList;
 import java.util.Date;

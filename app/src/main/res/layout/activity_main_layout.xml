@@ -50,7 +50,7 @@
             android:textColor="#FFFCC71F"
             android:textSize="32px" />
 
-        <com.shanlin.autostore.view.ProgressView
+        <com.shanlin.android.autostore.ui.view.ProgressView
             android:id="@+id/pv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

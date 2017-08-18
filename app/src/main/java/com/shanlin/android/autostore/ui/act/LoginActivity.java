@@ -11,22 +11,20 @@ import android.view.WindowManager;
 
 import com.shanlin.android.autostore.App;
 import com.shanlin.android.autostore.common.base.BaseActivity;
+import com.shanlin.android.autostore.common.constants.Constant;
+import com.shanlin.android.autostore.common.utils.Base64;
 import com.shanlin.android.autostore.common.utils.CommonUtils;
 import com.shanlin.android.autostore.common.utils.MPermissionUtils;
 import com.shanlin.android.autostore.common.utils.SpUtils;
 import com.shanlin.android.autostore.common.utils.ToastUtils;
+import com.shanlin.android.autostore.entity.body.WechatLoginSendBean;
 import com.shanlin.android.autostore.entity.respone.LoginBean;
+import com.shanlin.android.autostore.entity.respone.WxTokenBean;
 import com.shanlin.android.autostore.entity.respone.WxUserInfoBean;
 import com.shanlin.android.autostore.presenter.Contract.LoginActContract;
 import com.shanlin.android.autostore.presenter.LoginPresenter;
-import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.WxMessageEvent;
-import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;
-import com.shanlin.autostore.bean.resultBean.WxTokenBean;
-import com.shanlin.autostore.constants.Constant;
-import com.shanlin.autostore.utils.Base64;
-import com.shanlin.autostore.utils.LogUtils;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -113,7 +111,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        LogUtils.d("resultCode==" + resultCode);
         if (requestCode == REQUEST_CODE_LOGIN) {//人脸识别登陆
             if (TextUtils.equals(Constant.ON_BACK_PRESSED, data.getStringExtra(Constant.ON_BACK_PRESSED))) {
                 return;
@@ -135,7 +132,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                 e.printStackTrace();
             }
         }
-
     }
 
     @Override
@@ -303,7 +299,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         }
         if (TextUtils.equals(data.getData().getFaceVerify(), "1")) {
             //已经验证 保存token和手机号 跳转到主页
-            AutoStoreApplication.isLogin = true;
+            App.isLogin = true;
             SpUtils.saveString(LoginActivity.this, Constant.TOKEN, data.getData().getToken());
             if (TextUtils.isEmpty(data.getData().getAvetorUrl())) {
                 SpUtils.saveString(LoginActivity.this, Constant.USER_HEAD_URL, wxUserInfoBean.getHeadimgurl());
@@ -361,7 +357,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         }
         if (TextUtils.equals(data.getData().getFaceVerify(), "1")) {
             //已经验证 保存token和手机号 跳转到主页
-            AutoStoreApplication.isLogin = true;
+            App.isLogin = true;
             SpUtils.saveString(LoginActivity.this, Constant.TOKEN, data.getData().getToken());
             SpUtils.saveString(LoginActivity.this, Constant.USER_PHONE_LOGINED, data.getData().getMobile());
             if (!TextUtils.isEmpty(data.getData().getAvetorUrl())) {

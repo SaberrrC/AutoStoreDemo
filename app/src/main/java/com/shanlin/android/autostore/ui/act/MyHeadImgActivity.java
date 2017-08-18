@@ -9,19 +9,19 @@ import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.shanlin.android.autostore.common.base.BaseActivity;
+import com.shanlin.android.autostore.common.constants.Constant;
 import com.shanlin.android.autostore.common.image.ImageLoader;
+import com.shanlin.android.autostore.common.utils.CameraUtil;
 import com.shanlin.android.autostore.common.utils.CommonUtils;
 import com.shanlin.android.autostore.common.utils.LogUtil;
+import com.shanlin.android.autostore.common.utils.StatusBarUtils;
 import com.shanlin.android.autostore.common.utils.ToastUtils;
 import com.shanlin.android.autostore.entity.body.MemberUpdateSendBean;
 import com.shanlin.android.autostore.entity.respone.MemberUpdateBean;
 import com.shanlin.android.autostore.presenter.Contract.HeadImgActContract;
 import com.shanlin.android.autostore.presenter.HeadImgPresenter;
-import com.shanlin.autostore.*;
-import com.shanlin.autostore.constants.Constant;
-import com.shanlin.autostore.utils.CameraUtil;
-import com.shanlin.autostore.view.ProgressDialog;
-import com.shanlin.autostore.utils.StatusBarUtils;
+import com.shanlin.android.autostore.ui.view.ProgressDialog;
+import com.shanlin.autostore.R;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import butterknife.BindView;

@@ -2,7 +2,7 @@ package com.shanlin.android.autostore.common.net;
 
 import android.content.Context;
 
-import com.shanlin.autostore.constants.Constant;
+import com.shanlin.android.autostore.common.constants.Constant;
 import com.shanlin.android.autostore.common.utils.SpUtils;
 
 import java.io.IOException;

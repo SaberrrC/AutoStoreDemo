@@ -16,7 +16,7 @@
         android:layout_below="@+id/tv_all"
         android:background="#F5F5F5"/>
 
-    <com.shanlin.autostore.view.PulltoRefreshRecyclerView
+    <com.shanlin.android.autostore.ui.view.PulltoRefreshRecyclerView
         android:id="@+id/recyclerview_order"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

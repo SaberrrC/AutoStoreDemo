@@ -4,16 +4,16 @@ import android.content.Intent;
 import android.view.View;
 
 import com.shanlin.android.autostore.common.base.BaseActivity;
+import com.shanlin.android.autostore.common.constants.Constant;
+import com.shanlin.android.autostore.common.utils.CommonUtils;
 import com.shanlin.android.autostore.common.utils.SpUtils;
 import com.shanlin.android.autostore.common.utils.ToastUtils;
 import com.shanlin.android.autostore.entity.body.MemberUpdateSendBean;
 import com.shanlin.android.autostore.entity.respone.MemberUpdateBean;
 import com.shanlin.android.autostore.presenter.Contract.SaveFaceActContract;
 import com.shanlin.android.autostore.presenter.SaveFacePresenter;
+import com.shanlin.android.autostore.ui.view.ProgressDialog;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.constants.Constant;
-import com.shanlin.autostore.utils.CommonUtils;
-import com.shanlin.autostore.view.ProgressDialog;
 
 import butterknife.OnClick;
 

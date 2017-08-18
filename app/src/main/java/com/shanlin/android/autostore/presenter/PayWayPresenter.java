@@ -3,6 +3,7 @@ package com.shanlin.android.autostore.presenter;
 import com.shanlin.android.autostore.common.base.RxPresenter;
 import com.shanlin.android.autostore.common.net.Api;
 import com.shanlin.android.autostore.common.net.NetWorkUtil;
+import com.shanlin.android.autostore.common.net.SubscriberWrapper;
 import com.shanlin.android.autostore.entity.body.AliPayOrderBody;
 import com.shanlin.android.autostore.entity.body.LeMaiBaoPayBody;
 import com.shanlin.android.autostore.entity.body.WXPayBody;
@@ -12,7 +13,6 @@ import com.shanlin.android.autostore.entity.respone.LeMaiBaoPayResultBean;
 import com.shanlin.android.autostore.entity.respone.UserVertifyStatusBean;
 import com.shanlin.android.autostore.entity.respone.WxChatBean;
 import com.shanlin.android.autostore.presenter.Contract.PayWayContract;
-import com.shanlin.autostore.net.SubscriberWrapper;
 
 import javax.inject.Inject;
 

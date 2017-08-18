@@ -277,7 +277,7 @@
         <!--</receiver>-->
         <!-- User defined. 用户自定义的广播接收器-->
         <receiver
-            android:name=".receiver.MyReceiver"
+            android:name="com.shanlin.android.autostore.receiver.MyReceiver"
             android:enabled="true">
             <intent-filter>
                 <!--Required 用户注册SDK的intent-->

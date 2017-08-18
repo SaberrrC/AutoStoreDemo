@@ -6,8 +6,8 @@ import android.widget.TextView;
 
 import com.shanlin.android.autostore.common.base.BaseRecycerViewAdapter;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
-import com.shanlin.autostore.utils.DateUtils;
+import com.shanlin.android.autostore.entity.respone.OrderHistoryBean;
+import com.shanlin.android.autostore.common.utils.DateUtils;
 
 import java.util.Date;
 

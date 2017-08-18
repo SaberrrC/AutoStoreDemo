@@ -1,15 +1,11 @@
 package com.shanlin.android.autostore.ui.act;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.ViewTreeObserver;
@@ -19,33 +15,32 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.zxing.Result;
 import com.shanlin.android.autostore.App;
 import com.shanlin.android.autostore.common.base.BaseActivity;
 import com.shanlin.android.autostore.common.constants.Constant;
+import com.shanlin.android.autostore.common.constants.Constant_LeMaiBao;
+import com.shanlin.android.autostore.common.utils.CommonUtils;
 import com.shanlin.android.autostore.common.utils.LogUtil;
 import com.shanlin.android.autostore.common.utils.SpUtils;
+import com.shanlin.android.autostore.common.utils.StrUtils;
 import com.shanlin.android.autostore.common.utils.ToastUtils;
 import com.shanlin.android.autostore.common.zxing.camera.CameraManager;
 import com.shanlin.android.autostore.common.zxing.decode.DecodeThread;
 import com.shanlin.android.autostore.common.zxing.utils.BeepManager;
 import com.shanlin.android.autostore.common.zxing.utils.CaptureActivityHandler;
-import com.shanlin.android.autostore.common.zxing.utils.CommonUtils;
 import com.shanlin.android.autostore.common.zxing.utils.InactivityTimer;
 import com.shanlin.android.autostore.common.zxing.utils.StatusBarUtils;
 import com.shanlin.android.autostore.di.component.DaggerCaptureComponent;
 import com.shanlin.android.autostore.di.module.CaptureModule;
 import com.shanlin.android.autostore.entity.body.RealOrderBody;
+import com.shanlin.android.autostore.entity.body.ZXingOrderBean;
 import com.shanlin.android.autostore.entity.respone.RealOrderBean;
 import com.shanlin.android.autostore.presenter.CapturePresenter;
 import com.shanlin.android.autostore.presenter.Contract.CaptureContract;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.bean.paramsBean.ZXingOrderBean;
-import com.shanlin.autostore.constants.Constant_LeMaiBao;
-import com.shanlin.autostore.utils.StrUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -66,31 +61,28 @@ public class CaptureActivity extends BaseActivity<CapturePresenter> implements C
     @Inject
     InactivityTimer inactivityTimer;
     @Inject
-    BeepManager beepManager;
+    BeepManager     beepManager;
 
     @BindView(R.id.capture_preview)
-    SurfaceView scanPreview;
+    SurfaceView    scanPreview;
     @BindView(R.id.capture_scan_line)
-    ImageView scanLine;
+    ImageView      scanLine;
     @BindView(R.id.capture_crop_view)
     RelativeLayout scanCropView;
     @BindView(R.id.capture_container)
     RelativeLayout scanContainer;
 
-    private Rect mCropRect;
+    private Rect   mCropRect;
     private String creditBalence;
-    private boolean isHasSurface = false;
-    private Gson gson = new Gson();
-    private String[] aliArgs = new String[]{Constant_LeMaiBao.DEVICEDID, Constant_LeMaiBao.ORDER_NO, Constant_LeMaiBao.TOTAL_AMOUNT, Constant_LeMaiBao.STORED_ID, Constant.TOKEN, Constant_LeMaiBao.CREDIT_BALANCE};
+    private boolean  isHasSurface = false;
+    private Gson     gson         = new Gson();
+    private String[] aliArgs      = new String[]{Constant_LeMaiBao.DEVICEDID, Constant_LeMaiBao.ORDER_NO, Constant_LeMaiBao.TOTAL_AMOUNT, Constant_LeMaiBao.STORED_ID, Constant.TOKEN, Constant_LeMaiBao.CREDIT_BALANCE};
     private String devicedID;
     private String orderNo;
 
     @Override
     protected void initInject() {
-        DaggerCaptureComponent.builder()
-                .appComponent(App.getInstance().getAppComponent())
-                .captureModule(new CaptureModule(this))
-                .build().inject(this);
+        DaggerCaptureComponent.builder().appComponent(App.getInstance().getAppComponent()).captureModule(new CaptureModule(this)).build().inject(this);
     }
 
     @Override
@@ -187,11 +179,7 @@ public class CaptureActivity extends BaseActivity<CapturePresenter> implements C
     @Override
     public void onUpdateTempToRealSuccess(String code, RealOrderBean data, String msg) {
         String totalAmount = data.getData().getTotalAmount();//应付总金额
-        com.shanlin.android.autostore.common.utils.CommonUtils.sendDataToNextActivity(
-                CaptureActivity.this,
-                ChoosePayWayActivity.class,
-                aliArgs,
-                new String[]{devicedID, orderNo, totalAmount, "2", SpUtils.getString(this, Constant.TOKEN, ""), creditBalence});
+        com.shanlin.android.autostore.common.utils.CommonUtils.sendDataToNextActivity(CaptureActivity.this, ChoosePayWayActivity.class, aliArgs, new String[]{devicedID, orderNo, totalAmount, "2", SpUtils.getString(this, Constant.TOKEN, ""), creditBalence});
         finish();
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
@@ -212,7 +200,7 @@ public class CaptureActivity extends BaseActivity<CapturePresenter> implements C
             String deviceId = SpUtils.getString(this, Constant.DEVICEID, "");
             if (StrUtils.isEmpty(deviceId)) {
                 ToastUtils.showToast("网络异常，请稍后再试");
-                com.shanlin.autostore.utils.CommonUtils.getDevicedID();
+                CommonUtils.getDevicedID();
                 finish();
                 return;
             }
@@ -232,13 +220,12 @@ public class CaptureActivity extends BaseActivity<CapturePresenter> implements C
             orderNo = zXingOrderBean.getOrderNo();
             mPresenter.updateTempToReal(new RealOrderBody(orderNo));
         } else {
-            com.shanlin.autostore.utils.CommonUtils.showToast(this,"扫描超时,请重试");
+            CommonUtils.showToast(this, "扫描超时,请重试");
             finish();
             overridePendingTransition(R.anim.left_in, R.anim.right_out);
         }
 
     }
-
 
 
     public Rect getCropRect() {
@@ -269,7 +256,6 @@ public class CaptureActivity extends BaseActivity<CapturePresenter> implements C
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         isHasSurface = false;
     }
-
 
 
     private void displayFrameworkBugMessageAndExit() {

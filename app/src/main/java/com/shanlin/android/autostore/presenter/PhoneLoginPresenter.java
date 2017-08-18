@@ -14,7 +14,7 @@ import com.shanlin.android.autostore.entity.respone.CodeBean;
 import com.shanlin.android.autostore.entity.respone.LoginBean;
 import com.shanlin.android.autostore.entity.respone.UserVertifyStatusBean;
 import com.shanlin.android.autostore.presenter.Contract.PhoneLoginActContract;
-import com.shanlin.autostore.constants.Constant_LeMaiBao;
+import com.shanlin.android.autostore.common.constants.Constant_LeMaiBao;
 
 import javax.inject.Inject;
 

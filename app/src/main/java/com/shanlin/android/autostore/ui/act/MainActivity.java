@@ -25,10 +25,14 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.shanlin.android.autostore.common.base.BaseActivity;
+import com.shanlin.android.autostore.common.constants.Constant;
+import com.shanlin.android.autostore.common.constants.Constant_LeMaiBao;
 import com.shanlin.android.autostore.common.image.ImageLoader;
+import com.shanlin.android.autostore.common.utils.Base64;
 import com.shanlin.android.autostore.common.utils.CommonUtils;
 import com.shanlin.android.autostore.common.utils.MPermissionUtils;
 import com.shanlin.android.autostore.common.utils.SpUtils;
+import com.shanlin.android.autostore.common.utils.StatusBarUtils;
 import com.shanlin.android.autostore.common.utils.ToastUtils;
 import com.shanlin.android.autostore.entity.body.MemberUpdateSendBean;
 import com.shanlin.android.autostore.entity.respone.CreditBalanceCheckBean;
@@ -39,12 +43,8 @@ import com.shanlin.android.autostore.entity.respone.UserNumEverydayBean;
 import com.shanlin.android.autostore.entity.respone.UserVertifyStatusBean;
 import com.shanlin.android.autostore.presenter.Contract.MainActContract;
 import com.shanlin.android.autostore.presenter.MainPresenter;
+import com.shanlin.android.autostore.ui.view.ProgressView;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.constants.Constant;
-import com.shanlin.autostore.constants.Constant_LeMaiBao;
-import com.shanlin.autostore.utils.Base64;
-import com.shanlin.autostore.utils.StatusBarUtils;
-import com.shanlin.autostore.view.ProgressView;
 import com.zhy.autolayout.utils.AutoUtils;
 
 import java.util.List;
@@ -670,7 +670,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
                 }
             });
             AutoUtils.autoSize(viewWelcome);
-            mWelcomeDialog1 = com.shanlin.autostore.utils.CommonUtils.getDialog(this, viewWelcome, R.style.MyDialogWithAnim, true);
+            mWelcomeDialog1 = CommonUtils.getDialog(this, viewWelcome, R.style.MyDialogWithAnim, true);
         }
         mWelcomeDialog1.show();
         mHandler.removeCallbacksAndMessages(null);
