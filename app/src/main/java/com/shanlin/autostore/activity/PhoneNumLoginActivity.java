@@ -31,7 +31,7 @@ import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.net.CustomCallBack;
 import com.shanlin.autostore.utils.CommonUtils;
-import com.shanlin.autostore.utils.ProgressDialog;
+import com.shanlin.autostore.view.ProgressDialog;
 import com.shanlin.autostore.utils.StrUtils;
 import com.shanlin.autostore.view.CountDownTextView;
 

@@ -1,4 +1,4 @@
-package com.shanlin.autostore.utils;
+package com.shanlin.autostore.view;
 
 import android.app.Activity;
 import android.app.Dialog;

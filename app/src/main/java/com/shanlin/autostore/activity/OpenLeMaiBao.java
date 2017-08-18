@@ -21,7 +21,7 @@ import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.utils.CommonUtils;
-import com.shanlin.autostore.utils.ProgressDialog;
+import com.shanlin.autostore.view.ProgressDialog;
 
 import retrofit2.Call;
 import retrofit2.Callback;

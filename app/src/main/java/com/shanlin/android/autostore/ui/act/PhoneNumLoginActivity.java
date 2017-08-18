@@ -26,7 +26,7 @@ import com.shanlin.android.autostore.presenter.PhoneLoginPresenter;
 import com.shanlin.autostore.AutoStoreApplication;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.constants.Constant;
-import com.shanlin.autostore.utils.ProgressDialog;
+import com.shanlin.autostore.view.ProgressDialog;
 import com.shanlin.autostore.utils.StrUtils;
 import com.shanlin.autostore.view.CountDownTextView;
 import butterknife.BindView;

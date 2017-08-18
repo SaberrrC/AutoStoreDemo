@@ -13,7 +13,7 @@ import com.shanlin.android.autostore.presenter.SaveFacePresenter;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.utils.CommonUtils;
-import com.shanlin.autostore.utils.ProgressDialog;
+import com.shanlin.autostore.view.ProgressDialog;
 
 import butterknife.OnClick;
 

@@ -1,7 +1,6 @@
 package com.shanlin.android.autostore.ui.act;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Handler;
@@ -18,7 +17,6 @@ import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.shanlin.android.autostore.common.base.BaseActivity;
-import com.shanlin.android.autostore.common.constants.Constant;
 import com.shanlin.android.autostore.common.utils.CommonUtils;
 import com.shanlin.android.autostore.common.utils.PopupUtils;
 import com.shanlin.android.autostore.entity.body.AliPayOrderBody;
@@ -38,7 +36,7 @@ import com.shanlin.autostore.bean.resultBean.PayResult;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.constants.WXConstant;
 import com.shanlin.autostore.utils.IpTools;
-import com.shanlin.autostore.utils.ProgressDialog;
+import com.shanlin.autostore.view.ProgressDialog;
 import com.shanlin.autostore.view.XNumberKeyboardView;
 import com.shanlin.autostore.view.gridpasswordview.GridPasswordView;
 
