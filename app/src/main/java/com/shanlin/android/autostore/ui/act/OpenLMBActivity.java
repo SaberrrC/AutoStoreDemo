@@ -54,7 +54,6 @@ public class OpenLMBActivity extends BaseActivity<OpenLMBPresenter> implements O
     EditText etPswAgain;
 
     private boolean isClick;
-    private String token;
     private String status;
     private ProgressDialog progressDialog;
     
@@ -71,7 +70,6 @@ public class OpenLMBActivity extends BaseActivity<OpenLMBPresenter> implements O
     @Override
     public void initData() {
         CommonUtils.initToolbar(this, "开启乐买宝", R.color.blcak, MainActivity.class);
-        token = SpUtils.getString(this, Constant.TOKEN, "");
         progressDialog = new ProgressDialog(this);
     }
 
@@ -111,13 +109,14 @@ public class OpenLMBActivity extends BaseActivity<OpenLMBPresenter> implements O
     @Override
     public void onRealAuthenSuccess(String code, RealNameAuthenBean data, String msg) {
             changeUI(2);
+            status = Constant_LeMaiBao.AUTHEN_REAL_NAME;
             CommonUtils.showToast(OpenLMBActivity.this, msg);
             if (progressDialog.isShowing()) progressDialog.dismiss();
     }
 
     @Override
     public void onRealNameAuthenFailed(Throwable ex, String code, String msg) {
-            CommonUtils.debugLog(msg);
+            CommonUtils.showToast(this,msg);
             if (progressDialog.isShowing()) progressDialog.dismiss();
     }
 

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -115,11 +116,12 @@ public class ChoosePayWayActivity extends BaseActivity<PayWayPresenter> implemen
 
     @Override
     public void initData() {
+        CommonUtils.initToolbar(this,"选择支付方式",R.color.blcak, MainActivity.class);
         EventBus.getDefault().register(this);
         initDialog();
         initPswView();
-        initPopwindow();
         initKeyBoard();
+        initPopwindow();
 
         initParams();
     }
@@ -144,6 +146,8 @@ public class ChoosePayWayActivity extends BaseActivity<PayWayPresenter> implemen
         moneyNeedToPay = ((TextView) dialogView.findViewById(R.id.money_need_to_pay));
     }
 
+    private Handler handler = new Handler();
+
     private void initPswView() {
         pswView = ((GridPasswordView) dialogView.findViewById(R.id.pswView));
         pswView.setOnPasswordChangedListener(new GridPasswordView.OnPasswordChangedListener() {
@@ -154,8 +158,8 @@ public class ChoosePayWayActivity extends BaseActivity<PayWayPresenter> implemen
 
             @Override
             public void onInputFinish(String psw) {
-                progressDialog.show();
                 popBottom.dismiss();
+                progressDialog.show();
                 //调用乐买宝支付接口
                 mPresenter.lemaibaoPay(new LeMaiBaoPayBody(deviceId, orderNo, psw, totalMoney, "2"));
             }
@@ -255,9 +259,14 @@ public class ChoosePayWayActivity extends BaseActivity<PayWayPresenter> implemen
         LeMaiBaoPayResultBean.DataBean data = bean.getData();
         String payStatus = data.getPayStatus();
         if ("3".equals(payStatus)) {
-            progressDialog.dismiss();
-            CommonUtils.showToast(ChoosePayWayActivity.this, "支付密码错误,请重新输入!");
-            showInputPswPop();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    progressDialog.dismiss();
+                    CommonUtils.showToast(ChoosePayWayActivity.this, "支付密码错误,请重新输入!");
+                    showInputPswPop();
+                }
+            },500);
         } else if ("1".equals(payStatus)) {
             progressDialog.dismiss();
             CommonUtils.showToast(ChoosePayWayActivity.this, "支付成功!");
@@ -265,6 +274,14 @@ public class ChoosePayWayActivity extends BaseActivity<PayWayPresenter> implemen
                     PayResultActivity.class, keys, new String[]{data.getPayAmount(),
                             "乐买宝", data.getPaymentTime()});
             finish();
+        } else {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                   progressDialog.dismiss();
+                   CommonUtils.showToast(ChoosePayWayActivity.this,msg);
+                }
+            },500);
         }
     }
 
@@ -291,7 +308,7 @@ public class ChoosePayWayActivity extends BaseActivity<PayWayPresenter> implemen
     @Override
     public void onFailed(Throwable ex, String code, String msg) {
         progressDialog.dismiss();
-        CommonUtils.debugLog(msg);
+        CommonUtils.showToast(this,msg);
     }
 
 
@@ -340,12 +357,13 @@ public class ChoosePayWayActivity extends BaseActivity<PayWayPresenter> implemen
         pswView.clearPassword();
         popTop.showAtLocation(getWindow().getDecorView(), Gravity.CENTER_HORIZONTAL, 0, -300);
         showKeyBoard();
-        com.shanlin.autostore.utils.CommonUtils.setBackgroundAlpha(this, 0.5f);
+        CommonUtils.setBackgroundAlpha(this, 0.5f);
         way2.setClickable(false);
         way3.setClickable(false);
     }
 
     public void showKeyBoard() {
+        Log.d("show", "showKeyBoard: ");
         popBottom.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
     }
 
