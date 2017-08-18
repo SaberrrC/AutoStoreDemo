@@ -214,8 +214,9 @@ public class CommonUtils {
             public void onClick(View v) {
                 if (desActivity != null) {
                     CommonUtils.toNextActivity(activity, desActivity);
+                }else {
+                    activity.finish();
                 }
-                activity.finish();
             }
         });
         title.setText(str);
