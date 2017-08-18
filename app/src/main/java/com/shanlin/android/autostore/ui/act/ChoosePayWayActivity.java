@@ -34,7 +34,6 @@ import com.shanlin.android.autostore.presenter.PayWayPresenter;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.WXPayTools;
 import com.shanlin.autostore.WxMessageEvent;
-import com.shanlin.autostore.activity.OpenLeMaiBao;
 import com.shanlin.autostore.bean.resultBean.PayResult;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.constants.WXConstant;
@@ -209,7 +208,7 @@ public class ChoosePayWayActivity extends BaseActivity<PayWayPresenter> implemen
     void lmbPayWay() {
         if (!Constant_LeMaiBao.AUTHEN_FINISHED.equals(status)) {
             //开通乐买宝
-            CommonUtils.toNextActivity(this, OpenLeMaiBao.class);
+            CommonUtils.toNextActivity(this, OpenLMBActivity.class);
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
         } else {
             //买乐宝支付
