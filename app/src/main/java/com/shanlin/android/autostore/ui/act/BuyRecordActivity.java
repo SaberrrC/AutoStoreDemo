@@ -2,7 +2,6 @@ package com.shanlin.android.autostore.ui.act;
 
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -19,6 +18,7 @@ import com.shanlin.android.autostore.ui.adapter.BuyRecordAdapter;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
 import com.shanlin.autostore.constants.Constant;
+import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.view.PulltoRefreshRecyclerView;
 import com.zhy.autolayout.AutoRelativeLayout;
 
@@ -64,20 +64,16 @@ public class BuyRecordActivity extends BaseActivity<BuyRecordPresenter> implemen
 
     @Override
     public void initData() {
-        title.setText("购买记录");
-        title.setTextColor(Color.BLACK);
-        toolbar.setNavigationIcon(R.mipmap.nav_back);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        CommonUtils.initToolbar(this,"购买记录",R.color.black,null);
+        setTransAnim(false);
+        mPresenter.getOrderData(pageno, PAGE_SIZE);
+        initRecyclerView();
+    }
+
+    private void initRecyclerView() {
         mRecyclerView = mPulltoRefreshRecyclerView.getRecyclerView();
         Map<Class, Integer> map = new HashMap<>();
-        //OrderHistoryBean.DataBean.ListBean
         map.put(OrderHistoryBean.DataBean.ListBean.class, R.layout.buy_record_lv_item);
-        mPresenter.getOrderData(pageno, PAGE_SIZE);
         mAdapter = new BuyRecordAdapter(this);
         mAdapter.setOnItemClickListener(new BaseRecycerViewAdapter.OnItemClickListener() {
             @Override

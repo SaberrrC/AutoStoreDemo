@@ -40,8 +40,6 @@ import com.shanlin.android.autostore.entity.respone.UserVertifyStatusBean;
 import com.shanlin.android.autostore.presenter.Contract.MainActContract;
 import com.shanlin.android.autostore.presenter.MainPresenter;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.activity.MyLeMaiBaoActivity;
-import com.shanlin.autostore.activity.OpenLeMaiBao;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
 import com.shanlin.autostore.utils.Base64;
@@ -496,7 +494,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
         View viewLoginout = LayoutInflater.from(this).inflate(R.layout.layout_dialog_loginout, null);
         mLoginoutDialog = new Dialog(this, R.style.MyDialogWithAnim);
         mLoginoutDialog.setContentView(viewLoginout);
-        mLoginoutDialog.setCanceledOnTouchOutside(false);
+        mLoginoutDialog.setCanceledOnTouchOutside(true);
         mLoginoutDialog.show();
         TextView tvNum = (TextView) viewLoginout.findViewById(R.id.tv_num);
         tvNum.setText(mUserPhoneHide);
