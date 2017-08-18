@@ -59,53 +59,53 @@ import butterknife.OnClick;
 public class MainActivity extends BaseActivity<MainPresenter> implements MainActContract.View {
 
     @BindView(R.id.toolbar_title)
-    ImageView toolbarTitle;
+    ImageView    toolbarTitle;
     @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    Toolbar      toolbar;
     @BindView(R.id.identify_tip)
-    TextView mTvIdentify;
+    TextView     mTvIdentify;
     @BindView(R.id.tv_today_user_num)
-    TextView tvTodayUserNum;
+    TextView     tvTodayUserNum;
     @BindView(R.id.user_num)
-    TextView mUserNum;
+    TextView     mUserNum;
     @BindView(R.id.pv)
     ProgressView pv;
     @BindView(R.id.btn_scan_bg)
-    TextView mBtnScan;
+    TextView     mBtnScan;
     @BindView(R.id.iv_circle)
-    ImageView circle;
+    ImageView    circle;
     @BindView(R.id.btn_lemaibao)
-    TextView btnLemaibao;
+    TextView     btnLemaibao;
     @BindView(R.id.btn_open_le_mai_bao)
-    TextView openLMB;
+    TextView     openLMB;
     @BindView(R.id.cvl)
-    View cvl;
+    View         cvl;
     @BindView(R.id.btn_yu_e)
-    TextView mBtBanlance;
+    TextView     mBtBanlance;
     @BindView(R.id.tv_refund_money)
-    TextView mTvRefundMoney;
+    TextView     mTvRefundMoney;
     @BindView(R.id.iv_head_img)
-    ImageView headImage;
+    ImageView    headImage;
     @BindView(R.id.textView)
-    TextView mTvPhoneNum;
+    TextView     mTvPhoneNum;
     @BindView(R.id.location_1)
     LinearLayout location1;
     @BindView(R.id.hl1)
-    View hl1;
+    View         hl1;
     @BindView(R.id.location_2)
     LinearLayout location2;
     @BindView(R.id.hl2)
-    View hl2;
+    View         hl2;
     @BindView(R.id.location_3)
     LinearLayout location3;
     @BindView(R.id.hl3)
-    View hl3;
+    View         hl3;
     @BindView(R.id.hl4)
-    View hl4;
+    View         hl4;
     @BindView(R.id.location_4)
     LinearLayout location4;
     @BindView(R.id.hl5)
-    View hl5;
+    View         hl5;
     @BindView(R.id.activity_main)
     DrawerLayout mDrawerLayout;
 
@@ -116,20 +116,20 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
     private String imageUrl;
 
     //data
-    private String creditBalance;
-    public static boolean state; //买乐宝状态
-    private String creditUsed; //已用信用额度
-    private String credit;//信用额度
-    private byte[] mLivenessImgBytes;//人脸识别
-    private String mUserPhoneHide;
-    private Gson gson;
-    private RefundMoneyBean refundMoneyBean;
-    private int total;
-    private int femaleCount;
-    private int maleCount;
+    private       String          creditBalance;
+    public static boolean         state; //买乐宝状态
+    private       String          creditUsed; //已用信用额度
+    private       String          credit;//信用额度
+    private       byte[]          mLivenessImgBytes;//人脸识别
+    private       String          mUserPhoneHide;
+    private       Gson            gson;
+    private       RefundMoneyBean refundMoneyBean;
+    private       int             total;
+    private       int             femaleCount;
+    private       int             maleCount;
 
-    private java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
-    private String[] creditKeys = new String[]{Constant_LeMaiBao.CREDIT_BALANCE, Constant_LeMaiBao.CREDIT_USED};
+    private java.text.DecimalFormat df         = new java.text.DecimalFormat("#.00");
+    private String[]                creditKeys = new String[]{Constant_LeMaiBao.CREDIT_BALANCE, Constant_LeMaiBao.CREDIT_USED};
 
 
     //menu
@@ -137,15 +137,15 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
 
     //dialog
     private AlertDialog mToFaceDialog;
-    private Dialog dialog;
-    private Dialog mLoginoutDialog;
+    private Dialog      dialog;
+    private Dialog      mLoginoutDialog;
 
     //contract
-    private static final int REQUEST_CODE_REGEST = 101;
-    private static final int REQUEST_CODE_SCAN = 102;
+    private static final int REQUEST_CODE_REGEST   = 101;
+    private static final int REQUEST_CODE_SCAN     = 102;
     private static final int HEAD_IMG_REQUEST_CODE = 108;
-    private String status;
-    private Dialog mGateOpenDialog;
+    private String      status;
+    private Dialog      mGateOpenDialog;
     private AlertDialog mWelcomeDialog1;
 
     @Override
@@ -231,7 +231,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
     @Override
     protected void onStop() {
         super.onStop();
-        mDrawerLayout.closeDrawer(Gravity.LEFT,false);
+        mDrawerLayout.closeDrawer(Gravity.LEFT, false);
     }
 
     @Override
@@ -382,11 +382,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
 
         } else {
             if (requestCode == HEAD_IMG_REQUEST_CODE) {
-
-                if (TextUtils.isEmpty(nickName)) {
-                    CommonUtils.debugLog(nickName + "------------");
-                    mPresenter.getPersonInfo();
-                }
+                mPresenter.getPersonInfo();
             }
         }
     }
@@ -475,7 +471,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
                 state = false;
             });
             TextView tvCredit = ((TextView) inflate.findViewById(R.id.tv_credit_num));
-            dialog = new Dialog(MainActivity.this,R.style.MyDialogCheckVersion);
+            dialog = new Dialog(MainActivity.this, R.style.MyDialogCheckVersion);
             dialog.setContentView(inflate);
             dialog.setCanceledOnTouchOutside(false);
             tvCredit.setText(credit + "元可用额度");
@@ -519,7 +515,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
         SpUtils.saveString(MainActivity.this, Constant.WX_NICKNAME, "");
     }
 
-    @OnClick(R.id.location_2) void menuOpBuyRecord(){
+    @OnClick(R.id.location_2)
+    void menuOpBuyRecord() {
         Intent intent = new Intent(this, BuyRecordActivity.class);
         Intent mainIntent = getIntent();
         if (mainIntent != null) {
@@ -529,31 +526,36 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
 
-    @OnClick(R.id.location_3) void toVersionInfo(){
+    @OnClick(R.id.location_3)
+    void toVersionInfo() {
         CommonUtils.toNextActivity(this, VersionInfoActivity.class);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
 
-    @OnClick(R.id.location_4) void logout(){
+    @OnClick(R.id.location_4)
+    void logout() {
         showLoginoutDialog();
     }
 
-    @OnClick(R.id.btn_lemaibao) void toLemaibao(){
+    @OnClick(R.id.btn_lemaibao)
+    void toLemaibao() {
         if (!openLMB.isClickable()) {
             CommonUtils.sendDataToNextActivity(this, MyLMBActivity.class, creditKeys, new String[]{creditBalance, creditUsed});
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
         }
     }
 
-    @OnClick(R.id.btn_open_le_mai_bao) void openLemaibao(){
+    @OnClick(R.id.btn_open_le_mai_bao)
+    void openLemaibao() {
         if (openLMB.isClickable()) {
             CommonUtils.debugLog("-----------开通乐买宝");
-            CommonUtils.sendDataToNextActivity(this,OpenLMBActivity.class,new String[]{Constant_LeMaiBao.AUTHEN_STATUS},new String[]{status});
+            CommonUtils.sendDataToNextActivity(this, OpenLMBActivity.class, new String[]{Constant_LeMaiBao.AUTHEN_STATUS}, new String[]{status});
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
         }
     }
 
-    @OnClick(R.id.identify_tip) void identify(){
+    @OnClick(R.id.identify_tip)
+    void identify() {
         CommonUtils.checkPermission(this, new MPermissionUtils.OnPermissionListener() {
             @Override
             public void onPermissionGranted() {
@@ -570,14 +572,16 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
         });
     }
 
-    @OnClick(R.id.btn_yu_e) void refundAmount(){
+    @OnClick(R.id.btn_yu_e)
+    void refundAmount() {
         Intent refundMoneyIntent = new Intent(this, RefundMoneyActivity.class);
         refundMoneyIntent.putExtra(Constant.REFUND_MONEY_BEAN, refundMoneyBean);
         startActivity(refundMoneyIntent);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
 
-    @OnClick(R.id.iv_head_img) void headImgClick(){
+    @OnClick(R.id.iv_head_img)
+    void headImgClick() {
         Intent headintent = new Intent(this, MyHeadImgActivity.class);
         headintent.putExtra(Constant.HEAD_IMG_URL, imageUrl);
         startActivityForResult(headintent, HEAD_IMG_REQUEST_CODE);
@@ -602,6 +606,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
             return;
         }
     }
+
     /**
      * 扫完二维码开闸机
      */
