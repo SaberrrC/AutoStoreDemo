@@ -12,10 +12,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.shanlin.android.autostore.App;
 import com.shanlin.android.autostore.common.base.BaseActivity;
+import com.shanlin.android.autostore.common.constants.Constant;
 import com.shanlin.android.autostore.common.utils.CommonUtils;
 import com.shanlin.android.autostore.common.utils.MPermissionUtils;
 import com.shanlin.android.autostore.common.utils.SpUtils;
+import com.shanlin.android.autostore.common.utils.StrUtils;
 import com.shanlin.android.autostore.common.utils.ToastUtils;
 import com.shanlin.android.autostore.entity.body.WechatSaveMobileBody;
 import com.shanlin.android.autostore.entity.respone.CodeBean;
@@ -23,12 +27,10 @@ import com.shanlin.android.autostore.entity.respone.LoginBean;
 import com.shanlin.android.autostore.entity.respone.WxUserInfoBean;
 import com.shanlin.android.autostore.presenter.Contract.PhoneLoginActContract;
 import com.shanlin.android.autostore.presenter.PhoneLoginPresenter;
-import com.shanlin.autostore.AutoStoreApplication;
+import com.shanlin.android.autostore.ui.view.CountDownTextView;
+import com.shanlin.android.autostore.ui.view.ProgressDialog;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.constants.Constant;
-import com.shanlin.autostore.view.ProgressDialog;
-import com.shanlin.autostore.utils.StrUtils;
-import com.shanlin.autostore.view.CountDownTextView;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import tech.michaelx.authcode.AuthCode;
@@ -235,7 +237,7 @@ public class PhoneNumLoginActivity extends BaseActivity<PhoneLoginPresenter> imp
         if (data.getData() == null) {
             return;
         }
-        AutoStoreApplication.isLogin = true;
+        App.isLogin = true;
         SpUtils.saveString(PhoneNumLoginActivity.this, Constant.TOKEN, data.getData().getToken());
         //保存用户乐买宝认证信息
         mPresenter.getUserAuthenStatus(data.getData().getToken());

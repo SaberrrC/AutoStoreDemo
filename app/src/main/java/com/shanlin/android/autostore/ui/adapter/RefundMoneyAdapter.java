@@ -2,16 +2,13 @@ package com.shanlin.android.autostore.ui.adapter;
 
 import android.content.Context;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.shanlin.android.autostore.common.base.BaseRecycerViewAdapter;
-import com.shanlin.android.autostore.common.image.ImageLoader;
 import com.shanlin.android.autostore.entity.respone.RefundMoneyBean;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.utils.DateUtils;
+import com.shanlin.android.autostore.common.utils.DateUtils;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by cuieney on 17/08/2017.

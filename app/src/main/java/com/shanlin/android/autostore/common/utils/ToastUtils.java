@@ -3,8 +3,6 @@ package com.shanlin.android.autostore.common.utils;
 import android.widget.Toast;
 
 import com.shanlin.android.autostore.App;
-import com.shanlin.android.autostore.common.utils.ThreadUtils;
-import com.shanlin.autostore.AutoStoreApplication;
 
 public class ToastUtils {
 

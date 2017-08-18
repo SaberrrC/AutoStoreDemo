@@ -6,8 +6,8 @@ import com.shanlin.android.autostore.common.base.BaseView;
 import com.shanlin.android.autostore.entity.respone.LoginBean;
 import com.shanlin.android.autostore.entity.respone.WxUserInfoBean;
 import com.shanlin.android.autostore.presenter.LoginPresenter;
-import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;
-import com.shanlin.autostore.bean.resultBean.WxTokenBean;
+import com.shanlin.android.autostore.entity.body.WechatLoginSendBean;
+import com.shanlin.android.autostore.entity.respone.WxTokenBean;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 
 /**

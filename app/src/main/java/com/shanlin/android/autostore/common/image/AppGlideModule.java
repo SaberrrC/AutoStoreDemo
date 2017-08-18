@@ -13,7 +13,6 @@ import com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool;
 import com.bumptech.glide.load.engine.cache.ExternalCacheDiskCacheFactory;
 import com.bumptech.glide.load.engine.cache.LruResourceCache;
 import com.bumptech.glide.load.engine.cache.MemorySizeCalculator;
-import com.shanlin.autostore.utils.LogUtils;
 
 
 public class AppGlideModule extends OkHttpGlideModule {
@@ -49,7 +48,6 @@ public class AppGlideModule extends OkHttpGlideModule {
             builder.setDecodeFormat(activityManager.isLowRamDevice() ?
                     DecodeFormat.PREFER_RGB_565 : DecodeFormat.PREFER_ARGB_8888);
         }catch(NoSuchMethodError e){
-            LogUtils.e(e.getMessage());
         }
 
     }

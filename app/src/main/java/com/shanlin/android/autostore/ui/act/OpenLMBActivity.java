@@ -10,16 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.shanlin.android.autostore.common.base.BaseActivity;
-import com.shanlin.android.autostore.common.constants.Constant;
 import com.shanlin.android.autostore.common.utils.CommonUtils;
-import com.shanlin.android.autostore.common.utils.SpUtils;
 import com.shanlin.android.autostore.entity.respone.PswSettingBean;
 import com.shanlin.android.autostore.entity.respone.RealNameAuthenBean;
 import com.shanlin.android.autostore.presenter.Contract.OpenLMBActContract;
 import com.shanlin.android.autostore.presenter.OpenLMBPresenter;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.constants.Constant_LeMaiBao;
-import com.shanlin.autostore.view.ProgressDialog;
+import com.shanlin.android.autostore.common.constants.Constant_LeMaiBao;
+import com.shanlin.android.autostore.ui.view.ProgressDialog;
 
 import butterknife.BindView;
 import butterknife.OnClick;

@@ -1,11 +1,8 @@
 package com.shanlin.android.autostore.ui.act;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
@@ -24,8 +21,8 @@ import com.shanlin.android.autostore.entity.respone.CaptureBean;
 import com.shanlin.android.autostore.presenter.Contract.GateContract;
 import com.shanlin.android.autostore.presenter.GatePresenter;
 import com.shanlin.autostore.*;
-import com.shanlin.autostore.bean.OpenGardQRBean;
-import com.shanlin.autostore.bean.event.OpenGardEvent;
+import com.shanlin.android.autostore.entity.respone.OpenGardQRBean;
+import com.shanlin.android.autostore.entity.event.OpenGardEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

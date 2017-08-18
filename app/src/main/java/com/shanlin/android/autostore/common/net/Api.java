@@ -30,22 +30,16 @@ import com.shanlin.android.autostore.entity.respone.UserNumEverydayBean;
 import com.shanlin.android.autostore.entity.respone.UserVertifyStatusBean;
 import com.shanlin.android.autostore.entity.respone.WxChatBean;
 import com.shanlin.android.autostore.entity.respone.WxUserInfoBean;
-import com.shanlin.autostore.bean.paramsBean.FaceLoginSendBean;
-import com.shanlin.autostore.bean.paramsBean.WechatLoginSendBean;
-import com.shanlin.autostore.bean.resultBean.OrderDetailBean;
-import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
-import com.shanlin.autostore.bean.resultBean.WxTokenBean;
+import com.shanlin.android.autostore.entity.body.FaceLoginSendBean;
+import com.shanlin.android.autostore.entity.body.WechatLoginSendBean;
+import com.shanlin.android.autostore.entity.respone.OrderDetailBean;
+import com.shanlin.android.autostore.entity.respone.OrderHistoryBean;
+import com.shanlin.android.autostore.entity.respone.WxTokenBean;
 
 import io.reactivex.Flowable;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 

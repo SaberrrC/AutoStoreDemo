@@ -77,7 +77,7 @@
     <!--android:textColor="#FF67B7E0"-->
     <!--android:textSize="14px"-->
     <!--/>-->
-    <com.shanlin.autostore.view.CountDownTextView
+    <com.shanlin.android.autostore.ui.view.CountDownTextView
         android:id="@+id/btn_get_msgcode"
         android:layout_width="match_parent"
         android:layout_height="48.7px"

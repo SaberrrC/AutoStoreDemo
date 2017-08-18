@@ -8,7 +8,6 @@ import com.shanlin.android.autostore.common.utils.CommonUtils;
 import com.shanlin.android.autostore.common.utils.ToastUtils;
 import com.shanlin.android.autostore.entity.BaseBean;
 import com.shanlin.android.autostore.ui.act.LoginActivity;
-import com.shanlin.autostore.utils.LogUtils;
 
 import org.reactivestreams.Subscription;
 
@@ -91,7 +90,6 @@ public class UploadSubscriberWrapper<T extends BaseBean> implements FlowableSubs
             callBackListener.onFailed(ex, ERR_NETWORK_CODE, "网络错误");
             return;
         }
-        LogUtils.d(ERR_NETWORK_MSG);
         callBackListener.onFailed(ex, ERR_NETWORK_CODE, ERR_NETWORK_MSG);
     }
 

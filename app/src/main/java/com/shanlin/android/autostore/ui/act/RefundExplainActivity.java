@@ -1,12 +1,10 @@
 package com.shanlin.android.autostore.ui.act;
 
-import android.view.View;
 import android.widget.TextView;
 
 import com.shanlin.android.autostore.common.base.SimpleActivity;
+import com.shanlin.android.autostore.common.utils.CommonUtils;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.base.BaseActivity;
-import com.shanlin.autostore.utils.CommonUtils;
 
 import butterknife.BindView;
 

@@ -4,7 +4,6 @@ import com.shanlin.android.autostore.common.base.RxPresenter;
 import com.shanlin.android.autostore.common.net.Api;
 import com.shanlin.android.autostore.common.net.NetWorkUtil;
 import com.shanlin.android.autostore.common.net.SubscriberWrapper;
-import com.shanlin.android.autostore.common.zxing.activity.CaptureActivity;
 import com.shanlin.android.autostore.entity.body.RealOrderBody;
 import com.shanlin.android.autostore.entity.respone.RealOrderBean;
 import com.shanlin.android.autostore.presenter.Contract.CaptureContract;

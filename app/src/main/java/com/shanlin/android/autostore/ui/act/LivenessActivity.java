@@ -29,8 +29,7 @@ import com.megvii.livenessdetection.FaceQualityManager;
 import com.megvii.livenessdetection.FaceQualityManager.FaceQualityErrorType;
 import com.megvii.livenessdetection.bean.FaceIDDataStruct;
 import com.megvii.livenessdetection.bean.FaceInfo;
-import com.shanlin.autostore.R;
-import com.shanlin.autostore.constants.Constant;
+import com.shanlin.android.autostore.common.constants.Constant;
 import com.shanlin.android.autostore.common.livenesslib.util.ConUtil;
 import com.shanlin.android.autostore.common.livenesslib.util.DialogUtil;
 import com.shanlin.android.autostore.common.livenesslib.util.ICamera;
@@ -38,7 +37,8 @@ import com.shanlin.android.autostore.common.livenesslib.util.IDetection;
 import com.shanlin.android.autostore.common.livenesslib.util.IMediaPlayer;
 import com.shanlin.android.autostore.common.livenesslib.util.Screen;
 import com.shanlin.android.autostore.common.livenesslib.util.SensorUtil;
-import com.shanlin.autostore.utils.StatusBarUtils;
+import com.shanlin.android.autostore.common.utils.StatusBarUtils;
+import com.shanlin.autostore.R;
 
 import org.json.JSONObject;
 

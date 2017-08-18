@@ -3,9 +3,9 @@ package com.shanlin.android.autostore.ui.act;
 import android.graphics.Color;
 
 import com.shanlin.android.autostore.common.base.SimpleActivity;
+import com.shanlin.android.autostore.common.utils.CommonUtils;
+import com.shanlin.android.autostore.common.utils.StatusBarUtils;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.utils.CommonUtils;
-import com.shanlin.autostore.utils.StatusBarUtils;
 
 /**
  * Created by DELL on 2017/7/17 0017.

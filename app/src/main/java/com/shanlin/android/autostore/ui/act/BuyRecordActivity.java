@@ -10,16 +10,16 @@ import android.widget.TextView;
 
 import com.shanlin.android.autostore.common.base.BaseActivity;
 import com.shanlin.android.autostore.common.base.BaseRecycerViewAdapter;
+import com.shanlin.android.autostore.common.constants.Constant;
+import com.shanlin.android.autostore.common.utils.CommonUtils;
 import com.shanlin.android.autostore.common.utils.ThreadUtils;
 import com.shanlin.android.autostore.common.utils.ToastUtils;
+import com.shanlin.android.autostore.entity.respone.OrderHistoryBean;
 import com.shanlin.android.autostore.presenter.BuyRecordPresenter;
 import com.shanlin.android.autostore.presenter.Contract.BuyRecordActContract;
 import com.shanlin.android.autostore.ui.adapter.BuyRecordAdapter;
+import com.shanlin.android.autostore.ui.view.PulltoRefreshRecyclerView;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
-import com.shanlin.autostore.constants.Constant;
-import com.shanlin.autostore.utils.CommonUtils;
-import com.shanlin.autostore.view.PulltoRefreshRecyclerView;
 import com.zhy.autolayout.AutoRelativeLayout;
 
 import java.util.HashMap;

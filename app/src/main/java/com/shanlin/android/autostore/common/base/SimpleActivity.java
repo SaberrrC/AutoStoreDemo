@@ -5,15 +5,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 
-import com.shanlin.android.autostore.App;
 import com.shanlin.android.autostore.common.utils.MPermissionUtils;
-import com.shanlin.android.autostore.di.component.ActivityComponent;
-import com.shanlin.android.autostore.di.component.DaggerActivityComponent;
-import com.shanlin.android.autostore.di.module.ActivityModule;
 import com.shanlin.autostore.R;
-import com.shanlin.autostore.utils.StatusBarUtils;
+import com.shanlin.android.autostore.common.utils.StatusBarUtils;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 import java.util.ArrayList;

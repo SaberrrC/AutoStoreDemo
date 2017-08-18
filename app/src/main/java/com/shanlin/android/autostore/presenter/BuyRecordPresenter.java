@@ -5,7 +5,7 @@ import com.shanlin.android.autostore.common.net.Api;
 import com.shanlin.android.autostore.common.net.NetWorkUtil;
 import com.shanlin.android.autostore.common.net.SubscriberWrapper;
 import com.shanlin.android.autostore.presenter.Contract.BuyRecordActContract;
-import com.shanlin.autostore.bean.resultBean.OrderHistoryBean;
+import com.shanlin.android.autostore.entity.respone.OrderHistoryBean;
 
 import javax.inject.Inject;
 
