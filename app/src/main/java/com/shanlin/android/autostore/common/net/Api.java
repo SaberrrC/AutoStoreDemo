@@ -169,21 +169,6 @@ public interface Api {
     @POST("member/update")
     Flowable<MemberUpdateBean> postMemberUpdate(@Body MemberUpdateSendBean memberUpdateSendBean);
 
-
-
-
-    /**
-     * 修改个人信息
-     *
-     * @param
-     * @return
-     */
-    @Multipart
-    @POST("member/update")
-    Flowable<MemberUpdateBean> postMemberUpdate(@Part("upload") UploadFileRequestBody json);
-
-
-
     /**
      * 查询订单历史记录
      */

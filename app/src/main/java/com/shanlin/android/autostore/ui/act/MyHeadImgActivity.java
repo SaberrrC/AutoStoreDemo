@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -31,6 +32,7 @@ import com.shanlin.autostore.*;
 import com.shanlin.autostore.constants.Constant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.utils.CameraUtil;
+import com.shanlin.autostore.utils.ProgressDialog;
 import com.shanlin.autostore.utils.StatusBarUtils;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -49,8 +51,7 @@ public class MyHeadImgActivity extends BaseActivity<HeadImgPresenter> implements
 
     @BindView(R.id.iv_head_img_large)
     ImageView imgLarge;
-
-    private String token;
+    private ProgressDialog dialog;
 
 
     @Override
@@ -67,8 +68,12 @@ public class MyHeadImgActivity extends BaseActivity<HeadImgPresenter> implements
     public void initData() {
         CommonUtils.initToolbar(this, "我的头像", R.color.blcak, MainActivity.class);
         StatusBarUtils.setColor(this, Color.WHITE);
+        dialog = new ProgressDialog(this);
+        dialog.setOnDismissListener(a -> {
+            setResult(RESULT_OK);
+            finish();
+        });
 
-        token = SpUtils.getString(this, Constant.TOKEN, "");
         String imgUrl = getIntent().getStringExtra(Constant.HEAD_IMG_URL);
 
         if (!TextUtils.isEmpty(imgUrl)) {
@@ -95,6 +100,7 @@ public class MyHeadImgActivity extends BaseActivity<HeadImgPresenter> implements
                 Uri resultUri = result.getUri();
                 Bitmap bitmap = CameraUtil.getBitmapByUri(this, resultUri);
                 imgLarge.setImageBitmap(bitmap);
+                dialog.show();
                 sendImgToServer(bitmap);
                 return;
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
@@ -107,23 +113,28 @@ public class MyHeadImgActivity extends BaseActivity<HeadImgPresenter> implements
     }
 
     private void sendImgToServer(Bitmap bitmap) {
-        Toast.makeText(this, "正在上传用户头像信息，请稍等", Toast.LENGTH_LONG).show();
         String s = CommonUtils.bitmapToBase64(bitmap);
         MemberUpdateSendBean memberUpdateSendBean = new MemberUpdateSendBean(s, JPushInterface
                 .getRegistrationID(this));
-        mPresenter.uploadHeadImg(new Gson().toJson(memberUpdateSendBean));
+        mPresenter.uploadHeadImg(memberUpdateSendBean);
     }
 
-
+    private Handler handler = new Handler();
     @Override
     public void onUploadSuccess(String code, MemberUpdateBean data, String msg) {
         CommonUtils.debugLog(msg + "-------------");
-        setResult(RESULT_OK);
-        finish();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (dialog.isShowing()) dialog.dismiss();
+                CommonUtils.showToast(MyHeadImgActivity.this,"上传成功!");
+            }
+        },1000);
     }
 
     @Override
     public void onUploadFailed(Throwable ex, String code, String msg) {
+        if (dialog.isShowing()) dialog.dismiss();
         ToastUtils.showToast("上传失败请重试");
     }
 

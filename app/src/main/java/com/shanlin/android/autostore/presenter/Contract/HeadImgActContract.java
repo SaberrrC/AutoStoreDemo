@@ -21,6 +21,6 @@ public interface HeadImgActContract {
 
     }
     interface Presenter extends BasePresenter<View>{
-        void uploadHeadImg(String json);
+        void uploadHeadImg(MemberUpdateSendBean bean);
     }
 }

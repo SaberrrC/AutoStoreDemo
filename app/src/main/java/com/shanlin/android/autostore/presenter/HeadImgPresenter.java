@@ -23,7 +23,7 @@ public class HeadImgPresenter extends RxPresenter<HeadImgActContract.View> imple
     }
 
     @Override
-    public void uploadHeadImg(String json) {
+    public void uploadHeadImg(MemberUpdateSendBean bean) {
 
         UploadSubscriberWrapper<MemberUpdateBean> wrapper = new UploadSubscriberWrapper<>(new UploadSubscriberWrapper.CallBackListener<MemberUpdateBean>() {
             @Override
@@ -42,7 +42,7 @@ public class HeadImgPresenter extends RxPresenter<HeadImgActContract.View> imple
             }
         });
 
-        apiService.postMemberUpdate(new UploadFileRequestBody(json,wrapper))
+        apiService.postMemberUpdate(bean)
                 .compose(NetWorkUtil.rxSchedulerHelper())
                 .subscribe(wrapper);
     }

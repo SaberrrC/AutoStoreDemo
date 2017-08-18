@@ -138,11 +138,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     }
 
-    private void getResult(final String code) {
-
-
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
