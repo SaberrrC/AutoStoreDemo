@@ -231,6 +231,12 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        mDrawerLayout.closeDrawer(Gravity.LEFT,false);
+    }
+
+    @Override
     public void onLogoutSuccess(String code, LogoutBean data, String msg) {
         CommonUtils.toNextActivity(MainActivity.this, LoginActivity.class);
         finish();
