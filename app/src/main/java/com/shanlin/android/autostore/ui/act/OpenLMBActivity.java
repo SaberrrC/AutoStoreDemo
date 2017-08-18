@@ -15,12 +15,11 @@ import com.shanlin.android.autostore.common.utils.CommonUtils;
 import com.shanlin.android.autostore.common.utils.SpUtils;
 import com.shanlin.android.autostore.entity.respone.PswSettingBean;
 import com.shanlin.android.autostore.entity.respone.RealNameAuthenBean;
-import com.shanlin.android.autostore.entity.respone.UserVertifyStatusBean;
 import com.shanlin.android.autostore.presenter.Contract.OpenLMBActContract;
 import com.shanlin.android.autostore.presenter.OpenLMBPresenter;
 import com.shanlin.autostore.R;
 import com.shanlin.autostore.constants.Constant_LeMaiBao;
-import com.shanlin.autostore.utils.ProgressDialog;
+import com.shanlin.autostore.view.ProgressDialog;
 
 import butterknife.BindView;
 import butterknife.OnClick;

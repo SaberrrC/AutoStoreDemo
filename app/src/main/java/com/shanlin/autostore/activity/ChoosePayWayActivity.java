@@ -40,7 +40,7 @@ import com.shanlin.autostore.constants.WXConstant;
 import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.utils.CommonUtils;
 import com.shanlin.autostore.utils.IpTools;
-import com.shanlin.autostore.utils.ProgressDialog;
+import com.shanlin.autostore.view.ProgressDialog;
 import com.shanlin.autostore.view.XNumberKeyboardView;
 import com.shanlin.autostore.view.gridpasswordview.GridPasswordView;
 

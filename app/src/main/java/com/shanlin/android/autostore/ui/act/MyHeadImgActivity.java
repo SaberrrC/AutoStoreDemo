@@ -4,25 +4,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.shanlin.android.autostore.App;
 import com.shanlin.android.autostore.common.base.BaseActivity;
 import com.shanlin.android.autostore.common.image.ImageLoader;
-import com.shanlin.android.autostore.common.net.CountingRequestBody;
-import com.shanlin.android.autostore.common.net.callback.UploadHeadImgListener;
 import com.shanlin.android.autostore.common.utils.CommonUtils;
 import com.shanlin.android.autostore.common.utils.LogUtil;
-import com.shanlin.android.autostore.common.utils.SpUtils;
 import com.shanlin.android.autostore.common.utils.ToastUtils;
 import com.shanlin.android.autostore.entity.body.MemberUpdateSendBean;
 import com.shanlin.android.autostore.entity.respone.MemberUpdateBean;
@@ -30,18 +19,14 @@ import com.shanlin.android.autostore.presenter.Contract.HeadImgActContract;
 import com.shanlin.android.autostore.presenter.HeadImgPresenter;
 import com.shanlin.autostore.*;
 import com.shanlin.autostore.constants.Constant;
-import com.shanlin.autostore.interf.HttpService;
 import com.shanlin.autostore.utils.CameraUtil;
-import com.shanlin.autostore.utils.ProgressDialog;
+import com.shanlin.autostore.view.ProgressDialog;
 import com.shanlin.autostore.utils.StatusBarUtils;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 
 /**
  * Created by cuieney on 15/08/2017.
