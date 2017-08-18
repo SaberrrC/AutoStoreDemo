@@ -526,10 +526,12 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
             intent.putExtra(Constant.USER_INFO, mainIntent.getSerializableExtra(Constant.USER_INFO));
         }
         startActivity(intent);
+        overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
 
     @OnClick(R.id.location_3) void toVersionInfo(){
         CommonUtils.toNextActivity(this, VersionInfoActivity.class);
+        overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
 
     @OnClick(R.id.location_4) void logout(){

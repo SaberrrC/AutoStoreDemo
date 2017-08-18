@@ -65,7 +65,6 @@ public class BuyRecordActivity extends BaseActivity<BuyRecordPresenter> implemen
     @Override
     public void initData() {
         CommonUtils.initToolbar(this,"购买记录",R.color.black,null);
-        setTransAnim(false);
         mPresenter.getOrderData(pageno, PAGE_SIZE);
         initRecyclerView();
     }
