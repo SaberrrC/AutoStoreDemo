@@ -464,7 +464,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainAct
 
     private void showBalanceDialog() {
         CommonUtils.debugLog("---------flag=" + state);
-        if (true && credit != null) {
+        if (state && credit != null) {
             View inflate = LayoutInflater.from(this).inflate(R.layout.get_available_balence_layout, null);
             inflate.findViewById(R.id.btn_diaolog_know).setOnClickListener(view -> {
                 dialog.dismiss();
