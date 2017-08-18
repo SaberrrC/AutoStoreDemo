@@ -5,7 +5,10 @@ import com.shanlin.android.autostore.App;
 import com.shanlin.android.autostore.common.constants.Constant;
 import com.shanlin.android.autostore.common.net.Api;
 import com.shanlin.android.autostore.common.net.CacheInterceptor;
+import com.shanlin.android.autostore.common.net.CountingRequestBody;
 import com.shanlin.android.autostore.common.net.HeadInterceptor;
+import com.shanlin.android.autostore.common.net.UpLoadProgressInterceptor;
+import com.shanlin.android.autostore.common.net.callback.UploadHeadImgListener;
 import com.shanlin.android.autostore.common.utils.LogUtil;
 import com.shanlin.autostore.BuildConfig;
 

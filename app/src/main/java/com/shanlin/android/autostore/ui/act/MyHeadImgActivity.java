@@ -13,9 +13,14 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.shanlin.android.autostore.App;
 import com.shanlin.android.autostore.common.base.BaseActivity;
 import com.shanlin.android.autostore.common.image.ImageLoader;
+import com.shanlin.android.autostore.common.net.CountingRequestBody;
+import com.shanlin.android.autostore.common.net.callback.UploadHeadImgListener;
 import com.shanlin.android.autostore.common.utils.CommonUtils;
+import com.shanlin.android.autostore.common.utils.LogUtil;
 import com.shanlin.android.autostore.common.utils.SpUtils;
 import com.shanlin.android.autostore.common.utils.ToastUtils;
 import com.shanlin.android.autostore.entity.body.MemberUpdateSendBean;
@@ -33,17 +38,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 /**
  * Created by cuieney on 15/08/2017.
  */
 
-public class MyHeadImgActivity extends BaseActivity<HeadImgPresenter> implements HeadImgActContract.View {
+public class MyHeadImgActivity extends BaseActivity<HeadImgPresenter> implements HeadImgActContract.View{
 
     @BindView(R.id.iv_head_img_large)
     ImageView imgLarge;
 
     private String token;
+
 
     @Override
     protected void initInject() {
@@ -101,8 +109,9 @@ public class MyHeadImgActivity extends BaseActivity<HeadImgPresenter> implements
     private void sendImgToServer(Bitmap bitmap) {
         Toast.makeText(this, "正在上传用户头像信息，请稍等", Toast.LENGTH_LONG).show();
         String s = CommonUtils.bitmapToBase64(bitmap);
-        mPresenter.uploadHeadImg(new MemberUpdateSendBean(s, JPushInterface
-                .getRegistrationID(this)));
+        MemberUpdateSendBean memberUpdateSendBean = new MemberUpdateSendBean(s, JPushInterface
+                .getRegistrationID(this));
+        mPresenter.uploadHeadImg(new Gson().toJson(memberUpdateSendBean));
     }
 
 
@@ -117,4 +126,10 @@ public class MyHeadImgActivity extends BaseActivity<HeadImgPresenter> implements
     public void onUploadFailed(Throwable ex, String code, String msg) {
         ToastUtils.showToast("上传失败请重试");
     }
+
+    @Override
+    public void onProgress(int progress) {
+        LogUtil.e(progress);
+    }
+
 }

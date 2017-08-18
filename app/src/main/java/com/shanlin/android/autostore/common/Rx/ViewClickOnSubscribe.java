@@ -1,4 +1,4 @@
-package com.shanlin.android.autostore.common.RxBinding;
+package com.shanlin.android.autostore.common.Rx;
 
 import android.os.Looper;
 import android.view.View;

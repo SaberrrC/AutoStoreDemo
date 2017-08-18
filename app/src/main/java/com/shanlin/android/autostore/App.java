@@ -42,7 +42,7 @@ public class App extends Application {
         JPushInterface.setDebugMode(true);    // 设置开启日志,发布时请关闭日志
         JPushInterface.init(this);            // 初始化 JPush
         CommonUtils.netWorkWarranty();
-//        CrashHandler.getInstance().setCustomCrashHanler(app);
+        CrashHandler.getInstance().setCustomCrashHanler(app);
 
         new LogUtil.Builder()
                 .setLogSwitch(true)// 设置log总开关，默认开
@@ -64,4 +64,5 @@ public class App extends Application {
                 .retrofitModule(new RetrofitModule(this))
                 .build();
     }
+
 }

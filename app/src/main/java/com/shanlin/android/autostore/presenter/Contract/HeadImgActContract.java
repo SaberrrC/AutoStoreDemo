@@ -2,6 +2,7 @@ package com.shanlin.android.autostore.presenter.Contract;
 
 import com.shanlin.android.autostore.common.base.BasePresenter;
 import com.shanlin.android.autostore.common.base.BaseView;
+import com.shanlin.android.autostore.common.net.UploadFileRequestBody;
 import com.shanlin.android.autostore.entity.body.MemberUpdateSendBean;
 import com.shanlin.android.autostore.entity.respone.MemberUpdateBean;
 import com.shanlin.android.autostore.entity.respone.PersonInfoBean;
@@ -16,8 +17,10 @@ public interface HeadImgActContract {
 
         void onUploadFailed(Throwable ex, String code, String msg);
 
+        void onProgress(int progress);
+
     }
     interface Presenter extends BasePresenter<View>{
-        void uploadHeadImg(MemberUpdateSendBean bean);
+        void uploadHeadImg(String json);
     }
 }

@@ -1,4 +1,4 @@
-package com.shanlin.android.autostore.common.RxBinding;
+package com.shanlin.android.autostore.common.Rx;
 
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
