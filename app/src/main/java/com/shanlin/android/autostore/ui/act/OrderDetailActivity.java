@@ -35,7 +35,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter> impl
     @BindView(R.id.recyclerview_order)
     PulltoRefreshRecyclerView mPulltoRefreshRecyclerView;
     private RecyclerView                       mRecyclerView;
-    private FinalRecycleAdapter                mRecycleAdapter;
+    private FinalRecycleAdapter mRecycleAdapter;
     private OrderHistoryBean.DataBean.ListBean mBean;
     private OrderDetailBean                    data;
     private List<Object>            mDatas        = new ArrayList<>();
