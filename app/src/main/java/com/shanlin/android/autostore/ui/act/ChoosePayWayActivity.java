@@ -209,7 +209,7 @@ public class ChoosePayWayActivity extends BaseActivity<PayWayPresenter> implemen
     void lmbPayWay() {
         if (!Constant_LeMaiBao.AUTHEN_FINISHED.equals(status)) {
             //开通乐买宝
-            CommonUtils.toNextActivity(this, OpenLMBActivity.class);
+            CommonUtils.sendDataToNextActivity(this, OpenLMBActivity.class, new String[]{Constant_LeMaiBao.AUTHEN_STATUS}, new String[]{status});
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
         } else {
             //买乐宝支付
