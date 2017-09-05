@@ -47,6 +47,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     //微信登录
     private SendAuth.Req req;
+
     private IWXAPI       api;
     private Dialog       WxLoginDialog;
 

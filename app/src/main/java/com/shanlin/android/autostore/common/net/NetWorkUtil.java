@@ -20,19 +20,19 @@ public class NetWorkUtil {
      */
     public static boolean isWifiConnected(Application application) {
         ConnectivityManager connectivityManager = (ConnectivityManager) application.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo wifiInfo = connectivityManager
-                .getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo wifiInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         return wifiInfo != null;
     }
+
     /**
      * 检查手机网络(4G/3G/2G)是否连接
      */
     public static boolean isMobileNetworkConnected(Application application) {
         ConnectivityManager connectivityManager = (ConnectivityManager) application.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo mobileNetworkInfo = connectivityManager
-                .getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        NetworkInfo mobileNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         return mobileNetworkInfo != null;
     }
+
     /**
      * 检查是否有可用网络
      */
@@ -43,12 +43,12 @@ public class NetWorkUtil {
 
     /**
      * 统一线程处理
+     *
      * @param <T>
      * @return
      */
-    public static <T>FlowableTransformer<T,T> rxSchedulerHelper(){
-        return upstream -> upstream.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+    public static <T> FlowableTransformer<T, T> rxSchedulerHelper() {
+        return upstream -> upstream.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
 }
