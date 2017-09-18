@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
+
+    <View
+        android:id="@+id/stork"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#F5F5F5"/>
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20px"
+        android:layout_marginTop="12px"
+        android:ellipsize="end"
+        android:lines="1"
+        android:maxEms="14"
+        android:text="邻家智能GO便利店"
+        android:textColor="#333333"
+        android:textSize="22px"/>
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_name"
+        android:layout_marginLeft="20px"
+        android:layout_marginTop="6px"
+        android:text="2017-5-5 19:00"
+        android:textColor="#999999"
+        android:textSize="17px"
+        />
+
+    <TextView
+        android:id="@+id/sum_of_consumption_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_time"
+        android:layout_marginLeft="20px"
+        android:layout_marginTop="17px"
+        android:text="消费金额："
+        android:textColor="#999999"
+        android:textSize="20px"
+        />
+
+    <TextView
+        android:id="@+id/sum_of_consumption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/sum_of_consumption_text"
+        android:layout_below="@id/tv_time"
+        android:layout_toRightOf="@id/sum_of_consumption_text"
+        android:lines="1"
+        android:text="¥500.00"
+        android:textColor="#ED4848"
+        android:textSize="20px"
+        />
+
+    <TextView
+        android:id="@+id/state_of_consumption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/sum_of_consumption_text"
+        android:layout_marginRight="20px"
+        android:text="微信支付"
+        android:textColor="#999999"
+        android:textSize="20px"
+        android:layout_marginBottom="14px"
+        />
+
+
+</com.zhy.autolayout.AutoRelativeLayout>

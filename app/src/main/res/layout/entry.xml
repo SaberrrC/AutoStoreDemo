@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/result_tv"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+	 	android:textSize="20dp"
+        android:text="进入"
+        />
+    
+    <Button
+        android:id="@+id/reg_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+	    android:layout_margin="10dp"
+        android:text="注册"/>
+    
+    <Button
+        android:id="@+id/goto_send_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+	    android:layout_margin="10dp"
+        android:text="send"/>
+    
+    <Button
+        android:id="@+id/launch_wx_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+	    android:layout_margin="10dp"
+        android:text="登录微信"/>
+    
+    <Button
+        android:id="@+id/check_timeline_supported_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="检测"/>
+    
+    <Button
+        android:id="@+id/scan_qrcode_login_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="登录"/>
+
+</LinearLayout>

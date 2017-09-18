@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/liveness_layout_rootRel"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_layout"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#F5F5F5"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextureView
+            android:id="@+id/liveness_layout_textureview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.shanlin.autostore.livenesslib.view.AutoRatioImageview
+            android:id="@+id/liveness_layout_head_mask"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/facelogin_bg"/>
+
+        <LinearLayout
+            android:id="@+id/liveness_layout_bottom_tips_head"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/liveness_layout_head_mask"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/liveness_layout_promptText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:gravity="center"
+                android:text="@string/meglive_prompt"
+                android:textColor="#F8773E"
+                android:textSize="16dp"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="1dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/liveness_phoneimage"/>
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/liveness_layout_progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="invisible"/>
+
+    </RelativeLayout>
+</LinearLayout>

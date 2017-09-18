@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lLayout_bg"
+    android:layout_width="280px"
+    android:layout_height="158px"
+    android:background="@drawable/dialog_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_marginTop="44px"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="“邻家智能GO”想要打开“微信”"
+        android:textColor="#99000000"
+        android:textSize="18px"/>
+
+    <View
+        android:layout_below="@id/content"
+        android:id="@+id/hl"
+        android:layout_marginTop="39px"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#E1E1E1" />
+
+    <RelativeLayout
+        android:layout_below="@id/hl"
+        android:layout_width="match_parent"
+        android:layout_height="47px">
+
+        <View
+            android:id="@+id/vl"
+            android:layout_centerInParent="true"
+            android:layout_width="1px"
+            android:background="#E1E1E1"
+            android:layout_height="match_parent"></View>
+
+        <TextView
+            android:id="@+id/tv_concel"
+            android:layout_width="139px"
+            android:clickable="true"
+            android:layout_toLeftOf="@id/vl"
+            android:gravity="center"
+            android:layout_height="47px"
+            android:text="取消"
+            android:textColor="#99000000"
+            android:textSize="16px"
+            />
+
+        <TextView
+            android:id="@+id/tv_open"
+            android:clickable="true"
+            android:gravity="center"
+            android:layout_toRightOf="@id/vl"
+            android:layout_width="139px"
+            android:layout_height="47px"
+            android:text="打开"
+            android:textColor="#FFFCC70D"
+            android:textSize="16px"/>
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:background="#33FCBF0D">
+
+    <TextView
+        android:id="@+id/tv_commodity"
+        android:layout_width="128px"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15px"
+        android:layout_marginTop="15px"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="商品"
+        android:textAllCaps="false"
+        android:textColor="#666666"/>
+
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_width="70px"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tv_commodity"
+        android:layout_below="@+id/stork_top"
+        android:layout_toRightOf="@+id/tv_commodity"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="单价"
+        android:textAllCaps="false"
+        android:textColor="#666666"/>
+
+    <TextView
+        android:id="@+id/tv_num"
+        android:layout_width="52px"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tv_commodity"
+        android:layout_below="@+id/stork_top"
+        android:layout_toRightOf="@+id/tv_price"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="数量"
+        android:textAllCaps="false"
+        android:textColor="#666666"/>
+
+    <TextView
+        android:id="@+id/tv_all"
+        android:layout_width="85px"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tv_commodity"
+        android:layout_below="@+id/stork_top"
+        android:layout_toRightOf="@+id/tv_num"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="总价"
+        android:textAllCaps="false"
+        android:textColor="#666666"/>
+
+
+</com.zhy.autolayout.AutoRelativeLayout>
