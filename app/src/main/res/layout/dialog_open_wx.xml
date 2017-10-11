@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/lLayout_bg"
-    android:layout_width="280px"
+    android:layout_width="260px"
     android:layout_height="158px"
     android:background="@drawable/dialog_bg"
     android:orientation="vertical">
@@ -9,8 +9,8 @@
     <TextView
         android:id="@+id/content"
         android:layout_marginTop="44px"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:layout_width="260px"
         android:layout_height="wrap_content"
         android:text="“邻家智能GO”想要打开“微信”"
         android:textColor="#99000000"
@@ -20,13 +20,13 @@
         android:layout_below="@id/content"
         android:id="@+id/hl"
         android:layout_marginTop="39px"
-        android:layout_width="match_parent"
+        android:layout_width="260px"
         android:layout_height="1px"
         android:background="#E1E1E1" />
 
     <RelativeLayout
         android:layout_below="@id/hl"
-        android:layout_width="match_parent"
+        android:layout_width="260px"
         android:layout_height="47px">
 
         <View

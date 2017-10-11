@@ -36,7 +36,7 @@
     <uses-permission android:name="android.permission.READ_SMS"/>
 
     <application
-        android:name=".AutoStoreApplication"
+        android:name="com.shanlin.android.autostore.App"
         android:allowBackup="true"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
@@ -51,7 +51,7 @@
             android:value="667"/>
 
         <meta-data
-            android:name="com.shanlin.autostore.image.AppGlideModule"
+            android:name="com.shanlin.android.autostore.common.image.AppGlideModule"
             android:value="GlideModule" />
 
         <!-- 文件存储 (适配 Android 7.0 应用之间共享文件) -->
@@ -66,7 +66,7 @@
         </provider>
 
         <activity
-            android:name=".activity.SplashActivity"
+            android:name="com.shanlin.android.autostore.ui.act.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme"
             android:windowSoftInputMode="adjustPan">
@@ -77,47 +77,47 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.PhoneNumLoginActivity"
+            android:name="com.shanlin.android.autostore.ui.act.PhoneNumLoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".activity.LoginActivity"
+            android:name="com.shanlin.android.autostore.ui.act.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".activity.BuyRecordActivity"
+            android:name="com.shanlin.android.autostore.ui.act.BuyRecordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".activity.VersionInfoActivity"
+            android:name="com.shanlin.android.autostore.ui.act.VersionInfoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <!--人脸识别界面-->
         <activity
-            android:name=".livenesslib.LivenessActivity"
+            android:name="com.shanlin.android.autostore.ui.act.LivenessActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".activity.OpenLeMaiBao"
+            android:name="com.shanlin.android.autostore.ui.act.OpenLMBActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".zxing.activity.CaptureActivity"
+            android:name="com.shanlin.android.autostore.ui.act.CaptureActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".MainActivity"
+            android:name="com.shanlin.android.autostore.ui.act.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"
             />
         <activity
-            android:name=".activity.MyLeMaiBaoActivity"
+            android:name="com.shanlin.android.autostore.ui.act.MyLMBActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".activity.ChoosePayWayActivity"
+            android:name="com.shanlin.android.autostore.ui.act.ChoosePayWayActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
@@ -129,26 +129,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.XieYiAndHeTongActivity"
+            android:name="com.shanlin.android.autostore.ui.act.XieYiAndHeTongActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".activity.PayResultActivity"
+            android:name="com.shanlin.android.autostore.ui.act.PayResultActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".activity.GateActivity"
+            android:name="com.shanlin.android.autostore.ui.act.GateActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
-            android:name=".activity.SaveFaceActivity"
+            android:name="com.shanlin.android.autostore.ui.act.SaveFaceActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
-            android:name=".activity.OrderDetailActivity"
+            android:name="com.shanlin.android.autostore.ui.act.OrderDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
         </activity>
@@ -157,17 +157,17 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".activity.RefundMoneyActivity"
+            android:name="com.shanlin.android.autostore.ui.act.RefundMoneyActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
-            android:name=".activity.RefundExplainActivity"
+            android:name="com.shanlin.android.autostore.ui.act.RefundExplainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
-            android:name=".activity.MyHeadImgActivity"
+            android:name="com.shanlin.android.autostore.ui.act.MyHeadImgActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
         </activity>
@@ -277,7 +277,7 @@
         <!--</receiver>-->
         <!-- User defined. 用户自定义的广播接收器-->
         <receiver
-            android:name=".receiver.MyReceiver"
+            android:name="com.shanlin.android.autostore.receiver.MyReceiver"
             android:enabled="true">
             <intent-filter>
                 <!--Required 用户注册SDK的intent-->

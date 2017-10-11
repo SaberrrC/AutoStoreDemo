@@ -103,7 +103,7 @@
                 android:textSize="14px"/>
         </com.zhy.autolayout.AutoRelativeLayout>
 
-        <com.shanlin.autostore.view.PulltoRefreshRecyclerView
+        <com.shanlin.android.autostore.ui.view.PulltoRefreshRecyclerView
             android:id="@+id/pr_lists"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
