@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="280px"
-              android:layout_height="wrap_content"
+              android:layout_width="250px"
+              android:layout_height="158px"
               android:background="@drawable/dialog_bg"
               android:gravity="center"
               android:orientation="vertical">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="250px"
         android:layout_height="22px"
         android:layout_marginTop="19px"
         android:gravity="center"
@@ -18,7 +18,7 @@
 
     <TextView
         android:id="@+id/tv_credit_num"
-        android:layout_width="wrap_content"
+        android:layout_width="250px"
         android:layout_height="22.1px"
         android:layout_marginTop="11px"
         android:gravity="center"
@@ -28,7 +28,7 @@
         />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="250px"
         android:layout_height="22px"
         android:layout_marginTop="2px"
         android:gravity="center"
@@ -38,7 +38,7 @@
         />
 
     <View
-        android:layout_width="match_parent"
+        android:layout_width="250px"
         android:layout_height="1px"
         android:layout_marginTop="18.9px"
         android:background="#E1E1E1"
@@ -46,7 +46,7 @@
 
     <Button
         android:id="@+id/btn_diaolog_know"
-        android:layout_width="match_parent"
+        android:layout_width="250px"
         android:layout_height="50px"
         android:background="@null"
         android:text="知道了"

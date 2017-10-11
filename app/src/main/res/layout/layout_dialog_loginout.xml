@@ -2,15 +2,15 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/lay"
-    android:layout_width="280px"
+    android:layout_width="250px"
     android:layout_height="158px"
     android:background="@drawable/dialog_bg">
 
     <TextView
         android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
+        android:layout_width="250px"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:gravity="center"
         android:layout_marginTop="24px"
         android:text="退出账户"
         android:textColor="@color/black"
@@ -20,9 +20,9 @@
     <TextView
         android:id="@+id/tv_num"
         android:layout_below="@id/tv_title"
-        android:layout_width="wrap_content"
+        android:layout_width="250px"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:gravity="center"
         android:layout_marginTop="12px"
         android:text="123****1234"
         android:textColor="@color/black"
@@ -30,7 +30,7 @@
 
     <View
         android:id="@+id/stork"
-        android:layout_width="match_parent"
+        android:layout_width="250px"
         android:layout_height="1px"
         android:layout_below="@+id/tv_num"
         android:layout_marginTop="22px"
@@ -38,7 +38,7 @@
 
     <LinearLayout
         android:layout_below="@id/stork"
-        android:layout_width="match_parent"
+        android:layout_width="250px"
         android:layout_height="47px"
         android:orientation="horizontal">
 
