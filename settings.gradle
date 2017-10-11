@@ -1,1 +1,1 @@
-include ':app', ':library:wechatlib', ':autostoresdk'
+include ':app', ':library:wechatlib'

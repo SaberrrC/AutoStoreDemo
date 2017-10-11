@@ -98,12 +98,46 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
-    compile project(':autostoresdk')
-    compile project(':library:wechatlib')
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+
+    // dagger2
+    compile 'com.google.dagger:dagger:2.11'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
+    // butterknife
+    compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    //jpush
+    // retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.2.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
+    // rx
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.2'
+    // log
+    compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
+    // gson
+    compile 'com.google.code.gson:gson:2.8.1'
+    // zxing
+    compile 'com.google.zxing:core:3.3.0'
+    // glide
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
+    compile 'jp.wasabeef:glide-transformations:2.0.2'
+
+    // wechat
+    compile project(':library:wechatlib')
+    // jpush
     compile 'cn.jiguang.sdk:jpush:3.0.3'
-    // 此处以JPush 3.0.3 版本为例。
     compile 'cn.jiguang.sdk:jcore:1.1.1'
+
+    // autolayout
+    compile 'com.zhy:autolayout:1.4.5'
+    // authcode（自动获取短信验证码）
+    compile 'tech.michaelx.authcode:authcode:1.0.0'
+    // multipleimageselect（图片选择）
+    compile 'com.darsh.multipleimageselect:multipleimageselect:1.0.4'
+    // image-cropper（图片裁剪）
+    compile 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
 }
