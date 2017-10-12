@@ -15,9 +15,6 @@ public class Constant {
      * 开发联调：http://linstore-dev.shanlinjinrong.online/app-api/v1/
      * 测试地址：http://linstore-uat.shanlinjinrong.online/app-api/v1/
      */
-    //开发联调
-//        public static final String BASE_URL = "http://linstore-dev.shanlinjinrong.online/app-api/v1/";
-    //    测试地址
     public static final String BASE_URL = "http://linstore-uat.shanlinjinrong.online/app-api/v1/";
     public static final String HEAD_IMG_URL = "head_url";
     public static final String TOKEN              = "TOKEN";
