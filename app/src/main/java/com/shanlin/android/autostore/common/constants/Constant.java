@@ -10,11 +10,8 @@ import java.io.File;
  */
 
 public class Constant {
-    /**
-     * 接口base url
-     * 测试地址：http://linstore-uat.shanlinjinrong.online/app/v1/
-     */
-    public static final String BASE_URL = "http://linstore-uat.shanlinjinrong.online/app/v1/";
+
+    public static final String BASE_URL = "http://linstore-uat.sd-bao.cn/app/v1/";
     public static final String HEAD_IMG_URL = "head_url";
     public static final String TOKEN              = "TOKEN";
     public static final String USER_PHONE_LOGINED = "USER_PHONE_LOGINED";
