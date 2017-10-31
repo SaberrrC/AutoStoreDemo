@@ -11,7 +11,7 @@ import java.io.File;
 
 public class Constant {
 
-    public static final String BASE_URL = "http://linstore-uat.sd-bao.cn/app/v1/";
+    public static final String BASE_URL = "https://linstore-uat.sd-bao.com/app/v1/";
     public static final String HEAD_IMG_URL = "head_url";
     public static final String TOKEN              = "TOKEN";
     public static final String USER_PHONE_LOGINED = "USER_PHONE_LOGINED";
