@@ -4,7 +4,6 @@ File signPropertiesFile = rootProject.file(STORE_FILE)
 def config = rootProject.ext.android
 android {
     compileSdkVersion config.compileSdkVersion
-    buildToolsVersion config.buildToolsVersion
 
     defaultConfig {
         applicationId "com.shanlin.autostore"
@@ -90,6 +89,7 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+    buildToolsVersion '27.0.3'
 }
 
 dependencies {
